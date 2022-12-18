@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="7dp"
+    app:cardMaxElevation="7dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_3sdp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/done" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:fontFamily="@font/generalsanssemibold"
+            android:gravity="center_horizontal"
+            android:text="@string/conformation_table_food_is_reserved"
+            android:textAlignment="center"
+            android:textColor="@color/text_colorblack"
+            android:textSize="23sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:padding="@dimen/_2sdp"
+            android:fontFamily="@font/generalsansregular"
+            android:gravity="center_horizontal"
+            android:text="@string/note_the_table_is_reserved_upto_6_00_pm_only"
+            android:textAlignment="center"
+            android:textColor="@color/orange_2"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:padding="@dimen/_2sdp"
+            android:fontFamily="@font/generalsansregular"
+            android:gravity="center_horizontal"
+            android:text="@string/after_seating_5_minutes_food_will_n_prepare"
+            android:textAlignment="center"
+            android:textColor="@color/orange_2"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/btn_share_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/layout_rectangle_orange"
+            android:fontFamily="@font/generalsansmedium"
+            android:text="@string/share_to_add_order"
+            android:textAllCaps="false"
+            android:textColor="@color/text_colorblack"
+            android:textSize="16sp"
+            app:backgroundTint="@null" />
+
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

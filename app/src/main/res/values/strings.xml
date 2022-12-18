@@ -1,0 +1,131 @@
+<resources>
+    <string name="app_name">Fork</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+
+
+    <string name="button_lang">English</string>
+    <string name="button_lang_ar">إنجليزي</string>
+    <string name="button_login">Login</string>
+    <string name="button_reg">Register</string>
+    <string name="forgot_pass">Forgot Password</string>
+
+    <string name="secure_login">Secure Login</string>
+    <string name="mobile_no">Enter Mobile No</string>
+    <string name="password">Enter Password</string>
+
+    <string name="skip"> <u>Skip</u> </string>
+    <string name="enter_as_guest"><u>Enter as Guest</u></string>
+
+    <string name="forgot_password"><u>Forgot Password ?</u></string>
+    <string name="enter_mobile_no">Enter Mobile No</string>
+    <string name="please_enter_the_details_below_to_continue">Please Enter The Details Below To Continue</string>
+    <string name="enter_new_password">Enter New Password</string>
+    <string name="enter_otp">Enter Otp</string>
+    <string name="enter_otp_underline"><u>Enter Otp</u></string>
+    <string name="msg_title">Do you want to allow "Fork" \n to enable face ID?</string>
+    <string name="did_t_receive_an_otp">Didn\'t receive an OTP?</string>
+    <string name="resend_otp"><u>Resend OTP</u></string>
+    <string name="done">Done</string>
+    <string name="submit">Submit</string>
+    <string name="keep_signed_in">Keep Signed In</string>
+    <string name="enable">Enable</string>
+    <string name="do_you_want_to_allow_fork_n_to_enable_face_id">Do you want to allow\n&quot;Fork&quot;\nto enable face ID?</string>
+    <string name="don_t_allow">Don\'t Allow</string>
+    <string name="ok">Ok</string>
+    <string name="otp">OTP.</string>
+    <string name="lorem_ipsum_door_sit_amet_adispacing">Lorem Ipsum door sit amet, adispacing</string>
+    <string name="or_quick_login_via">Or Quick Login Via</string>
+    <string name="back">Back</string>
+    <string name="conform_password">Conform Password</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="user_name">User Name</string>
+    <string name="face_id">Face ID</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="renter_new_password">Renter New Password</string>
+    <string name="some_text_some_text_some_text_some_text">Some text some text some text some text</string>
+    <string name="for_secure_and_faster_access_would_you_like_to_enable_face_id">For secure and faster access, would you like to enable face id?</string>
+    <string name="please_use_face_id_to_login">Please use face ID to login</string>
+    <string name="menu">Menu</string>
+    <string name="scan_to_order">Scan To Order</string>
+    <string name="walk_in">Walk In</string>
+    <string name="log_in_register">Log In / Register</string>
+    <string name="home">Home</string>
+    <string name="orders">Orders</string>
+    <string name="wallet">Wallet</string>
+    <string name="location">Location</string>
+    <string name="support">Support</string>
+    <string name="share">Share</string>
+    <string name="contact_amp_terms"><![CDATA[Contact & Terms]]></string>
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+    <string name="language">Language:</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="need_to_contact_us">Need To Contact Us ?</string>
+    <string name="need_support">Need Support ?</string>
+    <string name="reserve_table">Reserve Table ?</string>
+    <string name="book_table">Book Table</string>
+    <string name="walkin">Walk In</string>
+    <string name="pickup">Pick Up</string>
+    <string name="contact">Contact</string>
+    <string name="term">Terms</string>
+
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="_14">14</string>
+    <string name="current_queue">Current Queue</string>
+    <string name="get_in_the_queue">Get in the Queue</string>
+    <string name="other_options">Other Options</string>
+    <string name="booking_table">Booking Table</string>
+    <string name="floor_ground">Floor Ground</string>
+    <string name="floor">Floor</string>
+    <string name="list">List</string>
+    <string name="pay_to_conform">Pay to Conform</string>
+    <string name="available">Available</string>
+    <string name="selected">Selected</string>
+    <string name="no_of_person">No of Person:</string>
+    <string name="type">Type:</string>
+    <string name="conform_pay"><![CDATA[Conform & Pay]]></string>
+    <string name="cancel">Cancel</string>
+    <string name="note_the_time_table_is_reserved_upto_6_00_pm_only">Note: The Time Table Is Reserved Up to \n 6.00 Pm Only</string>
+    <string name="your_reserved_seats">Your Reserved Seats</string>
+    <string name="select_food">Select Food</string>
+    <string name="view_cart">View Cart</string>
+    <string name="types">Types</string>
+    <string name="add">Add</string>
+    <string name="qty">QTY</string>
+    <string name="reserve">Reserve</string>
+    <string name="pay_for_table_food"><![CDATA[Pay For Table & Food]]></string>
+    <string name="summary">Summary</string>
+    <string name="progress">Progress</string>
+    <string name="complete">Complete</string>
+    <string name="proceed_to_payment">Proceed To Payment</string>
+    <string name="enter_coupon_code">Enter Coupon Code</string>
+    <string name="note_the_table_is_reserved_up_to_6pm_only">Note The Table is Reserved Up to 6pm only</string>
+    <string name="will_alert_as_table_ready">Will Alert As \n Table Ready</string>
+    <string name="share_to_members">Share To Members</string>
+    <string name="get_directions">Get Directions</string>
+    <string name="reserve_the_food">Reserve The Food</string>
+    <string name="conformation_of_food_order">Conformation of \n Food Order</string>
+    <string name="we_will_inform_you_as_the_table_is_ready">We will inform you as the table is ready</string>
+    <string name="note_the_table_is_reserved_upto_6_00_pm_only">Note: The Table is Reserved Up to \n 6:00 Pm Only</string>
+    <string name="note_seating">After Seating 5 Minutes Food Will \n Prepare </string>
+
+    <string name="rating_for_food_and_table">Rating For Food And Table</string>
+    <string name="conformation_table_food_is_reserved"><![CDATA[Conformation \n Table & Food Is \n Reserved]]></string>
+    <string name="after_seating_5_minutes_food_will_n_prepare">After Seating 5 Minutes Food Will \n Prepare</string>
+    <string name="share_to_add_order">Share To Add Order</string>
+    <string name="view_invoice">View Invoice</string>
+    <string name="modify_order">Modify Order</string>
+    <string name="ask_support">Ask Support</string>
+    <string name="work">Work</string>
+    <string name="hotel">Hotel</string>
+    <string name="save_location">Save Location</string>
+    <string name="dafault_val">Default</string>
+
+
+</resources>

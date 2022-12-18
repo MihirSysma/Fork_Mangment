@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:background="@drawable/round_corner_toggle"
+        android:hint="Enter Full Name"
+        android:layout_margin="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:textSize="15sp"
+        android:maxLines="1"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:background="@drawable/round_corner_toggle"
+        android:hint="Enter Email Address"
+        android:layout_margin="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:textSize="15sp"
+        android:maxLines="1"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:background="@drawable/round_corner_toggle"
+        android:hint="Enter Phone Number"
+        android:layout_margin="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:textSize="15sp"
+        android:maxLines="1"
+        android:inputType="phone"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
+
+    <EditText
+        android:id="@+id/msg_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corner_toggle"
+        android:layout_margin="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:gravity="top|left"
+        android:inputType="text|textMultiLine"
+        android:hint="Message"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:minLines="5"
+        android:scrollHorizontally="false"
+        android:lines="5"
+        android:scrollbars="vertical"
+        tools:ignore="RtlHardcoded" />
+
+
+</LinearLayout>

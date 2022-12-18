@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:padding="@dimen/_5sdp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relative_view2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:background="@drawable/layout_rectangle_gray"
+        >
+
+        <ImageView
+            android:id="@+id/imgrightchek"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:src="@drawable/big_green_right"
+            />
+
+
+        <TextView
+            android:id="@+id/txtproductname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_toEndOf="@+id/imgrightchek"
+            android:text="Office"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/lyt_linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtproductname"
+            android:layout_margin="@dimen/_3sdp"
+            android:padding="@dimen/_2sdp"
+            android:layout_toEndOf="@+id/imgrightchek"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:fontFamily="@font/generalsansregular"
+                android:textColor="@color/text_gray2"
+                android:text="Lorem Ipsum is simply dummy and typesetting industry. Lorem Ipsum "
+                android:textSize="14sp"
+                android:lines="2"
+                android:minLines="2"
+                android:singleLine="false"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_10sdp">
+
+            <ImageView
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:src="@drawable/black_pencil" />
+
+            <ImageView
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:src="@drawable/delete" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear_layout_default"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@+id/lyt_linear"
+            android:padding="@dimen/_7sdp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="horizontal"
+            android:background="@drawable/layout_rectangle_black">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Make Default"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:fontFamily="@font/generalsansmedium"
+                />
+
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EBEBEB"
+        android:orientation="horizontal"
+        android:layout_below="@+id/relative_view2"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>
+

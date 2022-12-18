@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_210sdp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="9dp"
+    app:cardElevation="9dp"
+    app:cardMaxElevation="7dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_3sdp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/done" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:fontFamily="@font/generalsansmedium"
+            android:gravity="center_horizontal"
+            android:text="@string/conformation_of_food_order"
+            android:textAlignment="center"
+            android:textColor="@color/text_colorblack"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:gravity="center_horizontal"
+            android:text="@string/we_will_inform_you_as_the_table_is_ready"
+            android:textAlignment="center"
+            android:textColor="@color/text_gray2"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:fontFamily="@font/generalsansmedium"
+            android:gravity="center_horizontal"
+            android:text="@string/note_the_table_is_reserved_upto_6_00_pm_only"
+            android:textAlignment="center"
+            android:textColor="@color/orange_2"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

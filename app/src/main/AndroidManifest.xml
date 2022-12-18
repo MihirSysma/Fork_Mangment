@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.forkmang">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ForkMangment"
+        tools:targetApi="31">
+        <!--
+        <activity
+            android:name="com.forkmang.fragment.LocationScreen_Fragment"
+            android:exported="false" />
+        -->
+        <activity
+            android:name="com.forkmang.activity.WalkinInQuee"
+            android:exported="false" />
+        <activity
+            android:name="com.forkmang.activity.BookingSeat_ReserveConformationActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.forkmang.activity.Activity_PaymentSummary"
+            android:exported="false" />
+        <activity
+            android:name="com.forkmang.activity.BookingTable_ReserveSeat"
+            android:exported="false" />
+        <activity
+            android:name="com.forkmang.activity.BookingOrder_ReserverConformationActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.forkmang.activity.Booking_TabView_Activity"
+            android:exported="false" />
+        <activity
+            android:name="com.forkmang.activity.ScanOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.forkmang.activity.DashBoardView"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.DashBoardActivity_2"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.DrawerActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.forkmang.activity.TutorialScreen"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.SelectLanguage"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.RedirectToFacelogin"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.LoginFormActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.ForgotPassword"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.FaceLoginPermission"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.FaceLogin"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.BookingTableScreen2"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.Activity_PaymentSummary_WalkinFragment"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.Walkin_ConformationActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.Pickup_ConformationActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.Activity_PaymentSummary_PickupFragment"
+            android:exported="true" />
+        <activity
+            android:name="com.forkmang.fragment.OrdersFragment"
+            android:exported="true" />
+
+        <activity
+            android:name="com.forkmang.fragment.Contact_TermsFragment"
+            android:exported="true" />
+
+
+    </application>
+
+</manifest>

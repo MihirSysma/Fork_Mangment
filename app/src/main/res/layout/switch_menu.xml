@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_3sdp"
+    android:padding="@dimen/_2sdp">
+
+    <!--
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/radioGroup">
+
+        <RadioButton
+            android:id="@+id/radio_eng"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="English"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:checked="false"
+            android:textSize="13sp" />
+
+        <RadioButton
+            android:id="@+id/radio_arabic"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="Arabic"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:checked="true"
+            android:textSize="14sp" />
+    </RadioGroup>
+     -->
+    <info.hoang8f.android.segmented.SegmentedGroup
+        android:id="@+id/segmented2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        segmentedgroup:sc_border_width="1dp"
+        segmentedgroup:sc_corner_radius="5dp"
+        android:background="@color/white"
+        segmentedgroup:sc_tint_color="@color/black"
+        segmentedgroup:sc_checked_text_color="@color/white">
+
+        <RadioButton
+            android:id="@+id/button_eng"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/english"
+            android:checked="true"
+            style="@style/RadioButton" />
+
+        <RadioButton
+            android:id="@+id/button_arabic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/arabic"
+            style="@style/RadioButton" />
+
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+</LinearLayout>

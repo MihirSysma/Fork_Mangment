@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_5sdp"
+    android:layout_margin="@dimen/_5sdp">
+
+
+    <RelativeLayout
+        android:id="@+id/relative_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:background="@drawable/layout_rectangle_gray">
+
+        <ImageView
+            android:id="@+id/imgproduct"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/_3sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_booktable" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:orientation="horizontal">
+
+
+
+            <RatingBar
+                android:id="@+id/rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:rating="5"
+                style="@style/CustomRatingBarStyle"
+                />
+
+            <TextView
+                android:id="@+id/txt_ratingno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="2"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtproductname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imgproduct"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:textSize="14sp"
+            android:text="Starbucks"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/lyttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtproductname"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="2dp"
+            android:layout_toEndOf="@+id/imgproduct"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/txt_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open Till: 1.00 Pm"
+                android:padding="1dp"
+                android:textColor="@color/text_gray2"
+                android:fontFamily="@font/generalsansregular"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/txt_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Walk in 4 Tb, Pickup 8 Min"
+                android:padding="1dp"
+                android:textColor="@color/text_gray2"
+                android:fontFamily="@font/generalsansregular"
+                android:textSize="14sp"
+                />
+
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txttotalkm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:text="2 Km"
+            android:fontFamily="@font/generalsansregular"
+            android:layout_gravity="center"
+            android:textColor="@color/text_colorblack"
+            android:textSize="13sp"
+            />
+
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

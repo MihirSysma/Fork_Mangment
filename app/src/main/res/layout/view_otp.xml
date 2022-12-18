@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_220sdp"
+    android:padding="@dimen/_5sdp"
+    android:layout_gravity="center"
+    android:background="@drawable/card_shadow_light"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:background="@drawable/card_shadow_exp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_5ssp"
+            android:text="@string/enter_otp"
+            android:textAlignment="center"
+            android:fontFamily="@font/generalsansmedium"
+            android:textColor="@color/text_colorblack"
+            android:textSize="@dimen/_13ssp"
+            />
+
+        <com.chaos.view.PinView
+            android:id="@+id/firstPinView"
+            style="@style/PinWidget.PinView"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:hint="@string/otp"
+            android:inputType="numberDecimal"
+            android:itemBackground="@color/txtbackground"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/text_colorblack"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cursorColor="@color/text_colorblack"
+            app:cursorWidth="2dp"
+            app:hideLineWhenFilled="true"
+            app:itemCount="4"
+            app:itemHeight="48dp"
+            app:itemRadius="4dp"
+            app:itemSpacing="3dp"
+            app:itemWidth="48dp"
+            app:lineColor="@color/white"
+            app:lineWidth="2dp"
+            app:viewType="rectangle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/did_t_receive_an_otp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:textSize="@dimen/_12ssp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#8A8888"
+            />
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:text="@string/resend_otp"
+            android:fontFamily="@font/generalsansmedium"
+            android:textAlignment="center"
+            android:textColor="@color/text_colorblack"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/_5ssp"
+            android:layout_marginEnd="@dimen/_5ssp"
+            android:background="@drawable/layout_rectangle_2"
+            android:padding="@dimen/_5ssp"
+            android:text="@string/submit"
+            android:fontFamily="@font/generalsansmedium"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:backgroundTint="@null" />
+
+
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+    </LinearLayout>

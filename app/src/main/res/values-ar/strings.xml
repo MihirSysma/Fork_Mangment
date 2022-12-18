@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">إدارة الشوكة</string>
+    <string name="button_lang">English</string>
+    <string name="button_lang_ar">إنجليزي</string>
+    <string name="button_login">تسجيل الدخول</string>
+    <string name="button_reg">يسجل</string>
+    <string name="forgot_pass">هل نسيت كلمة السر</string>
+
+    <string name="secure_login">دخول آمن</string>
+    <string name="mobile_no">أدخل رقم الجوال</string>
+    <string name="password">أدخل كلمة المرور</string>
+    <string name="skip"> <u>يتخطى</u> </string>
+    <string name="enter_as_guest"><u>أدخل كضيف</u></string>
+
+    <string name="forgot_password"><u>هل نسيت كلمة السر ؟</u></string>
+    <string name="enter_mobile_no">أدخل رقم الجوال</string>
+    <string name="please_enter_the_details_below_to_continue"> أدناه للمتابعةالرجاء إدخال التفاصيل</string>
+    <string name="enter_new_password">أدخل كلمة مرور جديدة</string>
+    <string name="enter_otp">أدخل Otp</string>
+    <string name="enter_otp_underline"><u>أدخل Otp</u></string>
+    <string name="msg_title">هل تريد السماح لـ "Fork" \ n بتمكين معرف الوجه؟</string>
+    <string name="did_t_receive_an_otp">ألم تتلقى OTP؟</string>
+    <string name="resend_otp"><u>إعادة إرسال OTP</u></string>
+    <string name="done">فعله</string>
+    <string name="submit">يُقدِّم</string>
+    <string name="keep_signed_in">حافظ على تسجيل الدخول</string>
+    <string name="enable">يُمكَِن</string>
+    <string name="do_you_want_to_allow_fork_n_to_enable_face_id">Do you want to allow\n&quot;Fork&quot;\n to enable face ID?</string>
+    <string name="don_t_allow">لا تسمح</string>
+    <string name="ok">موافق</string>
+
+
+</resources>
