@@ -25,10 +25,9 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(Activity_PaymentSummary.this));
 
         btn_payment_proceed.setOnClickListener(v -> {
-            final Intent mainIntent = new Intent(Activity_PaymentSummary.this, BookingSeat_ReserveConformationActivity.class);
+            final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
             startActivity(mainIntent);
         });
-
 
         CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(Activity_PaymentSummary.this );
         recyclerView.setAdapter(cartBookingAdapter);

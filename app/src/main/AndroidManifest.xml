@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ForkMangment"
         tools:targetApi="31">
+        <activity
+            android:name="com.forkmang.activity.PaymentScreenActivity"
+            android:exported="false" />
         <!--
         <activity
             android:name="com.forkmang.fragment.LocationScreen_Fragment"
@@ -96,16 +99,18 @@
         <activity
             android:name="com.forkmang.activity.Pickup_ConformationActivity"
             android:exported="true" />
-        <activity
-            android:name="com.forkmang.activity.Activity_PaymentSummary_PickupFragment"
-            android:exported="true" />
+
         <activity
             android:name="com.forkmang.fragment.OrdersFragment"
             android:exported="true" />
-
         <activity
             android:name="com.forkmang.fragment.Contact_TermsFragment"
             android:exported="true" />
+        <activity
+            android:name="com.forkmang.activity.Activity_PaymentSummary_PickupFragment"
+            android:exported="true" />
+
+
 
 
     </application>

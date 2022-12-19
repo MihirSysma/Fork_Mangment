@@ -1,11 +1,17 @@
 package com.forkmang.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +22,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.forkmang.R;
+import com.forkmang.fragment.ChatFragment;
 import com.forkmang.fragment.Contact_TermsFragment;
 import com.forkmang.fragment.LocationScreen_Fragment;
 import com.forkmang.fragment.OrdersFragment;
@@ -24,6 +31,8 @@ import com.forkmang.fragment.WalletView_Fragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
+
+import java.util.Objects;
 
 public class DashBoardActivity_2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -99,8 +108,6 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
         drawerToggle.syncState();
     }
 
-
-
     @Override
     public void onBackPressed() {
         //Checks if the navigation drawer is open -- If so, close it
@@ -115,7 +122,6 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
         switch (menuItem.getItemId()){
             case R.id.menu_scanorder:
                 getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new ScanOrderFragment())
@@ -125,16 +131,24 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
             case R.id.menu_walkin:
                 /*getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new WalkinFragment())
                         .commit();*/
-                Toast.makeText(this, "Walkin Pressed", Toast.LENGTH_SHORT).show();
-
+                Intent intent_walkin = new Intent(DashBoardActivity_2.this,Booking_TabView_Activity.class);
+                intent_walkin.putExtra("tab_no", "1");
+                startActivity(intent_walkin);
                 closeDrawer();
+                //Toast.makeText(this, "Walkin Pressed", Toast.LENGTH_SHORT).show();
+                //closeDrawer();
                 break;
             case R.id.menu_register:
-                Toast.makeText(this, "Register Pressed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Register Pressed", Toast.LENGTH_SHORT).show();
+                showAlertView_logout();
                 break;
 
             case R.id.menu_home:
-                Toast.makeText(this, "Home Pressed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Home Pressed", Toast.LENGTH_SHORT).show();
+                Intent intent_home = new Intent(DashBoardActivity_2.this,Booking_TabView_Activity.class);
+                intent_home.putExtra("tab_no", "0");
+                startActivity(intent_home);
+                closeDrawer();
                 break;
             case R.id.menu_order:
                 //Toast.makeText(this, "Menu Order Pressed", Toast.LENGTH_SHORT).show();
@@ -172,12 +186,16 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
                 break;
 
             case R.id.menu_support:
-                /*getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new SettingsFragment())
-                        .commit();*/
-
-                Toast.makeText(this, "Menu Support Pressed", Toast.LENGTH_SHORT).show();
-                //deSelectCheckedState();
+                getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new ChatFragment())
+                        .commit();
                 closeDrawer();
+
+                /*Intent intent_chat = new Intent(DashBoardActivity_2.this, ChatFragment.class);
+                startActivity(intent_chat);
+                closeDrawer();*/
+
+                //Toast.makeText(this, "Menu Support Pressed", Toast.LENGTH_SHORT).show();
+                //deSelectCheckedState();
                 break;
         }
 
@@ -213,6 +231,42 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
     }
 
 
+    private void showAlertView_logout() {
+        final androidx.appcompat.app.AlertDialog.Builder alertDialog = new androidx.appcompat.app.AlertDialog.Builder(DashBoardActivity_2.this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.conform_logout_view, null);
+        alertDialog.setView(dialogView);
+        alertDialog.setCancelable(true);
+        final androidx.appcompat.app.AlertDialog dialog = alertDialog.create();
+
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Button btn_cancel, btn_yes_logout;
+
+        btn_cancel = dialogView.findViewById(R.id.btn_cancel);
+        btn_yes_logout = dialogView.findViewById(R.id.btn_yes);
+
+
+        btn_yes_logout.setOnClickListener(view -> {
+            closeDrawer();
+            dialog.dismiss();
+            finish();
+            Intent intent = new Intent(DashBoardActivity_2.this, LoginActivity.class);
+            startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            closeDrawer();
+            //System.exit(0);
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                closeDrawer();
+                //onBackPressed();
+            }
+        });
+        dialog.show();
+    }
 
 
 }

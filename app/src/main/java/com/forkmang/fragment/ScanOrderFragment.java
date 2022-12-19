@@ -26,6 +26,7 @@ public class ScanOrderFragment extends Fragment {
         txt.setOnClickListener(v -> {
             Log.d("HI", "Hello");
             Intent intent = new Intent(getActivity(), Booking_TabView_Activity.class);
+            intent.putExtra("tab_no", "0");
             startActivity(intent);
         });
 

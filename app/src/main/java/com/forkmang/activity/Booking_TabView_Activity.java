@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -27,6 +28,9 @@ public class Booking_TabView_Activity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager(),getLifecycle());
         viewPager.setAdapter(viewPagerAdapter);
 
+
+        String str_tab_no  = getIntent().getStringExtra("tab_no");
+
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if(position==0){
                 tab.setText(R.string.book_table);
@@ -39,5 +43,15 @@ public class Booking_TabView_Activity extends AppCompatActivity {
             }
         }).attach();
 
+        selectPage(Integer.parseInt(str_tab_no));
+
+
+
     }
+
+    void selectPage(int pageIndex){
+        tabLayout.setScrollPosition(pageIndex,0f,true);
+        viewPager.setCurrentItem(pageIndex);
+    }
+
 }

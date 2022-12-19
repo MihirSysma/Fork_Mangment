@@ -109,6 +109,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Marg"
                     android:textColor="@color/black"
+                    android:buttonTint="@color/red"
                     android:textSize="15sp" />
 
                 <RadioButton
@@ -119,6 +120,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Chicken"
                     android:textColor="@color/black"
+                    android:buttonTint="@color/red"
                     android:textSize="15sp" />
 
                 <RadioButton
@@ -129,6 +131,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Supreme"
                     android:textColor="@color/black"
+                    android:buttonTint="@color/red"
                     android:textSize="15sp" />
 
             </RadioGroup>
@@ -167,6 +170,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Red Ranches"
                     android:textColor="@color/black"
+                    android:buttonTint="@color/red"
                     android:textSize="15sp" />
 
                 <RadioButton
@@ -177,6 +181,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="White"
                     android:textColor="@color/black"
+                    android:buttonTint="@color/red"
                     android:textSize="15sp" />
 
                 <RadioButton
@@ -187,6 +192,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Ketchup"
                     android:textColor="@color/black"
+                    android:buttonTint="@color/red"
                     android:textSize="15sp" />
 
             </RadioGroup>
