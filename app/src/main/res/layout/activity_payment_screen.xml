@@ -184,10 +184,12 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/generalsanssemibold"
+                    android:layout_toStartOf="@id/image_view_money"
                     android:textSize="15sp" />
 
 
                 <ImageView
+                    android:id="@+id/image_view_money"
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
                     android:src="@drawable/money"
@@ -220,14 +222,16 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:buttonTint="@color/black"
                     android:fontFamily="@font/generalsanssemibold"
-                    android:text="Credit/Debit Card"
+                    android:text="@string/credit_debit_card"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/black"
                     android:checked="true"
+                    android:layout_toStartOf="@id/image_view_money_2"
                     android:textSize="15sp" />
 
 
                 <ImageView
+                    android:id="@+id/image_view_money_2"
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
                     android:src="@drawable/money_2"
@@ -250,7 +254,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Card Number"
+                    android:text="@string/card_number"
                     android:textColor="@color/black"
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
@@ -269,7 +273,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_margin="@dimen/_5sdp"
                     android:background="@drawable/round_corner_toggle"
-                    android:text="Expiry Date"
+                    android:text="@string/expiry_date"
                     android:textColor="@color/black"
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_8sdp"
@@ -288,7 +292,7 @@
                     android:paddingStart="@dimen/_10sdp"
                     android:background="@drawable/round_corner_toggle"
                     android:gravity="center_vertical"
-                    android:text="CVV"
+                    android:text="@string/cvv"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     tools:ignore="RtlSymmetry" />
@@ -308,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:text="Save Card Details For Future Payment"
+                    android:text="@string/save_card_details_for_future_payment"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/generalsansregular"
@@ -326,7 +330,7 @@
                 android:padding="@dimen/_2sdp"
                 android:layout_gravity="center"
                 android:background="@drawable/layout_rectangle_2"
-                android:text="Pay - 93 SAR"
+                android:text="@string/pay_93_sar"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textStyle="bold"

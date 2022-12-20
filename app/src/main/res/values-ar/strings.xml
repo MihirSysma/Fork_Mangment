@@ -5,13 +5,11 @@
     <string name="button_login">تسجيل الدخول</string>
     <string name="button_reg">يسجل</string>
     <string name="forgot_pass">هل نسيت كلمة السر</string>
-
     <string name="secure_login">دخول آمن</string>
     <string name="mobile_no">أدخل رقم الجوال</string>
     <string name="password">أدخل كلمة المرور</string>
     <string name="skip"> <u>يتخطى</u> </string>
     <string name="enter_as_guest"><u>أدخل كضيف</u></string>
-
     <string name="forgot_password"><u>هل نسيت كلمة السر ؟</u></string>
     <string name="enter_mobile_no">أدخل رقم الجوال</string>
     <string name="please_enter_the_details_below_to_continue"> أدناه للمتابعةالرجاء إدخال التفاصيل</string>
@@ -28,6 +26,244 @@
     <string name="do_you_want_to_allow_fork_n_to_enable_face_id">Do you want to allow\n&quot;Fork&quot;\n to enable face ID?</string>
     <string name="don_t_allow">لا تسمح</string>
     <string name="ok">موافق</string>
+
+    <string name="otp">OTP.</string>
+    <string name="lorem_ipsum_door_sit_amet_adispacing">Lorem Ipsum door sit amet, adispacing</string>
+    <string name="or_quick_login_via">أو تسجيل الدخول السريع عبر</string>
+    <string name="back">خلف</string>
+    <string name="conform_password">تطابق كلمة المرور</string>
+    <string name="enter_password">أدخل كلمة المرور</string>
+    <string name="user_name">اسم االمستخدم</string>
+    <string name="face_id">معرف الوجه</string>
+    <string name="reset_password">إعادة تعيين كلمة المرور</string>
+    <string name="renter_new_password">المستأجر كلمة مرور جديدة</string>
+    <string name="some_text_some_text_some_text_some_text">بعض النص بعض النص بعض النص بعض النص</string>
+    <string name="for_secure_and_faster_access_would_you_like_to_enable_face_id">للوصول الآمن والسريع ، هل ترغب في تمكين معرف الوجه؟</string>
+    <string name="please_use_face_id_to_login">الرجاء استخدام معرف الوجه لتسجيل الدخول</string>
+    <string name="menu">قائمة طعام</string>
+    <string name="scan_to_order">مسح للطلب</string>
+    <string name="walk_in">ادخل</string>
+    <string name="log_in_register">دخولتسجيل</string>
+    <string name="home">بيت</string>
+    <string name="orders">الطلب #٪ s</string>
+    <string name="wallet">محفظة</string>
+    <string name="location">موقع</string>
+    <string name="support">الدعم</string>
+    <string name="share">يشارك</string>
+    <string name="contact_amp_terms"><![CDATA[اتصال]]></string>
+    <string name="drawer_open">افتح</string>
+    <string name="drawer_close">أغلق</string>
+    <string name="language">لغة:</string>
+    <string name="arabic">عربي</string>
+    <string name="english">إنجليزي</string>
+    <string name="need_to_contact_us">هل تحتاج إلى الاتصال بنا؟</string>
+    <string name="need_support">بحاجة إلى دعم ؟</string>
+    <string name="reserve_table">طاولة حجز؟</string>
+    <string name="book_table">طاولة كتب</string>
+    <string name="walkin">ادخل</string>
+    <string name="pickup">يلتقط</string>
+    <string name="contact">اتصال</string>
+    <string name="term">مصطلحات</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="_14">14</string>
+    <string name="current_queue">قائمة الانتظار الحالية</string>
+    <string name="get_in_the_queue">ادخل إلى قائمة الانتظار</string>
+    <string name="other_options">ادخل إلى قائمة الانتظار</string>
+    <string name="booking_table">جدول الحجز</string>
+    <string name="floor_ground">الطابق الارضي</string>
+    <string name="floor">الأرض</string>
+    <string name="list">قائمة</string>
+    <string name="pay_to_conform">دفع لتتوافق</string>
+    <string name="available">متوفرة</string>
+    <string name="selected">المحدد</string>
+    <string name="no_of_person">لا شخص:</string>
+    <string name="type">يكتب:</string>
+    <string name="conform_pay"><![CDATA[تتفق]]></string>
+    <string name="cancel">يلغي</string>
+    <string name="note_the_time_table_is_reserved_upto_6_00_pm_only">ملاحظة: الجدول الزمني محجوز حتى \ n 6.00 مساءً فقط</string>
+    <string name="your_reserved_seats">مقاعدك المحجوزة</string>
+    <string name="select_food">حدد الغذاء</string>
+    <string name="view_cart">عرض عربة التسوق</string>
+    <string name="types">أنواع</string>
+    <string name="add">يضيف</string>
+    <string name="qty">الكمية</string>
+    <string name="reserve">احتياطي</string>
+    <string name="pay_for_table_food"><![CDATA[دفع مقابل الجدول]]></string>
+    <string name="summary">ملخص</string>
+    <string name="progress">تقدم</string>
+    <string name="complete">اكتمال</string>
+    <string name="proceed_to_payment">الشروع في دفع</string>
+    <string name="enter_coupon_code">أدخل رمز القسيمة</string>
+    <string name="note_the_table_is_reserved_up_to_6pm_only">ملاحظة الجدول محجوز حتى الساعة 6 مساءً فقط</string>
+    <string name="will_alert_as_table_ready">سيتم التنبيه باسم n\ الجدول جاهز</string>
+    <string name="share_to_members">حصة للأعضاء</string>
+    <string name="get_directions">احصل على الاتجاهات</string>
+    <string name="reserve_the_food">حجز الطعام</string>
+    <string name="conformation_of_food_order">مطابقة \n طلب الطعام</string>
+    <string name="we_will_inform_you_as_the_table_is_ready">سنخبرك بما أن الجدول جاهز</string>
+    <string name="note_the_table_is_reserved_upto_6_00_pm_only">ملاحظة: الجدول محجوز حتى \ n 6:00 مساءً فقط</string>
+    <string name="note_seating">بعد 5 دقائق من الجلوس سوف يتم تحضير الطعام \ n </string>
+    <string name="rating_for_food_and_table">تصنيف الطعام والمائدة</string>
+    <string name="conformation_table_food_is_reserved"><![CDATA[Conformation \n Table & Food Is \n Reserved]]></string>
+    <string name="after_seating_5_minutes_food_will_n_prepare">بعد 5 دقائق من الجلوس سوف يتم تحضير الطعام \ n</string>
+    <string name="share_to_add_order">شارك لإضافة طلب</string>
+    <string name="view_invoice">عرض الفاتورة</string>
+    <string name="modify_order">تعديل الترتيب</string>
+    <string name="ask_support">اطلب الدعم</string>
+    <string name="work">عمل</string>
+    <string name="hotel">الفندق:</string>
+    <string name="hotel_n">الفندق</string>
+
+    <string name="save_location">حفظ الموقع</string>
+    <string name="dafault_val">تقصير</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="chat">دردشة</string>
+    <string name="payment">قسط</string>
+    <string name="cash">نقدي</string>
+    <string name="walllet">والليت :</string>
+    <string name="add_funds">إضافة الأموال</string>
+    <string name="moath">موث</string>
+    <string name="sar">ريال سعودي</string>
+    <string name="table_2">الجدول 2</string>
+    <string name="to_reserve_2_sar">للحجز: 2 ريال</string>
+    <string name="rules">قواعد</string>
+    <string name="dress_code">اللباس الواجب ارتداؤه:</string>
+    <string name="occasion_birthday">المناسبة ، عيد الميلاد:</string>
+    <string name="some_text">بعض النصوص:</string>
+    <string name="make_it_surprise_or_any_wish">اجعلها مفاجأة أو أي أمنية</string>
+    <string name="select_amp_next"><![CDATA[حدد & التالي]]></string>
+    <string name="table">الطاولة</string>
+    <string name="indoor">داخلي:</string>
+    <string name="food">طعام:</string>
+    <string name="waiter">نادل:</string>
+    <string name="experience">خبرة:</string>
+    <string name="on">تشغيل</string>
+    <string name="off">عن</string>
+
+    <string name="items_in_the_cart">العناصر الموجودة في عربة التسوق</string>
+    <string name="table_booking">حجز الجدول</string>
+    <string name="name">اسم :</string>
+    <string name="time">وقت :</string>
+    <string name="phone">هاتف :</string>
+    <string name="office">مكتب</string>
+    <string name="make_default">جعل الافتراضي</string>
+
+    <string name="person_7">شخص_7</string>
+    <string name="occasion">مناسبات</string>
+    <string name="inside">في داخل</string>
+
+    <string name="enter_location">إدخال الدولة</string>
+    <string name="lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry_lorem_ipsum_has_been_the_industry_s_standard_dummy_text_ever_since_the_1500s_when_an_unknown_printer_took_a_galley_of_type_and_scrambled_it_to_make_a_type_specimen_book_it_has_survived_not_only_five_centuries_but_also_the_leap_into_electronic_typesetting_remaining_essentially_unchanged_it_was_popularised_in_the_1960s_with_the_release_of_letraset_sheets_containing_lorem_ipsum_passages_and_more_recently_with_desktop_publishing_software_like_aldus_pagemaker_including_versions_of_lorem_ipsum">لوريم إيبسوم هو ببساطة نص شكلي يستخدم في صناعة الطباعة والتنضيد. كان Lorem Ipsum هو النص الوهمي القياسي في الصناعة منذ القرن الخامس عشر الميلادي ، عندما أخذت طابعة غير معروفة لوحًا من النوع وتدافعت عليه لعمل كتاب عينة. لقد نجت ليس فقط خمسة قرون ، ولكن أيضًا القفزة في التنضيد الإلكتروني ، وظلت دون تغيير جوهري. تم نشره في الستينيات بإصدار أوراق Letraset التي تحتوي على مقاطع Lorem Ipsum ، ومؤخراً باستخدام سطح المكتب</string>
+    <string name="full_guide_for_app_video">الدليل الكامل لفيديو التطبيق</string>
+    <string name="enter_full_name">أدخل الاسم الكامل</string>
+    <string name="enter_email_address">أدخل الاسم الكامل</string>
+    <string name="enter_phone_number">أدخل رقم الهاتف</string>
+    <string name="message">رسالة</string>
+    <string name="_3_april_4_00_pm">الرسائل 3 أبريل ، 4:00 مساءً</string>
+    <string name="startbucks">ستاربكس</string>
+    <string name="april_14_5_00_pm_for_7_person">14 أبريل ، 5:00 مساءً لـ 7 أشخاص</string>
+    <string name="are_you_sure_you_want_to_logout">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="pasta">معكرونة</string>
+    <string name="sar_14">14 ريال</string>
+    <string name="open_till_1_00_pm">مفتوح حتى: 1.00 مساءً</string>
+    <string name="walk_in_4_tb_pickup_8_min">المشي في 4 تيرابايت ، بيك أب 8 دقائق</string>
+    <string name="_2_km">2 كم</string>
+    <string name="starbucks">ستاربكس</string>
+    <string name="marg">مارج</string>
+    <string name="toppings">الأغطية</string>
+    <string name="order_id_6256">معرف الطلب: 6256</string>
+    <string name="pass">يمر</string>
+    <string name="exit">مخرج</string>
+    <string name="view_menu">عرض القائمة</string>
+
+    <string name="walk_in_queue">المشي في طابور</string>
+    <string name="food_order_is_placed">يتم تقديم طلب الطعام</string>
+    <string name="order_id_8523">معرف الطلب: 8523</string>
+    <string name="paid_total">المجموع المدفوع</string>
+    <string name="order_is_placed">تم تقديم الطلب</string>
+    <string name="_5_50_pm_30_minutes_timer">مؤقت 5.50 مساءً - 30 دقيقة</string>
+    <string name="we_will_alert_as_food_is_ready">سوف ننتبه لأن الطعام جاهز</string>
+    <string name="email_invoice">فاتورة البريد الإلكتروني</string>
+    <string name="coupon_code">رمز الكوبون:</string>
+    <string name="apply">تطبيق</string>
+    <string name="total">مجموع</string>
+    <string name="_158_00_sar">158.00 ريال</string>
+
+    <string name="credit_debit_card">بطاقة الائتمان / الخصم</string>
+    <string name="card_number">رقم البطاقة</string>
+    <string name="expiry_date">تاريخ الانتهاء</string>
+    <string name="cvv">CVV</string>
+    <string name="save_card_details_for_future_payment">حفظ تفاصيل البطاقة للدفع في المستقبل</string>
+    <string name="pay_93_sar">ادفع - 93 ريال سعودي</string>
+    <string name="saved_location">الموقع المحفوظ</string>
+    <string name="conformation">التشكل</string>
+    <string name="order_id_865231">معرف الطلب: 865231</string>
+    <string name="classic_suit">بدلة كلاسيكية</string>
+    <string name="sat_14">السبت 14</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </resources>

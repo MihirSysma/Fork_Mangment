@@ -115,6 +115,7 @@
                    android:background="@drawable/round_corner_toggle"
                    android:checked="true"
                    android:text="@string/keep_signed_in"
+                   android:layout_toStartOf="@id/txtForgotPassword"
                    android:textColor="@color/text_colorblack" />
 
                <TextView

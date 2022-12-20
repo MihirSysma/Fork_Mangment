@@ -35,7 +35,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_toEndOf="@+id/imgrightchek"
-            android:text="Office"
+            android:text="@string/office"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -109,7 +109,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Make Default"
+                android:text="@string/make_default"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:fontFamily="@font/generalsansmedium"

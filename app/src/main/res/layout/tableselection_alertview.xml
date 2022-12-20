@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -35,7 +36,7 @@
                     android:layout_margin="@dimen/_2sdp"
                     android:fontFamily="@font/generalsansmedium"
                     android:padding="@dimen/_2sdp"
-                    android:text="Table:2"
+                    android:text="@string/table_2"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -45,7 +46,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:background="@drawable/round_corner_toggle"
-                    android:hint="Some Text"
+                    android:hint="@string/some_text"
                     android:textSize="15sp"
                     android:maxLines="1"
                     android:inputType="text"
@@ -66,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/generalsansmedium"
-                    android:text="To Reserve: 2 Sar"
+                    android:text="@string/to_reserve_2_sar"
                     android:textColor="@color/black"
                     android:textSize="22sp" />
 
@@ -81,7 +82,7 @@
                         android:layout_margin="@dimen/_2sdp"
                         android:fontFamily="@font/generalsansmedium"
                         android:padding="@dimen/_2sdp"
-                        android:text="Rules"
+                        android:text="@string/rules"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -110,7 +111,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:background="@drawable/round_corner_toggle"
-                    android:hint="Some Text"
+                    android:hint="@string/some_text"
                     android:textSize="15sp"
                     android:maxLines="1"
                     android:inputType="text"
@@ -131,7 +132,7 @@
                         android:layout_margin="@dimen/_2sdp"
                         android:fontFamily="@font/generalsansmedium"
                         android:padding="@dimen/_2sdp"
-                        android:text="Dress Code:"
+                        android:text="@string/dress_code"
                         android:textColor="@color/black"
                         android:textSize="18sp"
 
@@ -142,7 +143,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@drawable/round_corner_toggle"
-                        android:hint="Some Text"
+                        android:hint="@string/some_text"
                         android:textSize="15sp"
                         android:maxLines="1"
                         android:inputType="text"
@@ -165,7 +166,7 @@
                         android:layout_margin="@dimen/_2sdp"
                         android:fontFamily="@font/generalsansmedium"
                         android:padding="@dimen/_2sdp"
-                        android:text="Occasion, Birthday:"
+                        android:text="@string/occasion_birthday"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -178,7 +179,7 @@
                         android:maxLines="1"
                         android:inputType="text"
                         android:background="@drawable/round_corner_toggle"
-                        android:hint="Make it Surprise Or Any Wish"
+                        android:hint="@string/make_it_surprise_or_any_wish"
                         android:padding="@dimen/_5sdp"
                         android:textColorHint="@color/black" />
 
@@ -201,7 +202,7 @@
                         android:background="@drawable/layout_rectangle_2"
                         android:fontFamily="@font/generalsansmedium"
                         android:padding="@dimen/_5ssp"
-                        android:text="Select &amp; Next"
+                        android:text="@string/select_amp_next"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="16sp"

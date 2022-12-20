@@ -43,6 +43,7 @@
                     android:fontFamily="@font/generalsansmedium"
                     android:text="Recharge 25 SAR for"
                     android:textColor="@color/black"
+
                     android:textSize="15sp" />
 
                 <TextView

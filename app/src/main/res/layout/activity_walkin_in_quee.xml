@@ -58,7 +58,7 @@
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:text="Order Id:6256"
+                android:text="@string/order_id_6256"
                 android:textAlignment="center"
                 android:fontFamily="@font/generalsansmedium"
                 android:textColor="@color/text_colorblack"
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="#EBEBEB"
+                android:background="@color/light_white"
                 android:orientation="horizontal" />
 
             <LinearLayout
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/generalsansregular"
                     android:padding="1dp"
-                    android:text="Name :"
+                    android:text="@string/name"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -108,7 +108,7 @@
                     android:layout_marginStart="@dimen/_3sdp"
                     android:fontFamily="@font/generalsansregular"
                     android:padding="1dp"
-                    android:text="StartBucks"
+                    android:text="@string/starbucks"
                     android:textColor="@color/text_gray2"
                     android:textSize="14sp"
                     />
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/generalsansregular"
                     android:padding="1dp"
-                    android:text="Phone :"
+                    android:text="@string/phone"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/generalsansregular"
                     android:padding="1dp"
-                    android:text="Add :"
+                    android:text="@string/add"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -223,7 +223,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pass"
+                    android:text="@string/pass"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginTop="@dimen/_3sdp"
@@ -234,7 +234,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginTop="@dimen/_3sdp"
@@ -245,7 +245,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Exit"
+                    android:text="@string/exit"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginTop="@dimen/_3sdp"
@@ -275,7 +275,7 @@
                     android:background="@drawable/layout_rectangle_3"
                     android:fontFamily="@font/generalsansregular"
                     android:padding="@dimen/_5ssp"
-                    android:text="View Menu"
+                    android:text="@string/view_menu"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"

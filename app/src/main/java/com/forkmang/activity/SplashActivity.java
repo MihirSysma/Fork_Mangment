@@ -58,13 +58,13 @@ public class SplashActivity extends AppCompatActivity {
     {
         new Handler().postDelayed(() -> {
 
-             /*final Intent mainIntent = new Intent(SplashActivity.this, TutorialScreen.class);
+             final Intent mainIntent = new Intent(SplashActivity.this, TutorialScreen.class);
              startActivity(mainIntent);
-             finish();*/
+             finish();
 
-            final Intent mainIntent = new Intent(SplashActivity.this, DashBoardActivity_2.class);
+           /* final Intent mainIntent = new Intent(SplashActivity.this, DashBoardActivity_2.class);
             startActivity(mainIntent);
-            finish();
+            finish();*/
 
             /*final Intent mainIntent = new Intent(SplashActivity.this, Booking_TabView_Activity.class);
             startActivity(mainIntent);

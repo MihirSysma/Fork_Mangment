@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -28,10 +27,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/generalsansmedium"
                 android:padding="@dimen/_3sdp"
-                android:text="Items in the cart"
+                android:text="@string/items_in_the_cart"
                 android:textColor="@color/black"
                 android:textSize="22sp" />
-
 
 
         </LinearLayout>
@@ -46,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/generalsansmedium"
-                android:text="Table Booking "
+                android:text="@string/table_booking"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -64,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/generalsansmedium"
-                android:text="Hotel :"
+                android:text="@string/hotel"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -89,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/generalsansmedium"
-                android:text="Name :"
+                android:text="@string/name"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -114,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/generalsansmedium"
-                android:text="Indoor :"
+                android:text="@string/indoor"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -146,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/generalsansmedium"
-                android:text="Time :"
+                android:text="@string/time"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -171,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/generalsansmedium"
-                android:text="Phone :"
+                android:text="@string/phone"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -191,25 +189,17 @@
             android:id="@+id/recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
-            />
-
+            android:layout_margin="@dimen/_5sdp" />
 
 
         <!-- Recycler view -->
 
 
-
-
-
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
 
             <Button
@@ -217,8 +207,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/layout_rectangle_2"
                 android:fontFamily="@font/generalsansmedium"
                 android:text="@string/pay_for_table_food"
@@ -232,8 +222,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/layout_rectangle_orange"
                 android:fontFamily="@font/generalsansmedium"
                 android:text="@string/pay_for_table_food"
@@ -250,27 +240,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_5ssp"
-            android:padding="@dimen/_5ssp"
-            android:textSize="16sp"
             android:fontFamily="@font/generalsansmedium"
+            android:padding="@dimen/_5ssp"
             android:text="@string/note_the_time_table_is_reserved_upto_6_00_pm_only"
-            android:textColor="@color/orange_2"
             android:textAlignment="center"
-            />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            android:textColor="@color/orange_2"
+            android:textSize="16sp" />
 
 
         <LinearLayout
@@ -278,14 +253,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:orientation="vertical">
-
-
-
-
-
-
-
-
 
 
         </LinearLayout>

@@ -32,7 +32,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_toEndOf="@+id/imgproduct"
-            android:text="Pizza"
+            android:text="@string/pasta"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -62,7 +62,7 @@
                     android:padding="1dp"
                     android:fontFamily="@font/generalsansregular"
                     android:textColor="@color/text_gray2"
-                    android:text="Hotel :"
+                    android:text="@string/hotel"
                     android:textSize="14sp"
                     />
 
@@ -91,7 +91,7 @@
                     android:padding="1dp"
                     android:fontFamily="@font/generalsansregular"
                     android:textColor="@color/text_gray2"
-                    android:text="Hotel :"
+                    android:text="@string/hotel"
                     android:textSize="14sp"
                     />
 

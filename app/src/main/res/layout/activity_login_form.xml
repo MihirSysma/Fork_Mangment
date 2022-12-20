@@ -157,7 +157,9 @@
                     android:paddingStart="@dimen/_3ssp"
                     android:paddingEnd="@dimen/_3ssp"
                     android:text="@string/keep_signed_in"
-                    android:textColor="@color/text_colorblack" />
+                    android:textColor="@color/text_colorblack"
+                    android:layout_toStartOf="@id/txtForgotPassword"
+                    />
 
                 <TextView
                     android:id="@+id/txtForgotPassword"

@@ -45,7 +45,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_120sdp"
-                android:background="@drawable/my_gradient_drawable"
+                android:background="@color/gray_shade_2"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -113,20 +113,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_45sdp"
-                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_40sdp"
                         android:fontFamily="@font/generalsansmedium"
-                        android:text="@string/payment"
+                        android:text="@string/progress"
                         android:textColor="@color/black"
-
-
                         android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/generalsansmedium"
                         android:text="@string/complete"
                         android:textColor="@color/black"
@@ -166,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/generalsanssemibold"
-                    android:text="Item in the cart"
+                    android:text="@string/items_in_the_cart"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -176,7 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:background="#EBEBEB"
+                android:background="@color/light_white"
                 android:orientation="horizontal" />
 
             <ScrollView
@@ -199,7 +195,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/generalsansmedium"
-                            android:text="Hotel :"
+                            android:text="@string/hotel"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -207,8 +203,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_8sdp"
-                            android:text="StartBucks"
-                            android:textColor="#ADACAC"
+                            android:text="@string/starbucks"
+                            android:textColor="@color/light_gray_n"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -224,7 +220,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/generalsansmedium"
-                            android:text="Name :"
+                            android:text="@string/name"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -233,58 +229,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
                             android:text="Johon Doe"
-                            android:textColor="#ADACAC"
-                            android:textSize="15sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_1sdp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/generalsansmedium"
-                            android:text="Indoor :"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_6sdp"
-                            android:text="7 Seat"
-                            android:textColor="#ADACAC"
-                            android:textSize="15sp" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_1sdp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/generalsansmedium"
-                            android:text="Time :"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_6sdp"
-                            android:text="April 14, 5.00 Pm"
-                            android:textColor="#ADACAC"
+                            android:textColor="@color/light_gray_n"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -300,7 +245,58 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/generalsansmedium"
-                            android:text="Phone :"
+                            android:text="@string/indoor"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:text="7 Seat"
+                            android:textColor="@color/light_gray_n"
+                            android:textSize="15sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/generalsansmedium"
+                            android:text="@string/time"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:text="April 14, 5.00 Pm"
+                            android:textColor="@color/light_gray_n"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/generalsansmedium"
+                            android:text="@string/phone"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -309,7 +305,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
                             android:text="+966 778282893"
-                            android:textColor="#ADACAC"
+                            android:textColor="@color/light_gray_n"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -338,7 +334,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="@dimen/_1sdp"
-                        android:background="#EBEBEB"
+                        android:background="@color/light_white"
                         android:orientation="horizontal" />
 
                     <!-- horizontal line end -->
@@ -356,7 +352,7 @@
                             android:layout_margin="@dimen/_2sdp"
                             android:fontFamily="@font/generalsansmedium"
                             android:padding="@dimen/_2sdp"
-                            android:text="Coupon Code:"
+                            android:text="@string/coupon_code"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -386,7 +382,7 @@
                                 android:layout_height="@dimen/_30sdp"
                                 android:layout_marginStart="@dimen/_15sdp"
                                 android:background="@drawable/layout_rectangle"
-                                android:text="Apply"
+                                android:text="@string/apply"
                                 android:textAllCaps="false"
                                 android:textColor="@color/black"
                                 android:textSize="12sp"
@@ -405,12 +401,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="@dimen/_1sdp"
-                        android:background="#EBEBEB"
+                        android:background="@color/light_white"
                         android:orientation="horizontal" />
                     <!-- horizontal line end -->
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_15sdp"
                         android:padding="@dimen/_3sdp">
@@ -418,20 +414,23 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/txt_totalPay"
                             android:fontFamily="@font/generalsansmedium"
                             android:padding="@dimen/_2sdp"
-                            android:text="Total"
+                            android:text="@string/total"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/txt_totalPay"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:layout_marginEnd="@dimen/_2sdp"
                             android:fontFamily="@font/generalsanssemibold"
-                            android:text="158.00 Sar"
+                            android:text="@string/_158_00_sar"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 

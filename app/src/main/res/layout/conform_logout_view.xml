@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
-            android:text="Are you sure you want to logOut?"
+            android:text="@string/are_you_sure_you_want_to_logout"
             android:fontFamily="@font/generalsanssemibold"
             android:textAlignment="center"
             android:textAllCaps="false"
@@ -49,8 +49,9 @@
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_3sdp"
+            style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
             android:background="@drawable/layout_rectangle_red"
-            android:text="Logout"
+            android:text="@string/logout"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -64,13 +65,15 @@
             android:layout_height="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_20sdp"
             android:background="@drawable/layout_rectangle"
-            android:text="No"
+            style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+            android:text="@string/no"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:fontFamily="@font/generalsansmedium"
             android:textSize="14sp"
-            app:backgroundTint="@null" />
+            app:backgroundTint="@null"
+             />
 
 
     </LinearLayout>

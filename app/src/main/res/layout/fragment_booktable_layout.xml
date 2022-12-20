@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 April, 4:00 PM "
+                android:text="@string/_3_april_4_00_pm"
                 android:textColor="@color/black"
                 android:textAlignment="center"
                 android:layout_gravity="center_vertical"
@@ -63,7 +63,7 @@
                 android:id="@+id/txt_person"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Person 7"
+                android:text="@string/person_7"
                 android:textColor="@color/black"
                 android:textAlignment="center"
                 android:layout_gravity="center"
@@ -94,7 +94,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#EBEBEB"
+        android:background="@color/light_white"
         android:orientation="horizontal"/>
 
     <LinearLayout
@@ -112,7 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Startbucks"
+                android:text="@string/startbucks"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:padding="@dimen/_2sdp"
-            android:text="April 14 , 5:00 Pm For 7 Person"
+            android:text="@string/april_14_5_00_pm_for_7_person"
             android:textSize="14sp"
             android:layout_marginStart="@dimen/_2sdp"
             android:textColor="@color/black"/>

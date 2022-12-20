@@ -26,6 +26,8 @@
     <color name="tracking_gray">#B9B6B6</color>
     <color name="txtbackground">#F8F8F8</color>
     <color name="green">#128055</color>
+    <color name="light_white">#EBEBEB</color>
+    <color name="light_gray">#f5f5f5</color>
 
 
     <color name="red_100">#F44336</color>
@@ -40,5 +42,10 @@
     <color name="green_300">#57BB8A</color>
     <color name="green_500">#673AB7</color>
     <color name="green_700">#0B8043</color>
+    <color name="light_gray_n">#ADACAC</color>
+    <color name="gray_shade_2">#DADADA</color>
+    <color name="gray_shade_3">#9C9A9A</color>
+
+
 
 </resources>

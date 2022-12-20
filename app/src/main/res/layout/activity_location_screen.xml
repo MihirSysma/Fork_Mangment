@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/generalsanssemibold"
                     android:padding="@dimen/_5sdp"
-                    android:text="Saved Location"
+                    android:text="@string/saved_location"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 

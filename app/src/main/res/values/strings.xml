@@ -2,21 +2,16 @@
     <string name="app_name">Fork</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
-
-
     <string name="button_lang">English</string>
     <string name="button_lang_ar">إنجليزي</string>
     <string name="button_login">Login</string>
     <string name="button_reg">Register</string>
     <string name="forgot_pass">Forgot Password</string>
-
     <string name="secure_login">Secure Login</string>
     <string name="mobile_no">Enter Mobile No</string>
     <string name="password">Enter Password</string>
-
     <string name="skip"> <u>Skip</u> </string>
     <string name="enter_as_guest"><u>Enter as Guest</u></string>
-
     <string name="forgot_password"><u>Forgot Password ?</u></string>
     <string name="enter_mobile_no">Enter Mobile No</string>
     <string name="please_enter_the_details_below_to_continue">Please Enter The Details Below To Continue</string>
@@ -34,6 +29,7 @@
     <string name="don_t_allow">Don\'t Allow</string>
     <string name="ok">Ok</string>
     <string name="otp">OTP.</string>
+
     <string name="lorem_ipsum_door_sit_amet_adispacing">Lorem Ipsum door sit amet, adispacing</string>
     <string name="or_quick_login_via">Or Quick Login Via</string>
     <string name="back">Back</string>
@@ -70,8 +66,6 @@
     <string name="pickup">Pick Up</string>
     <string name="contact">Contact</string>
     <string name="term">Terms</string>
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_14">14</string>
@@ -112,7 +106,6 @@
     <string name="we_will_inform_you_as_the_table_is_ready">We will inform you as the table is ready</string>
     <string name="note_the_table_is_reserved_upto_6_00_pm_only">Note: The Table is Reserved Up to \n 6:00 Pm Only</string>
     <string name="note_seating">After Seating 5 Minutes Food Will \n Prepare </string>
-
     <string name="rating_for_food_and_table">Rating For Food And Table</string>
     <string name="conformation_table_food_is_reserved"><![CDATA[Conformation \n Table & Food Is \n Reserved]]></string>
     <string name="after_seating_5_minutes_food_will_n_prepare">After Seating 5 Minutes Food Will \n Prepare</string>
@@ -121,7 +114,9 @@
     <string name="modify_order">Modify Order</string>
     <string name="ask_support">Ask Support</string>
     <string name="work">Work</string>
-    <string name="hotel">Hotel</string>
+    <string name="hotel">Hotel :</string>
+    <string name="hotel_n">Hotel</string>
+
     <string name="save_location">Save Location</string>
     <string name="dafault_val">Default</string>
     <string name="yes">Yes</string>
@@ -129,6 +124,87 @@
     <string name="chat">Chat</string>
     <string name="payment">Payment</string>
     <string name="cash">Cash</string>
+    <string name="walllet">Walllet :</string>
+    <string name="add_funds">Add Funds</string>
+    <string name="moath">MOATH</string>
+    <string name="sar">SAR</string>
+    <string name="table_2">Table:2</string>
+    <string name="to_reserve_2_sar">To Reserve: 2 Sar</string>
+    <string name="rules">Rules</string>
+    <string name="dress_code">Dress Code:</string>
+    <string name="occasion_birthday">Occasion, Birthday:</string>
+    <string name="some_text">Some Text</string>
+    <string name="make_it_surprise_or_any_wish">Make it Surprise Or Any Wish</string>
+    <string name="select_amp_next"><![CDATA[Select & Next]]></string>
+    <string name="table">Table</string>
+    <string name="indoor">Indoor:</string>
+    <string name="food">Food:</string>
+    <string name="waiter">Waiter:</string>
+    <string name="experience">Experience:</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+
+    <string name="items_in_the_cart">Items in the cart</string>
+    <string name="table_booking">Table Booking</string>
+    <string name="name">Name :</string>
+    <string name="time">Time :</string>
+    <string name="phone">Phone :</string>
+    <string name="office">Office</string>
+    <string name="make_default">Make Default</string>
+
+    <string name="person_7">Person 7</string>
+    <string name="occasion">Occasion</string>
+    <string name="inside">Inside</string>
+    <string name="enter_location">Enter Location</string>
+    <string name="lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry_lorem_ipsum_has_been_the_industry_s_standard_dummy_text_ever_since_the_1500s_when_an_unknown_printer_took_a_galley_of_type_and_scrambled_it_to_make_a_type_specimen_book_it_has_survived_not_only_five_centuries_but_also_the_leap_into_electronic_typesetting_remaining_essentially_unchanged_it_was_popularised_in_the_1960s_with_the_release_of_letraset_sheets_containing_lorem_ipsum_passages_and_more_recently_with_desktop_publishing_software_like_aldus_pagemaker_including_versions_of_lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</string>
+    <string name="full_guide_for_app_video">Full Guide For App Video</string>
+    <string name="enter_full_name">Enter Full Name</string>
+    <string name="enter_email_address">Enter Email Address</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="message">Message</string>
+    <string name="_3_april_4_00_pm">3 April, 4:00 PM</string>
+    <string name="startbucks">Startbucks</string>
+    <string name="april_14_5_00_pm_for_7_person">April 14 , 5:00 Pm For 7 Person</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logOut?</string>
+    <string name="logout">Logout</string>
+    <string name="pasta">Pasta</string>
+    <string name="sar_14">Sar 14</string>
+    <string name="open_till_1_00_pm">Open Till: 1.00 Pm</string>
+    <string name="walk_in_4_tb_pickup_8_min">Walk in 4 Tb, Pickup 8 Min</string>
+    <string name="_2_km">2 Km</string>
+    <string name="starbucks">Starbucks</string>
+    <string name="marg">Marg</string>
+    <string name="toppings">Toppings</string>
+
+    <string name="order_id_6256">Order Id:6256</string>
+    <string name="pass">Pass</string>
+    <string name="exit">Exit</string>
+    <string name="view_menu">View Menu</string>
+
+    <string name="walk_in_queue">Walk In Queue</string>
+    <string name="food_order_is_placed">Food Order Is Placed</string>
+    <string name="order_id_8523">Order Id:8523</string>
+    <string name="paid_total">Paid Total</string>
+    <string name="order_is_placed">Order Is Placed</string>
+    <string name="_5_50_pm_30_minutes_timer">5.50 Pm - 30 Minutes Timer</string>
+    <string name="we_will_alert_as_food_is_ready">We Will Alert As Food is Ready</string>
+    <string name="email_invoice">Email Invoice</string>
+    <string name="coupon_code">Coupon Code:</string>
+    <string name="apply">Apply</string>
+    <string name="total">Total</string>
+    <string name="_158_00_sar">158.00 Sar</string>
+
+    <string name="credit_debit_card">Credit/Debit Card</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="cvv">CVV</string>
+    <string name="save_card_details_for_future_payment">Save Card Details For Future Payment</string>
+    <string name="pay_93_sar">Pay - 93 SAR</string>
+    <string name="saved_location">Saved Location</string>
+    <string name="conformation">Conformation</string>
+    <string name="order_id_865231">Order Id: 865231</string>
+    <string name="classic_suit">Classic Suit</string>
+    <string name="sat_14">Sat 14</string>
 
 
 </resources>

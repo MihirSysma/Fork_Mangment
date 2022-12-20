@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -46,7 +47,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/generalsansmedium"
                     android:gravity="center_horizontal"
-                    android:text="Conformation"
+                    android:text="@string/conformation"
                     android:textColor="@color/black"
                     android:textSize="25sp" />
 
@@ -57,7 +58,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/generalsansmedium"
                     android:gravity="center_horizontal"
-                    android:text="Order Id: 865231"
+                    android:text="@string/order_id_865231"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -72,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="#EBEBEB"
+                    android:background="@color/light_white"
                     android:orientation="horizontal" />
 
                 <LinearLayout
@@ -88,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
-                        android:text="Name :"
+                        android:text="@string/name"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -97,8 +98,8 @@
                         android:layout_marginStart="@dimen/_3sdp"
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
-                        android:text="StartBucks"
-                        android:textColor="#9C9A9A" />
+                        android:text="@string/starbucks"
+                        android:textColor="@color/gray_shade_3" />
 
                 </LinearLayout>
 
@@ -115,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
-                        android:text="Phone :"
+                        android:text="@string/phone"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -125,7 +126,7 @@
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
                         android:text="8745859654"
-                        android:textColor="#9C9A9A" />
+                        android:textColor="@color/gray_shade_3" />
 
                 </LinearLayout>
 
@@ -142,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
-                        android:text="Add :"
+                        android:text="@string/add"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -152,7 +153,7 @@
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
                         android:text="B r Road Vasanat vihar near Circle"
-                        android:textColor="#9C9A9A" />
+                        android:textColor="@color/gray_shade_3" />
 
                 </LinearLayout>
 
@@ -173,94 +174,126 @@
 
                     <ImageView
                         android:id="@+id/imgproduct"
-                        android:layout_width="@dimen/_65sdp"
-                        android:layout_height="@dimen/_65sdp"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
                         android:layout_centerVertical="true"
-                        android:layout_margin="3dp"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_3sdp"
+                        android:layout_marginBottom="@dimen/_3sdp"
                         android:scaleType="fitXY"
                         android:src="@drawable/img_booktable" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="@dimen/_8sdp"
-                        android:orientation="horizontal">
-
-
-                        <RatingBar
-                            android:id="@+id/rating_bar"
-                            style="@style/CustomRatingBarStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_14sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:rating="5" />
-
-                        <TextView
-                            android:id="@+id/txt_ratingno"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:text="2"
-                            android:textColor="@color/black"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/txtproductname"
+                        android:id="@+id/linear_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_7sdp"
-                        android:layout_toEndOf="@+id/imgproduct"
-                        android:text="Starbucks"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_marginStart="@dimen/_50sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/txtproductname"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="@string/starbucks"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+
+                            <RatingBar
+                                android:id="@+id/rating_bar"
+                                style="@style/CustomRatingBarStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_14sdp"
+                                android:rating="5" />
+
+                            <TextView
+                                android:id="@+id/txt_ratingno"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_1sdp"
+                                android:text="2"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
 
                     <LinearLayout
-                        android:id="@+id/lyttime"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/linear_2"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/txtproductname"
+                        android:layout_below="@+id/linear_1"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_marginBottom="2dp"
                         android:layout_toEndOf="@+id/imgproduct"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
+                        <LinearLayout
+                            android:id="@+id/lyttime"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/txt_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/generalsansregular"
+                                android:padding="1dp"
+                                android:text="@string/open_till_1_00_pm"
+                                android:textColor="@color/text_gray2"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_distance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/generalsansregular"
+                                android:padding="1dp"
+                                android:text="@string/walk_in_4_tb_pickup_8_min"
+                                android:textColor="@color/text_gray2"
+                                android:textSize="14sp" />
+
+
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/txt_time"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txttotalkm"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:padding="1dp"
-                            android:text="Open Till: 1.00 Pm"
-                            android:textColor="#9C9A9A" />
-
-                        <TextView
-                            android:id="@+id/txt_distance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"
                             android:fontFamily="@font/generalsansregular"
-                            android:padding="1dp"
-                            android:text="Walk in 4 Tb, Pickup 8 Min"
-                            android:textColor="#9C9A9A" />
+                            android:gravity="end"
+                            android:text="@string/_2_km"
+                            android:textColor="@color/text_colorblack"
+                            android:textSize="13sp" />
 
 
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/txttotalkm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:text="2 Km"
-                        android:textColor="@color/text_colorblack" />
 
 
                 </RelativeLayout>
@@ -269,7 +302,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="#EBEBEB"
+                    android:background="@color/light_white"
                     android:orientation="horizontal" />
 
                 <LinearLayout
@@ -284,7 +317,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:fontFamily="@font/generalsanssemibold"
                         android:padding="@dimen/_3sdp"
-                        android:text="Your Reserved Seats"
+                        android:text="@string/your_reserved_seats"
                         android:textColor="@color/text_colorblack"
                         android:textSize="20sp" />
 
@@ -306,7 +339,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
-                        android:text="Indoor :"
+                        android:text="@string/indoor"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -316,7 +349,7 @@
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
                         android:text="Lable"
-                        android:textColor="#9C9A9A" />
+                        android:textColor="@color/gray_shade_3" />
 
                 </LinearLayout>
 
@@ -330,21 +363,27 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
-                        android:text="Time :"
-                        android:textColor="@color/black" />
+                        android:text="@string/time"
+                        android:textColor="@color/black"
+
+                        android:layout_toStartOf="@id/txtview_rank"
+                        />
 
                     <TextView
+                        android:id="@+id/txt_timeview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_40sdp"
                         android:fontFamily="@font/generalsansregular"
                         android:padding="1dp"
                         android:text="lable"
-                        android:textColor="#9C9A9A" />
+                        android:textColor="@color/gray_shade_3" />
 
                     <TextView
+                        android:id="@+id/txtview_rank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -385,8 +424,10 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_5sdp"
                         android:fontFamily="@font/generalsansmedium"
-                        android:text="Rules"
+                        android:text="@string/rules"
                         android:textColor="@color/black"
+                        android:layout_toStartOf="@id/img"
+                        android:layout_alignParentStart="true"
                         android:textSize="18sp" />
 
                     <ImageView
@@ -399,6 +440,7 @@
                         android:src="@drawable/nosmokeing" />
 
                     <ImageView
+                        android:id="@+id/img"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_alignParentEnd="true"
@@ -420,7 +462,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"
                         android:text="There are no rules"
-                        android:textColor="#9C9A9A" />
+                        android:textColor="@color/gray_shade_3" />
 
 
                 </LinearLayout>
@@ -435,7 +477,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_5sdp"
                         android:fontFamily="@font/generalsansmedium"
-                        android:text="Dress Code"
+                        android:text="@string/dress_code"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -451,8 +493,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"
-                        android:text="Classic Suit"
-                        android:textColor="#9C9A9A" />
+                        android:text="@string/classic_suit"
+                        android:textColor="@color/gray_shade_3" />
 
 
                 </LinearLayout>
@@ -462,7 +504,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="#EBEBEB"
+                    android:background="@color/light_white"
                     android:orientation="horizontal" />
 
                 <RelativeLayout
@@ -474,20 +516,21 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
-
                         android:fontFamily="@font/generalsanssemibold"
-                        android:text="Paid Total"
+                        android:text="@string/paid_total"
                         android:textColor="@color/black"
+                        android:layout_toStartOf="@id/txt_totalPaidamt"
+                        android:layout_alignParentStart="true"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txt_totalPaidamt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:fontFamily="@font/generalsanssemibold"
-                        android:text="Sat 14"
+                        android:text="@string/sat_14"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -498,7 +541,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="#EBEBEB"
+                    android:background="@color/light_white"
                     android:orientation="horizontal" />
 
                 <Button
@@ -511,7 +554,7 @@
                     android:background="@drawable/layout_rectangle_2"
                     android:fontFamily="@font/generalsansmedium"
                     android:padding="@dimen/_5ssp"
-                    android:text="Reserve The Food"
+                    android:text="@string/reserve_the_food"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
