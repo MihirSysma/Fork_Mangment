@@ -77,7 +77,6 @@
                     android:hint="@string/enter_mobile_no"
                     android:paddingStart="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_2sdp"
-
                     app:boxStrokeColor="@color/text_colorblack"
                     app:boxBackgroundColor="@color/txtbackground"
                     app:hintTextColor="@color/text_colorblack"
@@ -85,6 +84,7 @@
                     tools:ignore="RtlSymmetry">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etv_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/phone"
@@ -113,14 +113,16 @@
                     android:hint="@string/enter_password"
                     android:paddingStart="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_2sdp"
-
                     app:boxStrokeColor="@color/text_colorblack"
                     app:boxBackgroundColor="@color/txtbackground"
                     app:hintTextColor="@color/text_colorblack"
                     android:textColorHint="@color/tracking_gray"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="@color/gray_shade_3"
                     tools:ignore="RtlSymmetry">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etv_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -147,19 +149,18 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:layout_width="@dimen/_120sdp"
+                    android:id="@+id/chek_keeplogin"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/_7ssp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/round_corner_toggle"
-                    android:checked="true"
+                    android:layout_marginStart="@dimen/_7ssp"
+                    android:layout_toStartOf="@id/txtForgotPassword"
+                    android:checked="false"
                     android:paddingStart="@dimen/_3ssp"
                     android:paddingEnd="@dimen/_3ssp"
                     android:text="@string/keep_signed_in"
-                    android:textColor="@color/text_colorblack"
-                    android:layout_toStartOf="@id/txtForgotPassword"
-                    />
+                    android:textColor="@color/text_colorblack" />
 
                 <TextView
                     android:id="@+id/txtForgotPassword"
@@ -169,8 +170,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="@string/forgot_password"
-                    android:textStyle="bold"
-                    android:textColor="@color/orange_2" />
+                    android:textColor="@color/orange_2"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "42002515698",
+    "project_id": "forkmanagement",
+    "storage_bucket": "forkmanagement.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42002515698:android:854dc631964d7538da726b",
+        "android_client_info": {
+          "package_name": "com.forkmang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42002515698-6oj0b1886frivc8omn2t461bunk77u7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd456hMnkpOnuat3KNLfHvloH7fh-f_2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42002515698-6oj0b1886frivc8omn2t461bunk77u7h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "42002515698-d0equ0de69caofkcafs10of2vn8vc56b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tailored.ForkManagement"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

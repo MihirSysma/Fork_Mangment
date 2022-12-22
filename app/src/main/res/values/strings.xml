@@ -206,5 +206,14 @@
     <string name="classic_suit">Classic Suit</string>
     <string name="sat_14">Sat 14</string>
 
+    <string name="branch">Branch</string>
+    <string name="for_booking">For Booking</string>
+    <string name="indoor_7_seats">Indoor 7 Seats</string>
+    <string name="april_14_6_00_pm">April 14, 6.00 Pm</string>
+    <string name="for_food">For Food</string>
+    <string name="sar_4">Sar 4</string>
+    <string name="_2st">2st</string>
+    <string name="there_are_no_rules">There are no rules</string>
+
 
 </resources>

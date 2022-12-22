@@ -24,6 +24,8 @@
 
 
     <color name="tracking_gray">#B9B6B6</color>
+    <color name="line_color">#3A3C3E</color>
+
     <color name="txtbackground">#F8F8F8</color>
     <color name="green">#128055</color>
     <color name="light_white">#EBEBEB</color>
