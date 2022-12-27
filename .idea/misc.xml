@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
+        <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_dropdown_item_1line.xml" value="0.1265625" />
         <entry key="app/src/main/res/drawable-v24/ic_cart.xml" value="0.12" />
         <entry key="app/src/main/res/drawable-v24/ic_home.xml" value="0.12" />
         <entry key="app/src/main/res/drawable-v24/ic_tracking.xml" value="0.12" />
@@ -35,6 +36,7 @@
         <entry key="app/src/main/res/drawable/layout_rectangle_gray_2.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/layout_rectangle_gray_2_1.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/layout_rectangle_gray_3.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/layout_rectangle_gray_trans.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/layout_rectangle_green_1.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/layout_rectangle_green_2.xml" value="0.129" />
         <entry key="app/src/main/res/drawable/layout_rectangle_orange.xml" value="0.1135" />
@@ -65,10 +67,10 @@
         <entry key="app/src/main/res/layout/activity_face_login_1.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_faceid_2.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_faceloginpermission.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_location_screen.xml" value="0.1265625" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/activity_login_form.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_login_form.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15260416666666668" />
         <entry key="app/src/main/res/layout/activity_main_copy.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main_fragment.xml" value="0.13852073535699017" />
@@ -78,14 +80,14 @@
         <entry key="app/src/main/res/layout/activity_payment_view.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_pickup_conformation.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_redirecttofacelogin.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_scan_order.xml" value="0.12526720820863618" />
         <entry key="app/src/main/res/layout/activity_select_language.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_tutorial_screen.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_walkin_conformation.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_walkin_in_quee.xml" value="0.16" />
         <entry key="app/src/main/res/layout/addqty_alertview.xml" value="0.16" />
-        <entry key="app/src/main/res/layout/book_table_cell.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/book_table_cell.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cart_view_cell.xml" value="0.18" />
         <entry key="app/src/main/res/layout/cartview_alertview.xml" value="0.17" />
         <entry key="app/src/main/res/layout/cartview_alertview_2.xml" value="0.1" />
@@ -96,7 +98,7 @@
         <entry key="app/src/main/res/layout/conform_tablereserve_view.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dash_board_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.13852073535699017" />
-        <entry key="app/src/main/res/layout/fragment_booktable_layout.xml" value="0.17" />
+        <entry key="app/src/main/res/layout/fragment_booktable_layout.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_booktable_layout_orders.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/fragment_card.xml" value="0.13852073535699017" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.12" />
@@ -117,6 +119,7 @@
         <entry key="app/src/main/res/layout/payment_conform_alertview.xml" value="0.15" />
         <entry key="app/src/main/res/layout/radiobtn_menu.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rating_view.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.17" />
         <entry key="app/src/main/res/layout/splash_screen.xml" value="0.18" />
         <entry key="app/src/main/res/layout/switch_menu.xml" value="0.15" />
         <entry key="app/src/main/res/layout/tablayout.xml" value="0.13852073535699017" />

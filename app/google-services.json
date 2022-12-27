@@ -39,8 +39,21 @@
             }
           ]
         }
+      },
+
+      "web": {
+        "client_id": "123815979025-cmp5ov228su2udga1td1640u9puevfdv.apps.googleusercontent.com",
+        "project_id": "facebooklogin-1671958521088",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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"
       }
     }
   ],
+
   "configuration_version": "1"
+
+
+
 }

@@ -1,4 +1,10 @@
 <resources>
+
+    <string name="facebook_app_id">1838205499869021</string>
+    <string name="fb_login_protocol_scheme">fb1838205499869021</string>
+    <string name="facebook_client_token">727f33f9c04347a14457d6f94216dff1</string>
+
+
     <string name="app_name">Fork</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
@@ -214,6 +220,24 @@
     <string name="sar_4">Sar 4</string>
     <string name="_2st">2st</string>
     <string name="there_are_no_rules">There are no rules</string>
+    <string name="location_permission"> Location and camera permission</string>
+    <string name="location_permission_message">We need location permission to get location of your work and Camera permission.</string>
+
+
+    <string-array name="person">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+
+
+    </string-array>
 
 
 </resources>

@@ -56,167 +56,214 @@
                 android:textColor="@color/text_gray2"
                 android:textSize="16sp" />
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content" >
 
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_Username"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomEnd="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusTopStart="8dp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10ssp"
-                    android:layout_marginTop="@dimen/_5ssp"
-                    android:layout_marginEnd="@dimen/_10ssp"
-                    android:background="@drawable/round_corner_toggle"
-                    android:hint="@string/user_name"
-                    android:paddingStart="@dimen/_2sdp"
-                    android:paddingEnd="@dimen/_2sdp"
-                    app:hintTextAppearance="@style/TextLabel"
-                    app:boxStrokeColor="@color/text_colorblack"
-                    app:boxBackgroundColor="@color/txtbackground"
-                    app:hintTextColor="@color/text_colorblack"
-                    android:textColorHint="@color/tracking_gray"
-                    tools:ignore="RtlSymmetry">
+                    android:layout_margin="@dimen/_2sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etv_username"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_Username"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/user"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:background="@drawable/round_corner_toggle"
+                        android:hint="@string/user_name"
+                        android:paddingStart="@dimen/_2sdp"
+                        android:paddingEnd="@dimen/_2sdp"
+                        app:hintTextAppearance="@style/TextLabel"
+                        app:boxStrokeColor="@color/text_colorblack"
+                        app:boxBackgroundColor="@color/txtbackground"
+                        app:hintTextColor="@color/text_colorblack"
+                        android:textColorHint="@color/tracking_gray"
+                        tools:ignore="RtlSymmetry">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etv_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/user"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_MobileNo"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomEnd="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusTopStart="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10ssp"
-                    android:layout_marginTop="@dimen/_5ssp"
-                    android:layout_marginEnd="@dimen/_10ssp"
-                    android:background="@drawable/round_corner_toggle"
-                    android:hint="@string/enter_mobile_no"
-                    android:paddingStart="@dimen/_2sdp"
-                    android:paddingEnd="@dimen/_2sdp"
-                    app:hintTextAppearance="@style/TextLabel"
-                    app:boxStrokeColor="@color/text_colorblack"
-                    app:boxBackgroundColor="@color/txtbackground"
-                    app:hintTextColor="@color/text_colorblack"
-                    android:textColorHint="@color/tracking_gray"
-                    tools:ignore="RtlSymmetry">
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etv_mobile"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_MobileNo"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/phone"
-                        android:imeOptions="actionDone"
-                        android:inputType="phone"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:background="@drawable/round_corner_toggle"
+                        android:hint="@string/enter_mobile_no"
+                        android:paddingStart="@dimen/_2sdp"
+                        android:paddingEnd="@dimen/_2sdp"
+                        app:hintTextAppearance="@style/TextLabel"
+                        app:boxStrokeColor="@color/text_colorblack"
+                        app:boxBackgroundColor="@color/txtbackground"
+                        app:hintTextColor="@color/text_colorblack"
+                        android:textColorHint="@color/tracking_gray"
+                        tools:ignore="RtlSymmetry">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etv_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/phone"
+                            android:imeOptions="actionDone"
+                            android:inputType="phone"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_Password"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomEnd="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusTopStart="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10ssp"
-                    android:layout_marginTop="@dimen/_5ssp"
-                    android:layout_marginEnd="@dimen/_10ssp"
-                    android:background="@drawable/round_corner_toggle"
-                    android:hint="@string/enter_password"
-                    android:paddingStart="@dimen/_2sdp"
-                    android:paddingEnd="@dimen/_2sdp"
-                    app:hintTextAppearance="@style/TextLabel"
-                    app:boxStrokeColor="@color/text_colorblack"
-                    app:hintTextColor="@color/text_colorblack"
-                    app:endIconMode="password_toggle"
-                    app:endIconTint="@color/gray_shade_3"
-                    android:textColorHint="@color/tracking_gray"
-                    tools:ignore="RtlSymmetry">
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etv_password"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_email"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:drawableEnd="@drawable/eye_close_line"
-                        android:imeOptions="actionDone"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:textColor="@color/text_colorblack"
-                        android:textSize="14sp" />
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:background="@drawable/round_corner_toggle"
+                        android:hint="@string/enter_email_address"
+                        android:paddingStart="@dimen/_2sdp"
+                        android:paddingEnd="@dimen/_2sdp"
+                        app:hintTextAppearance="@style/TextLabel"
+                        app:boxStrokeColor="@color/text_colorblack"
+                        app:boxBackgroundColor="@color/txtbackground"
+                        app:hintTextColor="@color/text_colorblack"
+                        android:textColorHint="@color/tracking_gray"
+                        tools:ignore="RtlSymmetry">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etv_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/ic_email_icon"
+                            android:imeOptions="actionDone"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_ConformPassword"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusBottomEnd="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusTopStart="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10ssp"
-                    android:layout_marginTop="@dimen/_5ssp"
-                    android:layout_marginEnd="@dimen/_10ssp"
-                    android:background="@drawable/round_corner_toggle"
-                    android:hint="@string/conform_password"
-                    android:paddingStart="@dimen/_2sdp"
-                    android:paddingEnd="@dimen/_2sdp"
-                    app:hintTextAppearance="@style/TextLabel"
-                    app:boxStrokeColor="@color/text_colorblack"
-                    app:boxBackgroundColor="@color/txtbackground"
-                    app:hintTextColor="@color/text_colorblack"
-                    android:textColorHint="@color/tracking_gray"
-                    app:endIconMode="password_toggle"
-                    app:endIconTint="@color/gray_shade_3"
-                    tools:ignore="RtlSymmetry">
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etv_cnfpassword"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_Password"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:drawableEnd="@drawable/eye_close_line"
-                        android:imeOptions="actionDone"
-                        android:inputType="textPassword"
-                        android:maxLength="10"
-                        android:textColor="@color/text_colorblack"
-                        android:textSize="14sp" />
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:background="@drawable/round_corner_toggle"
+                        android:hint="@string/enter_password"
+                        android:paddingStart="@dimen/_2sdp"
+                        android:paddingEnd="@dimen/_2sdp"
+                        app:hintTextAppearance="@style/TextLabel"
+                        app:boxStrokeColor="@color/text_colorblack"
+                        app:hintTextColor="@color/text_colorblack"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/gray_shade_3"
+                        android:textColorHint="@color/tracking_gray"
+                        tools:ignore="RtlSymmetry">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etv_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawableEnd="@drawable/eye_close_line"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/text_colorblack"
+                            android:textSize="14sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_ConformPassword"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:background="@drawable/round_corner_toggle"
+                        android:hint="@string/conform_password"
+                        android:paddingStart="@dimen/_2sdp"
+                        android:paddingEnd="@dimen/_2sdp"
+                        app:hintTextAppearance="@style/TextLabel"
+                        app:boxStrokeColor="@color/text_colorblack"
+                        app:boxBackgroundColor="@color/txtbackground"
+                        app:hintTextColor="@color/text_colorblack"
+                        android:textColorHint="@color/tracking_gray"
+                        app:endIconMode="password_toggle"
+                        app:endIconTint="@color/gray_shade_3"
+                        tools:ignore="RtlSymmetry">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etv_cnfpassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawableEnd="@drawable/eye_close_line"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:maxLength="10"
+                            android:textColor="@color/text_colorblack"
+                            android:textSize="14sp" />
 
 
-                </com.google.android.material.textfield.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
 
 
-            </LinearLayout>
+                </LinearLayout>
+
+
+            </ScrollView>
+
 
 
 
@@ -303,11 +350,26 @@
                 android:padding="@dimen/_5ssp">
 
 
-                <ImageView
-                    android:layout_width="@dimen/_42sdp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_marginStart="@dimen/_5ssp"
-                    android:src="@drawable/facebook" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/button_facebook"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:layout_marginStart="@dimen/_5ssp"
+                        android:src="@drawable/facebook" />
+
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/button_facebook_root"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:visibility="gone"
+                        />
+
+                </FrameLayout>
 
                 <ImageView
                     android:layout_width="@dimen/_42sdp"
@@ -315,17 +377,45 @@
                     android:layout_marginStart="@dimen/_10ssp"
                     android:src="@drawable/instagram" />
 
-                <ImageView
-                    android:layout_width="@dimen/_42sdp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_marginStart="@dimen/_10ssp"
-                    android:src="@drawable/google" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/signin_button_img"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:src="@drawable/google" />
+
+                    <com.google.android.gms.common.SignInButton
+                        android:id="@+id/sign_in_button_root"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:visibility="gone"
+                        />
+
+
+                </FrameLayout>
+
+
+
+
+
 
 
             </LinearLayout>
 
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
     </androidx.cardview.widget.CardView>
 

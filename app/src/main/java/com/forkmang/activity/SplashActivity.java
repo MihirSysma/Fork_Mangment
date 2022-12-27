@@ -83,7 +83,8 @@ public class SplashActivity extends AppCompatActivity {
     private void GotoNextScreeen()
     {
         new Handler().postDelayed(() -> {
-             /*if(storePrefrence.getString(Constant.NAME).length() == 0)
+
+            /*if(storePrefrence.getString(Constant.NAME).length() == 0)
              {
                  final Intent register_intent = new Intent(SplashActivity.this, RegisterActivity.class);
                  startActivity(register_intent);
@@ -101,11 +102,12 @@ public class SplashActivity extends AppCompatActivity {
                  finish();
              }*/
 
-            final Intent mainIntent = new Intent(SplashActivity.this, LoginFormActivity.class);
+
+            final Intent mainIntent = new Intent(SplashActivity.this, DashBoardActivity_2.class);
             startActivity(mainIntent);
             finish();
 
-            /*final Intent mainIntent = new Intent(SplashActivity.this, Booking_TabView_Activity.class);
+            /*final Intent mainIntent = new Intent(SplashActivity.this, LoginFormActivity.class);
             startActivity(mainIntent);
             finish();*/
 

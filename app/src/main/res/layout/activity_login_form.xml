@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
     <ImageView
         android:layout_width="match_parent"
@@ -257,11 +256,25 @@
                 android:padding="@dimen/_5ssp">
 
 
-                <ImageView
-                    android:layout_width="@dimen/_42sdp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_marginStart="@dimen/_5ssp"
-                    android:src="@drawable/facebook" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/button_facebook"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:layout_marginStart="@dimen/_5ssp"
+                        android:src="@drawable/facebook" />
+
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/button_facebook_root"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:visibility="gone"
+                        />
+
+                </FrameLayout>
 
                 <ImageView
                     android:layout_width="@dimen/_42sdp"
@@ -269,17 +282,39 @@
                     android:layout_marginStart="@dimen/_10ssp"
                     android:src="@drawable/instagram" />
 
-                <ImageView
-                    android:layout_width="@dimen/_42sdp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_marginStart="@dimen/_10ssp"
-                    android:src="@drawable/google" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/signin_button_img"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:src="@drawable/google" />
+
+                    <com.google.android.gms.common.SignInButton
+                        android:id="@+id/sign_in_button_root"
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:visibility="gone"
+                        />
+
+
+                </FrameLayout>
 
 
             </LinearLayout>
 
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
 
     </androidx.cardview.widget.CardView>

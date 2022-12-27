@@ -56,6 +56,16 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/teal_200</item>
+    </style>
+
+    <style name="timePickerOrange">
+        <item name="android:textColorPrimary">@color/orange</item> <!-- color for digits -->
+        <item name="android:textColor">@color/orange</item> <!-- color for colon -->
+        <item name="android:colorControlNormal">@color/orange</item> <!-- color for (horizontal) delimeters -->
+    </style>
+
 
 
     <style name="TextLabel" parent="TextAppearance.Design.Hint">

@@ -25,6 +25,16 @@ public interface APIService {
 
         );
 
+    @POST(WebApi.REGISTER_SOCIALLOGIN)
+    @FormUrlEncoded
+    Call<JsonObject> register_sociallogin(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("type") String type,
+            @Field("id") String id
+    );
+
+
     @POST(WebApi.LOGIN_USER)
     @FormUrlEncoded
     Call<JsonObject> login_user(
@@ -41,10 +51,41 @@ public interface APIService {
             //@Header("Accept") String key,
             @Field("contact") String contact,
             @Field("token") String token
-
-
     );
 
+
+    @POST(WebApi.RESET_PASSWORD)
+    @FormUrlEncoded
+    Call<JsonObject> reset_pass(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("contact") String contact,
+            @Field("password") String password,
+            @Field("password_confirmation") String password_confirmation,
+            @Field("token") String token
+    );
+
+    @POST(WebApi.LIST_RES_FILTER)
+    @FormUrlEncoded
+    Call<JsonObject> getlist_res_filter(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("date") String date,
+            @Field("person") String person,
+            @Field("latitude") String latitude,
+            @Field("logitutde") String logitutde,
+            @Field("search") String search
+    );
+
+    @POST(WebApi.LIST_RES)
+    @FormUrlEncoded
+    Call<JsonObject> getlist_res(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("service_id") String service_id,
+            @Field("latitude") String latitude,
+            @Field("longitude") String logitutde
+       );
 
 
 
