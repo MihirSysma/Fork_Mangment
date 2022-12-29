@@ -41,15 +41,14 @@
                     android:textSize="18sp" />
 
 
-                <EditText
+                <TextView
+                    android:id="@+id/tv_descr"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:background="@drawable/round_corner_toggle"
                     android:hint="@string/some_text"
                     android:textSize="15sp"
-                    android:maxLines="1"
-                    android:inputType="text"
                     android:textColor="@color/black"
                     android:padding="@dimen/_3sdp"
                     android:textColorHint="@color/black" />
@@ -106,15 +105,14 @@
 
                 </RelativeLayout>
 
-                <EditText
+                <TextView
+                    android:id="@+id/tv_rule"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:background="@drawable/round_corner_toggle"
                     android:hint="@string/some_text"
                     android:textSize="15sp"
-                    android:maxLines="1"
-                    android:inputType="text"
                     android:textColor="@color/black"
                     android:padding="@dimen/_5sdp"
                     android:textColorHint="@color/black" />
@@ -138,7 +136,8 @@
 
                         />
 
-                    <EditText
+                    <TextView
+                        android:id="@+id/tv_dresscode"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
@@ -146,7 +145,6 @@
                         android:hint="@string/some_text"
                         android:textSize="15sp"
                         android:maxLines="1"
-                        android:inputType="text"
                         android:textColor="@color/black"
                         android:padding="@dimen/_5sdp"
                         android:textColorHint="@color/black" />
@@ -170,14 +168,14 @@
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
-                    <EditText
+                    <TextView
+                        android:id="@+id/tv_ocassion"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:maxLines="1"
-                        android:inputType="text"
                         android:background="@drawable/round_corner_toggle"
                         android:hint="@string/make_it_surprise_or_any_wish"
                         android:padding="@dimen/_5sdp"

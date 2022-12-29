@@ -173,7 +173,7 @@
                     android:padding="@dimen/_5sdp">
 
                     <ImageView
-                        android:id="@+id/imgproduct"
+                        android:id="@+id/imgrestro"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
                         android:layout_centerVertical="true"
@@ -245,7 +245,7 @@
                         android:layout_below="@+id/linear_1"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_marginBottom="2dp"
-                        android:layout_toEndOf="@+id/imgproduct"
+                        android:layout_toEndOf="@+id/imgrestro"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
@@ -281,7 +281,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/txttotalkm"
+                            android:id="@+id/txt_totalkm"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"

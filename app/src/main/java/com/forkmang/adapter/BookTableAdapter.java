@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.activity.BookingTableScreen2;
+import com.forkmang.activity.BookingTable_DetailView;
 import com.forkmang.models.BookTable;
 
 import java.util.ArrayList;
@@ -71,14 +71,20 @@ public class BookTableAdapter extends RecyclerView.Adapter<BookTableAdapter.Book
             txtrestroname=itemView.findViewById(R.id.txtrestroname);
             txt_endtime=itemView.findViewById(R.id.txt_endtime);
             txt_distance=itemView.findViewById(R.id.txt_distance);
-            txttotalkm=itemView.findViewById(R.id.txttotalkm);
+            txttotalkm=itemView.findViewById(R.id.txt_totalkm);
             txt_ratingno=itemView.findViewById(R.id.txt_ratingno);
-            imgproduct=itemView.findViewById(R.id.imgproduct);
+            imgproduct=itemView.findViewById(R.id.imgrestro);
             rating_bar=itemView.findViewById(R.id.rating_bar);
 
             relative_view.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                Intent intent = new Intent(activity, BookingTableScreen2.class);
+                int position = getBindingAdapterPosition();
+
+                BookTable bookTable = bookTable_dataArrayList.get(position);
+                String resturant_id = bookTable.getId();
+
+                Intent intent = new Intent(activity, BookingTable_DetailView.class);
+                intent.putExtra("resturant_id", resturant_id);
+                intent.putExtra("model", bookTable);
                 activity.startActivity(intent);
                 //activity.finish();
             });

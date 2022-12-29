@@ -1,8 +1,33 @@
 package com.forkmang.models;
 
-public class BookTable {
-    String rest_name, distance, endtime;
+import java.io.Serializable;
 
+public class BookTable implements Serializable {
+    String rest_name, distance, endtime, id, restaurant_id, service_id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRestaurant_id() {
+        return restaurant_id;
+    }
+
+    public void setRestaurant_id(String restaurant_id) {
+        this.restaurant_id = restaurant_id;
+    }
+
+    public String getService_id() {
+        return service_id;
+    }
+
+    public void setService_id(String service_id) {
+        this.service_id = service_id;
+    }
 
     public String getRest_name() {
         return rest_name;

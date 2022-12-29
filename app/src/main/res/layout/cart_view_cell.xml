@@ -17,7 +17,7 @@
         >
 
         <ImageView
-            android:id="@+id/imgproduct"
+            android:id="@+id/imgrestro"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_toEndOf="@+id/imgproduct"
+            android:layout_toEndOf="@+id/imgrestro"
             android:text="@string/pasta"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginStart="@dimen/_3sdp"
             android:layout_marginBottom="2dp"
-            android:layout_toEndOf="@+id/imgproduct"
+            android:layout_toEndOf="@+id/imgrestro"
             android:orientation="vertical">
 
 
@@ -112,7 +112,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txttotalkm"
+            android:id="@+id/txt_totalkm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

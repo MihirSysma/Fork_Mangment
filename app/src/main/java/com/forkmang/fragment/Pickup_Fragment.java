@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.activity.BookingTable_ReserveSeat;
-import com.forkmang.adapter.BookTableAdapter;
-import com.forkmang.adapter.CartBookingAdapter;
 import com.forkmang.adapter.Pickup_Fragment_BookTableAdapter;
 
 public class Pickup_Fragment extends Fragment {
+
+    private static Pickup_Fragment instance;
 
     RecyclerView recyclerView;
 
@@ -29,6 +28,8 @@ public class Pickup_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pickup_layout, container, false);
+        instance= this;
+
         recyclerView = view.findViewById(R.id.pick_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -41,6 +42,14 @@ public class Pickup_Fragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //((Booking_TabView_Activity)getActivity()).hide_search();
+    }
 
-
+    public static Pickup_Fragment GetInstance()
+    {
+        return instance;
+    }
 }

@@ -11,6 +11,7 @@ public class WebApi {
     public static final String REGISTER_SOCIALLOGIN = API_BASE + "social-login";
     public static final String LIST_RES_FILTER = API_BASE + "restaurant-details";
     public static final String LIST_RES = API_BASE + "restaurants";
+    public static final String RES_DETAILPAGE = API_BASE + "restaurant-details";
 
 
 

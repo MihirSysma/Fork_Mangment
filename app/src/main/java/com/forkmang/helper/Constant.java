@@ -2,6 +2,8 @@ package com.forkmang.helper;
 
 public class Constant {
 
+    public static  Boolean IS_BookTableFragmentLoad=false;
+    public static String SUCCESS_CODE="200";
     public static boolean KEEP_LOGIN=false;
     public static Integer is_permission_grant = 0;
 
@@ -22,6 +24,11 @@ public class Constant {
     public static String MOBILE_PASSWORD = "Please enter mobile no and password";
     public static String EmptyEmail="Please add email address";
     public static String VALIDEmail="Please add valid email address";
+    public static String ERRORMSG = "Error occur please try again";
+    public static String NODATA = "No Data Available";
+    public static String NODATA_MATCH = "No match found";
+
+
 
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -11,124 +12,74 @@
         android:layout_margin="5dp"
         android:orientation="horizontal">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/lyt_datetime"
-                android:layout_width="@dimen/_160sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/layout_rectangle_gray"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:id="@+id/txt_datetime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/date_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:src="@drawable/ic_baseline_date_range_24" />
-
-                <ImageView
-                    android:id="@+id/time_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:src="@drawable/ic_baseline_access_time_24" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lyt_msgview"
-                android:layout_width="@dimen/_160sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/layout_rectangle_gray"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:text="Select Date and Time"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:src="@drawable/ic_baseline_date_range_24" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:src="@drawable/ic_baseline_access_time_24" />
-
-
-            </LinearLayout>
-
-        </FrameLayout>
-
         <LinearLayout
-            android:layout_width="@dimen/_100sdp"
+            android:id="@+id/lyt_datetime"
+            android:layout_width="@dimen/_160sdp"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_7sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/layout_rectangle_gray"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_5sdp"
-                android:background="@drawable/layout_rectangle_gray_trans"
-                android:spinnerMode="dropdown"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/txt_person"
+                android:id="@+id/txt_datetime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                android:text="@string/person_7"
+                android:layout_gravity="center_vertical"
+                android:text="@string/select_date_and_time"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:visibility="gone" />
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/date_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/ic_baseline_date_range_24" />
+
+            <ImageView
+                android:id="@+id/time_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:src="@drawable/ic_baseline_access_time_24" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/layout_rectangle_gray"
+            android:orientation="horizontal">
+
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:spinnerMode="dialog"
+                android:backgroundTint="@color/black"
+                />
+
+
+
 
 
         </LinearLayout>
+
+
 
 
     </LinearLayout>
@@ -136,13 +87,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/_300sdp"
+        android:layout_margin="@dimen/_2sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_310sdp"
-            android:layout_margin="@dimen/_5sdp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/booktable_recycleview"
@@ -163,54 +115,47 @@
     </FrameLayout>
 
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_white"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        android:visibility="visible"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_12sdp"
-        android:orientation="vertical"
-        android:padding="@dimen/_2sdp">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/startbucks"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:src="@drawable/ic_baseline_arrow_drop_down_24" />
-
-
-        </RelativeLayout>
+        android:layout_margin="@dimen/_3sdp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:padding="@dimen/_2sdp"
-            android:text="@string/april_14_5_00_pm_for_7_person"
+            android:text="@string/startbucks"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
 
-    </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:padding="@dimen/_2sdp"
+        android:text="@string/april_14_5_00_pm_for_7_person"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:visibility="gone"/>
 
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -77,7 +78,7 @@
                     android:padding="@dimen/_5sdp">
 
                     <ImageView
-                        android:id="@+id/imgproduct"
+                        android:id="@+id/imgrestro"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
                         android:layout_centerVertical="true"
@@ -97,7 +98,7 @@
                         android:weightSum="2">
 
                         <TextView
-                            android:id="@+id/txtproductname"
+                            android:id="@+id/txtrestroname"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
@@ -149,7 +150,7 @@
                         android:layout_below="@+id/linear_1"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_marginBottom="2dp"
-                        android:layout_toEndOf="@+id/imgproduct"
+                        android:layout_toEndOf="@+id/imgrestro"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
@@ -185,7 +186,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/txttotalkm"
+                            android:id="@+id/txt_totalkm"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -209,25 +210,26 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/lyt_datetime"
                         android:layout_width="@dimen/_160sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/layout_rectangle_gray"
                         android:orientation="horizontal">
 
 
                         <TextView
+                            android:id="@+id/txt_datetime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:text="@string/select_date_and_time"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:gravity="center"
-                            android:text="@string/_3_april_4_00_pm"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <ImageView
                             android:id="@+id/date_icon"
@@ -242,40 +244,31 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_3sdp"
                             android:src="@drawable/ic_baseline_access_time_24" />
 
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="@dimen/_100sdp"
+                    <LinearLayout
+                        android:layout_width="@dimen/_110sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/layout_rectangle_gray"
-                        android:gravity="center">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/txt_person"
-                            android:layout_width="wrap_content"
+
+                        <Spinner
+                            android:id="@+id/spinner"
+                            android:layout_width="@dimen/_100sdp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_7sdp"
-                            android:layout_toStartOf="@id/imgicon"
-                            android:text="@string/person_7"
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:spinnerMode="dialog"
+                            android:backgroundTint="@color/black"
+                            />
 
-                        <ImageView
-                            android:id="@+id/imgicon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
-
-
-                    </RelativeLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -296,23 +289,14 @@
                         android:gravity="center_vertical">
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <Spinner
+                            android:id="@+id/spinner_branch"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_toStartOf="@id/img_icon_2"
-                            android:text="@string/branch"
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                        <ImageView
-                            android:id="@+id/img_icon_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/black"
+                            android:spinnerMode="dialog" />
 
                     </RelativeLayout>
 
@@ -325,25 +309,15 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <Spinner
+                            android:id="@+id/spinner_floor"
+                            android:layout_width="@dimen/_100sdp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_3sdp"
-                            android:layout_toStartOf="@id/img_icon_3"
-                            android:gravity="center_horizontal"
-                            android:text="@string/floor_ground"
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:backgroundTint="@color/black"
+                            android:spinnerMode="dialog" />
 
-                        <ImageView
-                            android:id="@+id/img_icon_3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
 
 
                     </RelativeLayout>
@@ -358,7 +332,7 @@
                     android:orientation="horizontal">
 
                     <RelativeLayout
-                        android:layout_width="@dimen/_80sdp"
+                        android:layout_width="@dimen/_90sdp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -367,49 +341,34 @@
                         android:gravity="center_vertical">
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <Spinner
+                            android:id="@+id/spinner_type"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_toStartOf="@id/img_icon_4"
-                            android:text="@string/inside"
-                            android:textAlignment="center"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                        <ImageView
-                            android:id="@+id/img_icon_4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:backgroundTint="@color/black"
+                            android:spinnerMode="dialog" />
 
 
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_width="@dimen/_60sdp"
+                        android:layout_width="@dimen/_80sdp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/layout_rectangle_gray"
                         android:gravity="center">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <Spinner
+                            android:id="@+id/spinner_type_value"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:text="0.7"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:backgroundTint="@color/black"
+                            android:spinnerMode="dialog" />
 
 
                     </RelativeLayout>
@@ -642,18 +601,37 @@
 
 
                 <!-- Recyclerview Layout start -->
-                <LinearLayout
-                    android:id="@+id/linear_listview"
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/table_recycleview"
+                    <LinearLayout
+                        android:id="@+id/linear_listview"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/table_recycleview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+
+                </FrameLayout>
+
                 <!-- Recyclerview Layout end -->
 
 

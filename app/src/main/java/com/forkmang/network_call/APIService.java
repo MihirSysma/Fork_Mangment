@@ -87,6 +87,25 @@ public interface APIService {
             @Field("longitude") String logitutde
        );
 
+    @POST(WebApi.LIST_RES)
+    @FormUrlEncoded
+    Call<JsonObject> getlist_searchres(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("search") String search,
+            @Field("latitude") String latitude,
+            @Field("longitude") String logitutde
+    );
+
+    @POST(WebApi.RES_DETAILPAGE)
+    @FormUrlEncoded
+    Call<JsonObject> getres_detail(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("restaurant_id") String restaurant_id
+
+    );
+
 
 
 

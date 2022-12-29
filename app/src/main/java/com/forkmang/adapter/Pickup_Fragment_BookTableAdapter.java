@@ -15,9 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary_PickupFragment;
-import com.forkmang.activity.Activity_PaymentSummary_WalkinFragment;
-import com.forkmang.activity.BookingTableScreen2;
-import com.forkmang.activity.WalkinInQuee;
 import com.forkmang.data.BookTable_Data;
 
 import java.util.ArrayList;
@@ -68,9 +65,9 @@ public class Pickup_Fragment_BookTableAdapter extends RecyclerView.Adapter<Picku
             txtproductname=itemView.findViewById(R.id.txtproductname);
             txt_time=itemView.findViewById(R.id.txt_time);
             txt_distance=itemView.findViewById(R.id.txt_distance);
-            txttotalkm=itemView.findViewById(R.id.txttotalkm);
+            txttotalkm=itemView.findViewById(R.id.txt_totalkm);
             txt_ratingno=itemView.findViewById(R.id.txt_ratingno);
-            imgproduct=itemView.findViewById(R.id.imgproduct);
+            imgproduct=itemView.findViewById(R.id.imgrestro);
             rating_bar=itemView.findViewById(R.id.rating_bar);
 
             relative_view.setOnClickListener(v -> {

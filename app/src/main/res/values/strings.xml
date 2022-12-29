@@ -222,6 +222,7 @@
     <string name="there_are_no_rules">There are no rules</string>
     <string name="location_permission"> Location and camera permission</string>
     <string name="location_permission_message">We need location permission to get location of your work and Camera permission.</string>
+    <string name="select_date_and_time">Select Date and Time</string>
 
 
     <string-array name="person">
