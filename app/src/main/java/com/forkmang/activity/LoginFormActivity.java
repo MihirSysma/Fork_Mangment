@@ -1,6 +1,7 @@
 package com.forkmang.activity;
 
 import static com.forkmang.helper.Constant.NAME;
+import static com.forkmang.helper.Constant.SUCCESS_CODE_Ne;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -45,6 +46,8 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +67,6 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
     private GoogleApiClient googleApiClient;
     private LoginButton mButtonFacebook;
     private SignInButton signInButton;
-
 
 
     @Override
@@ -118,8 +120,8 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
         google_intialization();
         // google login code end
 
-        etv_mobile.setText("9887114487");
-        etv_password.setText("123456");
+        etv_mobile.setText("9829020300");
+        etv_password.setText("1234567");
 
         chek_keeplogin.setOnClickListener(v -> {
             if(etv_mobile.length()==10 && etv_password.length() >3)
@@ -215,41 +217,56 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try{
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                            Log.d("Result", jsonObject.toString());
-                            if(jsonObject.getString("status").equalsIgnoreCase("Success"))
+
+                            //Log.d("Result", jsonObject.toString());
+                            if(response.code() == Constant.SUCCESS_CODE_2)
                             {
-                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
-                                storePrefrence.setBoolean("keeplogin", Constant.KEEP_LOGIN);
-                                storePrefrence.setString(Constant.MOBILE, etv_mobile.getText().toString());
-                                //storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));
-                                /*if(chek_keeplogin.isChecked())
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE_Ne))
                                 {
-                                    storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));
-                                }*/
+                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                    storePrefrence.setBoolean("keeplogin", Constant.KEEP_LOGIN);
+                                    storePrefrence.setString(Constant.MOBILE, etv_mobile.getText().toString());
+                                    //storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));
+                                    /*if(chek_keeplogin.isChecked())
+                                    {
+                                        storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));
+                                    }*/
 
-                                 //stopProgress();
-                                progressBar.setVisibility(View.GONE);
+                                    //stopProgress();
+                                    progressBar.setVisibility(View.GONE);
 
-                                 final Intent mainIntent = new Intent(ctx, DashBoardActivity_2.class);
-                                 startActivity(mainIntent);
-                                 finish();
-                             }
-                            else{
-                                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                    final Intent mainIntent = new Intent(ctx, DashBoardActivity_2.class);
+                                    startActivity(mainIntent);
+                                    finish();
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                }
                             }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                if(jsonObject.getString("status").equalsIgnoreCase(String.valueOf(Constant.ERROR_CODE)))
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    String error_msg = jsonObject.getString("message") ;
+                                    Toast.makeText(ctx,error_msg,Toast.LENGTH_SHORT).show();
 
-                            //stopProgress();
-                            progressBar.setVisibility(View.GONE);
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                }
 
+
+                            }
                         }
-                        catch (JSONException ex)
+                        catch (JSONException | IOException ex)
                         {
                             ex.printStackTrace();
-                            //stopProgress();
-
                             progressBar.setVisibility(View.GONE);
-
                             Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }

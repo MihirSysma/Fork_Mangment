@@ -1,5 +1,7 @@
 package com.forkmang.activity;
 
+import static com.forkmang.helper.Constant.SUCCESS_CODE_Ne;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +31,7 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -54,8 +57,8 @@ public class ForgotPassword extends AppCompatActivity {
         etv_newpas = findViewById(R.id.etv_newpas);
         etvcnf_pass = findViewById(R.id.etvcnf_pass);
 
-        //etv_newpas.setText("123455");
-        //etvcnf_pass.setText("123455");
+        etv_newpas.setText("1234567");
+        etvcnf_pass.setText("1234567");
 
 
 
@@ -72,9 +75,7 @@ public class ForgotPassword extends AppCompatActivity {
                     {
                         //call api
                         String contact = storePrefrence.getString(Constant.MOBILE);
-                        callapi_gettoken(etv_newpas.getText().toString(), etvcnf_pass.getText().toString(),contact);
-
-                        //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
+                        getToken(contact);
                     }
                     else{
                         Toast.makeText(ctx, Constant.PASSWORD_MATCH, Toast.LENGTH_SHORT).show();
@@ -92,14 +93,6 @@ public class ForgotPassword extends AppCompatActivity {
 
     }
 
-    private void callapi_gettoken(String new_password, String cnf_password, String contact)
-    {
-        //showProgress();
-        //String contact = "9829020400";
-        getToken(contact);
-
-    }
-
     private void callApi_forgetpassword_valid(String contact) {
         progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().forgot_pass(contact, idToken).
@@ -107,35 +100,50 @@ public class ForgotPassword extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try{
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                            Log.d("Result", jsonObject.toString());
-                            if(jsonObject.getString("status").equalsIgnoreCase("Success"))
+                            if(response.code() == Constant.SUCCESS_CODE_2)
                             {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
-                                storePrefrence.setString(Constant.MOBILE, jsonObject.getJSONObject("data").getString("contact"));
-                                //storePrefrence.setString(Constant.TOKEN_FORGOTPASS, jsonObject.getJSONObject("data").getString("token"));
-                                storePrefrence.setBoolean("keeplogin", false);
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE_Ne))
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                    storePrefrence.setString(Constant.MOBILE, jsonObject.getJSONObject("data").getString("contact"));
+                                    //storePrefrence.setString(Constant.TOKEN_FORGOTPASS, jsonObject.getJSONObject("data").getString("token"));
+                                    storePrefrence.setBoolean("keeplogin", false);
 
-                                callApi_resetpassword(jsonObject.getJSONObject("data").getString("contact"),
-                                                      Objects.requireNonNull(etv_newpas.getText()).toString(),
-                                                      Objects.requireNonNull(etvcnf_pass.getText()).toString(),
-                                                      jsonObject.getJSONObject("data").getString("token") );
+                                    callApi_resetpassword(jsonObject.getJSONObject("data").getString("contact"),
+                                            Objects.requireNonNull(etv_newpas.getText()).toString(),
+                                            Objects.requireNonNull(etvcnf_pass.getText()).toString(),
+                                            jsonObject.getJSONObject("data").getString("token") );
 
-                                //stopProgress();
+                                    //stopProgress();
+                                }
+                                else{
+                                    //stopProgress();
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                if(jsonObject.getString("status").equalsIgnoreCase(String.valueOf(Constant.ERROR_CODE)))
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    String error_msg = jsonObject.getString("message") ;
+                                    Toast.makeText(ctx,error_msg,Toast.LENGTH_SHORT).show();
 
-
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                }
 
 
                             }
-                            else{
-                                //stopProgress();
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
-                            }
-
                         }
-                        catch (JSONException ex)
+                        catch (JSONException | IOException ex)
                         {
                             ex.printStackTrace();
                             //stopProgress();
@@ -160,24 +168,42 @@ public class ForgotPassword extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try{
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                            Log.d("Result", jsonObject.toString());
-                            if(jsonObject.getString("status").equalsIgnoreCase("Success"))
+                            if(response.code() == Constant.SUCCESS_CODE_2)
                             {
-                                progressBar.setVisibility(View.GONE);
-
-                                final Intent mainIntent = new Intent(ForgotPassword.this, LoginFormActivity.class);
-                                startActivity(mainIntent);
-                                finish();
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE_Ne))
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    final Intent mainIntent = new Intent(ForgotPassword.this, LoginFormActivity.class);
+                                    startActivity(mainIntent);
+                                    finish();
+                                }
+                                else{
+                                    //stopProgress();
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                }
                             }
-                            else{
-                                //stopProgress();
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
-                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                if(jsonObject.getString("status").equalsIgnoreCase(String.valueOf(Constant.ERROR_CODE)))
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    String error_msg = jsonObject.getString("message") ;
+                                    Toast.makeText(ctx,error_msg,Toast.LENGTH_SHORT).show();
 
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                }
+
+
+                            }
                         }
-                        catch (JSONException ex)
+                        catch (JSONException | IOException ex)
                         {
                             ex.printStackTrace();
                             //stopProgress();
@@ -195,21 +221,9 @@ public class ForgotPassword extends AppCompatActivity {
 
     }
 
-    public void showProgress() {
-        dialog = new ProgressDialog(ctx);
-        dialog.setCancelable(false);
-        dialog.setMessage("Please wait...");
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
-
-    public void stopProgress(){
-        dialog.dismiss();
-    }
 
     private void getToken(String contact) {
         //progressBar.setVisibility(View.VISIBLE);
-
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         mUser.getIdToken(true)
                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {

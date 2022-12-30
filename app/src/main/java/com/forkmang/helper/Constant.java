@@ -4,6 +4,14 @@ public class Constant {
 
     public static  Boolean IS_BookTableFragmentLoad=false;
     public static String SUCCESS_CODE="200";
+    public static String SUCCESS_CODE_Ne ="201";
+
+    public static int SUCCESS_CODE_n = 200;
+    public static int SUCCESS_CODE_2 = 201;
+    public static int ERROR_CODE = 422;
+
+
+
     public static boolean KEEP_LOGIN=false;
     public static Integer is_permission_grant = 0;
 

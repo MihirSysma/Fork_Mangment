@@ -65,6 +65,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
@@ -116,12 +117,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         etv_cnfpassword = findViewById(R.id.etv_cnfpassword);
         storePrefrence=new StorePrefrence(ctx);
 
-        etv_mobile.setText("9829020800");
-        etv_username.setText("Testusername1");
-        etv_email.setText("test800@gmail.com");
-
-        etv_password.setText("123456");
-        etv_cnfpassword.setText("123456");
+        etv_mobile.setText("9829020700");
+        //etv_username.setText("700 name");
+        //etv_email.setText("test700@gmail.com");
+        //etv_password.setText("123456");
+        //etv_cnfpassword.setText("123456");
 
 
         //firebase login code
@@ -306,8 +306,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         Btn_Submit.setOnClickListener(v -> {
             //call register api
-            String phoneNumber = ("+" + "91" + etv_mobile.getText().toString());
-            //String phoneNumber = Objects.requireNonNull(etv_mobile.getText()).toString();
+            //String phoneNumber = ("+" + "91" + etv_mobile.getText().toString());
+            String phoneNumber = Objects.requireNonNull(etv_mobile.getText()).toString();
             callapi_registeruser(name,email,phoneNumber,password,cnfpassword,idToken);
             dialog.dismiss();
         });
@@ -444,32 +444,52 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try{
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                            Log.d("Result", jsonObject.toString());
-                            if(jsonObject.getString("status").equalsIgnoreCase("Success"))
+                            if(response.code() == Constant.SUCCESS_CODE_2)
                             {
-                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
-                                //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
-                                storePrefrence.setString(NAME, jsonObject.getJSONObject("data").getString("name"));
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+                                if(jsonObject.getString("status").equalsIgnoreCase(Constant.SUCCESS_CODE_Ne))
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                    //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
+                                    storePrefrence.setString(NAME, jsonObject.getJSONObject("data").getString("name"));
 
-                                //stopProgress();
-                                progressBar.setVisibility(View.GONE);
+                                    showAlertView_2();
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                                }
 
-                                showAlertView_2();
+
+
                             }
-                            else{
-                                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
-                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                               JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                               if(jsonObject.getString("status").equalsIgnoreCase("422"))
+                               {
+                                   String error_msg = jsonObject.getJSONObject("message").getJSONArray("email").getString(0) ;
+                                   String error_msg_2 = jsonObject.getJSONObject("message").getJSONArray("contact").getString(0);
+                                   Toast.makeText(ctx,error_msg,Toast.LENGTH_SHORT).show();
+                                   Toast.makeText(ctx,error_msg_2,Toast.LENGTH_SHORT).show();
+                                   progressBar.setVisibility(View.GONE);
+                               }
+                               else{
+                                   progressBar.setVisibility(View.GONE);
+                                   Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                               }
 
-                            //stopProgress();
-                            progressBar.setVisibility(View.GONE);
+
+                            }
 
 
                         }
-                        catch (JSONException ex)
+                        catch (JSONException | IOException ex)
                         {
                             ex.printStackTrace();
-                            //stopProgress();
+                           //stopProgress();
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
                         }

@@ -149,6 +149,7 @@ public class Book_Table_Fragment extends Fragment {
         //spinner array adapter
 
         lyt_datetime.setOnClickListener(v -> datePicker());
+        current_dateshow();
 
         return view;
 
@@ -205,8 +206,10 @@ public class Book_Table_Fragment extends Fragment {
             mDay = selectedDay;
         };
         final DatePickerDialog datePickerDialog = new DatePickerDialog(
-                getContext(), TimePickerDialog.THEME_HOLO_LIGHT,datePickerListener,
+                getContext(), R.style.DialogTheme_picker,datePickerListener,
                 mYear, mMonth, mDay);
+
+        //datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
                 getString(R.string.cancel),
@@ -289,7 +292,7 @@ public class Book_Table_Fragment extends Fragment {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),TimePickerDialog.THEME_HOLO_LIGHT,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),R.style.DialogTheme_picker,
                 (view, hourOfDay, minute) -> {
                     String date = txt_view_datetime.getText().toString();
                     txt_view_datetime.setText("");
@@ -320,6 +323,59 @@ public class Book_Table_Fragment extends Fragment {
         return monthNames[month-1];
     }
 
+
+    private void current_dateshow()
+    {
+        final Calendar c = Calendar.getInstance();
+        String str_month="",str_date="", str_day,selectedYear,booking_date_n;
+
+
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
+
+        String AM_PM ;
+        if(mHour < 12) {
+            AM_PM = "AM";
+        } else {
+            AM_PM = "PM";
+        }
+
+        String time = mHour + ":" + mMinute +" "+ AM_PM;
+
+
+        int month_n =  mMonth + 1;
+        int date_n = mDay;
+
+        str_day = String.valueOf(date_n);
+
+        if(month_n < 10 )
+        {
+            str_month =  "0"+month_n;
+        }
+        else{
+            str_month =  String.valueOf(month_n);
+
+        }
+
+        if(date_n < 10)
+        {
+            str_date =  "0"+ date_n;
+        }
+        else{
+            str_date =  String.valueOf(date_n);
+        }
+
+        selectedYear = String.valueOf(mYear);
+        booking_date = selectedYear + "-" + str_month + "-" + str_date;
+
+        txt_view_datetime.setText("");
+        txt_view_datetime.setText(str_day + "-" +getMonth(month_n) + " " +time);
+    }
+
     //Date and time picker example code end
 
     //Api code for Book Table start
@@ -331,22 +387,24 @@ public class Book_Table_Fragment extends Fragment {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try{
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                            //Log.d("Result", jsonObject.toString());
-
-                            if(jsonObject.getString("status").equalsIgnoreCase(Constant.SUCCESS_CODE))
+                            if(response.code() == Constant.SUCCESS_CODE_n)
                             {
-                                if(jsonObject.getJSONObject("data").getJSONArray("data").length() > 0)
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+
+                                if(jsonObject.getString("status").equalsIgnoreCase(Constant.SUCCESS_CODE))
                                 {
-                                    bookTableArrayList = new ArrayList<>();
-                                    for(int i =0; i< jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
+                                    if(jsonObject.getJSONObject("data").getJSONArray("data").length() > 0)
                                     {
-                                        BookTable bookTable = new BookTable();
-                                        JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i);
+                                        bookTableArrayList = new ArrayList<>();
+                                        for(int i =0; i< jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
+                                        {
+                                            BookTable bookTable = new BookTable();
+                                            JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i);
 
-                                        //JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(0);
+                                            //JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(0);
 
-                                        bookTable.setRest_name(mjson_obj.getString("rest_name"));
+                                            bookTable.setRest_name(mjson_obj.getString("rest_name"));
                                         /*if(i > 0)
                                         {
                                             bookTable.setRest_name("REST"+" "+i);
@@ -356,43 +414,48 @@ public class Book_Table_Fragment extends Fragment {
                                         }*/
 
 
-                                        if(mjson_obj.has("endtime"))
-                                        {
-                                            bookTable.setEndtime(mjson_obj.getString("endtime"));
-                                        }
-                                        else{
-                                            bookTable.setEndtime("00");
-                                        }
-                                        bookTable.setId(mjson_obj.getString("id"));
-                                        double double_val = Math.floor(mjson_obj.getDouble("distance") * 100) / 100;
-                                        bookTable.setDistance(Double.toString(double_val));
+                                            if(mjson_obj.has("endtime"))
+                                            {
+                                                bookTable.setEndtime(mjson_obj.getString("endtime"));
+                                            }
+                                            else{
+                                                bookTable.setEndtime("00");
+                                            }
+                                            bookTable.setId(mjson_obj.getString("id"));
+                                            double double_val = Math.floor(mjson_obj.getDouble("distance") * 100) / 100;
+                                            bookTable.setDistance(Double.toString(double_val));
 
-                                        bookTableArrayList.add(bookTable);
+                                            bookTableArrayList.add(bookTable);
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+
+                                        bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList);
+                                        recyclerView.setAdapter(bookTableAdapter);
+                                        //Constant.IS_BookTableFragmentLoad=true;
+
                                     }
-                                    progressBar.setVisibility(View.GONE);
-
-                                    bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList);
-                                    recyclerView.setAdapter(bookTableAdapter);
-                                    //Constant.IS_BookTableFragmentLoad=true;
-
+                                    else{
+                                        //no data in array list
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getContext(), Constant.NODATA, Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 else{
-                                    //no data in array list
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(getContext(), Constant.NODATA, Toast.LENGTH_LONG).show();
-                                }
+                                    Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                 }
+                             }
+                            else{
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                              }
+                           }
+                            catch (JSONException ex)
+                            {
+                                ex.printStackTrace();
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                             }
-
-                             // progressBar.setVisibility(View.GONE);
-
-
-                        }
-                        catch (JSONException ex)
-                        {
-                            ex.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
-                        }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {

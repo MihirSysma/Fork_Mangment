@@ -54,7 +54,7 @@
         <entry key="app/src/main/res/layout/activity_booking_tab_view.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_booking_table_2.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_booking_table_reserve_seat.xml" value="0.15" />
-        <entry key="app/src/main/res/layout/activity_bookingtable_detailview.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_bookingtable_detailview.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_bookingtable_reserveseat.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_conform_foodreserve.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_conform_seatreserve.xml" value="0.12" />
@@ -117,7 +117,7 @@
         <entry key="app/src/main/res/layout/nav_footer_main.xml" value="0.16" />
         <entry key="app/src/main/res/layout/orderwalkin_cell.xml" value="0.1" />
         <entry key="app/src/main/res/layout/otp_conform.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/payment_conform_alertview.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/payment_conform_alertview.xml" value="0.25" />
         <entry key="app/src/main/res/layout/person_cell.xml" value="0.2" />
         <entry key="app/src/main/res/layout/radiobtn_menu.xml" value="0.25" />
         <entry key="app/src/main/res/layout/rating_view.xml" value="0.16" />

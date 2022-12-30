@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linear_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,13 +13,21 @@
         android:layout_margin="5dp"
         android:orientation="horizontal">
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="3dp"
+            app:cardUseCompatPadding="true"
+            android:elevation="@dimen/_7sdp"
+            app:cardBackgroundColor="@color/card_light_gray">
+
         <LinearLayout
             android:id="@+id/lyt_datetime"
             android:layout_width="@dimen/_160sdp"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:background="@drawable/layout_rectangle_gray"
             android:orientation="horizontal">
 
 
@@ -52,14 +61,22 @@
 
         </LinearLayout>
 
+        </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="3dp"
+            app:cardUseCompatPadding="true"
+            android:elevation="@dimen/_7sdp"
+            app:cardBackgroundColor="@color/card_light_gray">
 
         <LinearLayout
             android:layout_width="@dimen/_130sdp"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:background="@drawable/layout_rectangle_gray"
             android:orientation="horizontal">
 
 
@@ -68,16 +85,14 @@
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_4sdp"
                 android:spinnerMode="dialog"
                 android:backgroundTint="@color/black"
                 />
 
-
-
-
-
         </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
 
 
 

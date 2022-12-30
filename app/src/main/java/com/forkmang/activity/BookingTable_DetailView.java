@@ -16,7 +16,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -37,6 +39,7 @@ import com.forkmang.adapter.SpinnnerAdapter_Floor;
 import com.forkmang.adapter.SpinnnerAdapter_Type;
 import com.forkmang.adapter.SpinnnerAdapter_Type_Value;
 import com.forkmang.helper.Constant;
+import com.forkmang.helper.StorePrefrence;
 import com.forkmang.models.BookTable;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
@@ -58,7 +61,7 @@ public class BookingTable_DetailView extends Activity {
 
     Context ctx = BookingTable_DetailView.this;
     int mYear, mMonth, mDay, mHour, mMinute;
-    String booking_date, booking_time, Date_get="",resturant_id;
+    String booking_date, booking_time, Date_get="",resturant_id, noof_person="0";
     ArrayList<TableList> tableListArrayList;
     FrameLayout frame_layout;
     LinearLayout linear_layout_under_frame,linear_listview,lyt_datetime;;
@@ -66,6 +69,8 @@ public class BookingTable_DetailView extends Activity {
     RecyclerView recyclerView;
     TextView txt_view_datetime;
     RadioButton button_floor,button_list;
+    BookTable bookTable;
+    StorePrefrence storePrefrence;
 
 
     String [] person =
@@ -84,10 +89,10 @@ public class BookingTable_DetailView extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookingtable_detailview);
-
+        storePrefrence = new StorePrefrence(ctx);
         Intent intent = getIntent();
         resturant_id = intent.getStringExtra("resturant_id");
-        BookTable bookTable = (BookTable) getIntent().getSerializableExtra("model");
+        bookTable = (BookTable) getIntent().getSerializableExtra("model");
 
         TextView txtrestroname = findViewById(R.id.txtrestroname);
         txt_view_datetime = findViewById(R.id.txt_datetime);
@@ -117,6 +122,8 @@ public class BookingTable_DetailView extends Activity {
         txtrestroname.setText(bookTable.getRest_name());
         txt_time.setText(bookTable.getEndtime());
         txt_totalkm.setText(bookTable.getDistance()+" km");
+
+        current_dateshow();
 
 
 
@@ -151,6 +158,7 @@ public class BookingTable_DetailView extends Activity {
                 if(position > 0)
                 {
                     Toast.makeText(ctx,person[position],Toast.LENGTH_SHORT).show();
+                    noof_person = person[position];
                 }
 
 
@@ -231,7 +239,7 @@ public class BookingTable_DetailView extends Activity {
         });
         //spinner_floor array adapter
 
-        //spinner_floor array adapter
+        //spinner_type array adapter
         SpinnnerAdapter_Type_Value type_valueAdapter=new SpinnnerAdapter_Type_Value(getApplicationContext(),type_value);
         spinner_type_value.setAdapter(type_valueAdapter);
         spinner_type_value.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -240,9 +248,8 @@ public class BookingTable_DetailView extends Activity {
                 if(position > 0)
                 {
                     Toast.makeText(ctx,type_value[position],Toast.LENGTH_SHORT).show();
+
                 }
-
-
             }
 
             @Override
@@ -294,13 +301,13 @@ public class BookingTable_DetailView extends Activity {
 
         btn_select_nxt.setOnClickListener(v -> {
             dialog.dismiss();
-            showAlertView_paymentconform();
+            showAlertView_paymentconform(tableList);
         });
         dialog.show();
 
     }
 
-    private void showAlertView_paymentconform()
+    private void showAlertView_paymentconform(TableList tableList)
     {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(BookingTable_DetailView.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -309,9 +316,58 @@ public class BookingTable_DetailView extends Activity {
         alertDialog.setCancelable(true);
         final AlertDialog dialog = alertDialog.create();
         Button btn_cancel,btn_cnf_payment,btn_select_food;
+        TextView txt_restroname, txt_custname, txt_datetime,txt_phoneno;
+        EditText etv_noperson;
+        ImageView imgicon_edit,imgicon_save;
 
+        txt_restroname =dialogView.findViewById(R.id.txt_restroname);
+        txt_custname =dialogView.findViewById(R.id.txt_custname);
+        txt_datetime =dialogView.findViewById(R.id.txt_datetime);
+        txt_phoneno =dialogView.findViewById(R.id.txt_phoneno);
+        etv_noperson =dialogView.findViewById(R.id.etv_noperson);
+        imgicon_edit =dialogView.findViewById(R.id.imgicon_edit);
+        imgicon_save =dialogView.findViewById(R.id.imgicon_save);
+        txt_restroname.setText(tableList.getStr_hotel_name());
+        txt_custname.setText(tableList.getStr_customer_name());
+        txt_datetime.setText(tableList.getStr_time());
+
+        etv_noperson.setText(tableList.getNumber_of_person() );
+
+        txt_phoneno.setText(tableList.getStr_phone());
         btn_select_food=dialogView.findViewById(R.id.btn_select_food);
         btn_cancel=dialogView.findViewById(R.id.btn_cancel);
+
+
+
+        imgicon_edit.setOnClickListener(v -> {
+            imgicon_save.setVisibility(View.VISIBLE);
+            imgicon_edit.setVisibility(View.GONE);
+            etv_noperson.setEnabled(true);
+            etv_noperson.setBackgroundColor(Color.DKGRAY);
+            etv_noperson.setTextColor(Color.WHITE);
+            /*InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);*/
+        });
+
+        imgicon_save.setOnClickListener(v -> {
+            if(etv_noperson.getText().length() > 0 && !etv_noperson.getText().toString().equalsIgnoreCase("0"))
+            {
+                imgicon_save.setVisibility(View.GONE);
+                imgicon_edit.setVisibility(View.VISIBLE);
+                etv_noperson.setEnabled(false);
+
+                etv_noperson.setBackgroundColor(Color.WHITE);
+                etv_noperson.setTextColor(Color.parseColor("#ADACAC"));
+            }
+            else{
+                Toast.makeText(ctx,"No of person can't be empty or zero", Toast.LENGTH_SHORT).show();
+            }
+
+
+
+        });
+
+
 
         btn_cnf_payment=dialogView.findViewById(R.id.btn_cnf_payment);
 
@@ -343,8 +399,6 @@ public class BookingTable_DetailView extends Activity {
         alertDialog.setCancelable(true);
         final AlertDialog dialog = alertDialog.create();
 
-
-
         dialog.show();
 
     }
@@ -357,97 +411,127 @@ public class BookingTable_DetailView extends Activity {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try{
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                            //Log.d("Result", jsonObject.toString());
-
-                            if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
+                            if(response.code() == Constant.SUCCESS_CODE_n)
                             {
-                                if(jsonObject.getJSONObject("data").getJSONArray("data").length() > 0)
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
-                                    tableListArrayList = new ArrayList<>();
-                                    for(int i =0; i<jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
+                                    if(jsonObject.getJSONObject("data").getJSONArray("data").length() > 0)
                                     {
-                                        JSONArray mjson_array = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i).getJSONArray("table");
-                                        for(int j = 0; j<mjson_array.length(); j++)
+                                        tableListArrayList = new ArrayList<>();
+                                        for(int i =0; i<jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
                                         {
-                                            JSONObject mjson_object = mjson_array.getJSONObject(j);
-                                            TableList tableList = new TableList();
-                                            tableList.setId(mjson_object.getString("id"));
-                                            tableList.setRestaurant_id(mjson_object.getString("restaurant_id"));
-                                            tableList.setTable_no(mjson_object.getString("table_no"));
-                                            tableList.setNumber_of_person(mjson_object.getString("number_of_person"));
-                                            tableList.setType(mjson_object.getString("type"));
-                                            tableList.setStatus_id(mjson_object.getString("status_id"));
-
-                                            //tableList.setFloor_id(mjson_object.getString("floor_id"));
-                                            //tableList.setArea_id(mjson_object.getString("area_id"));
-                                            tableList.setPrice(mjson_object.getString("price"));
-
-                                           /* parameter for table reservation not available now  */
-
-                                            if(mjson_object.has("table_descr"))
+                                            JSONArray mjson_array = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i).getJSONArray("table");
+                                            for(int j = 0; j<mjson_array.length(); j++)
                                             {
-                                                tableList.setTable_descr(mjson_object.getString("table_descr"));
-                                            }
-                                            else{
-                                                tableList.setTable_descr("Test description for table...");
-                                            }
+                                                JSONObject mjson_object = mjson_array.getJSONObject(j);
+                                                TableList tableList = new TableList();
+                                                tableList.setId(mjson_object.getString("id"));
+                                                tableList.setRestaurant_id(mjson_object.getString("restaurant_id"));
+                                                tableList.setTable_no(mjson_object.getString("table_no"));
+                                                tableList.setNumber_of_person(mjson_object.getString("number_of_person"));
+                                                tableList.setType(mjson_object.getString("type"));
+                                                tableList.setStatus_id(mjson_object.getString("status_id"));
 
-                                            if(mjson_object.has("table_rule"))
-                                            {
-                                                tableList.setTable_rule(mjson_object.getString("table_rule"));
-                                            }
-                                            else{
-                                                tableList.setTable_rule("Test rule for table");
-                                            }
+                                                //tableList.setFloor_id(mjson_object.getString("floor_id"));
+                                                //tableList.setArea_id(mjson_object.getString("area_id"));
+                                                tableList.setPrice(mjson_object.getString("price"));
 
-                                            if(mjson_object.has("table_drescode"))
-                                            {
-                                                tableList.setTable_drescode(mjson_object.getString("table_drescode"));
-                                            }
-                                            else{
-                                                tableList.setTable_drescode("White Shirt and Blue Jeans");
-                                            }
+                                                /* parameter for table reservation not available now  */
 
-                                            if(mjson_object.has("table_ocassion"))
-                                            {
-                                                tableList.setTable_ocassion(mjson_object.getString("table_ocassion"));
-                                            }
-                                            else{
-                                                tableList.setTable_ocassion("Birthday Bash");
-                                            }
+                                                if(mjson_object.has("table_descr"))
+                                                {
+                                                    tableList.setTable_descr(mjson_object.getString("table_descr"));
+                                                }
+                                                else{
+                                                    tableList.setTable_descr("Test description for table...");
+                                                }
 
-                                            /* code end for table reservation */
+                                                if(mjson_object.has("table_rule"))
+                                                {
+                                                    tableList.setTable_rule(mjson_object.getString("table_rule"));
+                                                }
+                                                else{
+                                                    tableList.setTable_rule("Test rule for table");
+                                                }
 
-                                            tableListArrayList.add(tableList);
+                                                if(mjson_object.has("table_drescode"))
+                                                {
+                                                    tableList.setTable_drescode(mjson_object.getString("table_drescode"));
+                                                }
+                                                else{
+                                                    tableList.setTable_drescode("White Shirt and Blue Jeans");
+                                                }
+
+                                                if(mjson_object.has("table_ocassion"))
+                                                {
+                                                    tableList.setTable_ocassion(mjson_object.getString("table_ocassion"));
+                                                }
+                                                else{
+                                                    tableList.setTable_ocassion("Birthday Bash");
+                                                }
+                                                /* code end for table reservation */
+
+
+
+                                                /* code to get customer and other data into table object */
+                                                tableList.setStr_hotel_name(bookTable.getRest_name());
+
+                                                if(storePrefrence.getString(Constant.NAME).length() == 0)
+                                                {
+                                                    tableList.setStr_customer_name("Test customer name");
+                                                }
+                                                else{
+                                                    tableList.setStr_customer_name(storePrefrence.getString(Constant.NAME));
+                                                }
+
+                                                //tableList.setStr_noseat(noof_person+" "+"Seats");
+                                                tableList.setStr_time(txt_view_datetime.getText().toString());
+
+                                                if(storePrefrence.getString(Constant.MOBILE).length() == 0)
+                                                {
+                                                    tableList.setStr_phone("9000012345");
+                                                }
+                                                else{
+                                                    tableList.setStr_phone(storePrefrence.getString(Constant.MOBILE));
+                                                }
+
+                                                /* code to get customer and other data into table object end */
+
+                                                tableListArrayList.add(tableList);
+                                            }
                                         }
-                                    }
 
-                                    progressBar.setVisibility(View.GONE);
-                                    //go to adapter
-                                    ListTableBookingAdapter listTableBookingAdapter = new ListTableBookingAdapter(BookingTable_DetailView.this, tableListArrayList);
-                                    recyclerView.setAdapter(listTableBookingAdapter);
-                                }
-                                else{
-                                    //no data in array list
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
+                                        progressBar.setVisibility(View.GONE);
+                                        //go to adapter
+                                        ListTableBookingAdapter listTableBookingAdapter = new ListTableBookingAdapter(BookingTable_DetailView.this, tableListArrayList);
+                                        recyclerView.setAdapter(listTableBookingAdapter);
+                                    }
+                                    else{
+                                        //no data in array list
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             }
+                            else{
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                             }
 
-                        }
-                        catch (JSONException ex)
-                        {
-                            ex.printStackTrace();
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
-                        }
+                          }
+                            catch (JSONException ex)
+                            {
+                                ex.printStackTrace();
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
-
                     }
                 });
     }
@@ -491,17 +575,14 @@ public class BookingTable_DetailView extends Activity {
             mDay = selectedDay;
         };
         final DatePickerDialog datePickerDialog = new DatePickerDialog(
-                ctx, TimePickerDialog.THEME_HOLO_LIGHT,datePickerListener,
+                ctx, R.style.DialogTheme_picker,datePickerListener,
                 mYear, mMonth, mDay);
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
                 getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        if (which == DialogInterface.BUTTON_NEGATIVE) {
-                            dialog.cancel();
-                        }
+                (dialog, which) -> {
+                    if (which == DialogInterface.BUTTON_NEGATIVE) {
+                        dialog.cancel();
                     }
                 });
 
@@ -574,14 +655,12 @@ public class BookingTable_DetailView extends Activity {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(ctx,TimePickerDialog.THEME_HOLO_LIGHT,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(ctx,R.style.DialogTheme_picker,
                 (view, hourOfDay, minute) -> {
                     String date = txt_view_datetime.getText().toString();
                     txt_view_datetime.setText("");
 
                     String time = hourOfDay + ":" + minute;
-
-
                     String AM_PM ;
                     if(hourOfDay < 12) {
                         AM_PM = "AM";
@@ -599,6 +678,59 @@ public class BookingTable_DetailView extends Activity {
         timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
         timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
+
+
+    private void current_dateshow()
+    {
+        final Calendar c = Calendar.getInstance();
+        String str_month="",str_date="", str_day,selectedYear,booking_date_n;
+
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
+
+        String AM_PM ;
+        if(mHour < 12) {
+            AM_PM = "AM";
+        } else {
+            AM_PM = "PM";
+        }
+
+        String time = mHour + ":" + mMinute +" "+ AM_PM;
+
+
+        int month_n =  mMonth + 1;
+        int date_n = mDay;
+
+        str_day = String.valueOf(date_n);
+
+        if(month_n < 10 )
+        {
+            str_month =  "0"+month_n;
+        }
+        else{
+            str_month =  String.valueOf(month_n);
+
+        }
+
+        if(date_n < 10)
+        {
+            str_date =  "0"+ date_n;
+        }
+        else{
+            str_date =  String.valueOf(date_n);
+        }
+
+        selectedYear = String.valueOf(mYear);
+        booking_date = selectedYear + "-" + str_month + "-" + str_date;
+
+        txt_view_datetime.setText("");
+        txt_view_datetime.setText(str_day + "-" +getMonth(month_n) + " " +time);
+    }
+
 
     private String getMonth(int month) {
         String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};

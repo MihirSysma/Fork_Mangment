@@ -5,6 +5,47 @@ import java.io.Serializable;
 public class TableList implements Serializable {
     String id,restaurant_id, table_no, number_of_person, type,floor_id,area_id,price,status_id;
     String table_descr, table_rule, table_drescode, table_ocassion;
+    String str_hotel_name, str_customer_name, str_noseat, str_time, str_phone;
+
+    public String getStr_hotel_name() {
+        return str_hotel_name;
+    }
+
+    public void setStr_hotel_name(String str_hotel_name) {
+        this.str_hotel_name = str_hotel_name;
+    }
+
+    public String getStr_customer_name() {
+        return str_customer_name;
+    }
+
+    public void setStr_customer_name(String str_customer_name) {
+        this.str_customer_name = str_customer_name;
+    }
+
+    public String getStr_noseat() {
+        return str_noseat;
+    }
+
+    public void setStr_noseat(String str_noseat) {
+        this.str_noseat = str_noseat;
+    }
+
+    public String getStr_time() {
+        return str_time;
+    }
+
+    public void setStr_time(String str_time) {
+        this.str_time = str_time;
+    }
+
+    public String getStr_phone() {
+        return str_phone;
+    }
+
+    public void setStr_phone(String str_phone) {
+        this.str_phone = str_phone;
+    }
 
     public String getTable_descr() {
         return table_descr;

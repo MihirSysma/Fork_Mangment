@@ -11,7 +11,7 @@
     app:cardCornerRadius="3dp"
     app:cardUseCompatPadding="true"
     android:elevation="@dimen/_7sdp"
-    app:cardBackgroundColor="#F6F6F6">
+    app:cardBackgroundColor="@color/card_light_gray">
 
     <RelativeLayout
         android:id="@+id/relative_view"
