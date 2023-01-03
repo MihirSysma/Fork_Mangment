@@ -6,21 +6,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.forkmang.fragment.All_OrderFood_Fragment;
-import com.forkmang.fragment.Book_Table_Fragment;
-import com.forkmang.fragment.Pickup_Fragment;
-import com.forkmang.fragment.Walkin_Fragment;
+import com.forkmang.data.FoodList_Tab;
+import com.forkmang.fragment.All_Food_Fragment;
+
+import java.util.ArrayList;
 
 public class ViewPagerAdapter_ReserveSeat extends FragmentStateAdapter {
+    ArrayList<FoodList_Tab> foodListArrayList;
 
-    public ViewPagerAdapter_ReserveSeat(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public ViewPagerAdapter_ReserveSeat(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,ArrayList<FoodList_Tab> foodListArrayList) {
         super(fragmentManager, lifecycle);
+        this.foodListArrayList = foodListArrayList;
     }
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         Fragment selectedFragment;
-        switch (position){
+        selectedFragment= All_Food_Fragment.newInstance();
+
+        /*switch (position){
             case 0:
                 selectedFragment= All_OrderFood_Fragment.newInstance();
                 break;
@@ -33,13 +37,14 @@ public class ViewPagerAdapter_ReserveSeat extends FragmentStateAdapter {
             default:
                 return  All_OrderFood_Fragment.newInstance();
 
-        }
+
+        }*/
         return  selectedFragment;
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return foodListArrayList.size();
     }
 }
 

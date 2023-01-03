@@ -9,6 +9,7 @@ public class Constant {
     public static int SUCCESS_CODE_n = 200;
     public static int SUCCESS_CODE_2 = 201;
     public static int ERROR_CODE = 422;
+    public static int ERROR_CODE_n = 404;
 
 
 

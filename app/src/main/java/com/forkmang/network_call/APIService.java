@@ -106,6 +106,60 @@ public interface APIService {
 
     );
 
+    @POST(WebApi.RES_BOOKTABLE)
+    @FormUrlEncoded
+    Call<JsonObject> book_table(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("restaurant_id") String restaurant_id,
+            @Field("table_id") String table_id,
+            @Field("rules") String rules,
+            @Field("dresscode") String dresscode,
+            @Field("occasion") String occasion,
+            @Field("date") String date
+
+    );
+
+    @POST(WebApi.RES_FOODLIST)
+    @FormUrlEncoded
+    Call<JsonObject> getres_foodlist(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("branch_id") String branch_id
+    );
+
+    @POST(WebApi.RES_CATLIST)
+    @FormUrlEncoded
+    Call<JsonObject> getres_catitemlist(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("category_id") String category_id
+    );
+
+    @POST(WebApi.RES_ADDITEMCART)
+    @FormUrlEncoded
+    Call<JsonObject> additem_cart(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("item_id") String item_id,
+            @Field("qty") String qty,
+            @Field("booking_table_id") String booking_table_id,
+            @Field("item_extra") String item_extra
+
+    );
+
+    @POST(WebApi.RES_GETCARTDETAIL)
+    @FormUrlEncoded
+    Call<JsonObject> getcart_detail(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("test") String test
+
+
+    );
+
+
+
 
 
 

@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +26,7 @@ import com.forkmang.fragment.LocationScreen_Fragment;
 import com.forkmang.fragment.OrdersFragment;
 import com.forkmang.fragment.ScanOrderFragment;
 import com.forkmang.fragment.WalletView_Fragment;
+import com.forkmang.helper.StorePrefrence;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -41,11 +40,13 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
     private FrameLayout frameLayout;
     private NavigationView navigationView;
     RadioButton button_arabic,button_eng;
+    StorePrefrence storePrefrence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_3);
+        storePrefrence = new StorePrefrence(DashBoardActivity_2.this);
         initializeViews();
         toggleDrawer();
         initializeDefaultFragment(savedInstanceState,0);
@@ -249,11 +250,12 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
         btn_yes_logout.setOnClickListener(view -> {
             closeDrawer();
             dialog.dismiss();
-            finish();
+            storePrefrence.clear();
+
             Intent intent = new Intent(DashBoardActivity_2.this, LoginActivity.class);
             startActivity(intent);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            closeDrawer();
+            finish();
             //System.exit(0);
         });
 

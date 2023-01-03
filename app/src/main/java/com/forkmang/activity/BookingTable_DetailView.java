@@ -50,6 +50,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -362,9 +364,6 @@ public class BookingTable_DetailView extends Activity {
             else{
                 Toast.makeText(ctx,"No of person can't be empty or zero", Toast.LENGTH_SHORT).show();
             }
-
-
-
         });
 
 
@@ -375,13 +374,16 @@ public class BookingTable_DetailView extends Activity {
 
         btn_cnf_payment.setOnClickListener(v ->{
 
-                showAlertView_conformtable();
+                callapi_conform_pay(tableList.getRestaurant_id(), tableList.getId(), tableList.getTable_rule(),
+                                    tableList.getTable_drescode(),tableList.getTable_ocassion(),txt_datetime.getText().toString());
+
                 dialog.dismiss();
 
         });
 
         btn_select_food.setOnClickListener(v -> {
-            final Intent mainIntent = new Intent(BookingTable_DetailView.this, BookingTable_ReserveSeat.class);
+            final Intent mainIntent = new Intent(BookingTable_DetailView.this, BookingTable_ReserveFood.class);
+            mainIntent.putExtra("bookTable_model", bookTable);
             startActivity(mainIntent);
             dialog.dismiss();
         });
@@ -536,6 +538,89 @@ public class BookingTable_DetailView extends Activity {
                 });
     }
 
+
+    private void callapi_conform_pay(String restaurant_id, String table_id, String rules, String dresscode,
+                                     String occasion, String date)
+    {
+        Log.d("restaurant_id",restaurant_id);
+        Log.d("table_id",table_id);
+        Log.d("rules",rules);
+        Log.d("dresscode",dresscode);
+        Log.d("occasion",occasion);
+        Log.d("date",date);
+
+        progressBar.setVisibility(View.VISIBLE);
+        Api.getInfo().book_table(restaurant_id,table_id,rules,dresscode,occasion,"2022-12-13 09:12:12").
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
+                                {
+
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                    JSONObject mjson_obj = jsonObject.getJSONObject("data");
+
+                                    storePrefrence.setString("customerid", mjson_obj.getString("customer_id"));
+                                    storePrefrence.setString("paymentstatus", mjson_obj.getString("payment_status"));
+
+                                    Log.d("table_id", mjson_obj.getString("table_id"));
+                                    Log.d("restaurant_id", mjson_obj.getString("restaurant_id"));
+                                    Log.d("rules", mjson_obj.getString("rules"));
+                                    showAlertView_conformtable();
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                progressBar.setVisibility(View.GONE);
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                JSONObject obj = new JSONObject(loadJSONFromAsset());
+                                if(obj.getString("status").equalsIgnoreCase("200"))
+                                {
+                                    Toast.makeText(ctx, obj.getString("message")+" offline ", Toast.LENGTH_LONG).show();
+                                    JSONObject mjson_obj = obj.getJSONObject("data");
+                                    storePrefrence.setString("customerid", mjson_obj.getString("customer_id"));
+                                    storePrefrence.setString("paymentstatus", mjson_obj.getString("payment_status"));
+                                    Log.d("table_id", mjson_obj.getString("table_id"));
+                                    Log.d("restaurant_id", mjson_obj.getString("restaurant_id"));
+                                    Log.d("rules", mjson_obj.getString("rules"));
+                                    showAlertView_conformtable();
+                                }
+                                else{
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                            else{
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                        catch (JSONException | IOException ex)
+                        {
+                            ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
     //Date and time picker example code start
     private void datePicker()
     {
@@ -738,6 +823,22 @@ public class BookingTable_DetailView extends Activity {
     }
 
     //Date and time picker example code end
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = ctx.getAssets().open("local3.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
 
 

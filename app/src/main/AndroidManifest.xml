@@ -50,7 +50,7 @@
             android:name="com.forkmang.activity.Activity_PaymentSummary"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.BookingTable_ReserveSeat"
+            android:name="com.forkmang.activity.BookingTable_ReserveFood"
             android:exported="false" />
         <activity
             android:name="com.forkmang.activity.BookingOrder_ReserverConformationActivity"

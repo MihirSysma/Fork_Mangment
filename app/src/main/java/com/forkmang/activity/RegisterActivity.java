@@ -118,10 +118,10 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         storePrefrence=new StorePrefrence(ctx);
 
         etv_mobile.setText("9829020700");
-        //etv_username.setText("700 name");
-        //etv_email.setText("test700@gmail.com");
-        //etv_password.setText("123456");
-        //etv_cnfpassword.setText("123456");
+        etv_username.setText("700 name");
+        etv_email.setText("test700@gmail.com");
+        etv_password.setText("123456");
+        etv_cnfpassword.setText("123456");
 
 
         //firebase login code

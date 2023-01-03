@@ -12,6 +12,12 @@ public class WebApi {
     public static final String LIST_RES_FILTER = API_BASE + "restaurant-details";
     public static final String LIST_RES = API_BASE + "restaurants";
     public static final String RES_DETAILPAGE = API_BASE + "restaurant-details";
+    public static final String RES_FOODLIST = API_BASE + "food-list";
+    public static final String RES_CATLIST = API_BASE + "category-item-list";
+    public static final String RES_ADDITEMCART = API_BASE + "add-item-cart";
+    public static final String RES_BOOKTABLE = API_BASE + "booking-table";
+    public static final String RES_GETCARTDETAIL = API_BASE + "get-cart-details";
+
 
 
 

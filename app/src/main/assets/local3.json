@@ -1,0 +1,17 @@
+{
+    "status": 200,
+    "message": "Table Booked Successfully",
+    "data": {
+        "restaurant_id": "1",
+        "table_id": "6",
+        "date": "2022-12-13 09:12:12",
+        "rules": "no drink",
+        "dresscode": "red dress",
+        "occasion": "birthday party",
+        "payment_status": "pending",
+        "customer_id": 37,
+        "updated_at": "2023-01-03T12:24:24.000000Z",
+        "created_at": "2023-01-03T12:24:24.000000Z",
+        "id": 15
+    }
+}

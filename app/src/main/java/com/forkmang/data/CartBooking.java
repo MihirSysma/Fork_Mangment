@@ -6,6 +6,7 @@ public class CartBooking {
     String str_qty;
     String str_type;
 
+
     public String getStr_productname() {
         return str_productname;
     }

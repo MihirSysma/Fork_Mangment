@@ -53,8 +53,6 @@ public class Booking_TabView_Activity extends AppCompatActivity {
             public void onPageScrolled(int position,
                                        float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-
-
             }
 
             @Override
@@ -64,11 +62,9 @@ public class Booking_TabView_Activity extends AppCompatActivity {
                 current_tabactive=position;
             }
 
-
-
-
-
         });
+
+
         String str_tab_no  = getIntent().getStringExtra("tab_no");
 
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,22 +15,196 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_70sdp"
+        android:padding="@dimen/_5sdp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="7dp"
         app:cardElevation="7dp"
         app:cardMaxElevation="7dp"
-        android:padding="@dimen/_5sdp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:scrollbars="none">
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:fontFamily="@font/generalsanssemibold"
+                        android:padding="@dimen/_3sdp"
+                        android:text="@string/booking_table"
+                        android:textColor="@color/text_colorblack"
+                        android:textSize="22sp" />
+
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/relative_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/layout_rectangle_gray"
+                    android:padding="@dimen/_5sdp">
+
+                    <ImageView
+                        android:id="@+id/imgrestro"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_3sdp"
+                        android:layout_marginBottom="@dimen/_3sdp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/img_booktable" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_50sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/txtrestroname"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="@string/starbucks"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+
+                            <RatingBar
+                                android:id="@+id/rating_bar"
+                                style="@style/CustomRatingBarStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_14sdp"
+                                android:rating="5" />
+
+                            <TextView
+                                android:id="@+id/txt_ratingno"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_1sdp"
+                                android:text="2"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/linear_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/linear_1"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_toEndOf="@+id/imgrestro"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:id="@+id/lyttime"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/txt_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/generalsansregular"
+                                android:padding="1dp"
+                                android:text="@string/open_till_1_00_pm"
+                                android:textColor="@color/text_gray2"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_distance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/generalsansregular"
+                                android:padding="1dp"
+                                android:text="@string/walk_in_4_tb_pickup_8_min"
+                                android:textColor="@color/text_gray2"
+                                android:textSize="14sp" />
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txt_totalkm"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/generalsansregular"
+                            android:gravity="end"
+                            android:text="@string/_2_km"
+                            android:textColor="@color/text_colorblack"
+                            android:textSize="13sp" />
+
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:fontFamily="@font/generalsanssemibold"
+                        android:padding="@dimen/_3sdp"
+                        android:text="@string/your_reserved_seats"
+                        android:textColor="@color/text_colorblack"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -41,156 +214,97 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_2sdp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:fontFamily="@font/generalsanssemibold"
-                            android:padding="@dimen/_3sdp"
-                            android:text="@string/booking_table"
-                            android:textColor="@color/text_colorblack"
-                            android:textSize="22sp" />
+                            android:fontFamily="@font/generalsansmedium"
+                            android:text="@string/indoor"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:text="@string/indoor_7_seats"
+                            android:textColor="@color/text_gray2"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/_100sdp"
+                            android:background="@drawable/black_rect"
+                            android:padding="@dimen/_2sdp"
+                            android:text="00"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/generalsansmedium"
+                            android:padding="@dimen/_2sdp"
+                            android:text=":"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:background="@drawable/black_rect"
+                            android:padding="@dimen/_2sdp"
+                            android:text="25"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:src="@drawable/pencil" />
 
                     </LinearLayout>
 
-
-                    <RelativeLayout
-                        android:id="@+id/relative_view"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_5sdp"
-                        android:background="@drawable/layout_rectangle_gray"
-                        android:padding="@dimen/_5sdp">
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_2sdp">
 
-                        <ImageView
-                            android:id="@+id/imgrestro"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="@dimen/_3sdp"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:layout_marginEnd="@dimen/_3sdp"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/img_booktable" />
-
-                        <LinearLayout
-                            android:id="@+id/linear_1"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_50sdp"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:fontFamily="@font/generalsansmedium"
+                            android:text="@string/time"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
 
-                            <TextView
-                                android:id="@+id/txtproductname"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_marginTop="@dimen/_7sdp"
-                                android:layout_weight="1"
-                                android:gravity="start"
-                                android:text="@string/starbucks"
-                                android:textColor="@color/black"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_marginEnd="@dimen/_8sdp"
-                                android:layout_weight="1"
-                                android:gravity="end"
-                                android:orientation="horizontal">
-
-
-                                <RatingBar
-                                    android:id="@+id/rating_bar"
-                                    style="@style/CustomRatingBarStyle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/_14sdp"
-                                    android:rating="5" />
-
-                                <TextView
-                                    android:id="@+id/txt_ratingno"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_5sdp"
-                                    android:layout_marginTop="@dimen/_1sdp"
-                                    android:text="2"
-                                    android:textColor="@color/black"
-                                    android:textSize="13sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:id="@+id/linear_2"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/linear_1"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:layout_marginBottom="2dp"
-                            android:layout_toEndOf="@+id/imgrestro"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:text="@string/april_14_6_00_pm"
+                            android:textColor="@color/text_gray2"
+                            android:textSize="15sp" />
 
-                            <LinearLayout
-                                android:id="@+id/lyttime"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-
-                                <TextView
-                                    android:id="@+id/txt_time"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/generalsansregular"
-                                    android:padding="1dp"
-                                    android:text="@string/open_till_1_00_pm"
-                                    android:textColor="@color/text_gray2"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:id="@+id/txt_distance"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/generalsansregular"
-                                    android:padding="1dp"
-                                    android:text="@string/walk_in_4_tb_pickup_8_min"
-                                    android:textColor="@color/text_gray2"
-                                    android:textSize="14sp" />
-
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/txt_totalkm"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/generalsansregular"
-                                android:gravity="end"
-                                android:text="@string/_2_km"
-                                android:textColor="@color/text_colorblack"
-                                android:textSize="13sp" />
-
-
-                        </LinearLayout>
-
-
-                    </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_100sdp"
+                            android:text="@string/sar_14"
+                            android:textColor="@color/text_gray2"
+                            android:textSize="15sp" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -204,331 +318,204 @@
                             android:layout_marginStart="@dimen/_5sdp"
                             android:fontFamily="@font/generalsanssemibold"
                             android:padding="@dimen/_3sdp"
-                            android:text="@string/your_reserved_seats"
+                            android:text="@string/select_food"
                             android:textColor="@color/text_colorblack"
-                            android:textSize="22sp" />
+                            android:textSize="20sp" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/_120sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:src="@drawable/ic_baseline_search_24" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:src="@drawable/ic_baseline_filter_alt_24" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@drawable/round_corner_toggle"
+                            android:hint="@string/some_text"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:padding="@dimen/_3sdp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="15sp" />
 
                     </LinearLayout>
+
+                    <!-- Tab View -->
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_4sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:padding="@dimen/_2sdp"
-                            android:orientation="horizontal">
+                            android:background="@color/white"
+                            app:tabIconTint="@color/black"
+                            app:tabIndicatorColor="@color/red"
+                            app:tabIndicatorHeight="2dp"
+                            app:tabMode="fixed"
+                            app:tabSelectedTextColor="@color/red"
+                            app:tabTextAppearance="@style/TabLayoutTextStyle"
+                            app:tabTextColor="@color/black" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/generalsansmedium"
-                                android:text="@string/indoor"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_8sdp"
-                                android:text="@string/indoor_7_seats"
-                                android:textColor="@color/text_gray2"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:background="@drawable/black_rect"
-                                android:layout_marginStart="@dimen/_100sdp"
-                                android:textAlignment="center"
-                                android:padding="@dimen/_2sdp"
-                                android:text="00"
-                                android:textColor="@color/white"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/generalsansmedium"
-                                android:padding="@dimen/_2sdp"
-                                android:text=":"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:background="@drawable/black_rect"
-                                android:layout_marginStart="@dimen/_1sdp"
-                                android:textAlignment="center"
-                                android:padding="@dimen/_2sdp"
-                                android:text="25"
-                                android:textColor="@color/white"
-                                android:textSize="15sp" />
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/pencil"
-                                android:layout_marginStart="@dimen/_7sdp"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/viewPager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_4sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:padding="@dimen/_2sdp"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/generalsansmedium"
-                                android:text="@string/time"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_8sdp"
-                                android:text="@string/april_14_6_00_pm"
-                                android:textColor="@color/text_gray2"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_100sdp"
-                                android:text="@string/sar_14"
-                                android:textColor="@color/text_gray2"
-                                android:textSize="15sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_5sdp"
-                                android:fontFamily="@font/generalsanssemibold"
-                                android:padding="@dimen/_3sdp"
-                                android:text="@string/select_food"
-                                android:textColor="@color/text_colorblack"
-                                android:textSize="20sp" />
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_baseline_search_24"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_marginStart="@dimen/_120sdp"
-                                />
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:src="@drawable/ic_baseline_filter_alt_24"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/_8sdp">
-
-                            <EditText
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_35sdp"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:background="@drawable/round_corner_toggle"
-                                android:hint="@string/some_text"
-                                android:textSize="15sp"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:textColor="@color/black"
-                                android:padding="@dimen/_3sdp"
-                                android:textColorHint="@color/black" />
-
-                        </LinearLayout>
-
-                        <!-- Tab View -->
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" >
-
-                            <com.google.android.material.tabs.TabLayout
-                                android:id="@+id/tabLayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:tabMode="fixed"
-                                android:background="@color/white"
-                                app:tabIconTint="@color/black"
-                                app:tabIndicatorColor="@color/red"
-                                app:tabSelectedTextColor="@color/red"
-                                app:tabTextColor="@color/black"
-                                app:tabIndicatorHeight="2dp"
-                                app:tabTextAppearance="@style/TabLayoutTextStyle"
-                                />
-
-                            <androidx.viewpager2.widget.ViewPager2
-                                android:id="@+id/viewPager"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
-
-
-                        </LinearLayout>
-
-                        <!-- Tab View End -->
-
-                        <!-- Recyclerview Layout start -->
-                        <LinearLayout
-                            android:id="@+id/linear_listview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            >
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/table_recycleview"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                />
-
-                        </LinearLayout>
-                        <!-- Recyclerview Layout end -->
 
                     </LinearLayout>
 
+                    <!-- Tab View End -->
+
+                    <!-- Recyclerview Layout start -->
                     <LinearLayout
+                        android:id="@+id/linear_listview"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="#EBEBEB"
-                        android:orientation="horizontal" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/table_recycleview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                    <!-- Recyclerview Layout end -->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/light_white"
+                    android:orientation="horizontal" />
 
 
-                    <!-- Bottom Layout start -->
+                <!-- Bottom Layout start -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_3sdp">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:padding="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@id/txt_view_date"
+                            android:fontFamily="@font/generalsansmedium"
+                            android:padding="@dimen/_2sdp"
+                            android:text="@string/for_booking"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txt_view_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:fontFamily="@font/generalsanssemibold"
+                            android:text="@string/sar_4"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:padding="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@id/txt_date_2"
+                            android:fontFamily="@font/generalsansmedium"
+                            android:padding="@dimen/_2sdp"
+                            android:text="@string/for_food"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txt_date_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:fontFamily="@font/generalsanssemibold"
+                            android:text="@string/sar_14"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_3sdp">
+                        android:gravity="center_horizontal"
+                        android:padding="@dimen/_10sdp">
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/btn_view_cart"
+                            android:layout_width="@dimen/_230sdp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:padding="@dimen/_3sdp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/generalsansmedium"
-                                android:padding="@dimen/_2sdp"
-                                android:text="@string/for_booking"
-                                android:textColor="@color/black"
-                                android:layout_toStartOf="@id/txt_view_date"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/txt_view_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="@dimen/_2sdp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:fontFamily="@font/generalsanssemibold"
-                                android:text="@string/sar_4"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
-
-
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:padding="@dimen/_3sdp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="@dimen/_2sdp"
-                                android:text="@string/for_food"
-                                android:fontFamily="@font/generalsansmedium"
-                                android:textColor="@color/black"
-                                android:layout_toStartOf="@id/txt_date_2"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/txt_date_2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="@dimen/_2sdp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:fontFamily="@font/generalsanssemibold"
-                                android:text="@string/sar_14"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
-
-
-                        </RelativeLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:padding="@dimen/_10sdp"
-                            >
-
-                            <Button
-                                android:id="@+id/btn_view_cart"
-                                android:layout_width="@dimen/_230sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_10ssp"
-                                android:layout_marginEnd="@dimen/_10ssp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/layout_rectangle_2"
-                                android:fontFamily="@font/generalsansmedium"
-                                android:text="@string/view_cart"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="16sp"
-                                app:backgroundTint="@null" />
-
-
-                        </LinearLayout>
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10ssp"
+                            android:layout_marginEnd="@dimen/_10ssp"
+                            android:background="@drawable/layout_rectangle_2"
+                            android:fontFamily="@font/generalsansmedium"
+                            android:text="@string/view_cart"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:backgroundTint="@null" />
 
 
                     </LinearLayout>
 
-                    <!-- Bottom Layout end -->
-
 
                 </LinearLayout>
 
+                <!-- Bottom Layout end -->
+
+
+            </LinearLayout>
 
 
         </ScrollView>
