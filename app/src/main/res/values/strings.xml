@@ -224,6 +224,8 @@
     <string name="location_permission_message">We need location permission to get location of your work and Camera permission.</string>
     <string name="select_date_and_time">Select Date and Time</string>
     <string name="seats">Seats</string>
+    <string name="toopings">Toopings:</string>
+    <string name="rupee">\u20B9</string>
 
 
     <string-array name="person">

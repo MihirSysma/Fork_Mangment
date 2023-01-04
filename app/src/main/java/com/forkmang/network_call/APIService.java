@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface APIService {
@@ -139,7 +140,7 @@ public interface APIService {
     @POST(WebApi.RES_ADDITEMCART)
     @FormUrlEncoded
     Call<JsonObject> additem_cart(
-            //@Header("Authorization") String token,
+            @Header("Authorization") String token,
             //@Header("Accept") String key,
             @Field("item_id") String item_id,
             @Field("qty") String qty,
@@ -151,7 +152,7 @@ public interface APIService {
     @POST(WebApi.RES_GETCARTDETAIL)
     @FormUrlEncoded
     Call<JsonObject> getcart_detail(
-            //@Header("Authorization") String token,
+            @Header("Authorization") String token,
             //@Header("Accept") String key,
             @Field("test") String test
 

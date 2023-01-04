@@ -1,7 +1,7 @@
 package com.forkmang.activity;
 
 import static com.forkmang.helper.Constant.NAME;
-import static com.forkmang.helper.Constant.SUCCESS_CODE_Ne;
+import static com.forkmang.helper.Constant.SUCCESS_CODE;
 import static com.forkmang.helper.Constant.TOKEN_REG;
 
 import android.app.ProgressDialog;
@@ -121,8 +121,8 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
         google_intialization();
         // google login code end
 
-        etv_mobile.setText("9829020700");
-        etv_password.setText("123456");
+        etv_mobile.setText("9829020300");
+        etv_password.setText("1234567");
 
         chek_keeplogin.setOnClickListener(v -> {
             if(etv_mobile.length()==10 && etv_password.length() >3)
@@ -220,10 +220,10 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                         try{
 
                             //Log.d("Result", jsonObject.toString());
-                            if(response.code() == Constant.SUCCESS_CODE_2)
+                            if(response.code() == Constant.SUCCESS_CODE_n)
                             {
                                 JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE_Ne))
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
                                     Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                     storePrefrence.setBoolean("keeplogin", Constant.KEEP_LOGIN);

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +20,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.forkmang.R;
 import com.forkmang.adapter.ViewPagerAdapter_ReserveSeat;
 import com.forkmang.data.FoodList_Tab;
-import com.forkmang.fragment.All_Food_Fragment;
+import com.forkmang.fragment.Select_Food_Fragment;
 import com.forkmang.helper.Constant;
 import com.forkmang.models.BookTable;
+import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -38,19 +40,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookingTable_ReserveFood extends AppCompatActivity {
+public class SelectFood_Activity extends AppCompatActivity {
     ViewPager2 viewPager;
     TabLayout tabLayout;
     Button btn_view_cart;
-    Context ctx = BookingTable_ReserveFood.this;
+    Context ctx = SelectFood_Activity.this;
     ArrayList<FoodList_Tab> foodListArrayList;
     BookTable bookTable;
+    TableList tableList;
     String booking_id;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bookingtable_reserveseat);
+        setContentView(R.layout.activity_selectfood);
         viewPager=findViewById(R.id.viewPager);
+        progressBar=findViewById(R.id.progressBar);
         tabLayout=findViewById(R.id.tabLayout);
         btn_view_cart = findViewById(R.id.btn_view_cart);
 
@@ -61,6 +66,8 @@ public class BookingTable_ReserveFood extends AppCompatActivity {
 
 
         bookTable = (BookTable) getIntent().getSerializableExtra("bookTable_model");
+        tableList = (TableList) getIntent().getSerializableExtra("table_model");
+
         txtrestroname.setText(bookTable.getRest_name());
         txt_time.setText(bookTable.getEndtime());
         txt_totalkm.setText(bookTable.getDistance()+" km");
@@ -85,8 +92,7 @@ public class BookingTable_ReserveFood extends AppCompatActivity {
                 FoodList_Tab foodList_tab = foodListArrayList.get(position);
                 String category_id = foodList_tab.getId();
 
-
-                All_Food_Fragment all_Food_fragment = All_Food_Fragment.GetInstance();
+                Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
                 all_Food_fragment.callApi_food_1(category_id,booking_id);
 
             }
@@ -110,7 +116,7 @@ public class BookingTable_ReserveFood extends AppCompatActivity {
 
     private void showAlertView()
     {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(BookingTable_ReserveFood.this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SelectFood_Activity.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.conform_tablefood_reservealert, null);
         alertDialog.setView(dialogView);
@@ -121,7 +127,7 @@ public class BookingTable_ReserveFood extends AppCompatActivity {
 
         btn_share_order.setOnClickListener(v -> {
 
-            Intent intent = new Intent(BookingTable_ReserveFood.this, BookingOrder_ReserverConformationActivity.class);
+            Intent intent = new Intent(SelectFood_Activity.this, BookingOrder_ReserverConformationActivity.class);
             startActivity(intent);
             dialog.dismiss();
 
@@ -134,7 +140,7 @@ public class BookingTable_ReserveFood extends AppCompatActivity {
     private void callapi_tablisting(String branch_id)
     {
         //showProgress();
-        //progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getres_foodlist(branch_id).
                 enqueue(new Callback<JsonObject>() {
                     @Override
@@ -158,29 +164,25 @@ public class BookingTable_ReserveFood extends AppCompatActivity {
 
                                             foodListArrayList.add(foodList_tab);
                                         }
-                                        ViewPagerAdapter_ReserveSeat viewPagerAdapter_reserveSeat=new ViewPagerAdapter_ReserveSeat(getSupportFragmentManager(),getLifecycle(),foodListArrayList);
+                                        progressBar.setVisibility(View.GONE);
+                                        ViewPagerAdapter_ReserveSeat viewPagerAdapter_reserveSeat=new ViewPagerAdapter_ReserveSeat(getSupportFragmentManager(),getLifecycle(),foodListArrayList, tableList);
                                         viewPager.setAdapter(viewPagerAdapter_reserveSeat);
 
                                         fill_tablist();
-
-
                                     }
 
                                 }
-
-
-
-
                             }
                             else if(response.code() == Constant.ERROR_CODE)
                             {
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
                         catch (JSONException | IOException ex)
                         {
                             ex.printStackTrace();
-
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }

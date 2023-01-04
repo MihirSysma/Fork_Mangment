@@ -214,7 +214,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_margin="@dimen/_8sdp"
                         android:orientation="horizontal"
                         android:padding="@dimen/_2sdp">
 
@@ -237,7 +237,7 @@
                         <TextView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:layout_marginStart="@dimen/_100sdp"
+                            android:layout_marginStart="@dimen/_70sdp"
                             android:background="@drawable/black_rect"
                             android:padding="@dimen/_2sdp"
                             android:text="00"
@@ -388,10 +388,14 @@
                     <!-- Tab View End -->
 
                     <!-- Recyclerview Layout start -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
                     <LinearLayout
                         android:id="@+id/linear_listview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_5sdp">
 
@@ -401,6 +405,13 @@
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone" />
+                    </FrameLayout>
                     <!-- Recyclerview Layout end -->
 
                 </LinearLayout>
@@ -432,6 +443,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toStartOf="@id/txt_view_date"
                             android:fontFamily="@font/generalsansmedium"
+                            android:layout_alignParentStart="true"
                             android:padding="@dimen/_2sdp"
                             android:text="@string/for_booking"
                             android:textColor="@color/black"
@@ -464,6 +476,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toStartOf="@id/txt_date_2"
                             android:fontFamily="@font/generalsansmedium"
+                            android:layout_alignParentStart="true"
                             android:padding="@dimen/_2sdp"
                             android:text="@string/for_food"
                             android:textColor="@color/black"

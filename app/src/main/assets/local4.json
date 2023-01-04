@@ -1,0 +1,48 @@
+{
+    "status": 200,
+    "message": "Cart Data Fetch Successfully",
+    "data": {
+        "id": 10,
+        "user_id": 37,
+        "booking_table_id": 13,
+        "coupon": null,
+        "coupon_amount": null,
+        "total": "1388",
+        "cart_item": [
+            {
+                "id": 126,
+                "cart_id": 10,
+                "item_id": 1,
+                "item_extra_id": "1,2",
+                "qty": 2,
+                "extra_item_details": [
+                    {
+                        "id": 1,
+                        "item_id": 3,
+                        "name": "paneer",
+                        "price": "40",
+                        "description": "meximum 20",
+                        "status_id": "1",
+                        "image": "uploads/item-extra/63a3f7cac235d.png"
+                    },
+                    {
+                        "id": 2,
+                        "item_id": 1,
+                        "name": "combo first",
+                        "price": "120",
+                        "description": "meximum 20",
+                        "status_id": "1",
+                        "image": "uploads/item-extra/63abef567e60e.png"
+                    }
+                ],
+                "cart_item_details": {
+                    "id": 1,
+                    "category_id": 2,
+                    "name": "dal bhat",
+                    "price": 14,
+                    "image": "uploads/item/63a3eece668a5.png"
+                }
+            }
+        ]
+    }
+}

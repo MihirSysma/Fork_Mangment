@@ -55,7 +55,7 @@
         <entry key="app/src/main/res/layout/activity_booking_table_2.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_booking_table_reserve_seat.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_bookingtable_detailview.xml" value="0.12" />
-        <entry key="app/src/main/res/layout/activity_bookingtable_reserveseat.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_bookingtable_reserveseat.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_conform_foodreserve.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_conform_seatreserve.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_conformation.xml" value="0.18" />
@@ -78,7 +78,7 @@
         <entry key="app/src/main/res/layout/activity_payment_screen.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_payment_summary_pickup.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_payment_summary_walkin.xml" value="0.14" />
-        <entry key="app/src/main/res/layout/activity_payment_view.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/activity_payment_view.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_pickup_conformation.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_redirecttofacelogin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.14" />
@@ -89,9 +89,9 @@
         <entry key="app/src/main/res/layout/activity_walkin_in_quee.xml" value="0.16" />
         <entry key="app/src/main/res/layout/addqty_alertview.xml" value="0.12" />
         <entry key="app/src/main/res/layout/book_table_cell.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/cart_view_cell.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/cart_view_cell.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cartview_alertview.xml" value="0.17" />
-        <entry key="app/src/main/res/layout/cartview_alertview_2.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/cartview_alertview_2.xml" value="0.22" />
         <entry key="app/src/main/res/layout/cell_food_order.xml" value="0.17" />
         <entry key="app/src/main/res/layout/conform_faceid_view.xml" value="0.22" />
         <entry key="app/src/main/res/layout/conform_logout_view.xml" value="0.22" />

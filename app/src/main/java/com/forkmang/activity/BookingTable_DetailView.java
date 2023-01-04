@@ -333,7 +333,7 @@ public class BookingTable_DetailView extends Activity {
         txt_custname.setText(tableList.getStr_customer_name());
         txt_datetime.setText(tableList.getStr_time());
 
-        etv_noperson.setText(tableList.getNumber_of_person() );
+        etv_noperson.setText(tableList.getNumber_of_person());
 
         txt_phoneno.setText(tableList.getStr_phone());
         btn_select_food=dialogView.findViewById(R.id.btn_select_food);
@@ -382,8 +382,10 @@ public class BookingTable_DetailView extends Activity {
         });
 
         btn_select_food.setOnClickListener(v -> {
-            final Intent mainIntent = new Intent(BookingTable_DetailView.this, BookingTable_ReserveFood.class);
+            final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
             mainIntent.putExtra("bookTable_model", bookTable);
+            mainIntent.putExtra("table_model", tableList);
+
             startActivity(mainIntent);
             dialog.dismiss();
         });
@@ -550,7 +552,8 @@ public class BookingTable_DetailView extends Activity {
         Log.d("date",date);
 
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().book_table(restaurant_id,table_id,rules,dresscode,occasion,"2022-12-13 09:12:12").
+        Api.getInfo().book_table(/*"Bearer "+storePrefrence.getString(TOKEN_LOGIN)*/
+                                restaurant_id,table_id,rules,dresscode,occasion,"2022-12-13 09:12:12").
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

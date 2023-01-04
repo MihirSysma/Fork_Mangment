@@ -310,6 +310,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/txt_hotelname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_8sdp"
@@ -335,6 +336,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/txt_customername"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
@@ -360,6 +362,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/txt_noofseat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
@@ -386,6 +389,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/txt_date_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
@@ -411,6 +415,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/txt_phoneno"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
@@ -422,10 +427,16 @@
 
                     <!-- Recycler View start -->
 
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
                     <LinearLayout
                         android:id="@+id/linear_listview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_5sdp">
 
@@ -435,6 +446,15 @@
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                    </FrameLayout>
 
                     <!-- Recycler View end -->
 

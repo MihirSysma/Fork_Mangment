@@ -1,6 +1,7 @@
 package com.forkmang.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,29 +14,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.data.Category_ItemList;
-import com.forkmang.fragment.All_Food_Fragment;
+import com.forkmang.fragment.Select_Food_Fragment;
 
 import java.util.ArrayList;
 
 
-public class All_OrderFood_Adapter extends RecyclerView.Adapter<All_OrderFood_Adapter.AllOrderFoodItemHolder> {
+public class All_Food_Adapter extends RecyclerView.Adapter<All_Food_Adapter.AllOrderFoodItemHolder> {
     Activity activity;
-
-    All_Food_Fragment all_Food_fragment;
+    Context ctx;
+    Select_Food_Fragment all_Food_fragment;
     ArrayList<Category_ItemList> category_itemLists;
     int row_index;
 
-    public All_OrderFood_Adapter(Activity activity, ArrayList<Category_ItemList> category_itemLists , All_Food_Fragment all_Food_fragment) {
+    public All_Food_Adapter(Context ctx,Activity activity, ArrayList<Category_ItemList> category_itemLists , Select_Food_Fragment all_Food_fragment) {
+        this.ctx = ctx;
         this.activity = activity;
         this.category_itemLists = category_itemLists;
         this.all_Food_fragment = all_Food_fragment;
     }
 
-    public All_OrderFood_Adapter(Activity activity, All_Food_Fragment all_Food_fragment) {
-        this.activity = activity;
-        this.all_Food_fragment = all_Food_fragment;
 
-    }
 
     /*book_table_cell*/
 
@@ -51,7 +49,7 @@ public class All_OrderFood_Adapter extends RecyclerView.Adapter<All_OrderFood_Ad
     public void onBindViewHolder(@NonNull AllOrderFoodItemHolder holder, int position) {
         Category_ItemList category_itemList = category_itemLists.get(position);
         holder.txt_foodname.setText(category_itemList.getName());
-        holder.txt_price.setText(category_itemList.getPrice());
+        holder.txt_price.setText(ctx.getResources().getString(R.string.rupee)+category_itemList.getPrice());
 
     }
 

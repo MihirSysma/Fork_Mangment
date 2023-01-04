@@ -1,9 +1,12 @@
 package com.forkmang.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +18,12 @@ import java.util.ArrayList;
 
 
 public class CartBookingAdapter extends RecyclerView.Adapter<CartBookingAdapter.CartProductItemHolder> {
-    Activity activity;
+    Context ctx;
     ArrayList<CartBooking> cartBookingArrayList;
+    Activity activity;
 
-    public CartBookingAdapter(Activity activity, ArrayList<CartBooking> cartBookingArrayList) {
-        this.activity = activity;
+    public CartBookingAdapter(Context ctx, ArrayList<CartBooking> cartBookingArrayList) {
+        this.ctx = ctx;
         this.cartBookingArrayList = cartBookingArrayList;
     }
 
@@ -36,17 +40,36 @@ public class CartBookingAdapter extends RecyclerView.Adapter<CartBookingAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CartProductItemHolder holder, int position) {
+        CartBooking cartBooking = cartBookingArrayList.get(position);
+        holder.txtproductname.setText(cartBooking.getCart_item_details_name());
+        holder.txt_toopings.setText(cartBooking.getExtra_item_details_name());
+        holder.txt_qty.setText(cartBooking.getCart_item_qty());
+        holder.txt_price.setText(ctx.getResources().getString(R.string.rupee)+cartBooking.getCart_item_details_price());
+
+
     }
 
     @Override
     public int getItemCount(){
-       //return bookTable_dataArrayList.size();
-        return 3;
+       return cartBookingArrayList.size();
+
     }
 
     public class CartProductItemHolder extends RecyclerView.ViewHolder {
+        TextView txtproductname ,txt_toopings, txt_type, txt_qty, plus_btn, minus_btn,txt_price;
+        ImageView img_del, img_edit;
         public CartProductItemHolder(@NonNull View itemView) {
             super(itemView);
+            txtproductname = itemView.findViewById(R.id.txtproductname);
+            txt_toopings = itemView.findViewById(R.id.txt_toopings);
+            txt_type = itemView.findViewById(R.id.txt_type);
+            txt_type = itemView.findViewById(R.id.txt_type);
+            txt_qty = itemView.findViewById(R.id.txt_qty);
+            txt_price = itemView.findViewById(R.id.txt_price);
+            plus_btn = itemView.findViewById(R.id.plus_btn);
+            minus_btn = itemView.findViewById(R.id.minus_btn);
+            img_del = itemView.findViewById(R.id.img_del);
+            img_edit = itemView.findViewById(R.id.img_edit);
         }
     }
 

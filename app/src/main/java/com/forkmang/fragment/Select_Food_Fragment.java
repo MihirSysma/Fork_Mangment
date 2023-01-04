@@ -1,6 +1,8 @@
 package com.forkmang.fragment;
 
+import static com.forkmang.helper.Constant.MOBILE;
 import static com.forkmang.helper.Constant.SUCCESS_CODE;
+import static com.forkmang.helper.Constant.TOKEN_LOGIN;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -29,13 +33,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary;
-import com.forkmang.adapter.All_OrderFood_Adapter;
+import com.forkmang.adapter.All_Food_Adapter;
 import com.forkmang.adapter.CartBookingAdapter;
 import com.forkmang.data.CartBooking;
 import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.Extra_Topping;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -53,22 +58,26 @@ import retrofit2.Response;
 
 
 
-public class All_Food_Fragment extends Fragment {
+public class Select_Food_Fragment extends Fragment {
 
-    private static All_Food_Fragment instance;
+    private static Select_Food_Fragment instance;
     RecyclerView recyclerView;
     static String category_id ;
     ArrayList<Category_ItemList> category_itemLists;
     ArrayList<Extra_Topping> extra_toppingArrayList;
+    public static ArrayList<CartBooking> cartBookingArrayList;
     String booking_id="0";
     int selectedId_radiobtn_topping;
     StorePrefrence storePrefrence;
+    static TableList tableList_get;
+    ProgressBar progressBar;
 
 
-    public static All_Food_Fragment newInstance() {
+    public static Select_Food_Fragment newInstance(TableList tableList) {
         //category_id = category_id_val;
         //Log.d("idval",category_id);
-        return new All_Food_Fragment();
+        tableList_get = tableList;
+        return new Select_Food_Fragment();
     }
 
     @Nullable
@@ -77,6 +86,7 @@ public class All_Food_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_orderfood_layout, container, false);
         instance= this;
         storePrefrence=new StorePrefrence(getContext());
+        progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.order_food_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -93,8 +103,8 @@ public class All_Food_Fragment extends Fragment {
 
     public void callApi_food(String category_id)
     {
-        //showProgress();
-        //progressBar.setVisibility(View.VISIBLE);
+        Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getres_catitemlist(category_id).
                 enqueue(new Callback<JsonObject>() {
                     @Override
@@ -106,6 +116,7 @@ public class All_Food_Fragment extends Fragment {
                                 JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                                 if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
+
                                     category_itemLists = new ArrayList<>();
                                     JSONArray mjson_arr = jsonObject.getJSONArray("data");
 
@@ -123,6 +134,7 @@ public class All_Food_Fragment extends Fragment {
                                         category_itemLists.add(category_itemList);
 
                                         JSONArray mjson_arr_extra = mjson_obj.getJSONArray("extra");
+
                                         extra_toppingArrayList = new ArrayList<>();
                                         for(int j = 0; j<mjson_arr_extra.length(); j++)
                                         {
@@ -141,7 +153,9 @@ public class All_Food_Fragment extends Fragment {
                                         category_itemList.setExtra_toppingArrayList(extra_toppingArrayList);
                                     }
 
-                                    All_OrderFood_Adapter all_orderFood_adapter = new All_OrderFood_Adapter(getActivity(), category_itemLists, All_Food_Fragment.this);
+                                    progressBar.setVisibility(View.GONE);
+
+                                    All_Food_Adapter all_orderFood_adapter = new All_Food_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
                                     recyclerView.setAdapter(all_orderFood_adapter);
 
                                 }
@@ -150,19 +164,20 @@ public class All_Food_Fragment extends Fragment {
                             else if(response.code() == Constant.ERROR_CODE)
                             {
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
                         catch (Exception ex)
                         {
                             ex.printStackTrace();
-
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
-                        //stopProgress();
+                        progressBar.setVisibility(View.GONE);
 
                     }
                 });
@@ -172,7 +187,7 @@ public class All_Food_Fragment extends Fragment {
      {
         //showProgress();
         //progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().additem_cart(item_id, qty, booking_table_id, item_extra).
+        Api.getInfo().additem_cart("Bearer "+storePrefrence.getString(TOKEN_LOGIN),item_id, qty, booking_table_id, item_extra).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -239,7 +254,7 @@ public class All_Food_Fragment extends Fragment {
         Button btn_add,btn_reserve ;
         TextView plus_btn, txt_qty, minus1;
         LinearLayout lyt;
-        ;
+
 
         RadioButton radioButton4_extra, radioButton5_extra, radioButton6_extra;
 
@@ -303,16 +318,11 @@ public class All_Food_Fragment extends Fragment {
             }
         });
 
-
-
-
-
-
         btn_add=dialogView.findViewById(R.id.btn_add);
         btn_reserve=dialogView.findViewById(R.id.btn_reserve);
         plus_btn=dialogView.findViewById(R.id.plus_btn);
-        minus1=dialogView.findViewById(R.id.minus1);
-        txt_qty=dialogView.findViewById(R.id.txt3);
+        minus1=dialogView.findViewById(R.id.minus_btn);
+        txt_qty=dialogView.findViewById(R.id.txt_qty);
 
         plus_btn.setOnClickListener(v -> {
             int value = Integer.parseInt(txt_qty.getText().toString());
@@ -339,7 +349,9 @@ public class All_Food_Fragment extends Fragment {
 
            //api call
             dialog.dismiss();
-            callApi_addtocart("1","2","13","1,2");
+           // callApi_addtocart("1","2","13","1,2");
+
+            callApi_addtocart(item_id,qty,booking_id,extra);
 
 
             //showAlertView_2();
@@ -367,11 +379,25 @@ public class All_Food_Fragment extends Fragment {
         Button btn_pay_table_food,btn_pay_table;
         RecyclerView recycleView;
         ImageView img_close;
+        TextView txt_restroname,txt_custname,txt_datetime, txt_phoneno;
+        EditText etv_noperson;
 
+        txt_restroname=dialog.findViewById(R.id.txt_restroname);
+        txt_custname=dialog.findViewById(R.id.txt_custname);
+        txt_datetime=dialog.findViewById(R.id.txt_datetime);
+        txt_phoneno=dialog.findViewById(R.id.txt_phoneno);
+        etv_noperson=dialog.findViewById(R.id.etv_noperson);
         recycleView = dialog.findViewById(R.id.recycleview);
         btn_pay_table_food=dialog.findViewById(R.id.btn_pay_table_food);
         btn_pay_table=dialog.findViewById(R.id.btn_pay_table);
         img_close=dialog.findViewById(R.id.img_close);
+
+        txt_restroname.setText(tableList_get.getStr_hotel_name());
+        txt_custname.setText(tableList_get.getStr_customer_name());
+        etv_noperson.setText(tableList_get.getNumber_of_person());
+        txt_phoneno.setText(storePrefrence.getString(MOBILE));
+        txt_datetime.setText(tableList_get.getStr_time());
+
 
         img_close.setOnClickListener(v -> {
             dialog.dismiss();
@@ -379,19 +405,20 @@ public class All_Food_Fragment extends Fragment {
 
         recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        callApi_detailview();
-
-        CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(getActivity());
-        recycleView.setAdapter(cartBookingAdapter);
+        callApi_detailview(recycleView);
 
 
         btn_pay_table_food.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-
                 final Intent mainIntent = new Intent(getContext(), Activity_PaymentSummary.class);
+                Bundle bundle = new Bundle();
+                //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
+                mainIntent.putExtra("model",tableList_get);
                 startActivity(mainIntent);
+                //getActivity().finish();
+
 
             }
         });
@@ -399,6 +426,7 @@ public class All_Food_Fragment extends Fragment {
         btn_pay_table.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 dialog.dismiss();
             }
         });
@@ -410,7 +438,7 @@ public class All_Food_Fragment extends Fragment {
 
 
     //Fragment Instance
-    public static All_Food_Fragment GetInstance()
+    public static Select_Food_Fragment GetInstance()
     {
         return instance;
     }
@@ -432,13 +460,28 @@ public class All_Food_Fragment extends Fragment {
         return json;
     }
 
+    public String loadJSONFromAsset_t() {
+        String json = null;
+        try {
+            InputStream is = getActivity().getAssets().open("local4.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
 
-    public void callApi_detailview()
+    public void callApi_detailview(RecyclerView recycleView)
     {
         //showProgress();
         //progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().getcart_detail("").
+        Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN),"").
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -446,26 +489,150 @@ public class All_Food_Fragment extends Fragment {
                             //Log.d("Result", jsonObject.toString());
                             if(response.code() == Constant.SUCCESS_CODE_n)
                             {
-                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                JSONObject obj = new JSONObject(new Gson().toJson(response.body()));
+                                if(obj.getString("status").equalsIgnoreCase("200"))
+                                {
+                                    JSONObject data_obj = obj.getJSONObject("data");
+                                    JSONArray cart_array_item = data_obj.getJSONArray("cart_item");
+                                    cartBookingArrayList = new ArrayList<>();
+                                    for(int i = 0; i<cart_array_item.length(); i++)
+                                    {
+                                        CartBooking cartBooking = new CartBooking();
+                                        JSONObject cart_detail_obj = cart_array_item.getJSONObject(i);
+
+
+                                        //data obj
+                                        cartBooking.setData_userid(data_obj.getString("user_id"));
+                                        cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
+                                        cartBooking.setData_total(data_obj.getString("total"));
+
+                                        //cart_item obj
+                                        cartBooking.setCart_item_qty(cart_detail_obj.getString("qty"));
+                                        cartBooking.setCart_item_cartid(cart_detail_obj.getString("cart_id"));
+                                        cartBooking.setCart_item_id(cart_detail_obj.getString("item_id"));
+                                        cartBooking.setCart_item_extra_id(cart_detail_obj.getString("item_extra_id"));
+
+                                        //cart_item_details obj
+                                        cartBooking.setCart_item_details_category_id(cart_detail_obj.getJSONObject("cart_item_details").getString("category_id"));
+                                        cartBooking.setCart_item_details_name(cart_detail_obj.getJSONObject("cart_item_details").getString("name"));
+                                        cartBooking.setCart_item_details_price(cart_detail_obj.getJSONObject("cart_item_details").getString("price"));
+
+
+                                        //extra_item_details obj
+                                        ArrayList<String>extra_namelist = new ArrayList<>();
+                                        ArrayList<String>extra_pricelist = new ArrayList<>();
+                                        for(int j = 0; j<cart_detail_obj.getJSONArray("extra_item_details").length(); j++)
+                                        {
+                                            JSONObject extra_item_obj = cart_detail_obj.getJSONArray("extra_item_details").getJSONObject(j);
+
+                                            extra_namelist.add(extra_item_obj.getString("name"));
+                                            extra_pricelist.add(extra_item_obj.getString("price"));
+
+
+                                            //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
+                                        }
+
+                                        //extra name
+                                        String str_extraname ="";
+                                        for(int k =0; k<extra_namelist.size(); k++)
+                                        {
+                                            if (k == 0)
+                                            { str_extraname = extra_namelist.get(k); }
+                                            else{  str_extraname = str_extraname+","+extra_namelist.get(k);}
+                                        }
+                                        cartBooking.setExtra_item_details_name(str_extraname);
+
+                                        //extra price
+                                        String str_extraprice ="";
+                                        for(int k =0; k<extra_pricelist.size(); k++)
+                                        {
+                                            if (k == 0)
+                                            { str_extraprice = extra_pricelist.get(k); }
+                                            else{  str_extraprice = str_extraprice+","+extra_pricelist.get(k);}
+                                        }
+                                        cartBooking.setExtra_item_details_price(str_extraprice);
+                                        cartBookingArrayList.add(cartBooking);
+
+                                    }
+
+                                    //call adapter
+                                    CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(getContext(),cartBookingArrayList);
+                                    recycleView.setAdapter(cartBookingAdapter);
+
+                                }
                             }
                             else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
                             {
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
-                                JSONObject obj = new JSONObject(loadJSONFromAsset());
+                                JSONObject obj = new JSONObject(loadJSONFromAsset_t());
+
                                 if(obj.getString("status").equalsIgnoreCase("200"))
                                 {
                                     JSONObject data_obj = obj.getJSONObject("data");
-                                    JSONArray cart_array = data_obj.getJSONArray("cart_item");
-                                    for(int i = 0; i<cart_array.length(); i++)
+                                    JSONArray cart_array_item = data_obj.getJSONArray("cart_item");
+                                    cartBookingArrayList = new ArrayList<>();
+                                    for(int i = 0; i<cart_array_item.length(); i++)
                                     {
                                         CartBooking cartBooking = new CartBooking();
-                                        JSONObject cart_detail_obj = cart_array.getJSONObject(i);
-
-                                        cartBooking.setStr_productname(cart_detail_obj.getJSONObject("cart_item_details").getString("name"));
-                                        cartBooking.setStr_qty(cart_detail_obj.getString("qty"));
+                                        JSONObject cart_detail_obj = cart_array_item.getJSONObject(i);
 
 
-                                    }
+                                        //data obj
+                                        cartBooking.setData_userid(data_obj.getString("user_id"));
+                                        cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
+                                        cartBooking.setData_total(data_obj.getString("total"));
+
+                                        //cart_item obj
+                                        cartBooking.setCart_item_qty(cart_detail_obj.getString("qty"));
+                                        cartBooking.setCart_item_cartid(cart_detail_obj.getString("cart_id"));
+                                        cartBooking.setCart_item_id(cart_detail_obj.getString("item_id"));
+                                        cartBooking.setCart_item_extra_id(cart_detail_obj.getString("item_extra_id"));
+
+                                        //cart_item_details obj
+                                        cartBooking.setCart_item_details_category_id(cart_detail_obj.getJSONObject("cart_item_details").getString("category_id"));
+                                        cartBooking.setCart_item_details_name(cart_detail_obj.getJSONObject("cart_item_details").getString("name"));
+                                        cartBooking.setCart_item_details_price(cart_detail_obj.getJSONObject("cart_item_details").getString("price"));
+
+
+                                        //extra_item_details obj
+                                        ArrayList<String>extra_namelist = new ArrayList<>();
+                                        ArrayList<String>extra_pricelist = new ArrayList<>();
+                                        for(int j = 0; j<cart_detail_obj.getJSONArray("extra_item_details").length(); j++)
+                                        {
+                                            JSONObject extra_item_obj = cart_detail_obj.getJSONArray("extra_item_details").getJSONObject(j);
+
+                                            extra_namelist.add(extra_item_obj.getString("name"));
+                                            extra_pricelist.add(extra_item_obj.getString("price"));
+
+
+                                            //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
+                                        }
+
+                                        //extra name
+                                        String str_extraname ="";
+                                        for(int k =0; k<extra_namelist.size(); k++)
+                                        {
+                                            if (k == 0)
+                                            { str_extraname = extra_namelist.get(k); }
+                                            else{  str_extraname = str_extraname+","+extra_namelist.get(k);}
+                                        }
+                                        cartBooking.setExtra_item_details_name(str_extraname);
+
+                                        //extra price
+                                        String str_extraprice ="";
+                                        for(int k =0; k<extra_pricelist.size(); k++)
+                                        {
+                                            if (k == 0)
+                                            { str_extraprice = extra_pricelist.get(k); }
+                                            else{  str_extraprice = str_extraprice+","+extra_pricelist.get(k);}
+                                        }
+                                        cartBooking.setExtra_item_details_price(str_extraprice);
+                                        cartBookingArrayList.add(cartBooking);
+
+                                   }
+                                    //call adapter
+                                    CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(getActivity(),cartBookingArrayList);
+                                    recycleView.setAdapter(cartBookingAdapter);
 
                                 }
                             }

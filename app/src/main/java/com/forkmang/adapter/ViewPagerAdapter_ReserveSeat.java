@@ -7,38 +7,26 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.forkmang.data.FoodList_Tab;
-import com.forkmang.fragment.All_Food_Fragment;
+import com.forkmang.fragment.Select_Food_Fragment;
+import com.forkmang.models.TableList;
 
 import java.util.ArrayList;
 
 public class ViewPagerAdapter_ReserveSeat extends FragmentStateAdapter {
     ArrayList<FoodList_Tab> foodListArrayList;
+    TableList tableList;
 
-    public ViewPagerAdapter_ReserveSeat(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,ArrayList<FoodList_Tab> foodListArrayList) {
+    public ViewPagerAdapter_ReserveSeat(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,ArrayList<FoodList_Tab> foodListArrayList, TableList tableList) {
         super(fragmentManager, lifecycle);
         this.foodListArrayList = foodListArrayList;
+        this.tableList = tableList;
     }
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         Fragment selectedFragment;
-        selectedFragment= All_Food_Fragment.newInstance();
+        selectedFragment= Select_Food_Fragment.newInstance(tableList);
 
-        /*switch (position){
-            case 0:
-                selectedFragment= All_OrderFood_Fragment.newInstance();
-                break;
-            case 1:
-                selectedFragment= All_OrderFood_Fragment.newInstance();
-                break;
-            case 2:
-                selectedFragment= All_OrderFood_Fragment.newInstance();
-                break;
-            default:
-                return  All_OrderFood_Fragment.newInstance();
-
-
-        }*/
         return  selectedFragment;
     }
 

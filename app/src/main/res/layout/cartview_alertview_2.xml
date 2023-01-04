@@ -87,6 +87,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txt_restroname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
@@ -112,6 +113,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txt_custname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_6sdp"
@@ -124,6 +126,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_1sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_1sdp"
             android:orientation="horizontal">
@@ -137,19 +140,48 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:id="@+id/etv_noperson"
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:text="7"
+                android:background="@color/white"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                android:textColor="@color/light_gray_n"
+                android:maxLength="2"
+                android:enabled="false"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_6sdp"
-                android:text="7 Seat"
+                android:text="@string/seats"
                 android:textColor="@color/light_gray_n"
                 android:textSize="15sp" />
 
+
+
             <ImageView
+                android:id="@+id/imgicon_edit"
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_18sdp"
-                android:layout_marginStart="@dimen/_105sdp"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:src="@drawable/pencil" />
+                android:layout_marginStart="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:src="@drawable/pencil"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/imgicon_save"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginStart="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:src="@drawable/ic_baseline_save_24"
+                android:visibility="gone"/>
+
+
+
 
         </LinearLayout>
 
@@ -169,6 +201,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txt_datetime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_6sdp"
@@ -194,6 +227,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txt_phoneno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_6sdp"
