@@ -1,19 +1,26 @@
 package com.forkmang.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.forkmang.R;
+import com.forkmang.models.BookTable;
+import com.forkmang.models.TableList;
 
 public class PaymentScreenActivity extends AppCompatActivity {
 
+
+    TableList tableList_get;
+    BookTable bookTable;
+    String totalpay;
+    Context ctx = PaymentScreenActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +30,12 @@ public class PaymentScreenActivity extends AppCompatActivity {
         RelativeLayout relative_view_2 = findViewById(R.id.relative_view_2);
         RadioButton radioButton1 = findViewById(R.id.radioButton1);
         RadioButton radioButton2 = findViewById(R.id.radioButton2);
+        Button btn_payment = findViewById(R.id.btn_payment);
+
+        tableList_get = (TableList) getIntent().getSerializableExtra("model");
+        bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
+        totalpay = getIntent().getStringExtra("totalpay");
+
 
 
         relative_view_1.setOnClickListener(v -> {
@@ -46,9 +59,13 @@ public class PaymentScreenActivity extends AppCompatActivity {
             radioButton2.setChecked(true);
         });
 
-        Button btn_payment_done = findViewById(R.id.btn_payment_done);
-        btn_payment_done.setOnClickListener(v -> {
+
+        btn_payment.setText("Pay - "+ totalpay);
+
+        btn_payment.setOnClickListener(v -> {
             final Intent mainIntent = new Intent(PaymentScreenActivity.this, BookingSeat_ReserveConformationActivity.class);
+            mainIntent.putExtra("model",tableList_get);
+            mainIntent.putExtra("bookTable",bookTable);
             startActivity(mainIntent);
         });
 

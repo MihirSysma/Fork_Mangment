@@ -57,7 +57,7 @@
         <entry key="app/src/main/res/layout/activity_bookingtable_detailview.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_bookingtable_reserveseat.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_conform_foodreserve.xml" value="0.12" />
-        <entry key="app/src/main/res/layout/activity_conform_seatreserve.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_conform_seatreserve.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_conformation.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_dash_board_view.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_demo.xml" value="0.13852073535699017" />
@@ -78,7 +78,7 @@
         <entry key="app/src/main/res/layout/activity_payment_screen.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_payment_summary_pickup.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_payment_summary_walkin.xml" value="0.14" />
-        <entry key="app/src/main/res/layout/activity_payment_view.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_payment_view.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_pickup_conformation.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_redirecttofacelogin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.14" />
@@ -99,7 +99,7 @@
         <entry key="app/src/main/res/layout/conform_tablereserve_view.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dash_board_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.13852073535699017" />
-        <entry key="app/src/main/res/layout/fragment_booktable_layout.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/fragment_booktable_layout.xml" value="0.13" />
         <entry key="app/src/main/res/layout/fragment_booktable_layout_orders.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/fragment_card.xml" value="0.13852073535699017" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.12" />

@@ -20,6 +20,7 @@ import com.forkmang.R;
 import com.forkmang.adapter.CartBookingAdapter;
 import com.forkmang.fragment.Select_Food_Fragment;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.models.BookTable;
 import com.forkmang.models.TableList;
 
 public class Activity_PaymentSummary extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     Button btn_payment_proceed;
     LinearLayout lyt_arabic, lyt_eng;
     TableList tableList_get;
+    BookTable bookTable;
     StorePrefrence storePrefrence;
     Context ctx = Activity_PaymentSummary.this;
     TextView txt_totalPay;
@@ -48,9 +50,10 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         txt_totalPay = findViewById(R.id.txt_totalPay);
 
 
-        Bundle extras = getIntent().getExtras();
+
         //ArrayList<CartBooking> cartBookingArrayList  = extras.getParcelableArrayList("cartbookingarraylist");
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
+        bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
 
         txt_hotelname.setText(tableList_get.getStr_hotel_name());
         txt_customername.setText(tableList_get.getStr_customer_name());
@@ -82,6 +85,9 @@ public class Activity_PaymentSummary extends AppCompatActivity {
 
         btn_payment_proceed.setOnClickListener(v -> {
             final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
+            mainIntent.putExtra("model",tableList_get);
+            mainIntent.putExtra("bookTable",bookTable);
+            mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
             startActivity(mainIntent);
         });
 

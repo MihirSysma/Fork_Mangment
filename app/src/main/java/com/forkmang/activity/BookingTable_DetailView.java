@@ -1,6 +1,7 @@
 package com.forkmang.activity;
 
 import static com.forkmang.helper.Constant.SUCCESS_CODE;
+import static com.forkmang.helper.Constant.TOKEN_LOGIN;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -550,9 +551,10 @@ public class BookingTable_DetailView extends Activity {
         Log.d("dresscode",dresscode);
         Log.d("occasion",occasion);
         Log.d("date",date);
+        //table_id="8";
 
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().book_table(/*"Bearer "+storePrefrence.getString(TOKEN_LOGIN)*/
+        Api.getInfo().book_table("Bearer "+storePrefrence.getString(TOKEN_LOGIN),/*,"application/json",*//*"application/json",*/
                                 restaurant_id,table_id,rules,dresscode,occasion,"2022-12-13 09:12:12").
                 enqueue(new Callback<JsonObject>() {
                     @Override
@@ -564,7 +566,6 @@ public class BookingTable_DetailView extends Activity {
                                 //Log.d("Result", jsonObject.toString());
                                 if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
-
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                     JSONObject mjson_obj = jsonObject.getJSONObject("data");

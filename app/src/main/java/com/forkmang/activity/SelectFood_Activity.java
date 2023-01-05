@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.forkmang.R;
-import com.forkmang.adapter.ViewPagerAdapter_ReserveSeat;
+import com.forkmang.adapter.ViewPagerAdapter_SelectFood;
 import com.forkmang.data.FoodList_Tab;
 import com.forkmang.fragment.Select_Food_Fragment;
 import com.forkmang.helper.Constant;
@@ -165,7 +165,7 @@ public class SelectFood_Activity extends AppCompatActivity {
                                             foodListArrayList.add(foodList_tab);
                                         }
                                         progressBar.setVisibility(View.GONE);
-                                        ViewPagerAdapter_ReserveSeat viewPagerAdapter_reserveSeat=new ViewPagerAdapter_ReserveSeat(getSupportFragmentManager(),getLifecycle(),foodListArrayList, tableList);
+                                        ViewPagerAdapter_SelectFood viewPagerAdapter_reserveSeat=new ViewPagerAdapter_SelectFood(getSupportFragmentManager(),getLifecycle(),foodListArrayList, tableList,bookTable);
                                         viewPager.setAdapter(viewPagerAdapter_reserveSeat);
 
                                         fill_tablist();

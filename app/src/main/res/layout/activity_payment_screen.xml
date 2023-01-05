@@ -323,7 +323,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_payment_done"
+                android:id="@+id/btn_payment"
                 android:layout_width="@dimen/_220sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_3sdp"

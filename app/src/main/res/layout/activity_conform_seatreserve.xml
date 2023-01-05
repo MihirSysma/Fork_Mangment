@@ -93,6 +93,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/txt_customername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
@@ -120,6 +121,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/txt_mobileno"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
@@ -147,6 +149,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/txt_customer_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
@@ -163,6 +166,8 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="#EBEBEB"
                     android:orientation="horizontal" />
+
+
 
                 <RelativeLayout
                     android:id="@+id/relative_view"
@@ -193,7 +198,7 @@
                         android:weightSum="2">
 
                         <TextView
-                            android:id="@+id/txtproductname"
+                            android:id="@+id/txt_hotelname"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
@@ -258,7 +263,7 @@
 
 
                             <TextView
-                                android:id="@+id/txt_time"
+                                android:id="@+id/txt_endtime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/generalsansregular"
@@ -297,6 +302,7 @@
 
 
                 </RelativeLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -343,6 +349,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/txt_indoor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
@@ -458,6 +465,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/txt_rule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"
@@ -490,6 +498,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/txt_dresscode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/generalsansregular"

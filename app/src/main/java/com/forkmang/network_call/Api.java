@@ -1,6 +1,7 @@
 package com.forkmang.network_call;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,8 +31,6 @@ public class Api {
                 .setLenient()
                 .create();
 
-
-
         okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(300, TimeUnit.SECONDS)
                 .readTimeout(300, TimeUnit.SECONDS)
@@ -48,6 +47,7 @@ public class Api {
         }
 
         APIService api = retrofit.create(APIService.class);
+        Log.d("Retrofit", ""+api);
         return api;
     }
 

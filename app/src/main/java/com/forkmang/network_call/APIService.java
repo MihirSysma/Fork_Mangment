@@ -110,8 +110,9 @@ public interface APIService {
     @POST(WebApi.RES_BOOKTABLE)
     @FormUrlEncoded
     Call<JsonObject> book_table(
-            //@Header("Authorization") String token,
-            //@Header("Accept") String key,
+            @Header("Authorization") String token,
+            //@Header("content-type") String key,
+            //@Header("Accept") String key_1,
             @Field("restaurant_id") String restaurant_id,
             @Field("table_id") String table_id,
             @Field("rules") String rules,

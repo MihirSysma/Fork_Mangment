@@ -34,12 +34,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary;
 import com.forkmang.adapter.All_Food_Adapter;
+import com.forkmang.adapter.All_Food_Adapter_2;
 import com.forkmang.adapter.CartBookingAdapter;
 import com.forkmang.data.CartBooking;
 import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.Extra_Topping;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.models.BookTable;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -70,13 +72,17 @@ public class Select_Food_Fragment extends Fragment {
     int selectedId_radiobtn_topping;
     StorePrefrence storePrefrence;
     static TableList tableList_get;
+    static BookTable bookTable_get;
     ProgressBar progressBar;
+    All_Food_Adapter all_orderFood_adapter;
+    All_Food_Adapter_2 all_orderFood_adapter_2;
 
 
-    public static Select_Food_Fragment newInstance(TableList tableList) {
+    public static Select_Food_Fragment newInstance(TableList tableList,BookTable bookTable) {
         //category_id = category_id_val;
         //Log.d("idval",category_id);
         tableList_get = tableList;
+        bookTable_get = bookTable;
         return new Select_Food_Fragment();
     }
 
@@ -104,6 +110,7 @@ public class Select_Food_Fragment extends Fragment {
     public void callApi_food(String category_id)
     {
         Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
+
         progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getres_catitemlist(category_id).
                 enqueue(new Callback<JsonObject>() {
@@ -118,6 +125,7 @@ public class Select_Food_Fragment extends Fragment {
                                 {
 
                                     category_itemLists = new ArrayList<>();
+
                                     JSONArray mjson_arr = jsonObject.getJSONArray("data");
 
                                     for(int i = 0 ; i < mjson_arr.length(); i++)
@@ -131,7 +139,7 @@ public class Select_Food_Fragment extends Fragment {
                                         category_itemList.setPrice(mjson_obj.getString("price"));
                                         category_itemList.setImage(mjson_obj.getString("image"));
 
-                                        category_itemLists.add(category_itemList);
+
 
                                         JSONArray mjson_arr_extra = mjson_obj.getJSONArray("extra");
 
@@ -146,17 +154,31 @@ public class Select_Food_Fragment extends Fragment {
                                             extra_topping.setItem_id(mjson_obj_extra.getString("item_id"));
                                             extra_topping.setName(mjson_obj_extra.getString("name"));
                                             extra_topping.setPrice(mjson_obj_extra.getString("price"));
-
                                             extra_toppingArrayList.add(extra_topping);
 
                                         }
                                         category_itemList.setExtra_toppingArrayList(extra_toppingArrayList);
+                                        category_itemLists.add(category_itemList);
+
                                     }
 
                                     progressBar.setVisibility(View.GONE);
 
-                                    All_Food_Adapter all_orderFood_adapter = new All_Food_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
+
+
+                                    all_orderFood_adapter = new All_Food_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
                                     recyclerView.setAdapter(all_orderFood_adapter);
+
+
+
+                                    /*if(all_orderFood_adapter == null)
+                                    {
+                                        all_orderFood_adapter = new All_Food_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
+                                        recyclerView.setAdapter(all_orderFood_adapter);
+                                    }
+                                    else{
+                                        all_orderFood_adapter.notifyDataSetChanged();
+                                    }*/
 
                                 }
 
@@ -381,6 +403,7 @@ public class Select_Food_Fragment extends Fragment {
         ImageView img_close;
         TextView txt_restroname,txt_custname,txt_datetime, txt_phoneno;
         EditText etv_noperson;
+        ProgressBar progressBar;
 
         txt_restroname=dialog.findViewById(R.id.txt_restroname);
         txt_custname=dialog.findViewById(R.id.txt_custname);
@@ -391,6 +414,7 @@ public class Select_Food_Fragment extends Fragment {
         btn_pay_table_food=dialog.findViewById(R.id.btn_pay_table_food);
         btn_pay_table=dialog.findViewById(R.id.btn_pay_table);
         img_close=dialog.findViewById(R.id.img_close);
+        progressBar=dialog.findViewById(R.id.progressBar);
 
         txt_restroname.setText(tableList_get.getStr_hotel_name());
         txt_custname.setText(tableList_get.getStr_customer_name());
@@ -405,22 +429,21 @@ public class Select_Food_Fragment extends Fragment {
 
         recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        callApi_detailview(recycleView);
+        callApi_detailview(recycleView, progressBar);
 
 
-        btn_pay_table_food.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                final Intent mainIntent = new Intent(getContext(), Activity_PaymentSummary.class);
-                Bundle bundle = new Bundle();
-                //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
-                mainIntent.putExtra("model",tableList_get);
-                startActivity(mainIntent);
-                //getActivity().finish();
+        btn_pay_table_food.setOnClickListener(v -> {
+            dialog.dismiss();
+            final Intent mainIntent = new Intent(getContext(), Activity_PaymentSummary.class);
+            Bundle bundle = new Bundle();
+            //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
+            mainIntent.putExtra("model",tableList_get);
+            mainIntent.putExtra("bookTable",bookTable_get);
+
+            startActivity(mainIntent);
+            //getActivity().finish();
 
 
-            }
         });
 
         btn_pay_table.setOnClickListener(new View.OnClickListener() {
@@ -477,10 +500,10 @@ public class Select_Food_Fragment extends Fragment {
     }
 
 
-    public void callApi_detailview(RecyclerView recycleView)
+    public void callApi_detailview(RecyclerView recycleView, ProgressBar progressBar)
     {
         //showProgress();
-        //progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN),"").
                 enqueue(new Callback<JsonObject>() {
                     @Override
@@ -555,6 +578,7 @@ public class Select_Food_Fragment extends Fragment {
 
                                     }
 
+                                    progressBar.setVisibility(View.GONE);
                                     //call adapter
                                     CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(getContext(),cartBookingArrayList);
                                     recycleView.setAdapter(cartBookingAdapter);
@@ -630,6 +654,7 @@ public class Select_Food_Fragment extends Fragment {
                                         cartBookingArrayList.add(cartBooking);
 
                                    }
+                                    progressBar.setVisibility(View.GONE);
                                     //call adapter
                                     CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(getActivity(),cartBookingArrayList);
                                     recycleView.setAdapter(cartBookingAdapter);
@@ -640,11 +665,13 @@ public class Select_Food_Fragment extends Fragment {
                         catch (Exception ex)
                         {
                             ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
                         //stopProgress();
 
