@@ -63,7 +63,7 @@ import retrofit2.Response;
 public class BookingTable_DetailView extends Activity {
 
     Context ctx = BookingTable_DetailView.this;
-    int mYear, mMonth, mDay, mHour, mMinute;
+    int mYear, mMonth, mDay, mHour, mMinute,mSecond;
     String booking_date, booking_time, Date_get="",resturant_id, noof_person="0";
     ArrayList<TableList> tableListArrayList;
     FrameLayout frame_layout;
@@ -318,7 +318,7 @@ public class BookingTable_DetailView extends Activity {
         alertDialog.setView(dialogView);
         alertDialog.setCancelable(true);
         final AlertDialog dialog = alertDialog.create();
-        Button btn_cancel,btn_cnf_payment,btn_select_food;
+        Button btn_cancel,btn_cnf_tablebook,btn_select_food;
         TextView txt_restroname, txt_custname, txt_datetime,txt_phoneno;
         EditText etv_noperson;
         ImageView imgicon_edit,imgicon_save;
@@ -369,14 +369,14 @@ public class BookingTable_DetailView extends Activity {
 
 
 
-        btn_cnf_payment=dialogView.findViewById(R.id.btn_cnf_payment);
+        btn_cnf_tablebook=dialogView.findViewById(R.id.btn_cnf_payment);
 
         btn_cancel.setOnClickListener(v -> dialog.dismiss());
 
-        btn_cnf_payment.setOnClickListener(v ->{
+        btn_cnf_tablebook.setOnClickListener(v ->{
 
-                callapi_conform_pay(tableList.getRestaurant_id(), tableList.getId(), tableList.getTable_rule(),
-                                    tableList.getTable_drescode(),tableList.getTable_ocassion(),txt_datetime.getText().toString());
+                callapi_conform_tablebooking(tableList.getRestaurant_id(), tableList.getId(), tableList.getTable_rule(),
+                                    tableList.getTable_drescode(),tableList.getTable_ocassion(),booking_date);
 
                 dialog.dismiss();
 
@@ -542,8 +542,8 @@ public class BookingTable_DetailView extends Activity {
     }
 
 
-    private void callapi_conform_pay(String restaurant_id, String table_id, String rules, String dresscode,
-                                     String occasion, String date)
+    private void callapi_conform_tablebooking(String restaurant_id, String table_id, String rules, String dresscode,
+                                              String occasion, String date)
     {
         Log.d("restaurant_id",restaurant_id);
         Log.d("table_id",table_id);
@@ -551,11 +551,12 @@ public class BookingTable_DetailView extends Activity {
         Log.d("dresscode",dresscode);
         Log.d("occasion",occasion);
         Log.d("date",date);
+        //"2022-12-13 09:12:12"
         //table_id="8";
 
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().book_table("Bearer "+storePrefrence.getString(TOKEN_LOGIN),/*,"application/json",*//*"application/json",*/
-                                restaurant_id,table_id,rules,dresscode,occasion,"2022-12-13 09:12:12").
+        Api.getInfo().book_table("Bearer "+storePrefrence.getString(TOKEN_LOGIN), /*,"application/json",*//*"application/json",*/
+                                restaurant_id,table_id,rules,dresscode,occasion,date).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -570,8 +571,10 @@ public class BookingTable_DetailView extends Activity {
                                     Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                     JSONObject mjson_obj = jsonObject.getJSONObject("data");
 
-                                    storePrefrence.setString("customerid", mjson_obj.getString("customer_id"));
+                                    storePrefrence.setString(Constant.CUSTOMERID, mjson_obj.getString("customer_id"));
                                     storePrefrence.setString("paymentstatus", mjson_obj.getString("payment_status"));
+                                    storePrefrence.setString(Constant.BOOKINGID, mjson_obj.getString("id"));
+
 
                                     Log.d("table_id", mjson_obj.getString("table_id"));
                                     Log.d("restaurant_id", mjson_obj.getString("restaurant_id"));
@@ -583,11 +586,12 @@ public class BookingTable_DetailView extends Activity {
                                     Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
                                 }
                             }
-                            else if(response.code() == Constant.ERROR_CODE)
+                            else if(response.code() == Constant.ERROR_CODE_n)
                             {
                                 progressBar.setVisibility(View.GONE);
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
-                                JSONObject obj = new JSONObject(loadJSONFromAsset());
+                                Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                /*JSONObject obj = new JSONObject(loadJSONFromAsset());
                                 if(obj.getString("status").equalsIgnoreCase("200"))
                                 {
                                     Toast.makeText(ctx, obj.getString("message")+" offline ", Toast.LENGTH_LONG).show();
@@ -602,7 +606,7 @@ public class BookingTable_DetailView extends Activity {
                                 else{
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
-                                }
+                                }*/
 
                             }
                             else{
@@ -779,6 +783,7 @@ public class BookingTable_DetailView extends Activity {
         mDay = c.get(Calendar.DAY_OF_MONTH);
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
+        mSecond = c.get(Calendar.SECOND);
 
 
         String AM_PM ;
@@ -789,6 +794,7 @@ public class BookingTable_DetailView extends Activity {
         }
 
         String time = mHour + ":" + mMinute +" "+ AM_PM;
+        String time_send = mHour + ":" + mMinute + ":" + mSecond;
 
 
         int month_n =  mMonth + 1;
@@ -814,7 +820,9 @@ public class BookingTable_DetailView extends Activity {
         }
 
         selectedYear = String.valueOf(mYear);
-        booking_date = selectedYear + "-" + str_month + "-" + str_date;
+        booking_date = selectedYear + "-" + str_month + "-" + str_date + " " +time_send;
+        /*"2022-12-13 09:12:12"*/
+
 
         txt_view_datetime.setText("");
         txt_view_datetime.setText(str_day + "-" +getMonth(month_n) + " " +time);
@@ -843,6 +851,9 @@ public class BookingTable_DetailView extends Activity {
         }
         return json;
     }
+
+
+
 
 
 

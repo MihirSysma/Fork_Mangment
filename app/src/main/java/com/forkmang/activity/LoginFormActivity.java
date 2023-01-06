@@ -227,7 +227,8 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                                 {
                                     Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                     storePrefrence.setBoolean("keeplogin", Constant.KEEP_LOGIN);
-                                    storePrefrence.setString(Constant.MOBILE, etv_mobile.getText().toString());
+                                    storePrefrence.setString(Constant.MOBILE, jsonObject.getJSONObject("data").getString("contact"));
+                                    storePrefrence.setString(Constant.NAME, jsonObject.getJSONObject("data").getString("name"));
                                     storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));
                                     /*if(chek_keeplogin.isChecked())
                                     {

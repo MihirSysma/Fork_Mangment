@@ -72,6 +72,7 @@ public class All_Food_Adapter_2 extends RecyclerView.Adapter<All_Food_Adapter_2.
 
             relative_view.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
+
                 Category_ItemList category_itemList = category_itemLists.get(position);
                 row_index = position;
                 all_Food_fragment.showAlertView(category_itemList);

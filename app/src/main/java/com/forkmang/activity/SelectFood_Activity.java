@@ -75,7 +75,9 @@ public class SelectFood_Activity extends AppCompatActivity {
 
 
         btn_view_cart.setOnClickListener(v -> {
-            showAlertView();
+            //showAlertView();
+            Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
+            all_Food_fragment.cartListingView();
         });
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

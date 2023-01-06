@@ -34,8 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary;
 import com.forkmang.adapter.All_Food_Adapter;
-import com.forkmang.adapter.All_Food_Adapter_2;
-import com.forkmang.adapter.CartBookingAdapter;
+import com.forkmang.adapter.CartListingAdapter;
 import com.forkmang.data.CartBooking;
 import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.Extra_Topping;
@@ -62,20 +61,22 @@ import retrofit2.Response;
 
 public class Select_Food_Fragment extends Fragment {
 
-    private static Select_Food_Fragment instance;
+    public static Select_Food_Fragment instance;
     RecyclerView recyclerView;
     static String category_id ;
     ArrayList<Category_ItemList> category_itemLists;
     ArrayList<Extra_Topping> extra_toppingArrayList;
-    public static ArrayList<CartBooking> cartBookingArrayList;
+    public ArrayList<CartBooking> cartBookingArrayList;
     String booking_id="0";
     int selectedId_radiobtn_topping;
     StorePrefrence storePrefrence;
     static TableList tableList_get;
     static BookTable bookTable_get;
     ProgressBar progressBar;
+    ProgressBar progressBar_alertview;
     All_Food_Adapter all_orderFood_adapter;
-    All_Food_Adapter_2 all_orderFood_adapter_2;
+    RecyclerView recycleView;
+
 
 
     public static Select_Food_Fragment newInstance(TableList tableList,BookTable bookTable) {
@@ -109,7 +110,7 @@ public class Select_Food_Fragment extends Fragment {
 
     public void callApi_food(String category_id)
     {
-        Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
 
         progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getres_catitemlist(category_id).
@@ -208,7 +209,7 @@ public class Select_Food_Fragment extends Fragment {
     public void callApi_addtocart(String item_id, String qty, String booking_table_id, String item_extra)
      {
         //showProgress();
-        //progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().additem_cart("Bearer "+storePrefrence.getString(TOKEN_LOGIN),item_id, qty, booking_table_id, item_extra).
                 enqueue(new Callback<JsonObject>() {
                     @Override
@@ -221,37 +222,44 @@ public class Select_Food_Fragment extends Fragment {
                                 if(jsonObject.getString("status").equalsIgnoreCase("200"))
                                 {
                                     Toast.makeText(getContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-                                    storePrefrence.setString("cartid", jsonObject.getJSONObject("data").getString("cart_id"));
-                                    storePrefrence.setString("item_id", jsonObject.getJSONObject("data").getString("item_id"));
+                                    storePrefrence.setString(Constant.CARTID, jsonObject.getJSONObject("data").getString("cart_id"));
+                                    storePrefrence.setString(Constant.CART_ITEMID, jsonObject.getJSONObject("data").getString("item_id"));
+                                    progressBar.setVisibility(View.GONE);
+
+                                    cartListingView();
                                 }
-
-
                             }
                             else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
                             {
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
-                                JSONObject obj = new JSONObject(loadJSONFromAsset());
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+
+                                /*JSONObject obj = new JSONObject(loadJSONFromAsset());
                                 if(obj.getString("status").equalsIgnoreCase("200"))
                                 {
                                     Toast.makeText(getContext(), obj.getString("message")+" offline ", Toast.LENGTH_LONG).show();
                                     storePrefrence.setString("cartid", obj.getJSONObject("data").getString("cart_id"));
                                     storePrefrence.setString("item_id", obj.getJSONObject("data").getString("item_id"));
 
-                                    cartDetailView();
 
-                                }
+                                    cartListingView();
+
+                                }*/
 
                             }
                         }
                         catch (Exception ex)
                         {
                             ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
                         //stopProgress();
 
                     }
@@ -333,12 +341,7 @@ public class Select_Food_Fragment extends Fragment {
 
 
 
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                selectedId_radiobtn_topping = rg.getCheckedRadioButtonId();
-            }
-        });
+        rg.setOnCheckedChangeListener((group, checkedId) -> selectedId_radiobtn_topping = rg.getCheckedRadioButtonId());
 
         btn_add=dialogView.findViewById(R.id.btn_add);
         btn_reserve=dialogView.findViewById(R.id.btn_reserve);
@@ -364,7 +367,8 @@ public class Select_Food_Fragment extends Fragment {
            String item_id = category_itemList.getId();
            String qty = txt_qty.getText().toString();
            String extra ="1,2";
-           Log.d("booking_id", booking_id);
+
+           //Log.d("booking_id", booking_id);
            Log.d("qty", qty);
            Log.d("item_id", item_id);
            Log.d("selectedId", ""+selectedId_radiobtn_topping);
@@ -373,7 +377,7 @@ public class Select_Food_Fragment extends Fragment {
             dialog.dismiss();
            // callApi_addtocart("1","2","13","1,2");
 
-            callApi_addtocart(item_id,qty,booking_id,extra);
+            callApi_addtocart(item_id,qty,storePrefrence.getString(Constant.BOOKINGID),extra);
 
 
             //showAlertView_2();
@@ -389,7 +393,7 @@ public class Select_Food_Fragment extends Fragment {
     }
 
 
-    public void cartDetailView()
+    public void cartListingView()
     {
         final Dialog dialog = new Dialog(getActivity(),R.style.FullHeightDialog);
         dialog.setContentView(R.layout.cartview_alertview_2);
@@ -399,11 +403,11 @@ public class Select_Food_Fragment extends Fragment {
         }
 
         Button btn_pay_table_food,btn_pay_table;
-        RecyclerView recycleView;
+
         ImageView img_close;
         TextView txt_restroname,txt_custname,txt_datetime, txt_phoneno;
         EditText etv_noperson;
-        ProgressBar progressBar;
+
 
         txt_restroname=dialog.findViewById(R.id.txt_restroname);
         txt_custname=dialog.findViewById(R.id.txt_custname);
@@ -414,8 +418,7 @@ public class Select_Food_Fragment extends Fragment {
         btn_pay_table_food=dialog.findViewById(R.id.btn_pay_table_food);
         btn_pay_table=dialog.findViewById(R.id.btn_pay_table);
         img_close=dialog.findViewById(R.id.img_close);
-        progressBar=dialog.findViewById(R.id.progressBar);
-
+        progressBar_alertview=dialog.findViewById(R.id.progressBar_alertview);
         txt_restroname.setText(tableList_get.getStr_hotel_name());
         txt_custname.setText(tableList_get.getStr_customer_name());
         etv_noperson.setText(tableList_get.getNumber_of_person());
@@ -429,7 +432,7 @@ public class Select_Food_Fragment extends Fragment {
 
         recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        callApi_detailview(recycleView, progressBar);
+        callApi_cartListview();
 
 
         btn_pay_table_food.setOnClickListener(v -> {
@@ -500,11 +503,11 @@ public class Select_Food_Fragment extends Fragment {
     }
 
 
-    public void callApi_detailview(RecyclerView recycleView, ProgressBar progressBar)
+    public void callApi_cartListview()
     {
         //showProgress();
-        progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN),"").
+        progressBar_alertview.setVisibility(View.VISIBLE);
+        Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -521,6 +524,7 @@ public class Select_Food_Fragment extends Fragment {
                                     for(int i = 0; i<cart_array_item.length(); i++)
                                     {
                                         CartBooking cartBooking = new CartBooking();
+
                                         JSONObject cart_detail_obj = cart_array_item.getJSONObject(i);
 
 
@@ -532,7 +536,7 @@ public class Select_Food_Fragment extends Fragment {
                                         //cart_item obj
                                         cartBooking.setCart_item_qty(cart_detail_obj.getString("qty"));
                                         cartBooking.setCart_item_cartid(cart_detail_obj.getString("cart_id"));
-                                        cartBooking.setCart_item_id(cart_detail_obj.getString("item_id"));
+                                        cartBooking.setCart_item_id(cart_detail_obj.getString("id"));
                                         cartBooking.setCart_item_extra_id(cart_detail_obj.getString("item_extra_id"));
 
                                         //cart_item_details obj
@@ -578,9 +582,9 @@ public class Select_Food_Fragment extends Fragment {
 
                                     }
 
-                                    progressBar.setVisibility(View.GONE);
+                                    progressBar_alertview.setVisibility(View.GONE);
                                     //call adapter
-                                    CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(getContext(),cartBookingArrayList);
+                                    CartListingAdapter cartBookingAdapter = new CartListingAdapter(getContext(),cartBookingArrayList);
                                     recycleView.setAdapter(cartBookingAdapter);
 
                                 }
@@ -588,7 +592,9 @@ public class Select_Food_Fragment extends Fragment {
                             else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
                             {
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
-                                JSONObject obj = new JSONObject(loadJSONFromAsset_t());
+                                Toast.makeText(getContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                progressBar_alertview.setVisibility(View.GONE);
+                                /*JSONObject obj = new JSONObject(loadJSONFromAsset_t());
 
                                 if(obj.getString("status").equalsIgnoreCase("200"))
                                 {
@@ -659,7 +665,53 @@ public class Select_Food_Fragment extends Fragment {
                                     CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(getActivity(),cartBookingArrayList);
                                     recycleView.setAdapter(cartBookingAdapter);
 
+                                }*/
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+                            progressBar_alertview.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBar_alertview.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
+                        //stopProgress();
+
+                    }
+                });
+    }
+
+
+    public void callApi_addqty(String cart_itemid,String qty)
+    {
+        //showProgress();
+        progressBar.setVisibility(View.VISIBLE);
+        Api.getInfo().cart_updateqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid, qty).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            //Log.d("Result", jsonObject.toString());
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject obj = new JSONObject(new Gson().toJson(response.body()));
+                                if(obj.getString("status").equalsIgnoreCase("200"))
+                                {
+                                    Toast.makeText(getContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+                                    callApi_cartListview();
                                 }
+                            }
+                            else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(getContext(), jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+
                             }
                         }
                         catch (Exception ex)
@@ -673,12 +725,55 @@ public class Select_Food_Fragment extends Fragment {
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
-                        //stopProgress();
 
                     }
                 });
     }
 
+    public void callApi_removeitemcart(String cart_itemid)
+    {
+        //showProgress();
+        progressBar.setVisibility(View.VISIBLE);
+        Api.getInfo().cart_removeqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            //Log.d("Result", jsonObject.toString());
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject obj = new JSONObject(new Gson().toJson(response.body()));
+                                if(obj.getString("status").equalsIgnoreCase("200"))
+                                {
+                                    Toast.makeText(getContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+                                    callApi_cartListview();
+
+                                }
+                            }
+                            else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(getContext(), jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+    }
 
 
 }

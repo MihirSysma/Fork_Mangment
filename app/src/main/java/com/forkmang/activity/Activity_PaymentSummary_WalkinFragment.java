@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.adapter.CartBookingAdapter;
+import com.forkmang.adapter.CartListingAdapter;
 
 public class Activity_PaymentSummary_WalkinFragment extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -50,7 +50,7 @@ public class Activity_PaymentSummary_WalkinFragment extends AppCompatActivity {
         });
 
 
-        CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(Activity_PaymentSummary_WalkinFragment.this );
+        CartListingAdapter cartBookingAdapter = new CartListingAdapter(Activity_PaymentSummary_WalkinFragment.this );
         recyclerView.setAdapter(cartBookingAdapter);
 
     }

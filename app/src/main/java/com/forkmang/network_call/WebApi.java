@@ -17,6 +17,9 @@ public class WebApi {
     public static final String RES_ADDITEMCART = API_BASE + "add-item-cart";
     public static final String RES_BOOKTABLE = API_BASE + "booking-table";
     public static final String RES_GETCARTDETAIL = API_BASE + "get-cart-details";
+    public static final String RES_UPDATEQTY = API_BASE + "update-qty";
+    public static final String RES_REMOVEITEMCART = API_BASE + "remove-item-cart";
+    public static final String RES_CREATEORDER = API_BASE + "create-order";
 
 
 

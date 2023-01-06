@@ -22,6 +22,11 @@ public class Constant {
 
     public static String NAME="name";
     public static String MOBILE="mobile";
+    public static String BOOKINGID="bookingid";
+    public static String CUSTOMERID="customerid";
+    public static String CARTID="cartid";
+    public static String CART_ITEMID="cart_itemid";
+
 
     public static String ENTER_NAME="Please enter your name";
     public static String ENTER_MOBILE="Please enter mobile no";

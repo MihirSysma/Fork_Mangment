@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.fragment.Select_Food_Fragment;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
 import com.forkmang.models.BookTable;
@@ -23,6 +22,7 @@ public class BookingSeat_ReserveConformationActivity extends AppCompatActivity {
     TextView txtrestroname, txt_endtime, txt_distance,txttotalkm;
     Context ctx = BookingSeat_ReserveConformationActivity.this;
     StorePrefrence storePrefrence;
+    String totalpay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +45,18 @@ public class BookingSeat_ReserveConformationActivity extends AppCompatActivity {
 
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
         bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
+        totalpay = getIntent().getStringExtra("totalpay");
 
         txtrestroname.setText(bookTable.getRest_name());
         txt_endtime.setText(bookTable.getEndtime());
         txttotalkm.setText(bookTable.getDistance()+" Km");
 
-        String data_total = Select_Food_Fragment.cartBookingArrayList.get(0).getData_total();
-        txt_totalPaidamt.setText(ctx.getResources().getString(R.string.rupee)+data_total);
+        //String data_total = Select_Food_Fragment.cartBookingArrayList.get(0).getData_total();
+        txt_totalPaidamt.setText(totalpay);
 
         txt_rule.setText(tableList_get.getTable_rule());
         txt_dresscode.setText(tableList_get.getTable_drescode());
         txt_timeview.setText(tableList_get.getStr_time());
-
         txt_customername.setText(tableList_get.getStr_customer_name());
         txt_mobileno.setText(storePrefrence.getString(Constant.MOBILE));
         txt_indoor.setText(tableList_get.getNumber_of_person() + " " + "Seats");

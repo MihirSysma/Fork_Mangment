@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,24 +13,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/_1sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/_1sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="3"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_3sdp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="3">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.2"
                 android:layout_gravity="start"
-                android:gravity="start"
+                android:layout_weight="2.2"
                 android:fontFamily="@font/generalsansmedium"
+                android:gravity="start"
                 android:padding="@dimen/_3sdp"
                 android:text="@string/items_in_the_cart"
                 android:textColor="@color/black"
@@ -41,15 +40,12 @@
                 android:id="@+id/img_close"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_24sdp"
-                android:layout_weight="1"
                 android:layout_gravity="end"
-                android:gravity="end"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:gravity="end"
                 android:src="@drawable/close" />
-            
-            
-
 
 
         </LinearLayout>
@@ -126,10 +122,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_1sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_1sdp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/_1sdp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -144,13 +140,13 @@
                 android:layout_width="@dimen/_22sdp"
                 android:layout_height="@dimen/_18sdp"
                 android:layout_marginStart="@dimen/_3sdp"
-                android:text="7"
                 android:background="@color/white"
+                android:enabled="false"
                 android:inputType="numberDecimal"
+                android:maxLength="2"
+                android:text="7"
                 android:textAlignment="center"
                 android:textColor="@color/light_gray_n"
-                android:maxLength="2"
-                android:enabled="false"
                 android:textSize="15sp" />
 
             <TextView
@@ -161,7 +157,6 @@
                 android:textSize="15sp" />
 
 
-
             <ImageView
                 android:id="@+id/imgicon_edit"
                 android:layout_width="@dimen/_18sdp"
@@ -169,7 +164,7 @@
                 android:layout_marginStart="@dimen/_80sdp"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:src="@drawable/pencil"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/imgicon_save"
@@ -178,9 +173,7 @@
                 android:layout_marginStart="@dimen/_80sdp"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:src="@drawable/ic_baseline_save_24"
-                android:visibility="gone"/>
-
-
+                android:visibility="gone" />
 
 
         </LinearLayout>
@@ -245,32 +238,29 @@
             android:layout_margin="@dimen/_2sdp">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-           <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_3sdp"
-            android:layout_marginEnd="@dimen/_3sdp"
-            />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_3sdp" />
 
-        </LinearLayout>
+            </LinearLayout>
 
 
-           <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            <ProgressBar
+                android:id="@+id/progressBar_alertview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
         </FrameLayout>
-
 
 
         <!-- Recycler view -->
@@ -278,16 +268,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn_pay_table_food"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/layout_rectangle_2"
                 android:fontFamily="@font/generalsansmedium"
                 android:text="@string/pay_for_table_food"
@@ -301,8 +291,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/layout_rectangle_orange"
                 android:fontFamily="@font/generalsansmedium"
                 android:text="@string/pay_for_table_food"
@@ -319,30 +309,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_3ssp"
-            android:padding="@dimen/_5ssp"
-            android:textSize="13sp"
             android:fontFamily="@font/generalsansmedium"
+            android:padding="@dimen/_5ssp"
             android:text="@string/note_the_time_table_is_reserved_upto_6_00_pm_only"
-            android:textColor="@color/orange_2"
             android:textAlignment="center"
-            />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            android:textColor="@color/orange_2"
+            android:textSize="13sp" />
 
 
     </LinearLayout>

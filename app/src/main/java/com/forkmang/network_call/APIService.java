@@ -150,12 +150,40 @@ public interface APIService {
 
     );
 
-    @POST(WebApi.RES_GETCARTDETAIL)
+    @POST(WebApi.RES_UPDATEQTY)
     @FormUrlEncoded
-    Call<JsonObject> getcart_detail(
+    Call<JsonObject> cart_updateqty(
             @Header("Authorization") String token,
             //@Header("Accept") String key,
-            @Field("test") String test
+            @Field("cart_item_id") String cart_item_id,
+            @Field("qty") String qty
+    );
+
+    @POST(WebApi.RES_REMOVEITEMCART)
+    @FormUrlEncoded
+    Call<JsonObject> cart_removeqty(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("cart_item_id") String cart_item_id
+
+    );
+
+    @POST(WebApi.RES_CREATEORDER)
+    @FormUrlEncoded
+    Call<JsonObject> create_order(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("restaurant_id") String restaurant_id
+
+    );
+
+
+
+    @POST(WebApi.RES_GETCARTDETAIL)
+    Call<JsonObject> getcart_detail(
+            @Header("Authorization") String token
+            //@Header("Accept") String key,
+            //@Field("test") String test
 
 
     );

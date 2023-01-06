@@ -226,6 +226,8 @@
     <string name="seats">Seats</string>
     <string name="toopings">Toopings:</string>
     <string name="rupee">\u20B9</string>
+    <string name="remove">Remove</string>
+    <string name="deleteproductmsg">This Will Delete Cart Are You Sure Want To Delete Cart Product ? </string>
 
 
     <string-array name="person">

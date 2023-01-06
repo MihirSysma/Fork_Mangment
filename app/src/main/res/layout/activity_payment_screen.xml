@@ -168,23 +168,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"
-                android:background="@drawable/round_corner_toggle">
+                android:background="@drawable/round_corner_toggle_orange"
+                >
 
 
                 <RadioButton
                     android:id="@+id/radioButton1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:text="@string/cash"
-                    android:textColor="@color/black"
-                    android:buttonTint="@color/black"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/_8sdp"
                     android:layout_centerVertical="true"
-                    android:fontFamily="@font/generalsanssemibold"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_toStartOf="@id/image_view_money"
+                    android:buttonTint="@color/black"
+                    android:checked="true"
+                    android:fontFamily="@font/generalsanssemibold"
+                    android:text="@string/cash"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
 
@@ -208,6 +210,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"
+                android:visibility="gone"
                 android:background="@drawable/round_corner_toggle_orange">
 
 
@@ -220,13 +223,13 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_toStartOf="@id/image_view_money_2"
+                    android:backgroundTint="@color/black"
                     android:buttonTint="@color/black"
+                    android:checked="true"
                     android:fontFamily="@font/generalsanssemibold"
                     android:text="@string/credit_debit_card"
                     android:textColor="@color/white"
-                    android:backgroundTint="@color/black"
-                    android:checked="true"
-                    android:layout_toStartOf="@id/image_view_money_2"
                     android:textSize="15sp" />
 
 
@@ -249,6 +252,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"
+                android:visibility="gone"
                 android:background="@drawable/round_corner_toggle">
 
                 <TextView
@@ -266,6 +270,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 >
 
                 <TextView
@@ -305,6 +310,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_margin="@dimen/_15sdp"
+                android:visibility="gone"
                 >
 
                 <CheckBox
@@ -327,6 +333,7 @@
                 android:layout_width="@dimen/_220sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:padding="@dimen/_2sdp"
                 android:layout_gravity="center"
                 android:background="@drawable/layout_rectangle_2"

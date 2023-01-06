@@ -8,12 +8,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.adapter.CartBookingAdapter;
+import com.forkmang.adapter.CartListingAdapter;
 
 public class Activity_PaymentSummary_PickupFragment extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -53,7 +52,7 @@ public class Activity_PaymentSummary_PickupFragment extends AppCompatActivity {
             startActivity(mainIntent);
         });
 
-        CartBookingAdapter cartBookingAdapter = new CartBookingAdapter(Activity_PaymentSummary_PickupFragment.this );
+        CartListingAdapter cartBookingAdapter = new CartListingAdapter(Activity_PaymentSummary_PickupFragment.this );
         recyclerView.setAdapter(cartBookingAdapter);
 
     }

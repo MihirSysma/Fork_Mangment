@@ -84,14 +84,15 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_scan_order.xml" value="0.12526720820863618" />
         <entry key="app/src/main/res/layout/activity_select_language.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/activity_selectfood.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/activity_tutorial_screen.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_walkin_conformation.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_walkin_in_quee.xml" value="0.16" />
-        <entry key="app/src/main/res/layout/addqty_alertview.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/addqty_alertview.xml" value="0.18" />
         <entry key="app/src/main/res/layout/book_table_cell.xml" value="0.18" />
         <entry key="app/src/main/res/layout/cart_view_cell.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cartview_alertview.xml" value="0.17" />
-        <entry key="app/src/main/res/layout/cartview_alertview_2.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/cartview_alertview_2.xml" value="0.14" />
         <entry key="app/src/main/res/layout/cell_food_order.xml" value="0.17" />
         <entry key="app/src/main/res/layout/conform_faceid_view.xml" value="0.22" />
         <entry key="app/src/main/res/layout/conform_logout_view.xml" value="0.22" />
@@ -114,6 +115,7 @@
         <entry key="app/src/main/res/layout/location_alertview.xml" value="0.12" />
         <entry key="app/src/main/res/layout/location_cell.xml" value="0.21" />
         <entry key="app/src/main/res/layout/lyt_header.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/msg_view_4.xml" value="0.21" />
         <entry key="app/src/main/res/layout/nav_footer_main.xml" value="0.16" />
         <entry key="app/src/main/res/layout/orderwalkin_cell.xml" value="0.1" />
         <entry key="app/src/main/res/layout/otp_conform.xml" value="0.18" />
