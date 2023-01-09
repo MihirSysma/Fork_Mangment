@@ -41,7 +41,7 @@ import com.forkmang.adapter.SpinnnerAdapter_Type;
 import com.forkmang.adapter.SpinnnerAdapter_Type_Value;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.models.BookTable;
+import com.forkmang.data.BookTable;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -147,6 +147,7 @@ public class BookingTable_DetailView extends Activity {
             linear_layout_under_frame.setVisibility(View.GONE);
             recyclerView = findViewById(R.id.table_recycleview);
             recyclerView.setLayoutManager(new LinearLayoutManager(BookingTable_DetailView.this, LinearLayoutManager.HORIZONTAL, false));
+
             callapi_booktablelist(resturant_id);
         });
 
@@ -395,18 +396,7 @@ public class BookingTable_DetailView extends Activity {
 
     }
 
-    private void showAlertView_conformtable()
-    {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(BookingTable_DetailView.this);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View dialogView = inflater.inflate(R.layout.conform_tablereserve_view, null);
-        alertDialog.setView(dialogView);
-        alertDialog.setCancelable(true);
-        final AlertDialog dialog = alertDialog.create();
 
-        dialog.show();
-
-    }
 
     private void callapi_booktablelist(String restaurant_id)
     {
@@ -466,7 +456,7 @@ public class BookingTable_DetailView extends Activity {
                                                     tableList.setTable_drescode(mjson_object.getString("table_drescode"));
                                                 }
                                                 else{
-                                                    tableList.setTable_drescode("White Shirt and Blue Jeans");
+                                                    tableList.setTable_drescode("Test White Shirt and Blue Jeans");
                                                 }
 
                                                 if(mjson_object.has("table_ocassion"))
@@ -474,7 +464,7 @@ public class BookingTable_DetailView extends Activity {
                                                     tableList.setTable_ocassion(mjson_object.getString("table_ocassion"));
                                                 }
                                                 else{
-                                                    tableList.setTable_ocassion("Birthday Bash");
+                                                    tableList.setTable_ocassion("Test Birthday Bash");
                                                 }
                                                 /* code end for table reservation */
 
@@ -485,7 +475,7 @@ public class BookingTable_DetailView extends Activity {
 
                                                 if(storePrefrence.getString(Constant.NAME).length() == 0)
                                                 {
-                                                    tableList.setStr_customer_name("Test customer name");
+                                                    tableList.setStr_customer_name("Test Customer Name");
                                                 }
                                                 else{
                                                     tableList.setStr_customer_name(storePrefrence.getString(Constant.NAME));
@@ -579,7 +569,7 @@ public class BookingTable_DetailView extends Activity {
                                     Log.d("table_id", mjson_obj.getString("table_id"));
                                     Log.d("restaurant_id", mjson_obj.getString("restaurant_id"));
                                     Log.d("rules", mjson_obj.getString("rules"));
-                                    showAlertView_conformtable();
+
                                 }
                                 else{
                                     progressBar.setVisibility(View.GONE);

@@ -57,7 +57,7 @@
         <entry key="app/src/main/res/layout/activity_bookingtable_detailview.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_bookingtable_reserveseat.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_conform_foodreserve.xml" value="0.12" />
-        <entry key="app/src/main/res/layout/activity_conform_seatreserve.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_conform_seatreserve.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_conformation.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_dash_board_view.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_demo.xml" value="0.13852073535699017" />
@@ -78,7 +78,7 @@
         <entry key="app/src/main/res/layout/activity_payment_screen.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_payment_summary_pickup.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_payment_summary_walkin.xml" value="0.14" />
-        <entry key="app/src/main/res/layout/activity_payment_view.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_payment_view.xml" value="0.11" />
         <entry key="app/src/main/res/layout/activity_pickup_conformation.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_redirecttofacelogin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.14" />
@@ -117,6 +117,7 @@
         <entry key="app/src/main/res/layout/lyt_header.xml" value="0.16" />
         <entry key="app/src/main/res/layout/msg_view_4.xml" value="0.21" />
         <entry key="app/src/main/res/layout/nav_footer_main.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/order_cell.xml" value="0.25" />
         <entry key="app/src/main/res/layout/orderwalkin_cell.xml" value="0.1" />
         <entry key="app/src/main/res/layout/otp_conform.xml" value="0.18" />
         <entry key="app/src/main/res/layout/payment_conform_alertview.xml" value="0.2" />

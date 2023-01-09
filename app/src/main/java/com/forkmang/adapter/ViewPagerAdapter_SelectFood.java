@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.forkmang.data.FoodList_Tab;
 import com.forkmang.fragment.Select_Food_Fragment;
-import com.forkmang.models.BookTable;
+import com.forkmang.data.BookTable;
 import com.forkmang.models.TableList;
 
 import java.util.ArrayList;

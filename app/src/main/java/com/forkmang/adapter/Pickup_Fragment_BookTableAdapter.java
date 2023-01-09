@@ -15,16 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary_PickupFragment;
-import com.forkmang.data.BookTable_Data;
+import com.forkmang.data.TableOrderListing;
 
 import java.util.ArrayList;
 
 
 public class Pickup_Fragment_BookTableAdapter extends RecyclerView.Adapter<Pickup_Fragment_BookTableAdapter.BookTableItemHolder> {
     Activity activity;
-    ArrayList<BookTable_Data> bookTable_dataArrayList;
+    ArrayList<TableOrderListing> bookTable_dataArrayList;
 
-    public Pickup_Fragment_BookTableAdapter(Activity activity, ArrayList<BookTable_Data> bookTable_dataArrayList) {
+    public Pickup_Fragment_BookTableAdapter(Activity activity, ArrayList<TableOrderListing> bookTable_dataArrayList) {
         this.activity = activity;
         this.bookTable_dataArrayList = bookTable_dataArrayList;
     }

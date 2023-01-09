@@ -6,14 +6,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.forkmang.fragment.Book_Table_Fragment;
-import com.forkmang.fragment.Book_Table_Fragment_Orders;
-import com.forkmang.fragment.Pickup_Fragment;
-import com.forkmang.fragment.Walkin_Fragment;
+import com.forkmang.fragment.Table_OrdersListing_Fragment;
 
-public class ViewPagerAdapter_Orders extends FragmentStateAdapter {
+public class ViewPagerAdapter_OrdersListing extends FragmentStateAdapter {
 
-    public ViewPagerAdapter_Orders(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public ViewPagerAdapter_OrdersListing(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
 
@@ -24,17 +21,17 @@ public class ViewPagerAdapter_Orders extends FragmentStateAdapter {
 
         switch (position){
             case 0:
-                selectedFragment= Book_Table_Fragment_Orders.newInstance();
+                selectedFragment= Table_OrdersListing_Fragment.newInstance();
                 break;
             case 1:
-                selectedFragment= Book_Table_Fragment_Orders.newInstance();
+                selectedFragment= Table_OrdersListing_Fragment.newInstance();
                 break;
             case 2:
-                selectedFragment= Book_Table_Fragment_Orders.newInstance();
+                selectedFragment= Table_OrdersListing_Fragment.newInstance();
                 break;
 
             default:
-                return  Book_Table_Fragment_Orders.newInstance();
+                return  Table_OrdersListing_Fragment.newInstance();
 
         }
         return  selectedFragment;

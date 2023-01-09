@@ -40,7 +40,7 @@ import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.Extra_Topping;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.models.BookTable;
+import com.forkmang.data.BookTable;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -79,7 +79,7 @@ public class Select_Food_Fragment extends Fragment {
 
 
 
-    public static Select_Food_Fragment newInstance(TableList tableList,BookTable bookTable) {
+    public static Select_Food_Fragment newInstance(TableList tableList, BookTable bookTable) {
         //category_id = category_id_val;
         //Log.d("idval",category_id);
         tableList_get = tableList;

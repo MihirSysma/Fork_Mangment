@@ -177,6 +177,24 @@ public interface APIService {
 
     );
 
+    @POST(WebApi.RES_MAKEPAYMENT)
+    @FormUrlEncoded
+    Call<JsonObject> make_payment(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("order_id") String order_id,
+            @Field("payment_type") String payment_type
+    );
+
+    @POST(WebApi.RES_ORDERDETAIL)
+    @FormUrlEncoded
+    Call<JsonObject> get_orderdetail(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("order_id") String order_id
+
+    );
+
 
 
     @POST(WebApi.RES_GETCARTDETAIL)
@@ -184,8 +202,14 @@ public interface APIService {
             @Header("Authorization") String token
             //@Header("Accept") String key,
             //@Field("test") String test
+     );
 
 
+    @POST(WebApi.RES_GETTABLEORDERSLIST)
+    Call<JsonObject> getbooktable_listing(
+            @Header("Authorization") String token
+            //@Header("Accept") String key,
+            //@Field("test") String test
     );
 
 

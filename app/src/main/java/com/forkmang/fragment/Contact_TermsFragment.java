@@ -2,18 +2,14 @@ package com.forkmang.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.forkmang.R;
-import com.forkmang.activity.DashBoardActivity_2;
 import com.forkmang.adapter.ViewPagerAdapter_Contact_Term;
-import com.forkmang.adapter.ViewPagerAdapter_Orders;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

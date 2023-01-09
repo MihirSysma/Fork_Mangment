@@ -1,0 +1,41 @@
+{
+    "Version": "1",
+    "Profile": [
+        {
+            "Born": "1,1 - 25,1",
+            "Name": "Ram"
+        },
+        {
+            "Born": "26,1 - 15,2",
+            "Name": "Shyam"
+        },
+        {
+            "Born": "16,2 - 5,4",
+            "Name": "Aakash"
+        },
+        {
+            "Born": "6,4 - 10,7",
+            "Name": "Laxman"
+        },
+        {
+            "Born": "11,7 - 21,8",
+            "Name": "Sita"
+        },
+        {
+            "Born": "22,8 - 23,9",
+            "Name": "Krishna"
+        },
+        {
+            "Born": "24,9 - 16,10",
+            "Name": "Prakash"
+        },
+        {
+            "Born": "17,10 - 5,12",
+            "Name": "Raman"
+        },
+        {
+            "Born": "6,12 - 31,12",
+            "Name": "Piyush"
+        }
+    ]
+}

@@ -1,12 +1,15 @@
 package com.forkmang.activity;
 
 import static com.forkmang.helper.Constant.MOBILE;
+import static com.forkmang.helper.Constant.SUCCESS_CODE;
 import static com.forkmang.helper.Constant.TOKEN_LOGIN;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +27,7 @@ import com.forkmang.adapter.CartListingAdapter_Summary;
 import com.forkmang.data.CartBooking;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.models.BookTable;
+import com.forkmang.data.BookTable;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -64,10 +68,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         TextView txt_hotelname = findViewById(R.id.txt_hotelname);
         TextView txt_customername = findViewById(R.id.txt_customername);
         txt_totalPay = findViewById(R.id.txt_totalPay);
-
-
-
-        //ArrayList<CartBooking> cartBookingArrayList  = extras.getParcelableArrayList("cartbookingarraylist");
+       //ArrayList<CartBooking> cartBookingArrayList  = extras.getParcelableArrayList("cartbookingarraylist");
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
         bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
 
@@ -100,11 +101,10 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         }
 
         btn_payment_proceed.setOnClickListener(v -> {
-            final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
-            mainIntent.putExtra("model",tableList_get);
-            mainIntent.putExtra("bookTable",bookTable);
-            mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
-            startActivity(mainIntent);
+
+            callApi_createorder();
+
+
         });
 
         progressBar.setVisibility(View.GONE);
@@ -398,7 +398,60 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     }
 
 
+    public void callApi_createorder()
+    {
+        Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN),bookTable.getId()).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            //Log.d("Result", jsonObject.toString());
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
+                                {
+                                    String order_id = jsonObject.getString("data");
+                                    //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                    AlertDialog dialog =  showAlertView_conformtable();
 
+                                    new Handler().postDelayed(() -> {
+                                        dialog.dismiss();
+                                        final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
+                                        mainIntent.putExtra("model",tableList_get);
+                                        mainIntent.putExtra("bookTable",bookTable);
+                                        mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
+                                        mainIntent.putExtra("orderid",order_id);
+                                        startActivity(mainIntent);
+                                    }, 1000);
+                                }
+                                else{
+                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+
+                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+
+
+                    }
+                });
+    }
 
     private String loadLocale()
     {
@@ -407,6 +460,22 @@ public class Activity_PaymentSummary extends AppCompatActivity {
                 SplashActivity.MODE_PRIVATE);
         String language = prefs.getString(langPref, "");
         return language;
+
+    }
+
+
+    private AlertDialog showAlertView_conformtable()
+    {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(Activity_PaymentSummary.this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.conform_tablereserve_view, null);
+        alertDialog.setView(dialogView);
+        alertDialog.setCancelable(true);
+        final AlertDialog dialog = alertDialog.create();
+
+        dialog.show();
+
+        return  dialog;
 
     }
 

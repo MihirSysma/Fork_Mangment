@@ -17,6 +17,7 @@
         android:padding="@dimen/_2sdp">
 
         <TextView
+            android:id="@+id/txt_order_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/generalsansmedium"
@@ -52,6 +53,7 @@
                 android:background="@drawable/layout_rectangle_gray">
 
                 <TextView
+                    android:id="@+id/txt_restroname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -172,6 +174,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/txt_restrotime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
@@ -182,6 +185,7 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/txt_restrocontact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -190,7 +194,7 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:gravity="center_vertical"
                     android:text="Sar 99"
-                    android:textColor="@color/text_gray2"
+                    android:textColor="@color/black"
                     android:textSize="13sp" />
 
 
@@ -203,6 +207,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/txt_restrobranch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
@@ -213,6 +218,7 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/txt_payment_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -221,7 +227,30 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:gravity="center_vertical"
                     android:text="7 Person"
-                    android:textColor="@color/text_gray2"
+                    android:textColor="@color/green"
+                    android:textSize="13sp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_3sdp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/txt_order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:gravity="center_vertical"
+                    android:text="7 Person"
+                    android:textColor="@color/red"
                     android:textSize="13sp" />
 
 

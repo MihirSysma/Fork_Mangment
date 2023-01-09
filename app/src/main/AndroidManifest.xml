@@ -44,7 +44,7 @@
             android:name="com.forkmang.activity.WalkinInQuee"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.BookingSeat_ReserveConformationActivity"
+            android:name="com.forkmang.activity.Order_ConformationActivity"
             android:exported="false" />
         <activity
             android:name="com.forkmang.activity.Activity_PaymentSummary"
@@ -120,7 +120,7 @@
             android:exported="true" />
 
         <activity
-            android:name="com.forkmang.fragment.OrdersFragment"
+            android:name="com.forkmang.fragment.OrdersListing_Fragment"
             android:exported="true" />
         <activity
             android:name="com.forkmang.fragment.Contact_TermsFragment"

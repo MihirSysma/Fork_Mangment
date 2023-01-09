@@ -1,4 +1,4 @@
-package com.forkmang.models;
+package com.forkmang.data;
 
 import java.io.Serializable;
 

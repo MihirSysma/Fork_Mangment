@@ -48,7 +48,8 @@ public class Booking_TabView_Activity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
 
 
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback()
+        {
             @Override
             public void onPageScrolled(int position,
                                        float positionOffset, int positionOffsetPixels) {

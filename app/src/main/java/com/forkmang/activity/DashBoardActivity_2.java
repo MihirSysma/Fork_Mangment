@@ -23,7 +23,7 @@ import com.forkmang.R;
 import com.forkmang.fragment.ChatFragment;
 import com.forkmang.fragment.Contact_TermsFragment;
 import com.forkmang.fragment.LocationScreen_Fragment;
-import com.forkmang.fragment.OrdersFragment;
+import com.forkmang.fragment.OrdersListing_Fragment;
 import com.forkmang.fragment.ScanOrderFragment;
 import com.forkmang.fragment.WalletView_Fragment;
 import com.forkmang.helper.StorePrefrence;
@@ -153,7 +153,7 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
                 break;
             case R.id.menu_order:
                 //Toast.makeText(this, "Menu Order Pressed", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(DashBoardActivity_2.this,OrdersFragment.class);
+                Intent i = new Intent(DashBoardActivity_2.this, OrdersListing_Fragment.class);
                 startActivity(i);
                 closeDrawer();
                 break;

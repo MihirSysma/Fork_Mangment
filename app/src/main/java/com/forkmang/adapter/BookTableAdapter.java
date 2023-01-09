@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.activity.BookingTable_DetailView;
-import com.forkmang.models.BookTable;
+import com.forkmang.data.BookTable;
 
 import java.util.ArrayList;
 

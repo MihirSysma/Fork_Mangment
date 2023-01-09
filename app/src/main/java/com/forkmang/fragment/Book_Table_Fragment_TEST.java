@@ -47,8 +47,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Book_Table_Fragment extends Fragment {
-    private static Book_Table_Fragment instance;
+public class Book_Table_Fragment_TEST extends Fragment {
+    private static Book_Table_Fragment_TEST instance;
 
     ArrayList<BookTable> bookTableArrayList;
     BookTableAdapter bookTableAdapter;
@@ -68,9 +68,9 @@ public class Book_Table_Fragment extends Fragment {
     String [] person =
             {"Select Person","1","2 ","3","4","5","6","7","8","9","10"};
 
-   public static Book_Table_Fragment newInstance() {
+   public static Book_Table_Fragment_TEST newInstance() {
 
-        return new Book_Table_Fragment();
+        return new Book_Table_Fragment_TEST();
     }
 
     @Nullable
@@ -164,7 +164,7 @@ public class Book_Table_Fragment extends Fragment {
         saveLatitude = 23.933689;
         saveLongitude = 72.367458;
 
-        callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString());
+        //callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString());
     }
 
     //Date and time picker example code start
@@ -546,7 +546,7 @@ public class Book_Table_Fragment extends Fragment {
     //Api code for Book Table end
 
     //Fragment Instance
-    public static Book_Table_Fragment GetInstance()
+    public static Book_Table_Fragment_TEST GetInstance()
     {
         return instance;
     }

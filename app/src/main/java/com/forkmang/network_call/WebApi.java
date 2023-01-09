@@ -20,6 +20,9 @@ public class WebApi {
     public static final String RES_UPDATEQTY = API_BASE + "update-qty";
     public static final String RES_REMOVEITEMCART = API_BASE + "remove-item-cart";
     public static final String RES_CREATEORDER = API_BASE + "create-order";
+    public static final String RES_MAKEPAYMENT = API_BASE + "payment";
+    public static final String RES_ORDERDETAIL = API_BASE + "get-order-details";
+    public static final String RES_GETTABLEORDERSLIST = API_BASE + "get-orders";
 
 
 

@@ -2,19 +2,15 @@ package com.forkmang.activity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.forkmang.R;
-import com.forkmang.fragment.Book_Table_Fragment_Orders;
-import com.forkmang.fragment.OrdersFragment;
 import com.forkmang.fragment.ScanOrderFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.shape.CornerFamily;

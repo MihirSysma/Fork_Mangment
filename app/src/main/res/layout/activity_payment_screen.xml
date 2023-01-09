@@ -210,7 +210,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/round_corner_toggle_orange">
 
 
@@ -226,10 +226,10 @@
                     android:layout_toStartOf="@id/image_view_money_2"
                     android:backgroundTint="@color/black"
                     android:buttonTint="@color/black"
-                    android:checked="true"
+                    android:checked="false"
                     android:fontFamily="@font/generalsanssemibold"
                     android:text="@string/credit_debit_card"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
 

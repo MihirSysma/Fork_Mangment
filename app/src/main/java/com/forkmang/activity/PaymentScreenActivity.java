@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.forkmang.R;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.models.BookTable;
+import com.forkmang.data.BookTable;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -35,6 +35,7 @@ public class PaymentScreenActivity extends AppCompatActivity {
     String totalpay;
     Context ctx = PaymentScreenActivity.this;
     StorePrefrence storePrefrence;
+    String order_id, payment_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class PaymentScreenActivity extends AppCompatActivity {
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
         bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
         totalpay = getIntent().getStringExtra("totalpay");
+        totalpay = getIntent().getStringExtra("totalpay");
+        order_id = getIntent().getStringExtra("orderid");
 
 
 
@@ -78,21 +81,20 @@ public class PaymentScreenActivity extends AppCompatActivity {
         btn_payment.setText("Pay - "+ totalpay);
 
         btn_payment.setOnClickListener(v -> {
-
-            //callApi_createorder();
-            final Intent mainIntent = new Intent(PaymentScreenActivity.this, BookingSeat_ReserveConformationActivity.class);
-            mainIntent.putExtra("model",tableList_get);
-            mainIntent.putExtra("bookTable",bookTable);
-            mainIntent.putExtra("totalpay",totalpay);
-            startActivity(mainIntent);
+            payment_type="cash";
+            callApi_makepayment(order_id, payment_type);
 
         });
 
     }
 
-    public void callApi_createorder()
+
+
+
+
+    public void callApi_makepayment(String order_id,String payment_type)
     {
-        Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN),bookTable.getRestaurant_id()).
+        Api.getInfo().make_payment("Bearer "+storePrefrence.getString(TOKEN_LOGIN),order_id, payment_type).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -103,21 +105,24 @@ public class PaymentScreenActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                                 if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
-
-                                  /*
-                                    final Intent mainIntent = new Intent(PaymentScreenActivity.this, BookingSeat_ReserveConformationActivity.class);
+                                    final Intent mainIntent = new Intent(PaymentScreenActivity.this, Order_ConformationActivity.class);
                                     mainIntent.putExtra("model",tableList_get);
                                     mainIntent.putExtra("bookTable",bookTable);
                                     mainIntent.putExtra("totalpay",totalpay);
+                                    mainIntent.putExtra("orderid",order_id);
                                     startActivity(mainIntent);
-                                    */
 
+
+                                }
+                                else{
+                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                 }
 
                             }
                             else if(response.code() == Constant.ERROR_CODE)
                             {
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -136,4 +141,7 @@ public class PaymentScreenActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+
 }
