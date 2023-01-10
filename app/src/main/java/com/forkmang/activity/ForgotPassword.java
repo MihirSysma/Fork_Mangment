@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.forkmang.R;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.helper.Utils;
 import com.forkmang.network_call.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -112,10 +113,18 @@ public class ForgotPassword extends AppCompatActivity {
                                     //storePrefrence.setString(Constant.TOKEN_FORGOTPASS, jsonObject.getJSONObject("data").getString("token"));
                                     storePrefrence.setBoolean("keeplogin", false);
 
-                                    callApi_resetpassword(jsonObject.getJSONObject("data").getString("contact"),
-                                            Objects.requireNonNull(etv_newpas.getText()).toString(),
-                                            Objects.requireNonNull(etvcnf_pass.getText()).toString(),
-                                            jsonObject.getJSONObject("data").getString("token") );
+
+                                    if (Utils.isNetworkAvailable(ctx)) {
+                                        callApi_resetpassword(jsonObject.getJSONObject("data").getString("contact"),
+                                                Objects.requireNonNull(etv_newpas.getText()).toString(),
+                                                Objects.requireNonNull(etvcnf_pass.getText()).toString(),
+                                                jsonObject.getJSONObject("data").getString("token") );
+
+                                    }
+                                    else{
+                                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+                                    }
+
 
                                     //stopProgress();
                                 }
@@ -233,7 +242,15 @@ public class ForgotPassword extends AppCompatActivity {
                             Log.d("token", idToken);
                             //progressBar.setVisibility(View.GONE);
 
-                            callApi_forgetpassword_valid(contact);
+
+
+                            if (Utils.isNetworkAvailable(ctx)) {
+                                callApi_forgetpassword_valid(contact);
+                            }
+                            else{
+                                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+                            }
+
                             // Send token to your backend via HTTPS
                             // ...
                         } else {

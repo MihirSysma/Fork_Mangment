@@ -33,14 +33,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary;
-import com.forkmang.adapter.All_Food_Adapter;
+import com.forkmang.adapter.FoodList_Adapter;
 import com.forkmang.adapter.CartListingAdapter;
+import com.forkmang.data.BookTable;
 import com.forkmang.data.CartBooking;
 import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.Extra_Topping;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.data.BookTable;
+import com.forkmang.helper.Utils;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -74,7 +75,7 @@ public class Select_Food_Fragment extends Fragment {
     static BookTable bookTable_get;
     ProgressBar progressBar;
     ProgressBar progressBar_alertview;
-    All_Food_Adapter all_orderFood_adapter;
+    FoodList_Adapter all_orderFood_adapter;
     RecyclerView recycleView;
 
 
@@ -167,7 +168,7 @@ public class Select_Food_Fragment extends Fragment {
 
 
 
-                                    all_orderFood_adapter = new All_Food_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
+                                    all_orderFood_adapter = new FoodList_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
                                     recyclerView.setAdapter(all_orderFood_adapter);
 
 
@@ -241,8 +242,6 @@ public class Select_Food_Fragment extends Fragment {
                                     Toast.makeText(getContext(), obj.getString("message")+" offline ", Toast.LENGTH_LONG).show();
                                     storePrefrence.setString("cartid", obj.getJSONObject("data").getString("cart_id"));
                                     storePrefrence.setString("item_id", obj.getJSONObject("data").getString("item_id"));
-
-
                                     cartListingView();
 
                                 }*/
@@ -268,9 +267,14 @@ public class Select_Food_Fragment extends Fragment {
 
     public void callApi_food_1(String category_id, String booking_id)
     {
-        callApi_food((category_id));
-        this.booking_id = booking_id;
+        if (Utils.isNetworkAvailable(getContext())) {
+            this.booking_id = booking_id;
+            callApi_food((category_id));
 
+        }
+        else{
+            Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public  void showAlertView(Category_ItemList category_itemList)
@@ -284,11 +288,10 @@ public class Select_Food_Fragment extends Fragment {
         Button btn_add,btn_reserve ;
         TextView plus_btn, txt_qty, minus1;
         LinearLayout lyt;
+        ArrayList<String>radio_btn_id_arr = new ArrayList<>();
 
 
         RadioButton radioButton4_extra, radioButton5_extra, radioButton6_extra;
-
-
         /*radioButton4_extra=dialogView.findViewById(R.id.radioButton4);
         radioButton5_extra=dialogView.findViewById(R.id.radioButton5);
         radioButton6_extra=dialogView.findViewById(R.id.radioButton6);
@@ -308,6 +311,10 @@ public class Select_Food_Fragment extends Fragment {
 
         RadioGroup rg = new RadioGroup(getContext()); //create the RadioGroup
         rg.setOrientation(RadioGroup.VERTICAL);//or RadioGroup.VERTICAL
+
+        LinearLayout layout2 = new LinearLayout(getContext());
+        layout2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        layout2.setOrientation(LinearLayout.VERTICAL);
         //rg.setBackgroundColor(Color.parseColor("#3F51B5"));
 
 
@@ -325,7 +332,8 @@ public class Select_Food_Fragment extends Fragment {
                         }
         );
 
-        for(int i=0;i<extra_toppingArrayList_get.size(); i++){
+        for(int i=0;i<extra_toppingArrayList_get.size(); i++)
+        {
             Extra_Topping extra_topping = extra_toppingArrayList_get.get(i);
             rb[i]  = new RadioButton(getContext());
             rb[i].setText(extra_topping.getName());
@@ -334,14 +342,20 @@ public class Select_Food_Fragment extends Fragment {
             rb[i].setButtonTintList(colorStateList);
             rb[i].setId(Integer.parseInt(extra_topping.getId()));
 
-            rg.addView(rb[i]);
+            //rg.addView(rb[i]);
+            layout2.addView(rb[i]);
+
+            rb[i].setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(buttonView.isChecked())
+                {
+                    radio_btn_id_arr.add(String.valueOf(buttonView.getId()));
+                }
+            });
         }
+
         lyt=dialogView.findViewById(R.id.lyt);
-        lyt.addView(rg);//you add the whole RadioGroup to the layout
-
-
-
-        rg.setOnCheckedChangeListener((group, checkedId) -> selectedId_radiobtn_topping = rg.getCheckedRadioButtonId());
+        lyt.addView(layout2);//you add the whole RadioGroup to the layout
+        //rg.setOnCheckedChangeListener((group, checkedId) -> selectedId_radiobtn_topping = rg.getCheckedRadioButtonId());
 
         btn_add=dialogView.findViewById(R.id.btn_add);
         btn_reserve=dialogView.findViewById(R.id.btn_reserve);
@@ -363,25 +377,37 @@ public class Select_Food_Fragment extends Fragment {
 
         btn_add.setOnClickListener(v -> {
            // dialog.dismiss();
-
            String item_id = category_itemList.getId();
            String qty = txt_qty.getText().toString();
-           String extra ="1,2";
+           //String extra ="1,2";
+            String extra ="";
+
+           for(int i = 0; i<radio_btn_id_arr.size(); i++)
+           {
+               if(i==0)
+               {
+                   extra = radio_btn_id_arr.get(i);
+               }
+               else{
+                   extra = extra+ "," + radio_btn_id_arr.get(i);
+               }
+           }
 
            //Log.d("booking_id", booking_id);
+            radio_btn_id_arr.clear();
+           Log.d("extra", extra);
            Log.d("qty", qty);
            Log.d("item_id", item_id);
            Log.d("selectedId", ""+selectedId_radiobtn_topping);
 
            //api call
-            dialog.dismiss();
-           // callApi_addtocart("1","2","13","1,2");
-
-            callApi_addtocart(item_id,qty,storePrefrence.getString(Constant.BOOKINGID),extra);
-
-
-            //showAlertView_2();
-
+            if (Utils.isNetworkAvailable(getContext())) {
+                dialog.dismiss();
+                callApi_addtocart(item_id,qty,storePrefrence.getString(Constant.BOOKINGID),extra);
+            }
+            else{
+                Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+             }
         });
 
         btn_reserve.setOnClickListener(v -> {
@@ -703,7 +729,14 @@ public class Select_Food_Fragment extends Fragment {
                                 {
                                     Toast.makeText(getContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
-                                    callApi_cartListview();
+                                    if (Utils.isNetworkAvailable(getContext())) {
+                                        callApi_cartListview();
+                                    }
+                                    else{
+                                        Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+                                    }
+
                                 }
                             }
                             else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
@@ -747,7 +780,15 @@ public class Select_Food_Fragment extends Fragment {
                                 {
                                     Toast.makeText(getContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
-                                    callApi_cartListview();
+
+                                    if (Utils.isNetworkAvailable(getContext())) {
+                                        callApi_cartListview();
+                                    }
+                                    else{
+                                        Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+                                    }
+
 
                                 }
                             }

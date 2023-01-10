@@ -63,7 +63,7 @@ public class DrawerActivity extends AppCompatActivity {
 
                     break;
 
-                case R.id.menu_register:
+                case R.id.menu_logout:
                     Toast.makeText(this, "Register Pressed", Toast.LENGTH_SHORT).show();
 
                     break;

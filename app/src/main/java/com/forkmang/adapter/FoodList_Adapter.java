@@ -19,14 +19,14 @@ import com.forkmang.fragment.Select_Food_Fragment;
 import java.util.ArrayList;
 
 
-public class All_Food_Adapter extends RecyclerView.Adapter<All_Food_Adapter.AllOrderFoodItemHolder> {
+public class FoodList_Adapter extends RecyclerView.Adapter<FoodList_Adapter.AllOrderFoodItemHolder> {
     Activity activity;
     Context ctx;
     Select_Food_Fragment all_Food_fragment;
     ArrayList<Category_ItemList> category_itemLists;
     int row_index;
 
-    public All_Food_Adapter(Context ctx,Activity activity, ArrayList<Category_ItemList> category_itemLists , Select_Food_Fragment all_Food_fragment) {
+    public FoodList_Adapter(Context ctx, Activity activity, ArrayList<Category_ItemList> category_itemLists , Select_Food_Fragment all_Food_fragment) {
         this.ctx = ctx;
         this.activity = activity;
         this.category_itemLists = category_itemLists;

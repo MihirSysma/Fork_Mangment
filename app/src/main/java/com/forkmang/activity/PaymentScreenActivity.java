@@ -15,9 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.forkmang.R;
+import com.forkmang.data.BookTable;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.data.BookTable;
+import com.forkmang.helper.Utils;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -44,8 +45,8 @@ public class PaymentScreenActivity extends AppCompatActivity {
         storePrefrence = new StorePrefrence(ctx);
         RelativeLayout relative_view_1 = findViewById(R.id.relative_view_1);
         RelativeLayout relative_view_2 = findViewById(R.id.relative_view_2);
-        RadioButton radioButton1 = findViewById(R.id.radioButton1);
-        RadioButton radioButton2 = findViewById(R.id.radioButton2);
+        RadioButton radioButton_cash = findViewById(R.id.radioButton1);
+        RadioButton radioButton_online = findViewById(R.id.radioButton2);
         Button btn_payment = findViewById(R.id.btn_payment);
 
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
@@ -59,37 +60,47 @@ public class PaymentScreenActivity extends AppCompatActivity {
         relative_view_1.setOnClickListener(v -> {
             relative_view_1.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2));
             relative_view_2.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-            radioButton1.setTextColor(ContextCompat.getColor(this, R.color.white));
-            radioButton2.setTextColor(ContextCompat.getColor(this, R.color.black));
+            radioButton_cash.setTextColor(ContextCompat.getColor(this, R.color.white));
+            radioButton_online.setTextColor(ContextCompat.getColor(this, R.color.black));
 
-            radioButton2.setChecked(false);
-            radioButton1.setChecked(true);
+            radioButton_online.setChecked(false);
+            radioButton_cash.setChecked(true);
         });
 
         relative_view_2.setOnClickListener(v -> {
             relative_view_2.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2));
             relative_view_1.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-            radioButton2.setTextColor(ContextCompat.getColor(this, R.color.white));
-            radioButton1.setTextColor(ContextCompat.getColor(this, R.color.black));
+            radioButton_online.setTextColor(ContextCompat.getColor(this, R.color.white));
+            radioButton_cash.setTextColor(ContextCompat.getColor(this, R.color.black));
 
 
-            radioButton1.setChecked(false);
-            radioButton2.setChecked(true);
+            radioButton_cash.setChecked(false);
+            radioButton_online.setChecked(true);
         });
 
 
         btn_payment.setText("Pay - "+ totalpay);
 
         btn_payment.setOnClickListener(v -> {
-            payment_type="cash";
-            callApi_makepayment(order_id, payment_type);
 
+            if(radioButton_cash.isChecked())
+            {
+                payment_type="cash";
+            }
+            else if(radioButton_online.isChecked())
+            {
+                payment_type="online";
+            }
+
+            if (Utils.isNetworkAvailable(ctx)) {
+                callApi_makepayment(order_id, payment_type);
+            }
+            else{
+                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+            }
         });
 
     }
-
-
-
 
 
     public void callApi_makepayment(String order_id,String payment_type)

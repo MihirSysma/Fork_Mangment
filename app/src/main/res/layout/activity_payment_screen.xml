@@ -252,7 +252,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/round_corner_toggle">
 
                 <TextView
@@ -270,7 +270,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <TextView
@@ -310,7 +310,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_margin="@dimen/_15sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <CheckBox

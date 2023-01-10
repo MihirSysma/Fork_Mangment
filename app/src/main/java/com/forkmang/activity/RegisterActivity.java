@@ -39,6 +39,7 @@ import com.facebook.login.widget.LoginButton;
 import com.forkmang.R;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.helper.Utils;
 import com.forkmang.network_call.Api;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -117,11 +118,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         etv_cnfpassword = findViewById(R.id.etv_cnfpassword);
         storePrefrence=new StorePrefrence(ctx);
 
-        etv_mobile.setText("9829020700");
-        etv_username.setText("700 name");
-        etv_email.setText("test700@gmail.com");
+        /*etv_mobile.setText("9836608968");
+        etv_username.setText("304 name");
+        etv_email.setText("test304@gmail.com");
         etv_password.setText("123456");
-        etv_cnfpassword.setText("123456");
+        etv_cnfpassword.setText("123456");*/
 
 
         //firebase login code
@@ -301,15 +302,23 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         Button Btn_Submit ;
         Btn_Submit=dialogView.findViewById(R.id.btn_submit);
         firstPinView=dialogView.findViewById(R.id.firstPinView);
-        firstPinView.setText("123456");
+        //firstPinView.setText("123456");
 
 
         Btn_Submit.setOnClickListener(v -> {
             //call register api
             //String phoneNumber = ("+" + "91" + etv_mobile.getText().toString());
             String phoneNumber = Objects.requireNonNull(etv_mobile.getText()).toString();
-            callapi_registeruser(name,email,phoneNumber,password,cnfpassword,idToken);
-            dialog.dismiss();
+            if (Utils.isNetworkAvailable(ctx)) {
+                callapi_registeruser(name,email,phoneNumber,password,cnfpassword,idToken);
+                dialog.dismiss();
+            }
+            else{
+                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+
+
         });
 
         dialog.show();
@@ -611,9 +620,21 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             GoogleSignInAccount account=result.getSignInAccount();
             Log.d("id", account.getId());
 
-            callapi_sociallogin(account.getIdToken(),
-                                account.getId(),
-                               "google" );
+            if (Utils.isNetworkAvailable(ctx)) {
+                callapi_sociallogin(account.getIdToken(),
+                        account.getId(),
+                        "google" );
+            }
+            else{
+                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+            }
+
+
+
+
+
+
         }else{
             Toast.makeText(getApplicationContext(),"Sign in cancel",Toast.LENGTH_LONG).show();
         }

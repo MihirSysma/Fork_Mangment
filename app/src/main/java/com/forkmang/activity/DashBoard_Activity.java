@@ -33,7 +33,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 
 import java.util.Objects;
 
-public class DashBoardActivity_2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DashBoard_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -45,8 +45,8 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer_3);
-        storePrefrence = new StorePrefrence(DashBoardActivity_2.this);
+        setContentView(R.layout.activity_dashboard_drawer);
+        storePrefrence = new StorePrefrence(DashBoard_Activity.this);
         initializeViews();
         toggleDrawer();
         initializeDefaultFragment(savedInstanceState,0);
@@ -132,28 +132,28 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
             case R.id.menu_walkin:
                 /*getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new WalkinFragment())
                         .commit();*/
-                Intent intent_walkin = new Intent(DashBoardActivity_2.this,Booking_TabView_Activity.class);
+                Intent intent_walkin = new Intent(DashBoard_Activity.this,Booking_TabView_Activity.class);
                 intent_walkin.putExtra("tab_no", "1");
                 startActivity(intent_walkin);
                 closeDrawer();
                 //Toast.makeText(this, "Walkin Pressed", Toast.LENGTH_SHORT).show();
                 //closeDrawer();
                 break;
-            case R.id.menu_register:
+            case R.id.menu_logout:
                 //Toast.makeText(this, "Register Pressed", Toast.LENGTH_SHORT).show();
                 showAlertView_logout();
                 break;
 
             case R.id.menu_home:
                 //Toast.makeText(this, "Home Pressed", Toast.LENGTH_SHORT).show();
-                Intent intent_home = new Intent(DashBoardActivity_2.this,Booking_TabView_Activity.class);
+                Intent intent_home = new Intent(DashBoard_Activity.this,Booking_TabView_Activity.class);
                 intent_home.putExtra("tab_no", "0");
                 startActivity(intent_home);
                 closeDrawer();
                 break;
             case R.id.menu_order:
                 //Toast.makeText(this, "Menu Order Pressed", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(DashBoardActivity_2.this, OrdersListing_Fragment.class);
+                Intent i = new Intent(DashBoard_Activity.this, OrdersListing_Fragment.class);
                 startActivity(i);
                 closeDrawer();
                 break;
@@ -181,7 +181,7 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
 
             case R.id.menu_contact:
                 //Toast.makeText(this, "Menu Contact Pressed", Toast.LENGTH_SHORT).show();
-                Intent intent_conatct_term = new Intent(DashBoardActivity_2.this, Contact_TermsFragment.class);
+                Intent intent_conatct_term = new Intent(DashBoard_Activity.this, Contact_TermsFragment.class);
                 startActivity(intent_conatct_term);
                 closeDrawer();
                 break;
@@ -233,7 +233,7 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
 
 
     private void showAlertView_logout() {
-        final androidx.appcompat.app.AlertDialog.Builder alertDialog = new androidx.appcompat.app.AlertDialog.Builder(DashBoardActivity_2.this);
+        final androidx.appcompat.app.AlertDialog.Builder alertDialog = new androidx.appcompat.app.AlertDialog.Builder(DashBoard_Activity.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.conform_logout_view, null);
         alertDialog.setView(dialogView);
@@ -252,7 +252,7 @@ public class DashBoardActivity_2 extends AppCompatActivity implements Navigation
             dialog.dismiss();
             storePrefrence.clear();
 
-            Intent intent = new Intent(DashBoardActivity_2.this, LoginActivity.class);
+            Intent intent = new Intent(DashBoard_Activity.this, LoginActivity.class);
             startActivity(intent);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();

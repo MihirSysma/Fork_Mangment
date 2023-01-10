@@ -29,10 +29,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.forkmang.R;
 import com.forkmang.adapter.BookTableAdapter;
 import com.forkmang.adapter.SpinnnerAdapter;
+import com.forkmang.data.BookTable;
 import com.forkmang.helper.ApiConfig;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.GPSTracker;
-import com.forkmang.data.BookTable;
+import com.forkmang.helper.Utils;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -297,7 +298,7 @@ public class Book_Table_Fragment extends Fragment {
                     String date = txt_view_datetime.getText().toString();
                     txt_view_datetime.setText("");
 
-                    String time = hourOfDay + ":" + minute;
+                    String time = String.format("%02d:%02d", hourOfDay, minute);
 
 
                     String AM_PM ;
@@ -534,13 +535,22 @@ public class Book_Table_Fragment extends Fragment {
 
     public  void filter_booktable(String search_str)
     {
-        callapi_searchbooktable(search_str,saveLatitude.toString(),saveLongitude.toString());
-
+        if (Utils.isNetworkAvailable(getContext())) {
+            callapi_searchbooktable(search_str,saveLatitude.toString(),saveLongitude.toString());
+        }
+        else{
+            Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void call_reloadbooktable()
     {
-        callapi_getbooktable("2", saveLatitude.toString(), saveLongitude.toString());
+        if (Utils.isNetworkAvailable(getContext())) {
+            callapi_getbooktable("2", saveLatitude.toString(), saveLongitude.toString());
+        }
+        else{
+            Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+        }
     }
 
     //Api code for Book Table end

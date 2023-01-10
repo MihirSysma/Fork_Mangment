@@ -10,8 +10,6 @@ import retrofit2.http.POST;
 
 public interface APIService {
     String API_BASE_URL = "https://staging.greatly-done.com/fork-mgmt/fork-management/api/v1/";
-
-
     @POST(WebApi.REGISTER_USER)
     @FormUrlEncoded
     Call<JsonObject> register_user(
@@ -211,15 +209,5 @@ public interface APIService {
             //@Header("Accept") String key,
             //@Field("test") String test
     );
-
-
-
-
-
-
-
-
-
-
 
 }

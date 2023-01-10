@@ -39,9 +39,10 @@ import com.forkmang.adapter.SpinnnerAdapter_Branch;
 import com.forkmang.adapter.SpinnnerAdapter_Floor;
 import com.forkmang.adapter.SpinnnerAdapter_Type;
 import com.forkmang.adapter.SpinnnerAdapter_Type_Value;
+import com.forkmang.data.BookTable;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.data.BookTable;
+import com.forkmang.helper.Utils;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -74,6 +75,7 @@ public class BookingTable_DetailView extends Activity {
     RadioButton button_floor,button_list;
     BookTable bookTable;
     StorePrefrence storePrefrence;
+    Boolean is_tableconform=false;
 
 
     String [] person =
@@ -148,7 +150,13 @@ public class BookingTable_DetailView extends Activity {
             recyclerView = findViewById(R.id.table_recycleview);
             recyclerView.setLayoutManager(new LinearLayoutManager(BookingTable_DetailView.this, LinearLayoutManager.HORIZONTAL, false));
 
-            callapi_booktablelist(resturant_id);
+            if (Utils.isNetworkAvailable(ctx)) {
+                callapi_booktablelist(resturant_id);
+            }
+            else{
+                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         lyt_datetime.setOnClickListener(v -> datePicker());
@@ -344,17 +352,21 @@ public class BookingTable_DetailView extends Activity {
 
 
         imgicon_edit.setOnClickListener(v -> {
-            imgicon_save.setVisibility(View.VISIBLE);
+            /*imgicon_save.setVisibility(View.VISIBLE);
             imgicon_edit.setVisibility(View.GONE);
             etv_noperson.setEnabled(true);
             etv_noperson.setBackgroundColor(Color.DKGRAY);
-            etv_noperson.setTextColor(Color.WHITE);
+            etv_noperson.setTextColor(Color.WHITE);*/
+
+            dialog.dismiss();
+
             /*InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);*/
+
         });
 
         imgicon_save.setOnClickListener(v -> {
-            if(etv_noperson.getText().length() > 0 && !etv_noperson.getText().toString().equalsIgnoreCase("0"))
+            /*if(etv_noperson.getText().length() > 0 && !etv_noperson.getText().toString().equalsIgnoreCase("0"))
             {
                 imgicon_save.setVisibility(View.GONE);
                 imgicon_edit.setVisibility(View.VISIBLE);
@@ -365,7 +377,7 @@ public class BookingTable_DetailView extends Activity {
             }
             else{
                 Toast.makeText(ctx,"No of person can't be empty or zero", Toast.LENGTH_SHORT).show();
-            }
+            }*/
         });
 
 
@@ -376,20 +388,37 @@ public class BookingTable_DetailView extends Activity {
 
         btn_cnf_tablebook.setOnClickListener(v ->{
 
+            if (Utils.isNetworkAvailable(ctx)) {
                 callapi_conform_tablebooking(tableList.getRestaurant_id(), tableList.getId(), tableList.getTable_rule(),
-                                    tableList.getTable_drescode(),tableList.getTable_ocassion(),booking_date);
+                        tableList.getTable_drescode(),tableList.getTable_ocassion(),booking_date);
 
                 dialog.dismiss();
+            }
+            else{
+                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+
+            }
+
+
 
         });
 
         btn_select_food.setOnClickListener(v -> {
-            final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
-            mainIntent.putExtra("bookTable_model", bookTable);
-            mainIntent.putExtra("table_model", tableList);
 
-            startActivity(mainIntent);
-            dialog.dismiss();
+            if(is_tableconform)
+            {
+                final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
+                mainIntent.putExtra("bookTable_model", bookTable);
+                mainIntent.putExtra("table_model", tableList);
+
+                startActivity(mainIntent);
+                dialog.dismiss();
+            }
+            else{
+                Toast.makeText(ctx,"Please Click Conform & Pay Before Select Food", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         dialog.show();
@@ -558,9 +587,8 @@ public class BookingTable_DetailView extends Activity {
                                 if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-                                    JSONObject mjson_obj = jsonObject.getJSONObject("data");
 
+                                    JSONObject mjson_obj = jsonObject.getJSONObject("data");
                                     storePrefrence.setString(Constant.CUSTOMERID, mjson_obj.getString("customer_id"));
                                     storePrefrence.setString("paymentstatus", mjson_obj.getString("payment_status"));
                                     storePrefrence.setString(Constant.BOOKINGID, mjson_obj.getString("id"));
@@ -570,10 +598,14 @@ public class BookingTable_DetailView extends Activity {
                                     Log.d("restaurant_id", mjson_obj.getString("restaurant_id"));
                                     Log.d("rules", mjson_obj.getString("rules"));
 
+                                    Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                    is_tableconform=true;
+
                                 }
                                 else{
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
+                                    is_tableconform=false;
                                 }
                             }
                             else if(response.code() == Constant.ERROR_CODE_n)
@@ -581,6 +613,7 @@ public class BookingTable_DetailView extends Activity {
                                 progressBar.setVisibility(View.GONE);
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
                                 Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                is_tableconform=false;
                                 /*JSONObject obj = new JSONObject(loadJSONFromAsset());
                                 if(obj.getString("status").equalsIgnoreCase("200"))
                                 {
@@ -602,6 +635,7 @@ public class BookingTable_DetailView extends Activity {
                             else{
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                is_tableconform=false;
                             }
 
                         }
@@ -610,6 +644,7 @@ public class BookingTable_DetailView extends Activity {
                             ex.printStackTrace();
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            is_tableconform=false;
                         }
                     }
                     @Override
@@ -743,7 +778,7 @@ public class BookingTable_DetailView extends Activity {
                     String date = txt_view_datetime.getText().toString();
                     txt_view_datetime.setText("");
 
-                    String time = hourOfDay + ":" + minute;
+                    String time = String.format("%02d:%02d", hourOfDay, minute);
                     String AM_PM ;
                     if(hourOfDay < 12) {
                         AM_PM = "AM";

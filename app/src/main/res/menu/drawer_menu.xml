@@ -14,7 +14,7 @@
             android:icon="@drawable/ic_user"
             android:title="@string/walk_in" />
         <item
-            android:id="@+id/menu_register"
+            android:id="@+id/menu_logout"
             android:icon="@drawable/ic_locked"
             android:title="@string/log_in_register" />
 

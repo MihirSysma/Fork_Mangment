@@ -1,134 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_framlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        >
+        android:layout_height="@dimen/_250sdp"
+        android:background="@drawable/mask_group_2" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_250sdp"
-            android:background="@drawable/mask_group_2"/>
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_baseline_menu_24" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+    </RelativeLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_100sdp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="7dp"
+        app:cardMaxElevation="7dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp">
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/generalsansmedium"
+                android:text="@string/full_guide_for_app_video"
+                android:textAlignment="center"
+                android:textColor="@color/text_colorblack"
+                android:textSize="23sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/generalsansregular"
+                android:gravity="start"
+                android:lines="7"
+                android:maxLines="7"
+                android:padding="@dimen/_5sdp"
+                android:text="Lorem ipsum dolor sit amet,consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                android:textColor="@color/text_colorblack"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_baseline_menu_24"/>
-
-        </RelativeLayout>
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_100sdp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="7dp"
-            app:cardMaxElevation="7dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true">
-
-
-            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:src="@drawable/video_img" />
+
+            <TextView
+                android:id="@+id/need_support"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/generalsansregular"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/need_support"
+                android:textAlignment="center"
+                android:textColor="@color/orange_2"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/generalsansmedium"
-                    android:text="@string/full_guide_for_app_video"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_colorblack"
-                    android:textSize="23sp"
-                    android:textStyle="bold"
-                    />
+            <TextView
+                android:id="@+id/need_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/generalsansregular"
+                android:padding="@dimen/_5ssp"
+                android:text="@string/need_to_contact_us"
+                android:textAlignment="center"
+                android:textColor="@color/orange_2"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:fontFamily="@font/generalsansregular"
-                    android:gravity="start"
-                    android:lines="7"
-                    android:maxLines="7"
-                    android:padding="@dimen/_5sdp"
-                    android:text="Lorem ipsum dolor sit amet,consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                    android:textColor="@color/text_colorblack"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText"/>
+            <TextView
+                android:id="@+id/reserve_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/generalsansregular"
+                android:padding="@dimen/_5ssp"
+                android:text="@string/reserve_table"
+                android:textAlignment="center"
+                android:textColor="@color/orange_2"
+                android:textSize="16sp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
-                    android:src="@drawable/video_img"
-                    />
-
-                <TextView
-                    android:id="@+id/need_support"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/generalsansregular"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/need_support"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange_2"
-                    android:textSize="16sp"
-                    />
-
-                <TextView
-                    android:id="@+id/need_contact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:fontFamily="@font/generalsansregular"
-                    android:padding="@dimen/_5ssp"
-                    android:text="@string/need_to_contact_us"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange_2"
-                    android:textSize="16sp"
-                    />
-
-                <TextView
-                    android:id="@+id/reserve_table"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:fontFamily="@font/generalsansregular"
-                    android:padding="@dimen/_5ssp"
-                    android:text="@string/reserve_table"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange_2"
-                    android:textSize="16sp"
-                    />
-
-            </LinearLayout>
+        </LinearLayout>
 
 
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    </FrameLayout>
+
+
+
+</FrameLayout>
 
 
 

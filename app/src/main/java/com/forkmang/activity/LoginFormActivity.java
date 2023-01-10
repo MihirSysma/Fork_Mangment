@@ -34,6 +34,7 @@ import com.facebook.login.widget.LoginButton;
 import com.forkmang.R;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.helper.Utils;
 import com.forkmang.network_call.Api;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -99,9 +100,18 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                 Log.d("id", loginResult.getAccessToken().getUserId());
                 Log.d("token", loginResult.getAccessToken().getToken());
 
-                callapi_sociallogin(loginResult.getAccessToken().getToken(),
-                        loginResult.getAccessToken().getUserId(),
-                        "facebook" );
+                if (Utils.isNetworkAvailable(ctx)) {
+                    callapi_sociallogin(loginResult.getAccessToken().getToken(),
+                            loginResult.getAccessToken().getUserId(),
+                            "facebook" );
+                }
+                else{
+                    Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+                }
+
+
+
 
             }
 
@@ -148,7 +158,14 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                     //password is valid or not
                     if(etv_password.length() > 3)
                     {
-                         callapi_loginuser(etv_mobile.getText().toString(), etv_password.getText().toString());
+                        if (Utils.isNetworkAvailable(ctx)) {
+                            callapi_loginuser(etv_mobile.getText().toString(), etv_password.getText().toString());
+                        }
+                        else{
+                            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+                        }
+
+
                         //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -184,6 +201,7 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                 mButtonFacebook.performClick();
             }
             else{
+                // already login logout
                 Toast.makeText(ctx,"Already Login wait for logout process", Toast.LENGTH_SHORT).show();
                 disconnectFromFacebook();
             }
@@ -238,7 +256,7 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                                     //stopProgress();
                                     progressBar.setVisibility(View.GONE);
 
-                                    final Intent mainIntent = new Intent(ctx, DashBoardActivity_2.class);
+                                    final Intent mainIntent = new Intent(ctx, DashBoard_Activity.class);
                                     startActivity(mainIntent);
                                     finish();
                                 }
@@ -320,7 +338,7 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                                 }
 
                                 progressBar.setVisibility(View.GONE);
-                                Intent intent = new Intent(ctx, DashBoardActivity_2.class);
+                                Intent intent = new Intent(ctx, DashBoard_Activity.class);
                                 startActivity(intent);
                                 finish();
 

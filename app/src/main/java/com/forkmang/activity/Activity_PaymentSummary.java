@@ -24,10 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.adapter.CartListingAdapter_Summary;
+import com.forkmang.data.BookTable;
 import com.forkmang.data.CartBooking;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.data.BookTable;
+import com.forkmang.helper.Utils;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -78,7 +79,6 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         txt_date_time.setText(tableList_get.getStr_time());
         txt_phoneno.setText(storePrefrence.getString(MOBILE));
 
-
         progressBar.setVisibility(View.VISIBLE);
         recyclerView = findViewById(R.id.recycleview);
         btn_payment_proceed = findViewById(R.id.btn_payment_proceed);
@@ -101,24 +101,24 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         }
 
         btn_payment_proceed.setOnClickListener(v -> {
-
-            callApi_createorder();
-
+            if (Utils.isNetworkAvailable(ctx)) {
+                callApi_createorder();
+            }
+            else{
+                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+            }
 
         });
 
         progressBar.setVisibility(View.GONE);
 
-        callApi_cartListview();
+        if (Utils.isNetworkAvailable(ctx)) {
+            callApi_cartListview();
+        }
+        else{
+            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
 
-
-
-
-
-
-
-
-
+        }
 
     }
 
@@ -325,7 +325,13 @@ public class Activity_PaymentSummary extends AppCompatActivity {
                                 {
                                     Toast.makeText(ctx, obj.getString("message"),Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
-                                    callApi_cartListview();
+                                    if (Utils.isNetworkAvailable(ctx)) {
+                                        callApi_cartListview();
+                                    }
+                                    else{
+                                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+                                     }
+
                                 }
                             }
                             else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
@@ -369,8 +375,13 @@ public class Activity_PaymentSummary extends AppCompatActivity {
                                 {
                                     Toast.makeText(ctx, obj.getString("message"),Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
-                                    callApi_cartListview();
+                                    if (Utils.isNetworkAvailable(ctx)) {
+                                        callApi_cartListview();
+                                    }
+                                    else{
+                                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
 
+                                    }
                                 }
                             }
                             else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)

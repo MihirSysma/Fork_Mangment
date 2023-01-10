@@ -14,9 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
+import com.forkmang.data.BookTable;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
-import com.forkmang.data.BookTable;
+import com.forkmang.helper.Utils;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
@@ -67,12 +68,14 @@ public class Order_ConformationActivity extends AppCompatActivity {
         totalpay = getIntent().getStringExtra("totalpay");
         order_id = getIntent().getStringExtra("orderid");
 
-        callApi_getOrderDetail(order_id);
-
-
+        if (Utils.isNetworkAvailable(ctx)) {
+            callApi_getOrderDetail(order_id);
+        }
+        else{
+            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+        }
 
         txt_order_id.setText("Order Id: "+order_id);
-
         //String data_total = Select_Food_Fragment.cartBookingArrayList.get(0).getData_total();
         txt_customername.setText(tableList_get.getStr_customer_name());
         txt_mobileno.setText(storePrefrence.getString(Constant.MOBILE));

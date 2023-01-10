@@ -10,13 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.data.CartBooking;
+import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.helper.Utils;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -84,11 +87,16 @@ public class CartListingAdapter extends RecyclerView.Adapter<CartListingAdapter.
                 CartBooking cartBooking = cartBookingArrayList.get(position);
                 String cart_item_id = cartBooking.getCart_item_id();
 
-                int qty_update = Integer.parseInt(txt_qty.getText().toString());
-                --qty_update;
-                txt_qty.setText(String.valueOf(qty_update));
+                if (Utils.isNetworkAvailable(ctx)) {
+                    int qty_update = Integer.parseInt(txt_qty.getText().toString());
+                    --qty_update;
+                    txt_qty.setText(String.valueOf(qty_update));
+                    instance.callApi_addqty(cart_item_id, String.valueOf(qty_update));
+                }
+                else{
+                    Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
 
-                instance.callApi_addqty(cart_item_id, String.valueOf(qty_update));
+                }
             });
 
             plus_btn.setOnClickListener(v -> {
@@ -96,12 +104,18 @@ public class CartListingAdapter extends RecyclerView.Adapter<CartListingAdapter.
                 CartBooking cartBooking = cartBookingArrayList.get(position);
                 String cart_item_id = cartBooking.getCart_item_id();
 
-                int qty_update = Integer.parseInt(txt_qty.getText().toString());
-                ++qty_update;
-                txt_qty.setText(String.valueOf(qty_update));
+                if (Utils.isNetworkAvailable(ctx)) {
+                    int qty_update = Integer.parseInt(txt_qty.getText().toString());
+                    ++qty_update;
+                    txt_qty.setText(String.valueOf(qty_update));
+                    instance.callApi_addqty(cart_item_id, String.valueOf(qty_update));
+                }
+                else{
+                    Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+                }
 
 
-                instance.callApi_addqty(cart_item_id, String.valueOf(qty_update));
             });
 
             img_del.setOnClickListener(v -> {
@@ -131,9 +145,12 @@ public class CartListingAdapter extends RecyclerView.Adapter<CartListingAdapter.
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
-                        instance.callApi_removeitemcart(cart_item_id);
-
-
+                        if (Utils.isNetworkAvailable(ctx)) {
+                            instance.callApi_removeitemcart(cart_item_id);
+                        }
+                        else{
+                            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 tvclose.setOnClickListener(new View.OnClickListener() {
@@ -145,19 +162,11 @@ public class CartListingAdapter extends RecyclerView.Adapter<CartListingAdapter.
                 });
                 dialog.show();
 
-
-
-
-
-
-
             });
 
 
         }
     }
-
-
 
 
 

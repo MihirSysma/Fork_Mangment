@@ -199,6 +199,7 @@
                         app:hintTextColor="@color/text_colorblack"
                         app:endIconMode="password_toggle"
                         app:endIconTint="@color/gray_shade_3"
+
                         android:textColorHint="@color/tracking_gray"
                         tools:ignore="RtlSymmetry">
 

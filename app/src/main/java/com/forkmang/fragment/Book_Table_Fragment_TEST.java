@@ -29,17 +29,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.forkmang.R;
 import com.forkmang.adapter.BookTableAdapter;
 import com.forkmang.adapter.SpinnnerAdapter;
-import com.forkmang.helper.ApiConfig;
+import com.forkmang.data.BookTable;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.GPSTracker;
-import com.forkmang.data.BookTable;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -51,34 +53,38 @@ public class Book_Table_Fragment_TEST extends Fragment {
     private static Book_Table_Fragment_TEST instance;
 
     ArrayList<BookTable> bookTableArrayList;
+    ArrayList<String>date_arr;
+    ArrayList<String>month_arr;
+    ArrayList<String>name_arr;
+
+
     BookTableAdapter bookTableAdapter;
     RecyclerView recyclerView;
     ImageView date_icon, time_icon;
-    TextView txt_view_datetime,txt_person;
+    TextView txt_view_datetime, txt_person;
     GPSTracker gps;
-    Double saveLatitude,saveLongitude;
+    Double saveLatitude, saveLongitude;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    String booking_date, booking_time, Date_get="";
+    String booking_date, booking_time, Date_get = "";
 
     LinearLayout lyt_datetime;
 
-    String noof_person="", search_str="";
+    String noof_person = "", search_str = "";
     ProgressBar progressBar;
 
-    String [] person =
-            {"Select Person","1","2 ","3","4","5","6","7","8","9","10"};
+    String[] person =
+            {"Select Person", "1", "2 ", "3", "4", "5", "6", "7", "8", "9", "10"};
 
-   public static Book_Table_Fragment_TEST newInstance() {
+    public static Book_Table_Fragment_TEST newInstance() {
 
         return new Book_Table_Fragment_TEST();
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booktable_layout, container, false);
-        instance= this;
+        instance = this;
         recyclerView = view.findViewById(R.id.booktable_recycleview);
 
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -90,39 +96,37 @@ public class Book_Table_Fragment_TEST extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);*/
 
         date_icon = view.findViewById(R.id.date_icon);
-        txt_person= view.findViewById(R.id.txt_person);
-        Spinner spinner= view.findViewById(R.id.spinner);
+        txt_person = view.findViewById(R.id.txt_person);
+        Spinner spinner = view.findViewById(R.id.spinner);
         time_icon = view.findViewById(R.id.time_icon);
         txt_view_datetime = view.findViewById(R.id.txt_datetime);
-        lyt_datetime= view.findViewById(R.id.lyt_datetime);
-        progressBar= view.findViewById(R.id.progressBar);
+        lyt_datetime = view.findViewById(R.id.lyt_datetime);
+        progressBar = view.findViewById(R.id.progressBar);
 
 
         //GET GPS Current start
-        ApiConfig.getLocation(getActivity());
+        /*ApiConfig.getLocation(getActivity());
         gps = new GPSTracker(getActivity());
         saveLatitude = gps.latitude;
         saveLongitude = gps.longitude;
 
-        if (gps.getIsGPSTrackingEnabled())
-        {
+        if (gps.getIsGPSTrackingEnabled()) {
             saveLatitude = gps.latitude;
             saveLongitude = gps.longitude;
-        }
+        }*/
 
         //GET GPS Current end
 
         //spinner array adapter
-        SpinnnerAdapter customAdapter=new SpinnnerAdapter(getApplicationContext(),person);
+        SpinnnerAdapter customAdapter = new SpinnnerAdapter(getApplicationContext(), person);
         spinner.setAdapter(customAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-             if(position > 0)
-             {
-               Toast.makeText(getContext(),person[position],Toast.LENGTH_SHORT).show();
-             }
+                if (position > 0) {
+                    Toast.makeText(getContext(), person[position], Toast.LENGTH_SHORT).show();
+                }
 
                /* String str = person[position];
                 if(str.equalsIgnoreCase("Select Person"))
@@ -142,7 +146,7 @@ public class Book_Table_Fragment_TEST extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-                Toast.makeText(getContext(),"not selected",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "not selected", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -150,6 +154,8 @@ public class Book_Table_Fragment_TEST extends Fragment {
 
         lyt_datetime.setOnClickListener(v -> datePicker());
         current_dateshow();
+
+        callApi();
 
         return view;
 
@@ -168,8 +174,7 @@ public class Book_Table_Fragment_TEST extends Fragment {
     }
 
     //Date and time picker example code start
-    private void datePicker()
-    {
+    private void datePicker() {
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
@@ -177,36 +182,32 @@ public class Book_Table_Fragment_TEST extends Fragment {
 
         // when dialog box is closed, below method will be called.
         final DatePickerDialog.OnDateSetListener datePickerListener = (view, selectedYear, selectedMonth, selectedDay) -> {
-            int month =  selectedMonth + 1;
+            int month = selectedMonth + 1;
             int date = selectedDay;
-            String str_month="",str_date="";
-            if(month < 10 )
-            {
-                str_month =  "0"+month;
-            }
-            else{
-                str_month =  String.valueOf(month);
+            String str_month = "", str_date = "";
+            if (month < 10) {
+                str_month = "0" + month;
+            } else {
+                str_month = String.valueOf(month);
             }
 
-            if(date < 10)
-            {
-                str_date =  "0"+ date;
-            }
-            else{
-                str_date =  String.valueOf(date);
+            if (date < 10) {
+                str_date = "0" + date;
+            } else {
+                str_date = String.valueOf(date);
             }
 
             booking_date = selectedYear + "-" + str_month + "-" + str_date;
             Log.d("sendate==>", booking_date);
 
             txt_view_datetime.setText("");
-            txt_view_datetime.setText(selectedDay + "-" +getMonth(selectedMonth + 1 ));
+            txt_view_datetime.setText(selectedDay + "-" + getMonth(selectedMonth + 1));
             mYear = selectedYear;
             mMonth = selectedMonth;
             mDay = selectedDay;
         };
         final DatePickerDialog datePickerDialog = new DatePickerDialog(
-                getContext(), R.style.DialogTheme_picker,datePickerListener,
+                getContext(), R.style.DialogTheme_picker, datePickerListener,
                 mYear, mMonth, mDay);
 
         //datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -226,8 +227,7 @@ public class Book_Table_Fragment_TEST extends Fragment {
                 "OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,
                                         int which) {
-                        if (which == DialogInterface.BUTTON_POSITIVE)
-                        {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
 
                             DatePicker datePicker = datePickerDialog
                                     .getDatePicker();
@@ -240,25 +240,21 @@ public class Book_Table_Fragment_TEST extends Fragment {
                             int month = datePicker.getMonth();
                             int date = datePicker.getDayOfMonth();
 
-                            String str_month="", str_date="";
-                            month =  month + 1;
-                            if(month < 10 )
-                            {
-                                str_month =  "0"+month;
-                            }
-                            else{
-                                str_month =  String.valueOf(month);
+                            String str_month = "", str_date = "";
+                            month = month + 1;
+                            if (month < 10) {
+                                str_month = "0" + month;
+                            } else {
+                                str_month = String.valueOf(month);
                             }
 
-                            if(date < 10)
-                            {
-                                str_date =  "0"+ date;
-                            }
-                            else{
-                                str_date =  String.valueOf(date);
+                            if (date < 10) {
+                                str_date = "0" + date;
+                            } else {
+                                str_date = String.valueOf(date);
                             }
 
-                            Date_get = datePicker.getYear() + "-" + str_month  + "-" + str_date;
+                            Date_get = datePicker.getYear() + "-" + str_month + "-" + str_date;
                             Log.d("sendate==>", Date_get);
 
                             timePicker();
@@ -270,7 +266,7 @@ public class Book_Table_Fragment_TEST extends Fragment {
                 });
 
         datePickerDialog.setCancelable(false);
-        long now = System.currentTimeMillis() ;
+        long now = System.currentTimeMillis();
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         /*if(Constant.DELIVERY_MAXDATE_AFTER_ORDER == 0)
         {
@@ -286,13 +282,12 @@ public class Book_Table_Fragment_TEST extends Fragment {
 
     }
 
-    private void timePicker()
-    {
+    private void timePicker() {
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),R.style.DialogTheme_picker,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), R.style.DialogTheme_picker,
                 (view, hourOfDay, minute) -> {
                     String date = txt_view_datetime.getText().toString();
                     txt_view_datetime.setText("");
@@ -300,17 +295,17 @@ public class Book_Table_Fragment_TEST extends Fragment {
                     String time = hourOfDay + ":" + minute;
 
 
-                    String AM_PM ;
-                    if(hourOfDay < 12) {
+                    String AM_PM;
+                    if (hourOfDay < 12) {
                         AM_PM = "AM";
                     } else {
                         AM_PM = "PM";
                     }
 
-                    booking_date = booking_date + " "+ time + " "+AM_PM;
+                    booking_date = booking_date + " " + time + " " + AM_PM;
                     Log.d("senddate", booking_date);
 
-                    txt_view_datetime.setText(date+", "+ time+" "+AM_PM);
+                    txt_view_datetime.setText(date + ", " + time + " " + AM_PM);
                 }, mHour, mMinute, false);
 
         timePickerDialog.show();
@@ -320,14 +315,13 @@ public class Book_Table_Fragment_TEST extends Fragment {
 
     private String getMonth(int month) {
         String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        return monthNames[month-1];
+        return monthNames[month - 1];
     }
 
 
-    private void current_dateshow()
-    {
+    private void current_dateshow() {
         final Calendar c = Calendar.getInstance();
-        String str_month="",str_date="", str_day,selectedYear,booking_date_n;
+        String str_month = "", str_date = "", str_day, selectedYear, booking_date_n;
 
 
         mYear = c.get(Calendar.YEAR);
@@ -337,68 +331,59 @@ public class Book_Table_Fragment_TEST extends Fragment {
         mMinute = c.get(Calendar.MINUTE);
 
 
-        String AM_PM ;
-        if(mHour < 12) {
+        String AM_PM;
+        if (mHour < 12) {
             AM_PM = "AM";
         } else {
             AM_PM = "PM";
         }
 
-        String time = mHour + ":" + mMinute +" "+ AM_PM;
+        String time = mHour + ":" + mMinute + " " + AM_PM;
 
 
-        int month_n =  mMonth + 1;
+        int month_n = mMonth + 1;
         int date_n = mDay;
 
         str_day = String.valueOf(date_n);
 
-        if(month_n < 10 )
-        {
-            str_month =  "0"+month_n;
-        }
-        else{
-            str_month =  String.valueOf(month_n);
+        if (month_n < 10) {
+            str_month = "0" + month_n;
+        } else {
+            str_month = String.valueOf(month_n);
 
         }
 
-        if(date_n < 10)
-        {
-            str_date =  "0"+ date_n;
-        }
-        else{
-            str_date =  String.valueOf(date_n);
+        if (date_n < 10) {
+            str_date = "0" + date_n;
+        } else {
+            str_date = String.valueOf(date_n);
         }
 
         selectedYear = String.valueOf(mYear);
         booking_date = selectedYear + "-" + str_month + "-" + str_date;
 
         txt_view_datetime.setText("");
-        txt_view_datetime.setText(str_day + "-" +getMonth(month_n) + " " +time);
+        txt_view_datetime.setText(str_day + "-" + getMonth(month_n) + " " + time);
     }
 
     //Date and time picker example code end
 
     //Api code for Book Table start
-    private void callapi_getbooktable(String service_id, String latitude, String logitutde)
-    {
+    private void callapi_getbooktable(String service_id, String latitude, String logitutde) {
         progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getlist_res(service_id, latitude, logitutde).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        try{
-                            if(response.code() == Constant.SUCCESS_CODE_n)
-                            {
+                        try {
+                            if (response.code() == Constant.SUCCESS_CODE_n) {
                                 JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                                 //Log.d("Result", jsonObject.toString());
 
-                                if(jsonObject.getString("status").equalsIgnoreCase(Constant.SUCCESS_CODE))
-                                {
-                                    if(jsonObject.getJSONObject("data").getJSONArray("data").length() > 0)
-                                    {
+                                if (jsonObject.getString("status").equalsIgnoreCase(Constant.SUCCESS_CODE)) {
+                                    if (jsonObject.getJSONObject("data").getJSONArray("data").length() > 0) {
                                         bookTableArrayList = new ArrayList<>();
-                                        for(int i =0; i< jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
-                                        {
+                                        for (int i = 0; i < jsonObject.getJSONObject("data").getJSONArray("data").length(); i++) {
                                             BookTable bookTable = new BookTable();
                                             JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i);
 
@@ -414,11 +399,9 @@ public class Book_Table_Fragment_TEST extends Fragment {
                                         }*/
 
 
-                                            if(mjson_obj.has("endtime"))
-                                            {
+                                            if (mjson_obj.has("endtime")) {
                                                 bookTable.setEndtime(mjson_obj.getString("endtime"));
-                                            }
-                                            else{
+                                            } else {
                                                 bookTable.setEndtime("00");
                                             }
                                             bookTable.setId(mjson_obj.getString("id"));
@@ -429,34 +412,30 @@ public class Book_Table_Fragment_TEST extends Fragment {
                                         }
                                         progressBar.setVisibility(View.GONE);
 
-                                        bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList);
+                                        bookTableAdapter = new BookTableAdapter(getActivity(), bookTableArrayList);
                                         recyclerView.setAdapter(bookTableAdapter);
                                         //Constant.IS_BookTableFragmentLoad=true;
 
-                                    }
-                                    else{
+                                    } else {
                                         //no data in array list
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(getContext(), Constant.NODATA, Toast.LENGTH_LONG).show();
                                     }
-                                }
-                                else{
+                                } else {
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
-                                 }
-                             }
-                            else{
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
-                              }
-                           }
-                            catch (JSONException ex)
-                            {
-                                ex.printStackTrace();
+                                }
+                            } else {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                             }
+                        } catch (JSONException ex) {
+                            ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        }
                     }
+
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
@@ -465,34 +444,28 @@ public class Book_Table_Fragment_TEST extends Fragment {
                 });
     }
 
-    private void callapi_searchbooktable(String search_strq, String latitude, String logitutde)
-    {
+    private void callapi_searchbooktable(String search_strq, String latitude, String logitutde) {
         progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getlist_searchres(search_strq, latitude, logitutde).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        try{
+                        try {
                             JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                             //Log.d("Result", jsonObject.toString());
 
-                            if(jsonObject.getString("status").equalsIgnoreCase(Constant.SUCCESS_CODE))
-                            {
+                            if (jsonObject.getString("status").equalsIgnoreCase(Constant.SUCCESS_CODE)) {
 
-                                if(jsonObject.getJSONObject("data").getJSONArray("data").length() > 0)
-                                {
+                                if (jsonObject.getJSONObject("data").getJSONArray("data").length() > 0) {
                                     bookTableArrayList = new ArrayList<>();
-                                    for(int i =0; i<jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
-                                    {
+                                    for (int i = 0; i < jsonObject.getJSONObject("data").getJSONArray("data").length(); i++) {
                                         BookTable bookTable = new BookTable();
                                         JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i);
                                         bookTable.setRest_name(mjson_obj.getString("rest_name"));
 
-                                        if(mjson_obj.has("endtime"))
-                                        {
+                                        if (mjson_obj.has("endtime")) {
                                             bookTable.setEndtime(mjson_obj.getString("endtime"));
-                                        }
-                                        else{
+                                        } else {
                                             bookTable.setEndtime("00");
                                         }
                                         bookTable.setId(mjson_obj.getString("id"));
@@ -504,26 +477,24 @@ public class Book_Table_Fragment_TEST extends Fragment {
                                     progressBar.setVisibility(View.GONE);
 
 
-                                   bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList);
-                                   recyclerView.setAdapter(bookTableAdapter);
+                                    bookTableAdapter = new BookTableAdapter(getActivity(), bookTableArrayList);
+                                    recyclerView.setAdapter(bookTableAdapter);
 
 
-                                }
-                                else{
+                                } else {
                                     //no data in array list
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(getContext(), Constant.NODATA, Toast.LENGTH_LONG).show();
-                                  }
+                                }
                             }
 
-                        }
-                        catch (JSONException ex)
-                        {
+                        } catch (JSONException ex) {
                             ex.printStackTrace();
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                         }
                     }
+
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
@@ -532,25 +503,119 @@ public class Book_Table_Fragment_TEST extends Fragment {
                 });
     }
 
-    public  void filter_booktable(String search_str)
-    {
-        callapi_searchbooktable(search_str,saveLatitude.toString(),saveLongitude.toString());
+    public void filter_booktable(String search_str) {
+        callapi_searchbooktable(search_str, saveLatitude.toString(), saveLongitude.toString());
 
     }
 
-    public void call_reloadbooktable()
-    {
+    public void call_reloadbooktable() {
         callapi_getbooktable("2", saveLatitude.toString(), saveLongitude.toString());
     }
 
     //Api code for Book Table end
 
     //Fragment Instance
-    public static Book_Table_Fragment_TEST GetInstance()
-    {
+    public static Book_Table_Fragment_TEST GetInstance() {
         return instance;
     }
 
+
+    public void callApi() {
+
+        try{
+            JSONObject obj = new JSONObject(loadJSONFromAsset());
+            JSONArray profile_arr = obj.getJSONArray("Profile");
+            date_arr=new ArrayList<>();
+            month_arr=new ArrayList<>();
+            name_arr=new ArrayList<>();
+
+            for(int i=0; i<profile_arr.length(); i++)
+            {
+                String date = profile_arr.getJSONObject(i).getString("Born");
+                String name = profile_arr.getJSONObject(i).getString("Name");
+
+                String[] str_1 = date.split("-");
+                String[] str_1_a = str_1[0].split(",");
+                String[] str_1_b = str_1[1].split(",");
+
+                String date_str ;
+                if(Integer.parseInt(str_1_a[0].trim()) > Integer.parseInt(str_1_b[0].trim()))
+                {
+                    date_str = str_1_b[0].trim() + "," + str_1_a[0].trim();
+                }
+                else{
+                    date_str = str_1_a[0].trim() + "," + str_1_b[0].trim();
+                }
+
+                String month_str ;
+                if(Integer.parseInt(str_1_a[1].trim()) > Integer.parseInt(str_1_b[1].trim()))
+                {
+                    month_str = str_1_b[1].trim() + "," + str_1_a[1].trim();
+                }
+                else{
+                    month_str = str_1_a[1].trim() + "," + str_1_b[1].trim();
+                }
+
+               date_arr.add(date_str);
+               month_arr.add(month_str);
+               name_arr.add(name);
+            }
+
+            String input_str = "31-3";
+            String[] str_date_input = input_str.split("-");
+            boolean not_match=false;
+
+            for(int i = 0; i<month_arr.size(); i++)
+            {
+                String[] str_date_month_get = month_arr.get(i).split(",");
+                String[] str_date_date_get = date_arr.get(i).split(",");
+
+
+                if( Integer.parseInt(str_date_input[1].trim()) >= Integer.parseInt(str_date_month_get[0].trim()) &&
+                    Integer.parseInt(str_date_input[1].trim()) <= Integer.parseInt(str_date_month_get[1].trim()) )
+                {
+                    if( Integer.parseInt(str_date_input[0].trim()) >= Integer.parseInt(str_date_date_get[0].trim()) &&
+                            Integer.parseInt(str_date_input[0].trim()) <= Integer.parseInt(str_date_date_get[1].trim()) )
+                    {
+                        Toast.makeText(getContext(),name_arr.get(i), Toast.LENGTH_LONG).show();
+                        not_match=true;
+                        break;
+                    }
+                }
+
+            }
+
+            if(!not_match)
+            {
+                Toast.makeText(getContext(),"No match found", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+
+
+    }
+
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getActivity().getAssets().open("local51.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
 
 }

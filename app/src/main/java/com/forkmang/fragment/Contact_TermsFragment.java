@@ -29,6 +29,7 @@ public class Contact_TermsFragment extends FragmentActivity
         viewPager=findViewById(R.id.viewPager_orders);
         tabLayout=findViewById(R.id.tabLayout_orders);
         relative_view_nav=findViewById(R.id.relative_view_nav);
+
         ViewPagerAdapter_Contact_Term viewPagerAdapter_contact_term=new ViewPagerAdapter_Contact_Term(getSupportFragmentManager(),getLifecycle());
         viewPager.setAdapter(viewPagerAdapter_contact_term);
 

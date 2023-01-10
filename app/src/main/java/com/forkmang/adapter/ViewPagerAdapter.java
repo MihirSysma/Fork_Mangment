@@ -28,6 +28,8 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         switch (position){
             case 0: {
                      selectedFragment = Book_Table_Fragment.newInstance();
+                     //selectedFragment = Book_Table_Fragment_TEST.newInstance();
+
                      //((Booking_TabView_Activity)ctx).visble_search();
                 }
                 break;

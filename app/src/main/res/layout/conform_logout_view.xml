@@ -2,8 +2,8 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/_220sdp"
-    android:layout_height="@dimen/_150sdp"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_120sdp"
     android:layout_alignParentBottom="true"
     app:cardElevation="7dp"
     app:cardCornerRadius="5dp"
@@ -18,8 +18,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/_4sdp"
-        android:padding="@dimen/_3sdp">
+        android:layout_margin="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        >
 
         <TextView
             android:id="@+id/txt_otpenter"
@@ -32,10 +33,10 @@
             android:fontFamily="@font/generalsanssemibold"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_14ssp"
             android:textColor="@color/text_colorblack"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -46,9 +47,10 @@
 
         <Button
             android:id="@+id/btn_yes"
-            android:layout_width="@dimen/_70sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_30sdp"
-            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_alignParentStart="true"
             style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
             android:background="@drawable/layout_rectangle_red"
             android:text="@string/logout"
@@ -56,14 +58,15 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:fontFamily="@font/generalsansmedium"
-            android:textSize="14sp"
+            android:textSize="13sp"
             app:backgroundTint="@null"/>
 
         <Button
             android:id="@+id/btn_cancel"
-            android:layout_width="@dimen/_55sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_30sdp"
-            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_40sdp"
             android:background="@drawable/layout_rectangle"
             style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
             android:text="@string/no"
@@ -71,12 +74,12 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:fontFamily="@font/generalsansmedium"
-            android:textSize="14sp"
+            android:textSize="13sp"
             app:backgroundTint="@null"
              />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     </LinearLayout>

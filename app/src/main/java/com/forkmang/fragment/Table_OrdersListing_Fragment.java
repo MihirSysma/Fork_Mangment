@@ -20,6 +20,7 @@ import com.forkmang.adapter.TableOrdersListing_Adapter;
 import com.forkmang.data.TableOrderListing;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
+import com.forkmang.helper.Utils;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -61,7 +62,14 @@ public class Table_OrdersListing_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        callapi_gettableorderslist();
+        if (Utils.isNetworkAvailable(getContext())) {
+            callapi_gettableorderslist();
+        }
+        else{
+            Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
 

@@ -19,10 +19,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.forkmang.R;
 import com.forkmang.adapter.ViewPagerAdapter_SelectFood;
+import com.forkmang.data.BookTable;
 import com.forkmang.data.FoodList_Tab;
 import com.forkmang.fragment.Select_Food_Fragment;
 import com.forkmang.helper.Constant;
-import com.forkmang.data.BookTable;
+import com.forkmang.helper.Utils;
 import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.android.material.tabs.TabLayout;
@@ -101,7 +102,14 @@ public class SelectFood_Activity extends AppCompatActivity {
 
         });
 
-        callapi_tablisting("1");
+        if (Utils.isNetworkAvailable(ctx)) {
+            callapi_tablisting("1");
+        }
+        else{
+            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     private void fill_tablist() {
