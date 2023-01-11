@@ -406,7 +406,13 @@ public class BookingTable_DetailView extends Activity {
 
         btn_select_food.setOnClickListener(v -> {
 
-            if(is_tableconform)
+            final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
+            mainIntent.putExtra("bookTable_model", bookTable);
+            mainIntent.putExtra("table_model", tableList);
+
+            startActivity(mainIntent);
+            dialog.dismiss();
+           /* if(is_tableconform)
             {
                 final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
                 mainIntent.putExtra("bookTable_model", bookTable);
@@ -417,7 +423,7 @@ public class BookingTable_DetailView extends Activity {
             }
             else{
                 Toast.makeText(ctx,"Please Click Conform & Pay Before Select Food", Toast.LENGTH_SHORT).show();
-            }
+            }*/
 
         });
 

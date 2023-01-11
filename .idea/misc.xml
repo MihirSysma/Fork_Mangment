@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/drawable/ic_group.xml" value="0.1755" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/ic_privacy.xml" value="0.12" />
+        <entry key="app/src/main/res/drawable/ic_satellite.xml" value="0.157" />
         <entry key="app/src/main/res/drawable/layout_rectangle.xml" value="0.11" />
         <entry key="app/src/main/res/drawable/layout_rectangle_2.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/layout_rectangle_3.xml" value="0.1285" />
@@ -48,6 +49,7 @@
         <entry key="app/src/main/res/drawable/rating_selector.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/round_corner_toggle.xml" value="0.125" />
         <entry key="app/src/main/res/drawable/round_corner_toggle_orange.xml" value="0.1815" />
+        <entry key="app/src/main/res/drawable/rounded_corner_map.xml" value="0.157" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/slide_in_up.xml" value="0.125" />
         <entry key="app/src/main/res/drawable/trasprent_back.xml" value="0.106" />
@@ -73,10 +75,12 @@
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_location_screen.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.12" />
-        <entry key="app/src/main/res/layout/activity_login_form.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_login_form.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15260416666666668" />
         <entry key="app/src/main/res/layout/activity_main_copy.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main_fragment.xml" value="0.13852073535699017" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_maps2.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/activity_payment_screen.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_payment_summary_pickup.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_payment_summary_walkin.xml" value="0.14" />
@@ -132,6 +136,7 @@
         <entry key="app/src/main/res/layout/tablayout.xml" value="0.13852073535699017" />
         <entry key="app/src/main/res/layout/table_list_cell.xml" value="0.33" />
         <entry key="app/src/main/res/layout/tableselection_alertview.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/testmap.xml" value="0.14" />
         <entry key="app/src/main/res/layout/view_otp.xml" value="0.22" />
         <entry key="app/src/main/res/layout/walkin_orders_cell.xml" value="0.22" />
         <entry key="app/src/main/res/layout/wallet_cell.xml" value="0.22" />

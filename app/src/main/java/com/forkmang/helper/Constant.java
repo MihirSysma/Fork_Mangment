@@ -42,6 +42,8 @@ public class Constant {
     public static String NODATA = "No Data Available";
     public static String NODATA_MATCH = "No match found";
     public static String NETWORKEROORMSG="Check Internet Connection";
+    public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_LONGITUDE = "longitude";
 
 
 

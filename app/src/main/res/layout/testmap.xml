@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/detailLyt"
+
+            >
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/locationMarker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/locationMarkertext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner_map"
+                    android:gravity="center"
+                    android:minWidth="250dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:text=" Set your Location "
+                    android:textColor="@android:color/white"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/imageMarker"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/location" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabSatellite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fabStreet"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_satellite"
+            android:visibility="gone"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabStreet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/detailLyt"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_streetview"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/detailLyt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            android:padding="@dimen/_5sdp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+
+                />
+
+            <Button
+                android:id="@+id/btn_updateloc"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/up_location"
+                android:textAllCaps="false"
+                android:layout_gravity="end"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/red"
+                android:minHeight="0dp"
+                android:padding="@dimen/_2sdp"
+
+                />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</FrameLayout>
+
+

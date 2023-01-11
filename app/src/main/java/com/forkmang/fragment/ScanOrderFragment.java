@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.forkmang.R;
 import com.forkmang.activity.Booking_TabView_Activity;
-import com.forkmang.activity.SupportActivity;
 
 public class ScanOrderFragment extends Fragment {
     TextView txt;
@@ -38,8 +37,9 @@ public class ScanOrderFragment extends Fragment {
             fragmentTransaction.replace(R.id.content_framlayout, chatFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();*/
-            Intent intent = new Intent(getActivity(), SupportActivity.class);
-            startActivity(intent);
+
+            /*Intent intent = new Intent(getActivity(), SupportActivity.class);
+            startActivity(intent);*/
 
 
 

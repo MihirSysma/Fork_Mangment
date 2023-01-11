@@ -181,6 +181,8 @@
     <string name="starbucks">Starbucks</string>
     <string name="marg">Marg</string>
     <string name="toppings">Toppings</string>
+    <string name="location_1">Location :&#160;</string>
+    <string name="up_location">Update Location</string>
 
     <string name="order_id_6256">Order Id:6256</string>
     <string name="pass">Pass</string>
@@ -244,6 +246,7 @@
 
 
     </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
 
 
 </resources>

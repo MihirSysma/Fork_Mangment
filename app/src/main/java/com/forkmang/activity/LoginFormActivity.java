@@ -131,8 +131,8 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
         google_intialization();
         // google login code end
 
-        etv_mobile.setText("9829020300");
-        etv_password.setText("1234567");
+        etv_mobile.setText("9829020700");
+        etv_password.setText("123456");
 
         chek_keeplogin.setOnClickListener(v -> {
             if(etv_mobile.length()==10 && etv_password.length() >3)

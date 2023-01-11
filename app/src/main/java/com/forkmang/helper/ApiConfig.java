@@ -5,13 +5,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.forkmang.R;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class ApiConfig {
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
@@ -27,6 +34,23 @@ public class ApiConfig {
     public static String user_location = "";
     public static double latitude1 = 0, longitude1 = 0;
 
+    public static String getAddress(double lat, double lng, Activity activity) {
+        Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
+        String address = "";
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            if (addresses.size() != 0) {
+                Address obj = addresses.get(0);
+                String add = obj.getAddressLine(0);
+                address = add;
+            }
+        } catch (IOException e) {
+
+            e.printStackTrace();
+            Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return address;
+    }
 
     public static void getLocation(final Activity activity)
     {

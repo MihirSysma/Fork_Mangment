@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.forkmang">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
@@ -23,8 +24,24 @@
         android:theme="@style/Theme.ForkMangment"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBigzFJ6ag5E7pgeCdvpZbig7vKPYSUGx0" />
+
         <activity
-            android:name="com.forkmang.activity.SupportActivity"
+            android:name=".activity.SupportActivity"
             android:exported="false" />
 
         <meta-data
@@ -35,7 +52,7 @@
             android:value="@string/facebook_client_token" />
 
         <activity
-            android:name="com.forkmang.activity.PaymentScreenActivity"
+            android:name=".activity.PaymentScreenActivity"
             android:exported="false" />
         <!--
         <activity
@@ -43,88 +60,92 @@
             android:exported="false" />
         -->
         <activity
-            android:name="com.forkmang.activity.WalkinInQuee"
+            android:name=".activity.WalkinInQuee"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.Order_ConformationActivity"
+            android:name=".activity.Order_ConformationActivity"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.Activity_PaymentSummary"
+            android:name=".activity.Activity_PaymentSummary"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.SelectFood_Activity"
+            android:name=".activity.SelectFood_Activity"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.BookingOrder_ReserverConformationActivity"
+            android:name=".activity.BookingOrder_ReserverConformationActivity"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.Booking_TabView_Activity"
+            android:name=".activity.Booking_TabView_Activity"
             android:exported="false" />
         <activity
-            android:name="com.forkmang.activity.DashBoardView"
+            android:name=".activity.DashBoardView"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.DashBoard_Activity"
+            android:name=".activity.DashBoard_Activity"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.DrawerActivity"
+            android:name=".activity.DrawerActivity"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.forkmang.activity.TutorialScreen"
+            android:name=".activity.TutorialScreen"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.SelectLanguage"
+            android:name=".activity.SelectLanguage"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.RegisterActivity"
+            android:name=".activity.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.RedirectToFacelogin"
+            android:name=".activity.RedirectToFacelogin"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.LoginFormActivity"
+            android:name=".activity.LoginFormActivity"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.ForgotPassword"
+            android:name=".activity.ForgotPassword"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.FaceLoginPermission"
+            android:name=".activity.FaceLoginPermission"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.FaceLogin"
+            android:name=".activity.FaceLogin"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.BookingTable_DetailView"
+            android:name=".activity.BookingTable_DetailView"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.Activity_PaymentSummary_WalkinFragment"
+            android:name=".activity.Activity_PaymentSummary_WalkinFragment"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.Walkin_ConformationActivity"
+            android:name=".activity.Walkin_ConformationActivity"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.activity.Pickup_ConformationActivity"
+            android:name=".activity.Pickup_ConformationActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".activity.MapsActivity"
+            />
+
+        <activity
+            android:name=".fragment.OrdersListing_Fragment"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.fragment.OrdersListing_Fragment"
+            android:name=".fragment.Contact_TermsFragment"
             android:exported="true" />
         <activity
-            android:name="com.forkmang.fragment.Contact_TermsFragment"
-            android:exported="true" />
-        <activity
-            android:name="com.forkmang.activity.Activity_PaymentSummary_PickupFragment"
+            android:name=".activity.Activity_PaymentSummary_PickupFragment"
             android:exported="true" />
         <activity
             android:name="com.facebook.FacebookActivity"

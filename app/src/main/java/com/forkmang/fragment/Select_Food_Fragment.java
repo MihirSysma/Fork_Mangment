@@ -375,7 +375,7 @@ public class Select_Food_Fragment extends Fragment {
             txt_qty.setText(String.valueOf(value));
         });
 
-        btn_add.setOnClickListener(v -> {
+         btn_add.setOnClickListener(v -> {
            // dialog.dismiss();
            String item_id = category_itemList.getId();
            String qty = txt_qty.getText().toString();
@@ -395,6 +395,12 @@ public class Select_Food_Fragment extends Fragment {
 
            //Log.d("booking_id", booking_id);
             radio_btn_id_arr.clear();
+
+           if(extra.length()==0)
+           {
+               extra="1,2"; //hardcoded
+           }
+
            Log.d("extra", extra);
            Log.d("qty", qty);
            Log.d("item_id", item_id);
@@ -415,7 +421,6 @@ public class Select_Food_Fragment extends Fragment {
         });
 
         dialog.show();
-
     }
 
 
@@ -563,8 +568,14 @@ public class Select_Food_Fragment extends Fragment {
                                         cartBooking.setCart_item_qty(cart_detail_obj.getString("qty"));
                                         cartBooking.setCart_item_cartid(cart_detail_obj.getString("cart_id"));
                                         cartBooking.setCart_item_id(cart_detail_obj.getString("id"));
-                                        cartBooking.setCart_item_extra_id(cart_detail_obj.getString("item_extra_id"));
 
+                                        if(cart_detail_obj.has("item_extra_id"))
+                                        {
+                                            cartBooking.setCart_item_extra_id(cart_detail_obj.getString("item_extra_id"));
+                                        }
+                                        else{
+                                            cartBooking.setCart_item_extra_id("0");
+                                        }
                                         //cart_item_details obj
                                         cartBooking.setCart_item_details_category_id(cart_detail_obj.getJSONObject("cart_item_details").getString("category_id"));
                                         cartBooking.setCart_item_details_name(cart_detail_obj.getJSONObject("cart_item_details").getString("name"));
@@ -574,15 +585,43 @@ public class Select_Food_Fragment extends Fragment {
                                         //extra_item_details obj
                                         ArrayList<String>extra_namelist = new ArrayList<>();
                                         ArrayList<String>extra_pricelist = new ArrayList<>();
-                                        for(int j = 0; j<cart_detail_obj.getJSONArray("extra_item_details").length(); j++)
+
+                                        if(cart_detail_obj.getJSONArray("extra_item_details").length()>0)
                                         {
-                                            JSONObject extra_item_obj = cart_detail_obj.getJSONArray("extra_item_details").getJSONObject(j);
-
-                                            extra_namelist.add(extra_item_obj.getString("name"));
-                                            extra_pricelist.add(extra_item_obj.getString("price"));
+                                            for(int j = 0; j<cart_detail_obj.getJSONArray("extra_item_details").length(); j++)
+                                            {
 
 
-                                            //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
+
+
+                                                JSONObject extra_item_obj = cart_detail_obj.getJSONArray("extra_item_details").getJSONObject(j);
+
+                                                if(extra_item_obj.has("name"))
+                                                {
+                                                    extra_namelist.add(extra_item_obj.getString("name"));
+                                                }
+                                                else{
+                                                    extra_namelist.add("");
+                                                }
+
+                                                if(extra_item_obj.has("price"))
+                                                {
+                                                    extra_pricelist.add(extra_item_obj.getString("price"));
+                                                }
+                                                else{
+                                                    extra_pricelist.add("");
+                                                }
+
+
+
+
+                                                //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
+                                            }
+
+                                        }
+                                        else{
+                                            extra_namelist.add("");
+                                            extra_pricelist.add("");
                                         }
 
                                         //extra name
@@ -604,6 +643,10 @@ public class Select_Food_Fragment extends Fragment {
                                             else{  str_extraprice = str_extraprice+","+extra_pricelist.get(k);}
                                         }
                                         cartBooking.setExtra_item_details_price(str_extraprice);
+
+
+
+
                                         cartBookingArrayList.add(cartBooking);
 
                                     }
