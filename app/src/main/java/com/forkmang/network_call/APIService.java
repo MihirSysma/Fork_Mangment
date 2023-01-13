@@ -43,6 +43,15 @@ public interface APIService {
             @Field("password") String password
     );
 
+    @POST(WebApi.LOGIN_GUEST)
+    @FormUrlEncoded
+    Call<JsonObject> login_guest(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("identifier") String identifier
+
+    );
+
     @POST(WebApi.FORGOT_PASSWORD)
     @FormUrlEncoded
     Call<JsonObject> forgot_pass(
@@ -81,7 +90,7 @@ public interface APIService {
     Call<JsonObject> getlist_res(
             //@Header("Authorization") String token,
             //@Header("Accept") String key,
-            @Field("service_id") String service_id,
+            //@Field("service_id") String service_id,
             @Field("latitude") String latitude,
             @Field("longitude") String logitutde
        );
@@ -116,7 +125,8 @@ public interface APIService {
             @Field("rules") String rules,
             @Field("dresscode") String dresscode,
             @Field("occasion") String occasion,
-            @Field("date") String date
+            @Field("date") String date,
+            @Field("identifier") String identifier
 
     );
 
@@ -136,6 +146,18 @@ public interface APIService {
             @Field("category_id") String category_id
     );
 
+
+    @POST(WebApi.RES_CATLIST_SEARCH)
+    @FormUrlEncoded
+    Call<JsonObject> getres_catitemlist_search(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("category_id") String category_id,
+            @Field("search_item") String search_item
+
+    );
+
+
     @POST(WebApi.RES_ADDITEMCART)
     @FormUrlEncoded
     Call<JsonObject> additem_cart(
@@ -144,7 +166,8 @@ public interface APIService {
             @Field("item_id") String item_id,
             @Field("qty") String qty,
             @Field("booking_table_id") String booking_table_id,
-            @Field("item_extra") String item_extra
+            @Field("item_extra") String item_extra,
+            @Field("identifier") String identifier
 
     );
 
@@ -154,7 +177,9 @@ public interface APIService {
             @Header("Authorization") String token,
             //@Header("Accept") String key,
             @Field("cart_item_id") String cart_item_id,
-            @Field("qty") String qty
+            @Field("qty") String qty,
+            @Field("identifier") String identifier
+
     );
 
     @POST(WebApi.RES_REMOVEITEMCART)
@@ -162,7 +187,8 @@ public interface APIService {
     Call<JsonObject> cart_removeqty(
             @Header("Authorization") String token,
             //@Header("Accept") String key,
-            @Field("cart_item_id") String cart_item_id
+            @Field("cart_item_id") String cart_item_id,
+            @Field("identifier") String identifier
 
     );
 
@@ -171,9 +197,19 @@ public interface APIService {
     Call<JsonObject> create_order(
             @Header("Authorization") String token,
             //@Header("Accept") String key,
-            @Field("restaurant_id") String restaurant_id
+            @Field("restaurant_id") String restaurant_id,
+            @Field("identifier") String identifier
 
     );
+
+    /*@POST(WebApi.RES_MAKEPAYMENT)
+    @FormUrlEncoded
+    Call<JsonObject> make_payment(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("order_id") String order_id,
+            @Field("payment_type") String payment_type
+    );*/
 
     @POST(WebApi.RES_MAKEPAYMENT)
     @FormUrlEncoded
@@ -181,7 +217,10 @@ public interface APIService {
             @Header("Authorization") String token,
             //@Header("Accept") String key,
             @Field("order_id") String order_id,
-            @Field("payment_type") String payment_type
+            @Field("book_table_id") String book_table_id,
+            @Field("payment_type") String payment_type,
+            @Field("type") String type
+
     );
 
     @POST(WebApi.RES_ORDERDETAIL)
@@ -196,11 +235,31 @@ public interface APIService {
 
 
     @POST(WebApi.RES_GETCARTDETAIL)
+    @FormUrlEncoded
     Call<JsonObject> getcart_detail(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("identifier") String identifier
+     );
+
+
+    @POST(WebApi.RES_GETTERMS)
+    Call<JsonObject> getterms(
             @Header("Authorization") String token
             //@Header("Accept") String key,
             //@Field("test") String test
-     );
+    );
+
+    @POST(WebApi.RES_CONTACT)
+    @FormUrlEncoded
+    Call<JsonObject> contact(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("phone") String phone,
+            @Field("message") String message
+    );
 
 
     @POST(WebApi.RES_GETTABLEORDERSLIST)

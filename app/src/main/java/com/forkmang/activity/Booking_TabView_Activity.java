@@ -2,6 +2,7 @@ package com.forkmang.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,8 @@ import com.forkmang.adapter.ViewPagerAdapter;
 import com.forkmang.fragment.Book_Table_Fragment;
 import com.forkmang.fragment.Pickup_Fragment;
 import com.forkmang.fragment.Walkin_Fragment;
+import com.forkmang.helper.Constant;
+import com.forkmang.helper.StorePrefrence;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -34,19 +38,33 @@ public class Booking_TabView_Activity extends AppCompatActivity {
     EditText etv_serach;
     Context ctx ;
     int current_tabactive;
+    StorePrefrence storePrefrence;
+    double longitude, c_longitude, c_latitude,latitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_tab_view);
+
+
+        ImageView img_loc = findViewById(R.id.img_loc);
         ctx=Booking_TabView_Activity.this;
         viewPager=findViewById(R.id.viewPager);
         tabLayout=findViewById(R.id.tabLayout);
         etv_serach=findViewById(R.id.etv_serach);
 
+
+        img_loc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_walkin = new Intent(Booking_TabView_Activity.this,MapsActivity.class);
+                startActivity(intent_walkin);
+            }
+        });
+
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager(),getLifecycle(),ctx);
         viewPager.setAdapter(viewPagerAdapter);
-
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback()
         {
@@ -67,8 +85,6 @@ public class Booking_TabView_Activity extends AppCompatActivity {
 
 
         String str_tab_no  = getIntent().getStringExtra("tab_no");
-
-
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if(position==0){
                 tab.setText(R.string.book_table);
@@ -90,9 +106,6 @@ public class Booking_TabView_Activity extends AppCompatActivity {
         else{
             etv_serach.setEnabled(false);
         }*/
-
-
-
 
 
         etv_serach.addTextChangedListener(new TextWatcher() {
@@ -206,4 +219,22 @@ public class Booking_TabView_Activity extends AppCompatActivity {
         etv_serach.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        storePrefrence=new StorePrefrence(Booking_TabView_Activity.this);
+
+        if (storePrefrence.getCoordinates(Constant.KEY_LATITUDE).equals("0.0") || storePrefrence.getCoordinates(Constant.KEY_LONGITUDE).equals("0.0"))
+        {
+            longitude = 0.0;
+            latitude = 0.0;
+        } else {
+            longitude = Double.parseDouble(storePrefrence.getCoordinates(Constant.KEY_LONGITUDE));
+            latitude = Double.parseDouble(storePrefrence.getCoordinates(Constant.KEY_LATITUDE));
+        }
+
+
+
+
+    }
 }

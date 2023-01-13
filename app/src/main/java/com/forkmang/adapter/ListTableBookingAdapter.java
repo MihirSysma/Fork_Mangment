@@ -66,12 +66,8 @@ public class ListTableBookingAdapter extends RecyclerView.Adapter<ListTableBooki
 
             relative_view.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
-
                 TableList tableList = listTableBooking.get(position);
                 ((BookingTable_DetailView)activity).showAlertView_tableselctionrule(tableList);
-
-
-
 
                 //activity.finish();
             });

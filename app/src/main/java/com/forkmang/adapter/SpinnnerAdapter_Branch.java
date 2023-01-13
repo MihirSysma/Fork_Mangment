@@ -9,21 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.forkmang.R;
+import com.forkmang.data.BranchDropdown;
+
+import java.util.ArrayList;
 
 public class SpinnnerAdapter_Branch extends BaseAdapter {
     Context context;
-    String[] branch_arr;
+    ArrayList<BranchDropdown> branchDropdownArrayList;
     LayoutInflater inflter;
 
-    public SpinnnerAdapter_Branch(Context applicationContext, String[] branch_arr) {
+    public SpinnnerAdapter_Branch(Context applicationContext, ArrayList<BranchDropdown> branchDropdownArrayList) {
         this.context = applicationContext;
-        this.branch_arr = branch_arr;
+        this.branchDropdownArrayList = branchDropdownArrayList;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return branch_arr.length;
+        return branchDropdownArrayList.size();
     }
 
     @Override
@@ -42,14 +45,8 @@ public class SpinnnerAdapter_Branch extends BaseAdapter {
         @SuppressLint({"ViewHolder", "InflateParams"})
         View view = inflter.inflate(R.layout.spinner_cell, null);
         TextView person = view.findViewById(R.id.txt_person);
-        if(position > 0)
-        {
-            person.setText("Branch"+branch_arr[position]);
-        }
-        else{
-            person.setText(branch_arr[position]);
-        }
-
+        BranchDropdown branchDropdown = branchDropdownArrayList.get(position);
+        person.setText(branchDropdown.getBranch_name());
         return view;
     }
 }

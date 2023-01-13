@@ -14,26 +14,55 @@
         android:scaleType="fitXY"
         android:background="@drawable/maskgroup" />
 
-      <EditText
-          android:id="@+id/etv_serach"
-          android:layout_width="@dimen/_230sdp"
-          android:layout_height="wrap_content"
-          android:background="@drawable/searchback"
-          android:layout_marginStart="@dimen/_40sdp"
-          android:layout_marginTop="@dimen/_70sdp"
-          android:drawableEnd="@drawable/searchicon"
-          android:paddingRight="@dimen/_10sdp"
-          android:paddingLeft="@dimen/_10sdp"
-          android:textColor="@color/black"
-          android:textColorHint="@color/gray_shade_3"
-          android:textSize="14sp"
-          android:hint="Search"
-          android:maxLines="1"
-          android:inputType="text"
-          android:imeOptions="actionSearch"
-          android:ellipsize="end"
-          android:scrollHorizontally="true"
-          />
+
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@drawable/searchback"
+           android:layout_marginStart="@dimen/_30sdp"
+           android:layout_marginEnd="@dimen/_30sdp"
+           android:layout_marginTop="@dimen/_70sdp"
+           android:paddingRight="@dimen/_10sdp"
+           android:paddingLeft="@dimen/_10sdp">
+
+           <EditText
+               android:id="@+id/etv_serach"
+               android:layout_width="@dimen/_190sdp"
+               android:layout_height="@dimen/_30sdp"
+               android:layout_marginTop="@dimen/_2sdp"
+               android:drawableEnd="@drawable/searchicon"
+               android:textColor="@color/black"
+               android:textColorHint="@color/gray_shade_3"
+               android:textSize="14sp"
+               android:hint="Search"
+               android:maxLines="1"
+               android:inputType="text"
+               android:imeOptions="actionSearch"
+               android:ellipsize="end"
+               android:scrollHorizontally="true"
+               android:background="@null"
+               />
+
+           <ImageView
+               android:id="@+id/img_loc"
+               android:layout_width="@dimen/_40sdp"
+               android:layout_height="wrap_content"
+               android:src="@drawable/pin_loc"
+               android:layout_alignParentEnd="true"
+               android:layout_centerVertical="true"
+               />
+
+
+
+
+
+
+
+
+       </RelativeLayout>
+
+
 
 
 

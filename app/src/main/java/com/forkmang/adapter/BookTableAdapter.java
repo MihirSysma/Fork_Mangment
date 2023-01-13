@@ -16,18 +16,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.activity.BookingTable_DetailView;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.RestoData;
 
 import java.util.ArrayList;
 
 
 public class BookTableAdapter extends RecyclerView.Adapter<BookTableAdapter.BookTableItemHolder> {
     Activity activity;
-    ArrayList<BookTable> bookTable_dataArrayList;
+    ArrayList<RestoData> bookTable_dataArrayList;
+    String txt_datetime;
 
-    public BookTableAdapter(Activity activity, ArrayList<BookTable> bookTable_dataArrayList) {
+    public BookTableAdapter(Activity activity, ArrayList<RestoData> bookTable_dataArrayList, String txt_datetime) {
         this.activity = activity;
         this.bookTable_dataArrayList = bookTable_dataArrayList;
+        this.txt_datetime=txt_datetime;
     }
 
     public BookTableAdapter(Activity activity) {
@@ -47,7 +49,7 @@ public class BookTableAdapter extends RecyclerView.Adapter<BookTableAdapter.Book
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull BookTableItemHolder holder, int position) {
-        BookTable bookTable = bookTable_dataArrayList.get(position);
+        RestoData bookTable = bookTable_dataArrayList.get(position);
         holder.txtrestroname.setText(bookTable.getRest_name());
         holder.txt_endtime.setText(bookTable.getEndtime());
         holder.txttotalkm.setText(bookTable.getDistance()+" Km");
@@ -79,12 +81,12 @@ public class BookTableAdapter extends RecyclerView.Adapter<BookTableAdapter.Book
             relative_view.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
 
-                BookTable bookTable = bookTable_dataArrayList.get(position);
-                String resturant_id = bookTable.getId();
-
+                RestoData restoData = bookTable_dataArrayList.get(position);
+                String resturant_id = restoData.getId();
                 Intent intent = new Intent(activity, BookingTable_DetailView.class);
                 intent.putExtra("resturant_id", resturant_id);
-                intent.putExtra("model", bookTable);
+                intent.putExtra("restromodel", restoData);
+                intent.putExtra("datetime", txt_datetime);
                 activity.startActivity(intent);
                 //activity.finish();
             });

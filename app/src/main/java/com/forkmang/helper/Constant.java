@@ -10,6 +10,7 @@ public class Constant {
     public static int SUCCESS_CODE_2 = 201;
     public static int ERROR_CODE = 422;
     public static int ERROR_CODE_n = 404;
+    public static int GUESTUSERlOGIN = 401;
 
 
 
@@ -17,9 +18,9 @@ public class Constant {
     public static Integer is_permission_grant = 0;
 
     public static String TOKEN_LOGIN="tokenlogin";
+    public static String IDENTFIER="identifier";
     public static String TOKEN_REG="tokenreg";
     public static String TOKEN_FORGOTPASS="tokenforgotpass";
-
     public static String NAME="name";
     public static String MOBILE="mobile";
     public static String BOOKINGID="bookingid";

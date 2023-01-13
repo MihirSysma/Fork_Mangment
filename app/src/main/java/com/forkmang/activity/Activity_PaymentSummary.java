@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.adapter.CartListingAdapter_Summary;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.RestoData;
 import com.forkmang.data.CartBooking;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
@@ -48,7 +48,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     Button btn_payment_proceed;
     LinearLayout lyt_arabic, lyt_eng;
     TableList tableList_get;
-    BookTable bookTable;
+    RestoData restoData;
     StorePrefrence storePrefrence;
     Context ctx = Activity_PaymentSummary.this;
     TextView txt_totalPay;
@@ -70,8 +70,9 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         TextView txt_customername = findViewById(R.id.txt_customername);
         txt_totalPay = findViewById(R.id.txt_totalPay);
        //ArrayList<CartBooking> cartBookingArrayList  = extras.getParcelableArrayList("cartbookingarraylist");
+
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
-        bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
+        restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
 
         txt_hotelname.setText(tableList_get.getStr_hotel_name());
         txt_customername.setText(tableList_get.getStr_customer_name());
@@ -126,7 +127,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     {
         //showProgress();
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN)).
+        Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN), storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -312,7 +313,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     {
         //showProgress();
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().cart_updateqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid, qty).
+        Api.getInfo().cart_updateqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid, qty,storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -362,7 +363,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     {
         //showProgress();
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().cart_removeqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid).
+        Api.getInfo().cart_removeqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid,storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -411,7 +412,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
 
     public void callApi_createorder()
     {
-        Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN),bookTable.getId()).
+        Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN), restoData.getId(),storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -423,6 +424,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
                                 if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
                                     String order_id = jsonObject.getString("data");
+
                                     //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                     AlertDialog dialog =  showAlertView_conformtable();
 
@@ -430,10 +432,12 @@ public class Activity_PaymentSummary extends AppCompatActivity {
                                         dialog.dismiss();
                                         final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
                                         mainIntent.putExtra("model",tableList_get);
-                                        mainIntent.putExtra("bookTable",bookTable);
+                                        mainIntent.putExtra("restromodel", restoData);
                                         mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
                                         mainIntent.putExtra("orderid",order_id);
+                                        mainIntent.putExtra("isbooktable","no");
                                         startActivity(mainIntent);
+                                        //finish();
                                     }, 1000);
                                 }
                                 else{
@@ -447,6 +451,18 @@ public class Activity_PaymentSummary extends AppCompatActivity {
                                 Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
 
                             }
+                            else if(response.code() == Constant.GUESTUSERlOGIN)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(ctx,LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                                //Toast.makeText(ctx,"You are guest user please login",Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                         catch (Exception ex)
                         {

@@ -9,21 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.forkmang.R;
+import com.forkmang.data.FlooDropdown;
+
+import java.util.ArrayList;
 
 public class SpinnnerAdapter_Floor extends BaseAdapter {
     Context context;
-    String[] floor_arr;
+    ArrayList<FlooDropdown> flooDropdownArrayList;
     LayoutInflater inflter;
 
-    public SpinnnerAdapter_Floor(Context applicationContext, String[] floor_arr) {
+    public SpinnnerAdapter_Floor(Context applicationContext, ArrayList<FlooDropdown> flooDropdownArrayList) {
         this.context = applicationContext;
-        this.floor_arr = floor_arr;
+        this.flooDropdownArrayList = flooDropdownArrayList;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return floor_arr.length;
+        return flooDropdownArrayList.size();
     }
 
     @Override
@@ -42,14 +45,8 @@ public class SpinnnerAdapter_Floor extends BaseAdapter {
         @SuppressLint({"ViewHolder", "InflateParams"})
         View view = inflter.inflate(R.layout.spinner_cell, null);
         TextView person = view.findViewById(R.id.txt_person);
-        if(position > 0)
-        {
-            person.setText("Floor"+floor_arr[position]);
-        }
-        else{
-            person.setText(floor_arr[position]);
-        }
-
+        FlooDropdown flooDropdown = flooDropdownArrayList.get(position);
+        person.setText(flooDropdown.getFloor_name());
         return view;
     }
 }

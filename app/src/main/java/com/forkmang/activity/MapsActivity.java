@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     StorePrefrence storePrefrence;
     Activity activity = MapsActivity.this;
 
+
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
 
 
@@ -78,7 +80,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.testmap);
+        setContentView(R.layout.maps_activity);
+        Button btn_updateloc = findViewById(R.id.btn_updateloc);
 
         ApiConfig.getLocation(activity);
         mContext = MapsActivity.this;
@@ -94,6 +97,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fabStreet = findViewById(R.id.fabStreet);
 
         mapFragment.getMapAsync(MapsActivity.this);
+
+
+        btn_updateloc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateloc();
+            }
+        });
+
 
         fabSatellite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,23 +242,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("clat==>",""+c_latitude);
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                text.setText(getString(R.string.location_1) + ApiConfig.getAddress(latitude, longitude, MapsActivity.this));
-                View view = findViewById(R.id.main_layout_id);
-                String message = "Your location has been updated";
-
-                int duration = Snackbar.LENGTH_SHORT;
-                showSnackbar(view, message, duration);
-            }
+        handler.postDelayed(() -> {
+            text.setText(getString(R.string.location_1) + ApiConfig.getAddress(latitude, longitude, MapsActivity.this));
+            View view = findViewById(R.id.main_layout_id);
+            String message = "Your location has been updated";
+            int duration = Snackbar.LENGTH_SHORT;
+            showSnackbar(view, message, duration);
         }, 1000);
 
     }
 
     public void saveLocation(double latitude, double longitude) {
-        storePrefrence.setString(Constant.KEY_LATITUDE, String.valueOf(latitude));
-        storePrefrence.setString(Constant.KEY_LONGITUDE, String.valueOf(longitude));
+
+        storePrefrence.setData(Constant.KEY_LATITUDE, String.valueOf(latitude));
+        storePrefrence.setData(Constant.KEY_LONGITUDE, String.valueOf(longitude));
+
+        finish();
+        //storePrefrence.setString(Constant.KEY_LATITUDE, String.valueOf(latitude));
+        //storePrefrence.setString(Constant.KEY_LONGITUDE, String.valueOf(longitude));
 
     }
 
@@ -254,6 +267,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {
         Snackbar.make(view, message, duration).show();
     }
+
+
 
     public void UpdateLocation_m(View view) {
         updateloc();
@@ -297,17 +312,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     c_longitude = location.getLongitude();
                     c_latitude = location.getLatitude();
 
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
+                    //longitude = location.getLongitude();
+                    //latitude = location.getLatitude();
 
-                    /*if (storePrefrence.getString(Constant.KEY_LATITUDE).equals("0.0") || storePrefrence.getString(Constant.KEY_LONGITUDE).equals("0.0"))
+                    if (storePrefrence.getCoordinates(Constant.KEY_LATITUDE).equals("0.0") || storePrefrence.getCoordinates(Constant.KEY_LONGITUDE).equals("0.0"))
                     {
                         longitude = location.getLongitude();
                         latitude = location.getLatitude();
                     } else {
-                        longitude = Double.parseDouble(storePrefrence.getString(Constant.KEY_LONGITUDE));
-                        latitude = Double.parseDouble(storePrefrence.getString(Constant.KEY_LATITUDE));
-                    }*/
+                        longitude = Double.parseDouble(storePrefrence.getCoordinates(Constant.KEY_LONGITUDE));
+                        latitude = Double.parseDouble(storePrefrence.getCoordinates(Constant.KEY_LATITUDE));
+                    }
 
                     Log.d("c_latitude==>", ""+c_latitude);
                     Log.d("c_longitude==>", ""+c_longitude);

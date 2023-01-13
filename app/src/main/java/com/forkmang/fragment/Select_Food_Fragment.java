@@ -35,7 +35,7 @@ import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary;
 import com.forkmang.adapter.FoodList_Adapter;
 import com.forkmang.adapter.CartListingAdapter;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.RestoData;
 import com.forkmang.data.CartBooking;
 import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.Extra_Topping;
@@ -72,7 +72,7 @@ public class Select_Food_Fragment extends Fragment {
     int selectedId_radiobtn_topping;
     StorePrefrence storePrefrence;
     static TableList tableList_get;
-    static BookTable bookTable_get;
+    static RestoData restoData;
     ProgressBar progressBar;
     ProgressBar progressBar_alertview;
     FoodList_Adapter all_orderFood_adapter;
@@ -80,11 +80,11 @@ public class Select_Food_Fragment extends Fragment {
 
 
 
-    public static Select_Food_Fragment newInstance(TableList tableList, BookTable bookTable) {
+    public static Select_Food_Fragment newInstance(TableList tableList, RestoData bookTable) {
         //category_id = category_id_val;
         //Log.d("idval",category_id);
         tableList_get = tableList;
-        bookTable_get = bookTable;
+        restoData = bookTable;
         return new Select_Food_Fragment();
     }
 
@@ -106,13 +106,12 @@ public class Select_Food_Fragment extends Fragment {
     public void onResume() {
         super.onResume();
        // callApi_addtocart("1","2","10","1,2");
-       // callApi_food(category_id);
+       // callApi_fooditem(category_id);
     }
 
-    public void callApi_food(String category_id)
+    public void callApi_fooditem(String category_id)
     {
         //Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-
         progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().getres_catitemlist(category_id).
                 enqueue(new Callback<JsonObject>() {
@@ -165,9 +164,6 @@ public class Select_Food_Fragment extends Fragment {
                                     }
 
                                     progressBar.setVisibility(View.GONE);
-
-
-
                                     all_orderFood_adapter = new FoodList_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
                                     recyclerView.setAdapter(all_orderFood_adapter);
 
@@ -207,11 +203,85 @@ public class Select_Food_Fragment extends Fragment {
                 });
     }
 
+
+    public void callApi_searchfooditem(String category_id,String search_item)
+    {
+        //Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.VISIBLE);
+        Api.getInfo().getres_catitemlist_search(category_id,search_item).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            //Log.d("Result", jsonObject.toString());
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
+                                {
+
+                                    category_itemLists = new ArrayList<>();
+                                    JSONArray mjson_arr = jsonObject.getJSONArray("data");
+                                    for(int i = 0 ; i < mjson_arr.length(); i++)
+                                    {
+                                        Category_ItemList category_itemList = new Category_ItemList();
+                                        JSONObject mjson_obj = mjson_arr.getJSONObject(i);
+                                        category_itemList.setId(mjson_obj.getString("id"));
+                                        category_itemList.setCategory_id(mjson_obj.getString("category_id"));
+                                        category_itemList.setName(mjson_obj.getString("name"));
+                                        category_itemList.setPrice(mjson_obj.getString("price"));
+                                        category_itemList.setImage(mjson_obj.getString("image"));
+                                        JSONArray mjson_arr_extra = mjson_obj.getJSONArray("extra");
+                                        extra_toppingArrayList = new ArrayList<>();
+                                        for(int j = 0; j<mjson_arr_extra.length(); j++)
+                                        {
+                                            JSONObject mjson_obj_extra = mjson_arr_extra.getJSONObject(j);
+                                            Extra_Topping extra_topping = new Extra_Topping();
+                                            extra_topping.setId(mjson_obj_extra.getString("id"));
+                                            extra_topping.setItem_id(mjson_obj_extra.getString("item_id"));
+                                            extra_topping.setName(mjson_obj_extra.getString("name"));
+                                            extra_topping.setPrice(mjson_obj_extra.getString("price"));
+                                            extra_toppingArrayList.add(extra_topping);
+                                        }
+                                        category_itemList.setExtra_toppingArrayList(extra_toppingArrayList);
+                                        category_itemLists.add(category_itemList);
+
+                                    }
+                                    progressBar.setVisibility(View.GONE);
+                                    all_orderFood_adapter = new FoodList_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
+                                    recyclerView.setAdapter(all_orderFood_adapter);
+                                }
+
+                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error occur please try again", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+
+                    }
+                });
+    }
+
+
+
     public void callApi_addtocart(String item_id, String qty, String booking_table_id, String item_extra)
      {
         //showProgress();
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().additem_cart("Bearer "+storePrefrence.getString(TOKEN_LOGIN),item_id, qty, booking_table_id, item_extra).
+        Api.getInfo().additem_cart("Bearer "+storePrefrence.getString(TOKEN_LOGIN),item_id, qty, booking_table_id, item_extra,storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -269,7 +339,7 @@ public class Select_Food_Fragment extends Fragment {
     {
         if (Utils.isNetworkAvailable(getContext())) {
             this.booking_id = booking_id;
-            callApi_food((category_id));
+            callApi_fooditem((category_id));
 
         }
         else{
@@ -395,10 +465,9 @@ public class Select_Food_Fragment extends Fragment {
 
            //Log.d("booking_id", booking_id);
             radio_btn_id_arr.clear();
-
            if(extra.length()==0)
            {
-               extra="1,2"; //hardcoded
+               extra="1,2"; //hardcoded please coreect it
            }
 
            Log.d("extra", extra);
@@ -463,19 +532,26 @@ public class Select_Food_Fragment extends Fragment {
 
         recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        callApi_cartListview();
+        if(Utils.isNetworkAvailable(getContext()))
+        {
+            callApi_cartListview();
+        }
+        else{
+            Toast.makeText(getContext(),Constant.NETWORKEROORMSG,Toast.LENGTH_SHORT).show();
+        }
+
 
 
         btn_pay_table_food.setOnClickListener(v -> {
             dialog.dismiss();
             final Intent mainIntent = new Intent(getContext(), Activity_PaymentSummary.class);
-            Bundle bundle = new Bundle();
+            //Bundle bundle = new Bundle();
             //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
             mainIntent.putExtra("model",tableList_get);
-            mainIntent.putExtra("bookTable",bookTable_get);
-
+            mainIntent.putExtra("restromodel", restoData);
             startActivity(mainIntent);
             //getActivity().finish();
+
 
 
         });
@@ -538,7 +614,7 @@ public class Select_Food_Fragment extends Fragment {
     {
         //showProgress();
         progressBar_alertview.setVisibility(View.VISIBLE);
-        Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN)).
+        Api.getInfo().getcart_detail("Bearer "+storePrefrence.getString(TOKEN_LOGIN), storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -590,12 +666,7 @@ public class Select_Food_Fragment extends Fragment {
                                         {
                                             for(int j = 0; j<cart_detail_obj.getJSONArray("extra_item_details").length(); j++)
                                             {
-
-
-
-
-                                                JSONObject extra_item_obj = cart_detail_obj.getJSONArray("extra_item_details").getJSONObject(j);
-
+                                               JSONObject extra_item_obj = cart_detail_obj.getJSONArray("extra_item_details").getJSONObject(j);
                                                 if(extra_item_obj.has("name"))
                                                 {
                                                     extra_namelist.add(extra_item_obj.getString("name"));
@@ -611,10 +682,6 @@ public class Select_Food_Fragment extends Fragment {
                                                 else{
                                                     extra_pricelist.add("");
                                                 }
-
-
-
-
                                                 //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
                                             }
 
@@ -643,10 +710,6 @@ public class Select_Food_Fragment extends Fragment {
                                             else{  str_extraprice = str_extraprice+","+extra_pricelist.get(k);}
                                         }
                                         cartBooking.setExtra_item_details_price(str_extraprice);
-
-
-
-
                                         cartBookingArrayList.add(cartBooking);
 
                                     }
@@ -759,7 +822,7 @@ public class Select_Food_Fragment extends Fragment {
     {
         //showProgress();
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().cart_updateqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid, qty).
+        Api.getInfo().cart_updateqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid, qty,storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -810,7 +873,7 @@ public class Select_Food_Fragment extends Fragment {
     {
         //showProgress();
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().cart_removeqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN),cart_itemid).
+        Api.getInfo().cart_removeqty("Bearer "+storePrefrence.getString(TOKEN_LOGIN), cart_itemid, storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

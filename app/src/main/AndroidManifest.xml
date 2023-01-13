@@ -147,6 +147,7 @@
         <activity
             android:name=".activity.Activity_PaymentSummary_PickupFragment"
             android:exported="true" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

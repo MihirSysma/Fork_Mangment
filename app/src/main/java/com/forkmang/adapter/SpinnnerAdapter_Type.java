@@ -9,21 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.forkmang.R;
+import com.forkmang.data.AreaDropdown;
+
+import java.util.ArrayList;
 
 public class SpinnnerAdapter_Type extends BaseAdapter {
     Context context;
-    String[] type;
+    ArrayList<AreaDropdown> areaDropdownArrayList;
     LayoutInflater inflter;
 
-    public SpinnnerAdapter_Type(Context applicationContext, String[] type) {
+    public SpinnnerAdapter_Type(Context applicationContext, ArrayList<AreaDropdown> areaDropdownArrayList) {
         this.context = applicationContext;
-        this.type = type;
+        this.areaDropdownArrayList = areaDropdownArrayList;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return type.length;
+        return areaDropdownArrayList.size();
     }
 
     @Override
@@ -42,7 +45,9 @@ public class SpinnnerAdapter_Type extends BaseAdapter {
         @SuppressLint({"ViewHolder", "InflateParams"})
         View view = inflter.inflate(R.layout.spinner_cell, null);
         TextView person = view.findViewById(R.id.txt_person);
-        person.setText(type[position]);
+        AreaDropdown areaDropdown = areaDropdownArrayList.get(position);
+        person.setText(areaDropdown.getArea_name());
+        person.setTag(areaDropdown.getId());
         return view;
     }
 }

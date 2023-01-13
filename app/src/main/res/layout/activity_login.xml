@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,6 +18,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/bg_selectlang" />
 
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,12 +28,20 @@
         android:layout_marginBottom="@dimen/_30ssp"
         />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="@dimen/_10ssp">
+
 
         <Button
             android:id="@+id/BtnLogin"

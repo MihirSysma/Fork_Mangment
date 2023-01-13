@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.forkmang.R;
 import com.forkmang.adapter.BookTableAdapter;
 import com.forkmang.adapter.SpinnnerAdapter;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.RestoData;
 import com.forkmang.helper.ApiConfig;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.GPSTracker;
@@ -51,7 +51,7 @@ import retrofit2.Response;
 public class Book_Table_Fragment extends Fragment {
     private static Book_Table_Fragment instance;
 
-    ArrayList<BookTable> bookTableArrayList;
+    ArrayList<RestoData> bookTableArrayList;
     BookTableAdapter bookTableAdapter;
     RecyclerView recyclerView;
     ImageView date_icon, time_icon;
@@ -161,7 +161,6 @@ public class Book_Table_Fragment extends Fragment {
     public void onResume() {
         super.onResume();
         String service_id = "2";
-
         saveLatitude = 23.933689;
         saveLongitude = 72.367458;
 
@@ -383,7 +382,7 @@ public class Book_Table_Fragment extends Fragment {
     private void callapi_getbooktable(String service_id, String latitude, String logitutde)
     {
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().getlist_res(service_id, latitude, logitutde).
+        Api.getInfo().getlist_res(latitude, logitutde).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -400,7 +399,7 @@ public class Book_Table_Fragment extends Fragment {
                                         bookTableArrayList = new ArrayList<>();
                                         for(int i =0; i< jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
                                         {
-                                            BookTable bookTable = new BookTable();
+                                            RestoData bookTable = new RestoData();
                                             JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i);
 
                                             //JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(0);
@@ -430,7 +429,7 @@ public class Book_Table_Fragment extends Fragment {
                                         }
                                         progressBar.setVisibility(View.GONE);
 
-                                        bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList);
+                                        bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList, txt_view_datetime.getText().toString());
                                         recyclerView.setAdapter(bookTableAdapter);
                                         //Constant.IS_BookTableFragmentLoad=true;
 
@@ -443,19 +442,19 @@ public class Book_Table_Fragment extends Fragment {
                                 }
                                 else{
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                                  }
                              }
                             else{
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                               // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                               }
                            }
                             catch (JSONException ex)
                             {
                                 ex.printStackTrace();
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                             }
                     }
                     @Override
@@ -485,7 +484,7 @@ public class Book_Table_Fragment extends Fragment {
                                     bookTableArrayList = new ArrayList<>();
                                     for(int i =0; i<jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
                                     {
-                                        BookTable bookTable = new BookTable();
+                                        RestoData bookTable = new RestoData();
                                         JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i);
                                         bookTable.setRest_name(mjson_obj.getString("rest_name"));
 
@@ -505,7 +504,7 @@ public class Book_Table_Fragment extends Fragment {
                                     progressBar.setVisibility(View.GONE);
 
 
-                                   bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList);
+                                   bookTableAdapter = new BookTableAdapter(getActivity(),bookTableArrayList,txt_view_datetime.getText().toString());
                                    recyclerView.setAdapter(bookTableAdapter);
 
 
@@ -546,6 +545,8 @@ public class Book_Table_Fragment extends Fragment {
     public void call_reloadbooktable()
     {
         if (Utils.isNetworkAvailable(getContext())) {
+            saveLatitude=23.937416;
+            saveLongitude=72.375741;
             callapi_getbooktable("2", saveLatitude.toString(), saveLongitude.toString());
         }
         else{

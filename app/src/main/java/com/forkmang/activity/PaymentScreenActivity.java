@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.forkmang.R;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.RestoData;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
 import com.forkmang.helper.Utils;
@@ -32,11 +32,11 @@ import retrofit2.Response;
 
 public class PaymentScreenActivity extends AppCompatActivity {
     TableList tableList_get;
-    BookTable bookTable;
+    RestoData RestroData;
     String totalpay;
     Context ctx = PaymentScreenActivity.this;
     StorePrefrence storePrefrence;
-    String order_id, payment_type;
+    String order_id,booking_id, payment_type,isbooktable,order_id_get;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +50,17 @@ public class PaymentScreenActivity extends AppCompatActivity {
         Button btn_payment = findViewById(R.id.btn_payment);
 
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
-        bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
+        RestroData = (RestoData) getIntent().getSerializableExtra("restromodel");
         totalpay = getIntent().getStringExtra("totalpay");
-        totalpay = getIntent().getStringExtra("totalpay");
-        order_id = getIntent().getStringExtra("orderid");
+        isbooktable= getIntent().getStringExtra("isbooktable");
 
-
+        if(isbooktable.equalsIgnoreCase("yes"))
+        {
+            booking_id= getIntent().getStringExtra("bookingid");
+        }
+        else if(isbooktable.equalsIgnoreCase("no")){
+            order_id = getIntent().getStringExtra("orderid");
+        }
 
         relative_view_1.setOnClickListener(v -> {
             relative_view_1.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2));
@@ -93,7 +98,17 @@ public class PaymentScreenActivity extends AppCompatActivity {
             }
 
             if (Utils.isNetworkAvailable(ctx)) {
-                callApi_makepayment(order_id, payment_type);
+                if(isbooktable.equalsIgnoreCase("yes"))
+                {
+                    //callApi_makepayment_1(order_id, payment_type);
+                    callApi_makepayment("",booking_id, payment_type,"table");
+                }
+                else{
+                    callApi_makepayment(order_id,storePrefrence.getString(Constant.BOOKINGID), payment_type,"order");
+                }
+
+
+
             }
             else{
                 Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
@@ -103,9 +118,9 @@ public class PaymentScreenActivity extends AppCompatActivity {
     }
 
 
-    public void callApi_makepayment(String order_id,String payment_type)
+    public void callApi_makepayment(String order_id, String booking_id, String payment_type, String order_type)
     {
-        Api.getInfo().make_payment("Bearer "+storePrefrence.getString(TOKEN_LOGIN),order_id, payment_type).
+        Api.getInfo().make_payment("Bearer "+storePrefrence.getString(TOKEN_LOGIN),"",booking_id, payment_type,"table").
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -118,12 +133,18 @@ public class PaymentScreenActivity extends AppCompatActivity {
                                 {
                                     final Intent mainIntent = new Intent(PaymentScreenActivity.this, Order_ConformationActivity.class);
                                     mainIntent.putExtra("model",tableList_get);
-                                    mainIntent.putExtra("bookTable",bookTable);
+                                    mainIntent.putExtra("restromodel", RestroData);
                                     mainIntent.putExtra("totalpay",totalpay);
-                                    mainIntent.putExtra("orderid",order_id);
+                                    if(isbooktable.equalsIgnoreCase("yes"))
+                                    {
+                                        mainIntent.putExtra("orderid",booking_id);
+                                    }
+                                    else if(isbooktable.equalsIgnoreCase("no")){
+                                        mainIntent.putExtra("orderid",order_id);
+                                    }
+
                                     startActivity(mainIntent);
-
-
+                                    finish();
                                 }
                                 else{
                                     Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
@@ -152,6 +173,56 @@ public class PaymentScreenActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /*public void callApi_makepayment(String order_id,String payment_type)
+    {
+        Api.getInfo().make_payment("Bearer "+storePrefrence.getString(TOKEN_LOGIN),order_id, payment_type).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            //Log.d("Result", jsonObject.toString());
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
+                                {
+                                    final Intent mainIntent = new Intent(PaymentScreenActivity.this, Order_ConformationActivity.class);
+                                    mainIntent.putExtra("model",tableList_get);
+                                    mainIntent.putExtra("restromodel", RestroData);
+                                    mainIntent.putExtra("totalpay",totalpay);
+
+                                    mainIntent.putExtra("orderid",order_id);
+                                    startActivity(mainIntent);
+                                }
+                                else{
+                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+
+                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+
+
+                    }
+                });
+    }*/
+
 
 
 

@@ -109,11 +109,7 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                     Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
 
                 }
-
-
-
-
-            }
+           }
 
             @Override
             public void onCancel() {
@@ -248,6 +244,8 @@ public class LoginFormActivity extends AppCompatActivity implements GoogleApiCli
                                     storePrefrence.setString(Constant.MOBILE, jsonObject.getJSONObject("data").getString("contact"));
                                     storePrefrence.setString(Constant.NAME, jsonObject.getJSONObject("data").getString("name"));
                                     storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));
+                                    storePrefrence.setString(Constant.IDENTFIER,"");
+
                                     /*if(chek_keeplogin.isChecked())
                                     {
                                         storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));

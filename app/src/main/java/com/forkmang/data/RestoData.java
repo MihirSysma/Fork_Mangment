@@ -2,7 +2,7 @@ package com.forkmang.data;
 
 import java.io.Serializable;
 
-public class BookTable implements Serializable {
+public class RestoData implements Serializable {
     String rest_name, distance, endtime, id, restaurant_id, service_id;
 
     public String getId() {

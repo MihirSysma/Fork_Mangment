@@ -87,4 +87,16 @@ public class StorePrefrence {
         editor.putBoolean(key, value);
         editor.commit();
     }
+
+    public String getData(String id) {
+        return prefencs.getString(id, "");
+    }
+    public void setData(String id, String val) {
+        editor = prefencs.edit();
+        editor.putString(id, val);
+        editor.commit();
+    }
+    public String getCoordinates(String id) {
+        return prefencs.getString(id, "0");
+    }
 }

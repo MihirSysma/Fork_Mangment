@@ -139,7 +139,7 @@
     <string name="rules">Rules</string>
     <string name="dress_code">Dress Code:</string>
     <string name="occasion_birthday">Occasion, Birthday:</string>
-    <string name="some_text">Some Text</string>
+    <string name="some_text">Search Food</string>
     <string name="make_it_surprise_or_any_wish">Make it Surprise Or Any Wish</string>
     <string name="select_amp_next"><![CDATA[Select & Next]]></string>
     <string name="table">Table</string>
@@ -172,6 +172,7 @@
     <string name="startbucks">Startbucks</string>
     <string name="april_14_5_00_pm_for_7_person">April 14 , 5:00 Pm For 7 Person</string>
     <string name="are_you_sure_you_want_to_logout">Are you sure want to logOut?</string>
+    <string name="conformsg">Your Table booked do you want to payment ?</string>
     <string name="logout">Logout</string>
     <string name="pasta">Pasta</string>
     <string name="sar_14">Sar 14</string>
@@ -247,6 +248,7 @@
 
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="area_type">Area Type</string>
 
 
 </resources>

@@ -5,10 +5,15 @@ import static com.forkmang.helper.Constant.SUCCESS_CODE;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.forkmang.R;
 import com.forkmang.adapter.ViewPagerAdapter_SelectFood;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.RestoData;
 import com.forkmang.data.FoodList_Tab;
 import com.forkmang.fragment.Select_Food_Fragment;
 import com.forkmang.helper.Constant;
@@ -47,10 +52,13 @@ public class SelectFood_Activity extends AppCompatActivity {
     Button btn_view_cart;
     Context ctx = SelectFood_Activity.this;
     ArrayList<FoodList_Tab> foodListArrayList;
-    BookTable bookTable;
+    RestoData restoData;
     TableList tableList;
-    String booking_id;
+    String booking_id,category_id;
     ProgressBar progressBar;
+    int current_tabactive;
+    EditText etv_searchview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,21 +67,95 @@ public class SelectFood_Activity extends AppCompatActivity {
         progressBar=findViewById(R.id.progressBar);
         tabLayout=findViewById(R.id.tabLayout);
         btn_view_cart = findViewById(R.id.btn_view_cart);
+        ImageView img_searchicon = findViewById(R.id.img_searchicon);
+        ImageView img_edit = findViewById(R.id.img_edit);
+        etv_searchview = findViewById(R.id.etv_searchview);
+
 
         TextView txtrestroname = findViewById(R.id.txtrestroname);
         TextView txt_time = findViewById(R.id.txt_time);
         TextView txt_distance = findViewById(R.id.txt_distance);
         TextView txt_totalkm = findViewById(R.id.txt_totalkm);
 
+        TextView txt_datetime = findViewById(R.id.txt_datetime);
+        TextView txt_day = findViewById(R.id.txt_day);
+        TextView txt_noofseat = findViewById(R.id.txt_noofseat);
+        TextView txt_view_day = findViewById(R.id.txt_view_day);
+        TextView txt_view_day_2 = findViewById(R.id.txt_view_day_2);
 
-        bookTable = (BookTable) getIntent().getSerializableExtra("bookTable_model");
+
+        img_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
         tableList = (TableList) getIntent().getSerializableExtra("table_model");
+        String timedate = getIntent().getStringExtra("timedate");
+        String day = getIntent().getStringExtra("day");
+        String noseat = getIntent().getStringExtra("noseat");
 
-        txtrestroname.setText(bookTable.getRest_name());
-        txt_time.setText(bookTable.getEndtime());
-        txt_totalkm.setText(bookTable.getDistance()+" km");
-        booking_id = bookTable.getId();
+        txt_datetime.setText(timedate);
+        txt_day.setText(day);
+        txt_noofseat.setText(noseat+" "+"Seats");
+        txt_view_day.setText(day);
+        txt_view_day_2.setText(day);
 
+
+
+        txtrestroname.setText(restoData.getRest_name());
+        txt_time.setText(restoData.getEndtime());
+        txt_totalkm.setText(restoData.getDistance()+" km");
+        booking_id = restoData.getId();
+
+        img_searchicon.setOnClickListener(v -> {
+            String str_search=etv_searchview.getText().toString();
+            Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
+
+            if (Utils.isNetworkAvailable(ctx)) {
+                all_Food_fragment.callApi_searchfooditem(category_id,str_search);
+            }
+            else{
+                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        etv_searchview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if(s.toString().length()==0)
+                {
+                    Hidekeyboard();
+                    if (Utils.isNetworkAvailable(ctx)) {
+                        Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
+                        all_Food_fragment.callApi_fooditem(category_id);
+                    }
+                    else{
+                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                // TODO Auto-generated method stub
+            }
+
+
+        });
 
         btn_view_cart.setOnClickListener(v -> {
             //showAlertView();
@@ -92,8 +174,9 @@ public class SelectFood_Activity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 Log.d("pageno", ""+position);
+                current_tabactive=position;
                 FoodList_Tab foodList_tab = foodListArrayList.get(position);
-                String category_id = foodList_tab.getId();
+                category_id = foodList_tab.getId();
 
                 Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
                 all_Food_fragment.callApi_food_1(category_id,booking_id);
@@ -175,7 +258,7 @@ public class SelectFood_Activity extends AppCompatActivity {
                                             foodListArrayList.add(foodList_tab);
                                         }
                                         progressBar.setVisibility(View.GONE);
-                                        ViewPagerAdapter_SelectFood viewPagerAdapter_reserveSeat=new ViewPagerAdapter_SelectFood(getSupportFragmentManager(),getLifecycle(),foodListArrayList, tableList,bookTable);
+                                        ViewPagerAdapter_SelectFood viewPagerAdapter_reserveSeat=new ViewPagerAdapter_SelectFood(getSupportFragmentManager(),getLifecycle(),foodListArrayList, tableList, restoData);
                                         viewPager.setAdapter(viewPagerAdapter_reserveSeat);
 
                                         fill_tablist();
@@ -205,7 +288,12 @@ public class SelectFood_Activity extends AppCompatActivity {
                 });
     }
 
-
+    private void Hidekeyboard()
+    {
+        etv_searchview.clearFocus();
+        InputMethodManager in = (InputMethodManager)SelectFood_Activity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(etv_searchview.getWindowToken(), 0);
+    }
 
 
 }

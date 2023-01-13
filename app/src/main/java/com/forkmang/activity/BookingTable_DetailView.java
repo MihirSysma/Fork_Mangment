@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +41,10 @@ import com.forkmang.adapter.SpinnnerAdapter_Branch;
 import com.forkmang.adapter.SpinnnerAdapter_Floor;
 import com.forkmang.adapter.SpinnnerAdapter_Type;
 import com.forkmang.adapter.SpinnnerAdapter_Type_Value;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.AreaDropdown;
+import com.forkmang.data.RestoData;
+import com.forkmang.data.BranchDropdown;
+import com.forkmang.data.FlooDropdown;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
 import com.forkmang.helper.Utils;
@@ -56,6 +61,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,27 +71,29 @@ public class BookingTable_DetailView extends Activity {
 
     Context ctx = BookingTable_DetailView.this;
     int mYear, mMonth, mDay, mHour, mMinute,mSecond;
-    String booking_date, booking_time, Date_get="",resturant_id, noof_person="0";
+    String booking_date, booking_time, Date_get="",resturant_id, noof_person="0", str_area="Indoor", datetime;
+    static  String day;
     ArrayList<TableList> tableListArrayList;
+    ArrayList<FlooDropdown> flooDropdownArrayList;
+    ArrayList<AreaDropdown> areaDropdownArrayList;
+    ArrayList<BranchDropdown> branchDropdownArrayList;
     FrameLayout frame_layout;
     LinearLayout linear_layout_under_frame,linear_listview,lyt_datetime;;
     ProgressBar progressBar;
     RecyclerView recyclerView;
-    TextView txt_view_datetime;
+    TextView txt_view_datetime,txt_noseat,txt_view_date;
     RadioButton button_floor,button_list;
-    BookTable bookTable;
+    RestoData restoData;
     StorePrefrence storePrefrence;
-    Boolean is_tableconform=false;
+    Boolean is_tableconform=false, is_pesonselect=false, is_areatype=false;
+    RelativeLayout rel_txtview,rel_lablview;
+
+    Spinner spinner_type,spinner_floor,spinner_branch,spinner_person,spinner_type_value;
 
 
     String [] person =
             {"Select Person","1","2 ","3","4","5","6","7","8","9","10"};
-    String [] branch =
-            {"Select Branch","1","2 ","3","4","5"};
-    String [] floor =
-            {"Select Floor","1","2","3","4","5"};
-    String [] type =
-            {"Select Type","inside","outside"};
+
     String [] type_value =
             {"Value","0.7","0.8","0.9","1.0"};
 
@@ -95,12 +103,19 @@ public class BookingTable_DetailView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookingtable_detailview);
         storePrefrence = new StorePrefrence(ctx);
+
         Intent intent = getIntent();
         resturant_id = intent.getStringExtra("resturant_id");
-        bookTable = (BookTable) getIntent().getSerializableExtra("model");
+        datetime = intent.getStringExtra("datetime");
+        restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
 
         TextView txtrestroname = findViewById(R.id.txtrestroname);
+        txt_noseat=findViewById(R.id.txt_noseat);
         txt_view_datetime = findViewById(R.id.txt_datetime);
+        txt_view_date = findViewById(R.id.txt_view_date);
+        rel_txtview = findViewById(R.id.rel_txtview);
+        rel_lablview = findViewById(R.id.rel_lablview);
+
         TextView txt_time = findViewById(R.id.txt_time);
         TextView txt_distance = findViewById(R.id.txt_distance);
         TextView txt_totalkm = findViewById(R.id.txt_totalkm);
@@ -111,29 +126,21 @@ public class BookingTable_DetailView extends Activity {
         lyt_datetime= findViewById(R.id.lyt_datetime);
         Button btn_payment_conform = findViewById(R.id.btn_payment_conform);
         linear_listview = findViewById(R.id.linear_listview);
-        Spinner spinner_person= findViewById(R.id.spinner);
-        Spinner spinner_branch= findViewById(R.id.spinner_branch);
-        Spinner spinner_floor= findViewById(R.id.spinner_floor);
-        Spinner spinner_type= findViewById(R.id.spinner_type);
-        Spinner spinner_type_value= findViewById(R.id.spinner_type_value);
-
+        spinner_person= findViewById(R.id.spinner);
+        spinner_branch= findViewById(R.id.spinner_branch);
+        spinner_floor= findViewById(R.id.spinner_floor);
+        spinner_type= findViewById(R.id.spinner_type);
+        spinner_type_value= findViewById(R.id.spinner_type_value);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.table_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(BookingTable_DetailView.this, LinearLayoutManager.HORIZONTAL, false));
 
-        button_floor.setChecked(false);
-        button_list.setChecked(true);
-
-        txtrestroname.setText(bookTable.getRest_name());
-        txt_time.setText(bookTable.getEndtime());
-        txt_totalkm.setText(bookTable.getDistance()+" km");
-
-        current_dateshow();
-
+        txtrestroname.setText(restoData.getRest_name());
+        txt_time.setText(restoData.getEndtime());
+        txt_totalkm.setText(restoData.getDistance()+" km");
 
 
         btn_payment_conform.setOnClickListener(v -> {
-
         });
 
         button_floor.setOnClickListener(v -> {
@@ -144,7 +151,6 @@ public class BookingTable_DetailView extends Activity {
 
         button_list.setOnClickListener(v -> {
             linear_listview.setVisibility(View.VISIBLE);
-
             frame_layout.setVisibility(View.GONE);
             linear_layout_under_frame.setVisibility(View.GONE);
             recyclerView = findViewById(R.id.table_recycleview);
@@ -161,16 +167,45 @@ public class BookingTable_DetailView extends Activity {
 
         lyt_datetime.setOnClickListener(v -> datePicker());
 
+
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        rel_lablview.setVisibility(View.GONE);
+        rel_txtview.setVisibility(View.GONE);
+
+        button_floor.setChecked(false);
+        button_list.setChecked(true);
+
+
+
+        current_dateshow();
+
+
+        //call api for fill dropdown
+        callapi_filldropdown(resturant_id);
+
+
         //spinner_person array adapter start
         SpinnnerAdapter personAdapter=new SpinnnerAdapter(getApplicationContext(),person);
         spinner_person.setAdapter(personAdapter);
         spinner_person.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                is_pesonselect=false;
                 if(position > 0)
                 {
                     Toast.makeText(ctx,person[position],Toast.LENGTH_SHORT).show();
                     noof_person = person[position];
+                    is_pesonselect=true;
+                }
+                else{
+                    is_pesonselect=false;
                 }
 
 
@@ -186,36 +221,31 @@ public class BookingTable_DetailView extends Activity {
 
 
         //spinner_branch array adapter
-         SpinnnerAdapter_Branch branchAdapter=new SpinnnerAdapter_Branch(getApplicationContext(),branch);
-         spinner_branch.setAdapter(branchAdapter);
-         spinner_branch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_branch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position > 0)
                 {
-                    Toast.makeText(ctx,branch[position],Toast.LENGTH_SHORT).show();
+                    BranchDropdown branchDropdown = branchDropdownArrayList.get(position);
+                    Toast.makeText(ctx,branchDropdown.getBranch_name(),Toast.LENGTH_SHORT).show();
                 }
-
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
                 Toast.makeText(ctx,"not selected",Toast.LENGTH_SHORT).show();
             }
         });
         //spinner_branch array adapter
 
         //spinner_floor array adapter
-         SpinnnerAdapter_Floor floorAdapter=new SpinnnerAdapter_Floor(getApplicationContext(),floor);
-         spinner_floor.setAdapter(floorAdapter);
-         spinner_floor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_floor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position > 0)
                 {
-                    Toast.makeText(ctx,floor[position],Toast.LENGTH_SHORT).show();
+                    FlooDropdown flooDropdown = flooDropdownArrayList.get(position);
+                    Toast.makeText(ctx,flooDropdown.getFloor_name(),Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -230,14 +260,27 @@ public class BookingTable_DetailView extends Activity {
         //spinner_floor array adapter
 
         //spinner_floor array adapter
-        SpinnnerAdapter_Type typeAdapter=new SpinnnerAdapter_Type(getApplicationContext(),type);
-        spinner_type.setAdapter(typeAdapter);
         spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position > 0)
                 {
-                    Toast.makeText(ctx,type[position],Toast.LENGTH_SHORT).show();
+                    AreaDropdown areaDropdown = areaDropdownArrayList.get(position);
+                    Toast.makeText(ctx,areaDropdown.getArea_name(),Toast.LENGTH_SHORT).show();
+                    str_area = areaDropdown.getArea_name();
+                    is_areatype=true;
+
+                    if(is_pesonselect)
+                    {
+                        rel_lablview.setVisibility(View.VISIBLE);
+                        rel_txtview.setVisibility(View.VISIBLE);
+                        txt_noseat.setText(str_area+" "+noof_person+" "+"Seats");
+                        txt_view_date.setText(day);
+                    }
+
+                }
+                else{
+                    is_areatype=false;
                 }
 
 
@@ -272,20 +315,7 @@ public class BookingTable_DetailView extends Activity {
         });
         //spinner_floor array adapter
 
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(button_list.isChecked())
-        {
-            linear_listview.setVisibility(View.VISIBLE);
-            frame_layout.setVisibility(View.GONE);
-            linear_layout_under_frame.setVisibility(View.GONE);
-
-            callapi_booktablelist(resturant_id);
-        }
     }
 
     public void showAlertView_tableselctionrule(TableList tableList)
@@ -297,10 +327,11 @@ public class BookingTable_DetailView extends Activity {
         alertDialog.setCancelable(true);
         final AlertDialog dialog = alertDialog.create();
         Button btn_select_nxt;
-        TextView tv_descr, tv_rule, tv_dresscode, tv_ocassion;
+        TextView tv_descr, tv_rule, tv_dresscode, tv_ocassion,txt_reserveseat;
         btn_select_nxt=dialogView.findViewById(R.id.btn_select_nxt);
 
         tv_descr=dialogView.findViewById(R.id.tv_descr);
+        txt_reserveseat=dialogView.findViewById(R.id.txt_reserveseat);
         tv_rule=dialogView.findViewById(R.id.tv_rule);
         tv_dresscode=dialogView.findViewById(R.id.tv_dresscode);
         tv_ocassion=dialogView.findViewById(R.id.tv_ocassion);
@@ -309,6 +340,7 @@ public class BookingTable_DetailView extends Activity {
         tv_rule.setText(tableList.getTable_rule());
         tv_dresscode.setText(tableList.getTable_drescode());
         tv_ocassion.setText(tableList.getTable_ocassion());
+        txt_reserveseat.setText("To Reserve:"+" "+ctx.getResources().getString(R.string.rupee)+tableList.getPrice());
 
 
         btn_select_nxt.setOnClickListener(v -> {
@@ -339,13 +371,14 @@ public class BookingTable_DetailView extends Activity {
         etv_noperson =dialogView.findViewById(R.id.etv_noperson);
         imgicon_edit =dialogView.findViewById(R.id.imgicon_edit);
         imgicon_save =dialogView.findViewById(R.id.imgicon_save);
+
         txt_restroname.setText(tableList.getStr_hotel_name());
         txt_custname.setText(tableList.getStr_customer_name());
-        txt_datetime.setText(tableList.getStr_time());
 
-        etv_noperson.setText(tableList.getNumber_of_person());
-
+        txt_datetime.setText(txt_view_datetime.getText().toString());
+        etv_noperson.setText(noof_person);
         txt_phoneno.setText(tableList.getStr_phone());
+
         btn_select_food=dialogView.findViewById(R.id.btn_select_food);
         btn_cancel=dialogView.findViewById(R.id.btn_cancel);
 
@@ -387,31 +420,33 @@ public class BookingTable_DetailView extends Activity {
         btn_cancel.setOnClickListener(v -> dialog.dismiss());
 
         btn_cnf_tablebook.setOnClickListener(v ->{
-
-            if (Utils.isNetworkAvailable(ctx)) {
+            //dialog.dismiss();
+            if(Utils.isNetworkAvailable(ctx))
+            {
                 callapi_conform_tablebooking(tableList.getRestaurant_id(), tableList.getId(), tableList.getTable_rule(),
-                        tableList.getTable_drescode(),tableList.getTable_ocassion(),booking_date);
+                        tableList.getTable_drescode(),tableList.getTable_ocassion(),booking_date,tableList, restoData);
 
-                dialog.dismiss();
             }
             else{
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
-
-
+                Toast.makeText(ctx,Constant.NETWORKEROORMSG,Toast.LENGTH_SHORT).show();
             }
+
+
 
 
 
         });
 
         btn_select_food.setOnClickListener(v -> {
-
-            final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
-            mainIntent.putExtra("bookTable_model", bookTable);
-            mainIntent.putExtra("table_model", tableList);
-
-            startActivity(mainIntent);
             dialog.dismiss();
+            final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
+            mainIntent.putExtra("restromodel", restoData);
+            mainIntent.putExtra("table_model", tableList);
+            mainIntent.putExtra("timedate", txt_view_datetime.getText().toString());
+            mainIntent.putExtra("day", day);
+            mainIntent.putExtra("noseat", str_area+" "+noof_person);
+            startActivity(mainIntent);
+
            /* if(is_tableconform)
             {
                 final Intent mainIntent = new Intent(BookingTable_DetailView.this, SelectFood_Activity.class);
@@ -506,7 +541,7 @@ public class BookingTable_DetailView extends Activity {
 
 
                                                 /* code to get customer and other data into table object */
-                                                tableList.setStr_hotel_name(bookTable.getRest_name());
+                                                tableList.setStr_hotel_name(restoData.getRest_name());
 
                                                 if(storePrefrence.getString(Constant.NAME).length() == 0)
                                                 {
@@ -567,8 +602,133 @@ public class BookingTable_DetailView extends Activity {
     }
 
 
+
+    private void callapi_filldropdown(String restaurant_id)
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        Api.getInfo().getres_detail(restaurant_id).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
+                                {
+                                    if(jsonObject.getJSONObject("data").getJSONArray("data").length() > 0)
+                                    {
+                                        flooDropdownArrayList=new ArrayList<>();
+
+                                        branchDropdownArrayList=new ArrayList<>();
+
+                                        areaDropdownArrayList=new ArrayList<>();
+                                        for(int i =0; i<jsonObject.getJSONObject("data").getJSONArray("data").length(); i++)
+                                        {
+                                            //Area Type Spinner code
+                                            JSONArray mjson_array_area = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i).getJSONArray("area");
+                                            AreaDropdown areaDropdown_first=new AreaDropdown();
+                                            areaDropdown_first.setId("0");
+                                            areaDropdown_first.setArea_name("Select Area");
+                                            areaDropdownArrayList.add(areaDropdown_first);
+
+                                            for(int j = 0; j<mjson_array_area.length(); j++)
+                                            {
+                                                AreaDropdown areaDropdown=new AreaDropdown();
+                                                JSONObject mjson_object_area = mjson_array_area.getJSONObject(j);
+                                                areaDropdown.setId(mjson_object_area.getString("id"));
+                                                areaDropdown.setArea_name(mjson_object_area.getString("name"));
+                                                areaDropdownArrayList.add(areaDropdown);
+
+                                            }
+                                            SpinnnerAdapter_Type spinnnerAdapter_type=new SpinnnerAdapter_Type(getApplicationContext(),areaDropdownArrayList);
+                                            spinner_type.setAdapter(spinnnerAdapter_type);
+                                            //code end
+
+                                            //floor type spinner code start
+                                            JSONArray mjson_array_floor = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i).getJSONArray("floor");
+                                            FlooDropdown flooDropdown_first=new FlooDropdown();
+                                            flooDropdown_first.setId("0");
+                                            flooDropdown_first.setFloor_name("Select Floor");
+                                            flooDropdownArrayList.add(flooDropdown_first);
+                                            for(int j = 0; j<mjson_array_floor.length(); j++)
+                                            {
+                                                FlooDropdown flooDropdown=new FlooDropdown();
+                                                JSONObject mjson_object_floor = mjson_array_floor.getJSONObject(j);
+                                                flooDropdown.setId(mjson_object_floor.getString("id"));
+                                                flooDropdown.setFloor_name(mjson_object_floor.getString("name"));
+                                                flooDropdownArrayList.add(flooDropdown);
+
+                                            }
+                                            SpinnnerAdapter_Floor spinnnerAdapter_floor=new SpinnnerAdapter_Floor(getApplicationContext(),flooDropdownArrayList);
+                                            spinner_floor.setAdapter(spinnnerAdapter_floor);
+                                            //floor type spinner code end
+
+                                            //branch type spinner code start
+                                            JSONArray mjson_array_branch = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i).getJSONArray("child_restaurant");
+                                            BranchDropdown branchDropdown_first=new BranchDropdown();
+                                            branchDropdown_first.setId("0");
+                                            branchDropdown_first.setBranch_name("Select Branch");
+                                            branchDropdownArrayList.add(branchDropdown_first);
+                                            for(int j = 0; j<mjson_array_branch.length(); j++)
+                                            {
+                                                JSONObject mjson_object_branch = mjson_array_branch.getJSONObject(j);
+                                                BranchDropdown branchDropdown=new BranchDropdown();
+                                                branchDropdown.setId(mjson_object_branch.getString("id"));
+                                                branchDropdown.setBranch_name(mjson_object_branch.getString("rest_branch"));
+                                                branchDropdownArrayList.add(branchDropdown);
+
+                                            }
+                                            SpinnnerAdapter_Branch spinnnerAdapter_branch=new SpinnnerAdapter_Branch(getApplicationContext(),branchDropdownArrayList);
+                                            spinner_branch.setAdapter(spinnnerAdapter_branch);
+                                            //branch type spinner code end
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+
+                                        //load remaining value in view
+                                        if(button_list.isChecked())
+                                        {
+                                            linear_listview.setVisibility(View.VISIBLE);
+                                            frame_layout.setVisibility(View.GONE);
+                                            linear_layout_under_frame.setVisibility(View.GONE);
+                                            callapi_booktablelist(resturant_id);
+                                        }
+                                    }
+                                    else{
+                                        //no data in array list
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            }
+                            else{
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                        catch (JSONException ex)
+                        {
+                            ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+
+
+
+
     private void callapi_conform_tablebooking(String restaurant_id, String table_id, String rules, String dresscode,
-                                              String occasion, String date)
+                                              String occasion, String date, TableList tableList, RestoData bookTable)
     {
         Log.d("restaurant_id",restaurant_id);
         Log.d("table_id",table_id);
@@ -581,7 +741,7 @@ public class BookingTable_DetailView extends Activity {
 
         progressBar.setVisibility(View.VISIBLE);
         Api.getInfo().book_table("Bearer "+storePrefrence.getString(TOKEN_LOGIN), /*,"application/json",*//*"application/json",*/
-                                restaurant_id,table_id,rules,dresscode,occasion,date).
+                                restaurant_id,table_id,rules,dresscode,occasion,date, storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -607,35 +767,23 @@ public class BookingTable_DetailView extends Activity {
                                     Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                     is_tableconform=true;
 
+                                    showAlertView_conformation(tableList,mjson_obj.getString("id"),bookTable);
+
+
                                 }
                                 else{
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
                                     is_tableconform=false;
+
                                 }
                             }
-                            else if(response.code() == Constant.ERROR_CODE_n)
+                            else if(response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE)
                             {
                                 progressBar.setVisibility(View.GONE);
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
                                 Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                 is_tableconform=false;
-                                /*JSONObject obj = new JSONObject(loadJSONFromAsset());
-                                if(obj.getString("status").equalsIgnoreCase("200"))
-                                {
-                                    Toast.makeText(ctx, obj.getString("message")+" offline ", Toast.LENGTH_LONG).show();
-                                    JSONObject mjson_obj = obj.getJSONObject("data");
-                                    storePrefrence.setString("customerid", mjson_obj.getString("customer_id"));
-                                    storePrefrence.setString("paymentstatus", mjson_obj.getString("payment_status"));
-                                    Log.d("table_id", mjson_obj.getString("table_id"));
-                                    Log.d("restaurant_id", mjson_obj.getString("restaurant_id"));
-                                    Log.d("rules", mjson_obj.getString("rules"));
-                                    showAlertView_conformtable();
-                                }
-                                else{
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show();
-                                }*/
 
                             }
                             else{
@@ -694,6 +842,7 @@ public class BookingTable_DetailView extends Activity {
 
             txt_view_datetime.setText("");
             txt_view_datetime.setText(selectedDay + "-" +getMonth(selectedMonth + 1 ));
+
             mYear = selectedYear;
             mMonth = selectedMonth;
             mDay = selectedDay;
@@ -781,7 +930,8 @@ public class BookingTable_DetailView extends Activity {
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(ctx,R.style.DialogTheme_picker,
                 (view, hourOfDay, minute) -> {
-                    String date = txt_view_datetime.getText().toString();
+                   String date = txt_view_datetime.getText().toString();
+                   day=txt_view_datetime.getText().toString();
                     txt_view_datetime.setText("");
 
                     String time = String.format("%02d:%02d", hourOfDay, minute);
@@ -857,6 +1007,8 @@ public class BookingTable_DetailView extends Activity {
 
         txt_view_datetime.setText("");
         txt_view_datetime.setText(str_day + "-" +getMonth(month_n) + " " +time);
+        day=str_day + "-" +getMonth(month_n);
+
     }
 
 
@@ -884,7 +1036,41 @@ public class BookingTable_DetailView extends Activity {
     }
 
 
+    private void showAlertView_conformation(TableList tableList, String booking_id, RestoData restoData) {
+        final androidx.appcompat.app.AlertDialog.Builder alertDialog = new androidx.appcompat.app.AlertDialog.Builder(BookingTable_DetailView.this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.conform_booking_view, null);
+        alertDialog.setView(dialogView);
+        alertDialog.setCancelable(true);
+        final androidx.appcompat.app.AlertDialog dialog = alertDialog.create();
 
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Button btn_cancel, btn_yes;
+
+        btn_cancel = dialogView.findViewById(R.id.btn_cancel);
+        btn_yes = dialogView.findViewById(R.id.btn_yes);
+        btn_yes.setOnClickListener(view -> {
+            dialog.dismiss();
+            final Intent mainIntent = new Intent(BookingTable_DetailView.this, PaymentScreenActivity.class);
+            mainIntent.putExtra("model",tableList);
+            mainIntent.putExtra("restromodel",restoData);
+            mainIntent.putExtra("totalpay",ctx.getResources().getString(R.string.rupee)+tableList.getPrice());
+            mainIntent.putExtra("bookingid",booking_id);
+            mainIntent.putExtra("isbooktable","yes");
+            startActivity(mainIntent);
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+        dialog.show();
+    }
 
 
 

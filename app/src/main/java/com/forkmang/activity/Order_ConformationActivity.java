@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.data.BookTable;
+import com.forkmang.data.RestoData;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
 import com.forkmang.helper.Utils;
@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class Order_ConformationActivity extends AppCompatActivity {
 
     TableList tableList_get;
-    BookTable bookTable;
+    RestoData restoData;
     RecyclerView recyclerView;
     TextView txt_totalPaidamt,txt_rule,txt_dresscode,txt_ocassion,txt_customername,txt_mobileno,txt_customer_add,txt_timeview,txt_indoor,txt_order_id;
     TextView txtrestroname, txt_endtime, txt_distance,txttotalkm;
@@ -64,7 +64,7 @@ public class Order_ConformationActivity extends AppCompatActivity {
 
 
         tableList_get = (TableList) getIntent().getSerializableExtra("model");
-        bookTable = (BookTable) getIntent().getSerializableExtra("bookTable");
+        restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
         totalpay = getIntent().getStringExtra("totalpay");
         order_id = getIntent().getStringExtra("orderid");
 
@@ -109,7 +109,7 @@ public class Order_ConformationActivity extends AppCompatActivity {
                                     txt_endtime.setText("Branch Name: "+dataobj.getJSONObject("restaurant").getString("rest_branch"));
                                     txt_distance.setText("ContactNo: "+dataobj.getJSONObject("restaurant").getString("contact"));
 
-                                    txttotalkm.setText(bookTable.getDistance()+" Km");
+                                    txttotalkm.setText(restoData.getDistance()+" Km");
                                     txt_totalPaidamt.setText(ctx.getResources().getString(R.string.rupee)+dataobj.getString("total"));
                                 }
                                 else{
