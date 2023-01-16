@@ -3,23 +3,18 @@ package com.forkmang.adapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.activity.Activity_PaymentSummary;
 import com.forkmang.data.Location;
 
 import java.util.ArrayList;
@@ -112,7 +107,7 @@ public class location_Fragment_Adapter extends RecyclerView.Adapter<location_Fra
     {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View dialogView = inflater.inflate(R.layout.location_alertview, null);
+        final View dialogView = inflater.inflate(R.layout.quee_alertview, null);
         alertDialog.setView(dialogView);
         alertDialog.setCancelable(true);
         final AlertDialog dialog = alertDialog.create();

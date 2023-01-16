@@ -102,13 +102,13 @@ public class SplashActivity extends AppCompatActivity {
                  finish();
              }*/
 
-            /*final Intent mainIntent = new Intent(SplashActivity.this, DashBoard_Activity.class);
-            startActivity(mainIntent);
-            finish();*/
-
-            final Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
+            final Intent mainIntent = new Intent(SplashActivity.this, DashBoard_Activity.class);
             startActivity(mainIntent);
             finish();
+
+            /*final Intent mainIntent = new Intent(SplashActivity.this, LoginFormActivity.class);
+            startActivity(mainIntent);
+            finish();*/
 
         }, 2000);
     }

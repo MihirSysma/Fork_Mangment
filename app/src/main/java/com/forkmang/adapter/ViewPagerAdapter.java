@@ -10,7 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.forkmang.fragment.Book_Table_Fragment;
 import com.forkmang.fragment.Pickup_Fragment;
-import com.forkmang.fragment.Walkin_Fragment;
+import com.forkmang.fragment.Walkin_listing_Fragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
     Context ctx;
@@ -34,7 +34,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 }
                 break;
             case 1: {
-                   selectedFragment = Walkin_Fragment.newInstance();
+                   selectedFragment = Walkin_listing_Fragment.newInstance();
                    //((Booking_TabView_Activity)ctx).hide_search();
                  }
                 break;

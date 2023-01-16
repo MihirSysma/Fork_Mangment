@@ -25,7 +25,7 @@ import com.forkmang.R;
 import com.forkmang.adapter.ViewPagerAdapter;
 import com.forkmang.fragment.Book_Table_Fragment;
 import com.forkmang.fragment.Pickup_Fragment;
-import com.forkmang.fragment.Walkin_Fragment;
+import com.forkmang.fragment.Walkin_listing_Fragment;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
 import com.google.android.material.tabs.TabLayout;
@@ -46,7 +46,6 @@ public class Booking_TabView_Activity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_tab_view);
-
 
         ImageView img_loc = findViewById(R.id.img_loc);
         ctx=Booking_TabView_Activity.this;
@@ -130,14 +129,18 @@ public class Booking_TabView_Activity extends AppCompatActivity {
                 }
                 else if(current_tabactive == 1)
                 {
-                    //walkin fragment
-                    if(s.toString().length() > 3)
+                    Walkin_listing_Fragment walkin_listing_fragment = Walkin_listing_Fragment.GetInstance();
+                    //walking fragment
+                    if(s.toString().length()==0)
                     {
-                        Walkin_Fragment walkin_fragment = Walkin_Fragment.GetInstance();
-                        Log.d("current_tabactive","walkin");
+                        Hidekeyboard();
+                        walkin_listing_fragment.call_reloadbooktable();
                     }
-
-
+                    else if(s.toString().length() > 3)
+                    {
+                        Hidekeyboard();
+                        walkin_listing_fragment.filter_booktable(etv_serach.getText().toString());
+                    }
                 }
                 else if(current_tabactive == 3)
                 {
@@ -170,15 +173,7 @@ public class Booking_TabView_Activity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-
                     Hidekeyboard();
-
-                    /*Book_Table_Fragment frag = Book_Table_Fragment.GetInstance();
-                    if(etv_serach.getText().length() > 3)
-                    {
-                        frag.filter_booktable(etv_serach.getText().toString());
-                    }*/
-
                     return true;
                 }
 
@@ -187,7 +182,6 @@ public class Booking_TabView_Activity extends AppCompatActivity {
         });
 
     }
-
 
     @Nullable
     @Override
@@ -223,7 +217,6 @@ public class Booking_TabView_Activity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         storePrefrence=new StorePrefrence(Booking_TabView_Activity.this);
-
         if (storePrefrence.getCoordinates(Constant.KEY_LATITUDE).equals("0.0") || storePrefrence.getCoordinates(Constant.KEY_LONGITUDE).equals("0.0"))
         {
             longitude = 0.0;
@@ -232,9 +225,6 @@ public class Booking_TabView_Activity extends AppCompatActivity {
             longitude = Double.parseDouble(storePrefrence.getCoordinates(Constant.KEY_LONGITUDE));
             latitude = Double.parseDouble(storePrefrence.getCoordinates(Constant.KEY_LATITUDE));
         }
-
-
-
 
     }
 }

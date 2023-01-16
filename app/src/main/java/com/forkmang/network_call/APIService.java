@@ -95,6 +95,16 @@ public interface APIService {
             @Field("longitude") String logitutde
        );
 
+    @POST(WebApi.RES_QUEELIST)
+    @FormUrlEncoded
+    Call<JsonObject> getqueelist(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            //@Field("service_id") String service_id,
+            @Field("restaurant_id") String restaurant_id
+
+    );
+
     @POST(WebApi.LIST_RES)
     @FormUrlEncoded
     Call<JsonObject> getlist_searchres(

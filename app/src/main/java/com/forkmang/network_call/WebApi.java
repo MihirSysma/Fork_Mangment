@@ -27,6 +27,8 @@ public class WebApi {
     public static final String RES_MAKEPAYMENT = API_BASE + "payment";
     public static final String RES_ORDERDETAIL = API_BASE + "get-order-details";
     public static final String RES_GETTABLEORDERSLIST = API_BASE + "get-orders";
+    public static final String RES_QUEELIST = API_BASE + "queue-list";
+
 
 
 

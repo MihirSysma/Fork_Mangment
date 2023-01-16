@@ -5,19 +5,22 @@
     android:id="@+id/lytmain"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+
     android:clickable="true"
     android:focusable="true"
     app:cardCornerRadius="3dp"
     app:cardUseCompatPadding="true"
     android:elevation="@dimen/_7sdp"
+    android:padding="@dimen/_5sdp"
+    android:layout_margin="@dimen/_5sdp"
     app:cardBackgroundColor="@color/card_light_gray">
 
     <RelativeLayout
         android:id="@+id/relative_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp">
+
+        >
 
         <ImageView
             android:id="@+id/imgrestro"

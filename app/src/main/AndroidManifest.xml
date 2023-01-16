@@ -149,6 +149,12 @@
             android:exported="true" />
 
         <activity
+            android:name="com.forkmang.fragment.Walkin_detail_Fragment"
+            android:exported="true" />
+
+
+
+        <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />

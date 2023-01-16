@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -103,17 +104,16 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_height="match_parent"
         android:layout_margin="@dimen/_2sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical" >
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/booktable_recycleview"
+                android:id="@+id/walkinlisting_recycleview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
