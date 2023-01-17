@@ -22,8 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.activity.WalkinInQuee;
+import com.forkmang.adapter.SpinnnerAdapter;
 import com.forkmang.adapter.SpinnnerAdapter_Type;
+import com.forkmang.adapter.SpinnnerAdapter_ocassion;
 import com.forkmang.adapter.Walkin_listing_Adapter;
 import com.forkmang.data.AreaDropdown;
 import com.forkmang.data.RestoData;
@@ -37,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -58,11 +60,16 @@ public class Walkin_detail_Fragment extends FragmentActivity {
     ArrayList<RestoData> restoDataArrayList;
     Walkin_listing_Adapter walkin_listing_adapter;
     StorePrefrence storePrefrence;
-    String quee_no;
+    String quee_no,action, noof_person,occasion,area,identifier="",str_area_id;
     TextView txt_queeno;
-    Spinner spinner_type;
+    Spinner spinner_type,spinner_person,spinner_ocassion;
     ArrayList<AreaDropdown> areaDropdownArrayList;
-    Boolean is_areatype=false,is_pesonselect=false;
+    Boolean is_areatype=false,is_pesonselect=false,is_occasionselect=false;
+    String [] person_arr =
+            {"Select Person","1","2 ","3","4","5","6","7","8","9","10"};
+    String [] occasion_arr =
+            {"Select Occasion","Birthday","Anniversary","Marriage"};
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,32 +86,67 @@ public class Walkin_detail_Fragment extends FragmentActivity {
         recyclerView.setHasFixedSize(true);
 
         spinner_type= findViewById(R.id.spinner_type);
+        spinner_person= findViewById(R.id.spinner);
+        spinner_ocassion= findViewById(R.id.spinner_ocassion);
 
         Intent intent = getIntent();
         resturant_id = intent.getStringExtra("resturant_id");
         restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
 
-        callapi_getquess(resturant_id);
-        callapi_filldropdown(resturant_id);
 
-
-        get_inquee.setOnClickListener(v -> {
-            final Intent mainIntent = new Intent(ctx, WalkinInQuee.class);
-            startActivity(mainIntent);
+        //spinner_person array adapter start
+        SpinnnerAdapter personAdapter=new SpinnnerAdapter(getApplicationContext(), person_arr);
+        spinner_person.setAdapter(personAdapter);
+        spinner_person.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                is_pesonselect=false;
+                if(position > 0)
+                {
+                    Toast.makeText(ctx,person_arr[position],Toast.LENGTH_SHORT).show();
+                    noof_person = person_arr[position];
+                    String[] arrOfStr = noof_person.split(" ", 2);
+                    noof_person=arrOfStr[0];
+                    is_pesonselect=true;
+                }
+                else{
+                    is_pesonselect=false;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(ctx,"not selected",Toast.LENGTH_SHORT).show();
+            }
         });
-    }
+        //spinner_person array adapter end
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // ((Booking_TabView_Activity)getActivity()).hide_search();
-        String service_id = "2";
-        saveLatitude = 23.933689;
-        saveLongitude = 72.367458;
-        callapi_getbooktable(service_id, String.valueOf(saveLatitude), String.valueOf(saveLongitude));
+        //spinner_occasion array adapter start
+        SpinnnerAdapter_ocassion ocassionAdapter=new SpinnnerAdapter_ocassion(getApplicationContext(), occasion_arr);
+        spinner_ocassion.setAdapter(ocassionAdapter);
+        spinner_ocassion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                is_occasionselect=false;
+                if(position > 0)
+                {
+                    Toast.makeText(ctx,occasion_arr[position],Toast.LENGTH_SHORT).show();
+                    occasion = occasion_arr[position];
+                    is_occasionselect=true;
+                }
+                else{
+                    is_occasionselect=false;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(ctx,"not selected",Toast.LENGTH_SHORT).show();
+            }
+        });
+        //spinner_occasion array adapter end
 
 
+        //spinner area array adapter start
         spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -113,9 +155,8 @@ public class Walkin_detail_Fragment extends FragmentActivity {
                     AreaDropdown areaDropdown = areaDropdownArrayList.get(position);
                     Toast.makeText(ctx,areaDropdown.getArea_name(),Toast.LENGTH_SHORT).show();
                     str_area = areaDropdown.getArea_name();
+                    str_area_id=  areaDropdown.getId();
                     is_areatype=true;
-
-
                     /*if(is_pesonselect)
                     {
                         /*rel_lablview.setVisibility(View.VISIBLE);
@@ -131,7 +172,38 @@ public class Walkin_detail_Fragment extends FragmentActivity {
             }
         });
 
+        //spinner area array adapter end
+        callapi_getquess(resturant_id);
+        callapi_filldropdown(resturant_id);
 
+
+        get_inquee.setOnClickListener(v -> {
+            /*final Intent mainIntent = new Intent(ctx, WalkinInQuee.class);
+            startActivity(mainIntent);*/
+
+           //testing purpose hard coded
+            identifier="";
+            noof_person="2";
+            occasion="Birthday";
+            area="Terace View";
+            String  id = str_area_id;
+            //callapi_getqueeconform(action,resturant_id, noof_person, occasion, str_area,identifier);
+
+            callapi_getquee(resturant_id,noof_person,occasion,area);
+
+        });
+        //
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // ((Booking_TabView_Activity)getActivity()).hide_search();
+        String service_id = "2";
+        saveLatitude = 23.933689;
+        saveLongitude = 72.367458;
+        callapi_getbooktable(service_id, String.valueOf(saveLatitude), String.valueOf(saveLongitude));
     }
 
 
@@ -139,7 +211,7 @@ public class Walkin_detail_Fragment extends FragmentActivity {
     private void callapi_getbooktable(String service_id, String latitude, String logitutde)
     {
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().getlist_res(latitude, logitutde).
+        Api.getInfo().getlist_res_walkin(service_id,latitude, logitutde).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -307,6 +379,34 @@ public class Walkin_detail_Fragment extends FragmentActivity {
     }
 
 
+    public  void showAlertView_yeswantbook(String msg)
+    {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+        LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogView = inflater.inflate(R.layout.quee_alertview, null);
+        alertDialog.setView(dialogView);
+        alertDialog.setCancelable(true);
+        final AlertDialog dialog = alertDialog.create();
+        TextView txt_msg, tvyes,tvno;
+
+        txt_msg = dialogView.findViewById(R.id.txt_msg);
+        tvyes=dialogView.findViewById(R.id.tvyes);
+        tvno=dialogView.findViewById(R.id.tvno);
+        txt_msg.setText(msg);
+
+        tvyes.setOnClickListener(v -> {
+            dialog.dismiss();
+            callapi_getqueeconform("yes", restoData.getId(),noof_person,occasion,area, identifier);
+            //txt_queeno.setText(quee_no);
+
+        });
+        tvno.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        dialog.show();
+
+    }
+
     private void callapi_filldropdown(String restaurant_id)
     {
         progressBar.setVisibility(View.VISIBLE);
@@ -375,5 +475,137 @@ public class Walkin_detail_Fragment extends FragmentActivity {
                     }
                 });
     }
+
+    private void callapi_getqueeconform(String action, String restaurant_id, String person, String occasion,String area,String identifier)
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        Api.getInfo().queue_confirmation("Bearer "+storePrefrence.getString(TOKEN_LOGIN),
+                                        action,restaurant_id, person, occasion, area,identifier).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                progressBar.setVisibility(View.GONE);
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                //Log.d("Result", jsonObject.toString());
+                                Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+
+                            }
+                            else{
+
+                                 progressBar.setVisibility(View.GONE);
+                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                 Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                 callapi_getquee(restaurant_id,person,occasion,area);
+
+
+
+                            }
+
+                        }
+                        catch (JSONException | IOException ex)
+                        {
+                            ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void callapi_getquee(String restaurant_id,String person, String occasion,String area)
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        Api.getInfo().queue_get("Bearer "+storePrefrence.getString(TOKEN_LOGIN),
+                              restaurant_id, person, occasion, area).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                progressBar.setVisibility(View.GONE);
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+
+                                if (jsonObject.has("data") && !jsonObject.isNull("data"))
+                                {
+                                    // Do something with object.
+                                    boolean is_showalert = jsonObject.getJSONObject("data").getBoolean("showalert");
+                                    if(is_showalert)
+                                    {
+                                        showAlertView_yeswantbook(jsonObject.getString("message"));
+                                    }
+                                    else{
+                                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                else{
+                                    Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                }
+
+
+
+
+                           }
+                            else if(response.code() == Constant.ERROR_CODE_n){
+                                progressBar.setVisibility(View.GONE);
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+
+                                if (jsonObject.has("data") && !jsonObject.isNull("data")) {
+                                    // Do something with object.
+                                    boolean is_showalert = jsonObject.getJSONObject("data").getBoolean("showalert");
+                                    if(is_showalert)
+                                    {
+                                        showAlertView_yeswantbook(jsonObject.getString("message"));
+                                    }
+                                    else{
+                                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                else{
+                                    Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                }
+
+
+
+                            }
+
+                        }
+                        catch (JSONException | IOException ex)
+                        {
+                            ex.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

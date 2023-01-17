@@ -28,6 +28,8 @@ public class WebApi {
     public static final String RES_ORDERDETAIL = API_BASE + "get-order-details";
     public static final String RES_GETTABLEORDERSLIST = API_BASE + "get-orders";
     public static final String RES_QUEELIST = API_BASE + "queue-list";
+    public static final String RES_QUEECONFORMATION = API_BASE + "queue-confirmation-action";
+    public static final String RES_GETQUEE = API_BASE + "get-in-queue";
 
 
 

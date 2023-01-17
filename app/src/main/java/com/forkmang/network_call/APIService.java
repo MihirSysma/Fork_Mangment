@@ -95,6 +95,40 @@ public interface APIService {
             @Field("longitude") String logitutde
        );
 
+    @POST(WebApi.LIST_RES)
+    @FormUrlEncoded
+    Call<JsonObject> getlist_res_walkin(
+            //@Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("service_id") String service_id,
+            @Field("latitude") String latitude,
+            @Field("longitude") String logitutde
+    );
+
+    @POST(WebApi.RES_QUEECONFORMATION)
+    @FormUrlEncoded
+    Call<JsonObject> queue_confirmation(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("action") String action,
+            @Field("restaurant_id") String restaurant_id,
+            @Field("person") String person,
+            @Field("occasion") String occasion,
+            @Field("area") String area,
+            @Field("identifier") String identifier
+    );
+
+    @POST(WebApi.RES_GETQUEE)
+    @FormUrlEncoded
+    Call<JsonObject> queue_get(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("restaurant_id") String restaurant_id,
+            @Field("person") String person,
+            @Field("occasion") String occasion,
+            @Field("area") String area
+    );
+
     @POST(WebApi.RES_QUEELIST)
     @FormUrlEncoded
     Call<JsonObject> getqueelist(

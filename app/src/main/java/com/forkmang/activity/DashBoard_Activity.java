@@ -232,7 +232,8 @@ public class DashBoard_Activity extends AppCompatActivity implements NavigationV
     }
 
 
-    private void showAlertView_logout() {
+    private void showAlertView_logout()
+    {
         final androidx.appcompat.app.AlertDialog.Builder alertDialog = new androidx.appcompat.app.AlertDialog.Builder(DashBoard_Activity.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.conform_logout_view, null);

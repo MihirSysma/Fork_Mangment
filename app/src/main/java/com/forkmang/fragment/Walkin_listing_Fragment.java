@@ -103,7 +103,7 @@ public class Walkin_listing_Fragment extends Fragment {
     private void callapi_getbooktable(String service_id, String latitude, String logitutde)
     {
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().getlist_res(latitude, logitutde).
+        Api.getInfo().getlist_res_walkin(service_id,latitude, logitutde).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

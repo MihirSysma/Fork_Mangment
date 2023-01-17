@@ -57,7 +57,7 @@
         <entry key="app/src/main/res/layout/activity_booking_tab_view.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_booking_table_2.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_booking_table_reserve_seat.xml" value="0.15" />
-        <entry key="app/src/main/res/layout/activity_bookingtable_detailview.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/activity_bookingtable_detailview.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_bookingtable_reserveseat.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/activity_conform_foodreserve.xml" value="0.12" />
@@ -73,7 +73,7 @@
         <entry key="app/src/main/res/layout/activity_face_login_1.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_faceid_2.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_faceloginpermission.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_location_screen.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_login_form.xml" value="0.16" />
@@ -121,7 +121,7 @@
         <entry key="app/src/main/res/layout/fragment_scanorder_layout.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_term_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_walkin_layout.xml" value="0.15" />
-        <entry key="app/src/main/res/layout/fragment_walkindetail_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_walkindetail_layout.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_walkinlisting_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/location_alertview.xml" value="0.12" />
         <entry key="app/src/main/res/layout/location_cell.xml" value="0.21" />
