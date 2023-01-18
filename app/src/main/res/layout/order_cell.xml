@@ -17,7 +17,7 @@
         android:padding="@dimen/_2sdp">
 
         <TextView
-            android:id="@+id/txt_order_id"
+            android:id="@+id/txt_queueno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/generalsansmedium"

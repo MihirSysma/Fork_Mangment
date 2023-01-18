@@ -110,7 +110,7 @@ public class TableOrdersListing_Adapter extends RecyclerView.Adapter<TableOrders
             linear_view_layout_3 = itemView.findViewById(R.id.linear_view_layout_3);
             linear_starrating = itemView.findViewById(R.id.linear_starrating);
             edit_rating_img = itemView.findViewById(R.id.edit_rating_img);
-            txt_order_id = itemView.findViewById(R.id.txt_order_id);
+            txt_order_id = itemView.findViewById(R.id.txt_queueno);
             txt_restroname = itemView.findViewById(R.id.txt_restroname);
             txt_restrotime = itemView.findViewById(R.id.txt_restrotime);
             txt_restrocontact = itemView.findViewById(R.id.txt_restrocontact);

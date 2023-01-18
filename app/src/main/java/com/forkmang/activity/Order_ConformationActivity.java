@@ -47,7 +47,7 @@ public class Order_ConformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conform_seatreserve);
         storePrefrence = new StorePrefrence(ctx);
         progressbar = findViewById(R.id.progressbar);
-        txt_order_id = findViewById(R.id.txt_order_id);
+        txt_order_id = findViewById(R.id.txt_queueno);
         txt_totalPaidamt = findViewById(R.id.txt_totalPaidamt);
         txtrestroname = findViewById(R.id.txt_hotelname);
         txt_endtime = findViewById(R.id.txt_endtime);

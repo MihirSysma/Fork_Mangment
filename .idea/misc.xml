@@ -93,6 +93,7 @@
         <entry key="app/src/main/res/layout/activity_select_language.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_selectfood.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_tutorial_screen.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_walkin_action.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_walkin_conformation.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_walkin_in_quee.xml" value="0.16" />
         <entry key="app/src/main/res/layout/addqty_alertview.xml" value="0.12" />
@@ -108,7 +109,7 @@
         <entry key="app/src/main/res/layout/conform_tablereserve_view.xml" value="0.18" />
         <entry key="app/src/main/res/layout/dash_board_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.13852073535699017" />
-        <entry key="app/src/main/res/layout/fragment_booktable_layout.xml" value="0.13" />
+        <entry key="app/src/main/res/layout/fragment_booktable_layout.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_booktable_layout_orders.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/fragment_booktable_layout_test.xml" value="0.1265625" />
         <entry key="app/src/main/res/layout/fragment_card.xml" value="0.13852073535699017" />
@@ -121,7 +122,7 @@
         <entry key="app/src/main/res/layout/fragment_scanorder_layout.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_term_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_walkin_layout.xml" value="0.15" />
-        <entry key="app/src/main/res/layout/fragment_walkindetail_layout.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_walkindetail_layout.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_walkinlisting_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/location_alertview.xml" value="0.12" />
         <entry key="app/src/main/res/layout/location_cell.xml" value="0.21" />

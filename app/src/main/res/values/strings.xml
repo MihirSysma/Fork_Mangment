@@ -249,6 +249,7 @@
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="area_type">Area Type</string>
+    <string name="your_queue_no">Your Queue No</string>
 
 
 </resources>

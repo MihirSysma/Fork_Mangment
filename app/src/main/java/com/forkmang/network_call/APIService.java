@@ -139,6 +139,14 @@ public interface APIService {
 
     );
 
+    @POST(WebApi.RES_GETPERSONQUEE)
+    @FormUrlEncoded
+    Call<JsonObject> getpersonqueeno(
+            @Header("Authorization") String token,
+            @Field("restaurant_id") String restaurant_id
+
+    );
+
     @POST(WebApi.LIST_RES)
     @FormUrlEncoded
     Call<JsonObject> getlist_searchres(
@@ -242,8 +250,10 @@ public interface APIService {
             @Header("Authorization") String token,
             //@Header("Accept") String key,
             @Field("restaurant_id") String restaurant_id,
+            @Field("type") String type,
+            @Field("queue_id") String queue_id,
+            @Field("booking_table_id") String booking_table_id,
             @Field("identifier") String identifier
-
     );
 
     /*@POST(WebApi.RES_MAKEPAYMENT)
@@ -311,6 +321,20 @@ public interface APIService {
             @Header("Authorization") String token
             //@Header("Accept") String key,
             //@Field("test") String test
+    );
+
+    @POST(WebApi.RES_GETQUEE)
+    @FormUrlEncoded
+    Call<JsonObject> queue_action(
+            @Header("Authorization") String token,
+            //@Header("Accept") String key,
+            @Field("action") String action,
+            @Field("restaurant_id") String restaurant_id,
+            @Field("person") String person,
+            @Field("occasion") String occasion,
+            @Field("area") String area,
+
+            @Field("identifier") String identifier
     );
 
 }

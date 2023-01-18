@@ -30,6 +30,7 @@ public class WebApi {
     public static final String RES_QUEELIST = API_BASE + "queue-list";
     public static final String RES_QUEECONFORMATION = API_BASE + "queue-confirmation-action";
     public static final String RES_GETQUEE = API_BASE + "get-in-queue";
+    public static final String RES_GETPERSONQUEE = API_BASE + "customer-queue-list";
 
 
 

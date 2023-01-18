@@ -160,7 +160,7 @@ public class Book_Table_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        String service_id = "2";
+        String service_id = "1";
         saveLatitude = 23.933689;
         saveLongitude = 72.367458;
 

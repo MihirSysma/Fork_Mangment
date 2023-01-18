@@ -412,7 +412,8 @@ public class Activity_PaymentSummary extends AppCompatActivity {
 
     public void callApi_createorder()
     {
-        Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN), restoData.getId(),storePrefrence.getString(Constant.IDENTFIER)).
+        Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN),
+                        restoData.getId(),"booking_table","",storePrefrence.getString(Constant.BOOKINGID),storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

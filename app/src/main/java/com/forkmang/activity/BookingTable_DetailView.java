@@ -430,11 +430,6 @@ public class BookingTable_DetailView extends Activity {
             else{
                 Toast.makeText(ctx,Constant.NETWORKEROORMSG,Toast.LENGTH_SHORT).show();
             }
-
-
-
-
-
         });
 
         btn_select_food.setOnClickListener(v -> {

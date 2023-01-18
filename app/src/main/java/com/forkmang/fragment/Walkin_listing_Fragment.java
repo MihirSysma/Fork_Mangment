@@ -88,8 +88,12 @@ public class Walkin_listing_Fragment extends Fragment {
         super.onResume();
        // ((Booking_TabView_Activity)getActivity()).hide_search();
         String service_id = "2";
+        /*saveLatitude = 21.209589;
+        saveLongitude = 72.860824;*/
         saveLatitude = 23.933689;
         saveLongitude = 72.367458;
+
+
         callapi_getbooktable(service_id, String.valueOf(saveLatitude), String.valueOf(saveLongitude));
 
     }
@@ -261,9 +265,10 @@ public class Walkin_listing_Fragment extends Fragment {
     public void call_reloadbooktable()
     {
         if (Utils.isNetworkAvailable(getContext())) {
-            saveLatitude=23.937416;
-            saveLongitude=72.375741;
-            callapi_getbooktable("2", saveLatitude.toString(), saveLongitude.toString());
+            saveLatitude=21.209589;
+            saveLongitude=72.860824;
+            String service_id = "2";
+            callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString());
         }
         else{
             Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
