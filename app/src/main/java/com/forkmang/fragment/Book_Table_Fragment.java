@@ -302,9 +302,9 @@ public class Book_Table_Fragment extends Fragment {
 
                     String AM_PM ;
                     if(hourOfDay < 12) {
-                        AM_PM = "AM";
+                        AM_PM = "am";
                     } else {
-                        AM_PM = "PM";
+                        AM_PM = "pm";
                     }
 
                     booking_date = booking_date + " "+ time + " "+AM_PM;
@@ -339,9 +339,9 @@ public class Book_Table_Fragment extends Fragment {
 
         String AM_PM ;
         if(mHour < 12) {
-            AM_PM = "AM";
+            AM_PM = "am";
         } else {
-            AM_PM = "PM";
+            AM_PM = "pm";
         }
 
         String time = mHour + ":" + mMinute +" "+ AM_PM;

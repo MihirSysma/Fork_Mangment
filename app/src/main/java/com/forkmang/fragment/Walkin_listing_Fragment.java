@@ -96,6 +96,7 @@ public class Walkin_listing_Fragment extends Fragment {
 
         callapi_getbooktable(service_id, String.valueOf(saveLatitude), String.valueOf(saveLongitude));
 
+
     }
 
     public static Walkin_listing_Fragment GetInstance()

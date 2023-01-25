@@ -36,7 +36,7 @@ public class PaymentScreenActivity extends AppCompatActivity {
     String totalpay;
     Context ctx = PaymentScreenActivity.this;
     StorePrefrence storePrefrence;
-    String order_id,booking_id, payment_type,isbooktable,order_id_get;
+    String order_id,booking_id, payment_type,isbooktable,order_id_get,coming_from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,15 @@ public class PaymentScreenActivity extends AppCompatActivity {
         RadioButton radioButton_online = findViewById(R.id.radioButton2);
         Button btn_payment = findViewById(R.id.btn_payment);
 
-        tableList_get = (TableList) getIntent().getSerializableExtra("model");
+        coming_from = getIntent().getStringExtra("comingfrom");
+        if(coming_from.equalsIgnoreCase("SelectFood"))
+        {
+            tableList_get = (TableList) getIntent().getSerializableExtra("model");
+        }
+        else if(coming_from.equalsIgnoreCase("PickupFood"))
+        {
+            // not to get table object
+        }
         RestroData = (RestoData) getIntent().getSerializableExtra("restromodel");
         totalpay = getIntent().getStringExtra("totalpay");
         isbooktable= getIntent().getStringExtra("isbooktable");
@@ -104,7 +112,15 @@ public class PaymentScreenActivity extends AppCompatActivity {
                     callApi_makepayment("",booking_id, payment_type,"table");
                 }
                 else{
-                    callApi_makepayment(order_id,storePrefrence.getString(Constant.BOOKINGID), payment_type,"order");
+                    if(coming_from.equalsIgnoreCase("SelectFood"))
+                    {
+                        callApi_makepayment(order_id,storePrefrence.getString(Constant.BOOKINGID), payment_type,"order");
+                    }
+                    else if(coming_from.equalsIgnoreCase("PickupFood"))
+                    {
+                        // not to get table object
+                        callApi_makepayment(order_id,"", payment_type,"order");
+                    }
                 }
 
 

@@ -46,7 +46,7 @@ import retrofit2.Response;
 public class Activity_PaymentSummary extends AppCompatActivity {
     RecyclerView recyclerView;
     Button btn_payment_proceed;
-    LinearLayout lyt_arabic, lyt_eng;
+    LinearLayout lyt_arabic, lyt_eng,linear_1,linear_view_layout_2;
     TableList tableList_get;
     RestoData restoData;
     StorePrefrence storePrefrence;
@@ -54,6 +54,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     TextView txt_totalPay;
     ProgressBar progressBar;
     ArrayList<CartBooking> cartBookingArrayList;
+    String coming_from;
 
 
     @Override
@@ -62,6 +63,9 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_view);
         storePrefrence = new StorePrefrence(ctx);
+        linear_1 = findViewById(R.id.linear_1);
+        linear_view_layout_2 = findViewById(R.id.linear_view_layout_2);
+
         progressBar = findViewById(R.id.progressBar);
         TextView txt_phoneno = findViewById(R.id.txt_phoneno);
         TextView txt_date_time = findViewById(R.id.txt_date_time);
@@ -71,13 +75,26 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         txt_totalPay = findViewById(R.id.txt_totalPay);
        //ArrayList<CartBooking> cartBookingArrayList  = extras.getParcelableArrayList("cartbookingarraylist");
 
-        tableList_get = (TableList) getIntent().getSerializableExtra("model");
-        restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
+        coming_from = getIntent().getStringExtra("comingfrom");
 
-        txt_hotelname.setText(tableList_get.getStr_hotel_name());
-        txt_customername.setText(tableList_get.getStr_customer_name());
-        txt_noofseat.setText(tableList_get.getNumber_of_person() + " Seats");
-        txt_date_time.setText(tableList_get.getStr_time());
+        if(coming_from.equalsIgnoreCase("SelectFood"))
+        {
+            tableList_get = (TableList) getIntent().getSerializableExtra("model");
+            txt_hotelname.setText(tableList_get.getStr_hotel_name());
+            txt_customername.setText(tableList_get.getStr_customer_name());
+            txt_noofseat.setText(tableList_get.getNumber_of_person() + " Seats");
+            txt_date_time.setText(tableList_get.getStr_time());
+        }
+        else if(coming_from.equalsIgnoreCase("PickupFood"))
+        {
+            txt_hotelname.setText(restoData.getRest_name());
+            txt_customername.setText(storePrefrence.getString(Constant.NAME));
+            linear_1.setVisibility(View.GONE);
+            linear_view_layout_2.setVisibility(View.GONE);
+
+
+        }
+        restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
         txt_phoneno.setText(storePrefrence.getString(MOBILE));
 
         progressBar.setVisibility(View.VISIBLE);
@@ -103,7 +120,15 @@ public class Activity_PaymentSummary extends AppCompatActivity {
 
         btn_payment_proceed.setOnClickListener(v -> {
             if (Utils.isNetworkAvailable(ctx)) {
-                callApi_createorder();
+                if(coming_from.equalsIgnoreCase("SelectFood"))
+                {
+                    callApi_createorder();
+                }
+                else if(coming_from.equalsIgnoreCase("PickupFood"))
+                {
+                    callApi_createorder_pickup();
+                }
+
             }
             else{
                 Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
@@ -150,7 +175,16 @@ public class Activity_PaymentSummary extends AppCompatActivity {
 
                                         //data obj
                                         cartBooking.setData_userid(data_obj.getString("user_id"));
-                                        cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
+
+                                        if(data_obj.has("booking_table_id"))
+                                        {
+                                            cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
+                                        }
+                                        else{
+                                            cartBooking.setData_booking_table_id("");
+                                        }
+
+
                                         cartBooking.setData_total(data_obj.getString("total"));
 
                                         //cart_item obj
@@ -413,7 +447,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
     public void callApi_createorder()
     {
         Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN),
-                        restoData.getId(),"booking_table","",storePrefrence.getString(Constant.BOOKINGID),storePrefrence.getString(Constant.IDENTFIER)).
+                        restoData.getId(),"book_table","",storePrefrence.getString(Constant.BOOKINGID),storePrefrence.getString(Constant.IDENTFIER)).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -432,11 +466,92 @@ public class Activity_PaymentSummary extends AppCompatActivity {
                                     new Handler().postDelayed(() -> {
                                         dialog.dismiss();
                                         final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
+
+                                        if(coming_from.equalsIgnoreCase("SelectFood"))
+                                        {
+                                            mainIntent.putExtra("model",tableList_get);
+                                        }
+                                        else if(coming_from.equalsIgnoreCase("PickupFood"))
+                                        {
+                                            //nothing to send table object
+                                        }
+                                        mainIntent.putExtra("comingfrom",coming_from);
+                                        mainIntent.putExtra("restromodel", restoData);
+                                        mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
+                                        mainIntent.putExtra("orderid",order_id);
+                                        mainIntent.putExtra("isbooktable","no");
+                                        startActivity(mainIntent);
+                                        //finish();
+                                    }, 1000);
+                                }
+                                else{
+                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                            else if(response.code() == Constant.ERROR_CODE)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+
+                            }
+                            else if(response.code() == Constant.GUESTUSERlOGIN)
+                            {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(ctx,LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                                //Toast.makeText(ctx,"You are guest user please login",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+
+                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+
+
+                    }
+                });
+    }
+
+
+    public void callApi_createorder_pickup()
+    {
+        Api.getInfo().create_order("Bearer "+storePrefrence.getString(TOKEN_LOGIN),
+                        restoData.getId(),"pickup","","",storePrefrence.getString(Constant.IDENTFIER)).
+                enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try{
+                            //Log.d("Result", jsonObject.toString());
+                            if(response.code() == Constant.SUCCESS_CODE_n)
+                            {
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                                if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
+                                {
+                                    String order_id = jsonObject.getString("data");
+                                    //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                    AlertDialog dialog =  showAlertView_conformtable();
+
+                                    new Handler().postDelayed(() -> {
+                                        dialog.dismiss();
+                                        final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
                                         mainIntent.putExtra("model",tableList_get);
                                         mainIntent.putExtra("restromodel", restoData);
                                         mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
                                         mainIntent.putExtra("orderid",order_id);
                                         mainIntent.putExtra("isbooktable","no");
+
                                         startActivity(mainIntent);
                                         //finish();
                                     }, 1000);

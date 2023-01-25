@@ -86,6 +86,11 @@
         <activity
             android:name=".activity.DrawerActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".activity.PickupSelectFood_Activity"
+            android:exported="true" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true">

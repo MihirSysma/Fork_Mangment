@@ -118,11 +118,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         etv_cnfpassword = findViewById(R.id.etv_cnfpassword);
         storePrefrence=new StorePrefrence(ctx);
 
-        /*etv_mobile.setText("9836608968");
-        etv_username.setText("304 name");
-        etv_email.setText("test304@gmail.com");
+        etv_mobile.setText("9836608967");
+        etv_username.setText("967 name");
+        etv_email.setText("test967@gmail.com");
         etv_password.setText("123456");
-        etv_cnfpassword.setText("123456");*/
+        etv_cnfpassword.setText("123456");
 
 
         //firebase login code
@@ -302,7 +302,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         Button Btn_Submit ;
         Btn_Submit=dialogView.findViewById(R.id.btn_submit);
         firstPinView=dialogView.findViewById(R.id.firstPinView);
-        //firstPinView.setText("123456");
+        firstPinView.setText("123456");
 
 
         Btn_Submit.setOnClickListener(v -> {

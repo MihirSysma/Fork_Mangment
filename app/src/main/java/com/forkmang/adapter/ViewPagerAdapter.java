@@ -24,7 +24,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         Fragment selectedFragment;
-
         switch (position){
             case 0: {
                      selectedFragment = Book_Table_Fragment.newInstance();

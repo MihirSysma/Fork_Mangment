@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +24,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.forkmang.R;
-import com.forkmang.adapter.ViewPagerAdapter_SelectFood;
-import com.forkmang.data.RestoData;
+import com.forkmang.adapter.ViewPagerAdapter_PickupSelectFood;
 import com.forkmang.data.FoodList_Tab;
-import com.forkmang.fragment.Select_Food_Fragment;
+import com.forkmang.data.RestoData;
+import com.forkmang.fragment.PickupSelect_Food_Fragment;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.Utils;
 import com.forkmang.models.TableList;
@@ -46,11 +47,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SelectFood_Activity extends AppCompatActivity {
+public class PickupSelectFood_Activity extends AppCompatActivity {
     ViewPager2 viewPager;
     TabLayout tabLayout;
     Button btn_view_cart;
-    Context ctx = SelectFood_Activity.this;
+    Context ctx = PickupSelectFood_Activity.this;
     ArrayList<FoodList_Tab> foodListArrayList;
     RestoData restoData;
     TableList tableList;
@@ -66,7 +67,19 @@ public class SelectFood_Activity extends AppCompatActivity {
         viewPager=findViewById(R.id.viewPager);
         progressBar=findViewById(R.id.progressBar);
         tabLayout=findViewById(R.id.tabLayout);
+
+        //tabLayout.setupWithViewPager(viewPager);
+
         btn_view_cart = findViewById(R.id.btn_view_cart);
+        LinearLayout linear_view_1 = findViewById(R.id.linear_view_1);
+        LinearLayout linear_view_2 = findViewById(R.id.linear_view_2);
+        LinearLayout linear_view_3 = findViewById(R.id.linear_view_3);
+        linear_view_1.setVisibility(View.GONE);
+        linear_view_2.setVisibility(View.GONE);
+        linear_view_3.setVisibility(View.GONE);
+        TextView txt_booktable = findViewById(R.id.txt_booktable);
+        txt_booktable.setText("Pickup Table");
+
         ImageView img_searchicon = findViewById(R.id.img_searchicon);
         ImageView img_edit = findViewById(R.id.img_edit);
         etv_searchview = findViewById(R.id.etv_searchview);
@@ -93,8 +106,9 @@ public class SelectFood_Activity extends AppCompatActivity {
 
 
         restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
-        tableList = (TableList) getIntent().getSerializableExtra("table_model");
-        String timedate = getIntent().getStringExtra("timedate");
+        //tableList = (TableList) getIntent().getSerializableExtra("table_model");
+
+        /*String timedate = getIntent().getStringExtra("timedate");
         String day = getIntent().getStringExtra("day");
         String noseat = getIntent().getStringExtra("noseat");
 
@@ -102,7 +116,7 @@ public class SelectFood_Activity extends AppCompatActivity {
         txt_day.setText(day);
         txt_noofseat.setText(noseat+" "+"Seats");
         txt_view_day.setText(day);
-        txt_view_day_2.setText(day);
+        txt_view_day_2.setText(day);*/
 
 
 
@@ -111,9 +125,11 @@ public class SelectFood_Activity extends AppCompatActivity {
         txt_totalkm.setText(restoData.getDistance()+" km");
         booking_id = restoData.getId();
 
+
+
         img_searchicon.setOnClickListener(v -> {
             String str_search=etv_searchview.getText().toString();
-            Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
+            PickupSelect_Food_Fragment all_Food_fragment = PickupSelect_Food_Fragment.GetInstance();
 
             if (Utils.isNetworkAvailable(ctx)) {
                 all_Food_fragment.callApi_searchfooditem(category_id,str_search);
@@ -132,7 +148,7 @@ public class SelectFood_Activity extends AppCompatActivity {
                 {
                     Hidekeyboard();
                     if (Utils.isNetworkAvailable(ctx)) {
-                        Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
+                        PickupSelect_Food_Fragment all_Food_fragment = PickupSelect_Food_Fragment.GetInstance();
                         all_Food_fragment.callApi_fooditem(category_id);
                     }
                     else{
@@ -153,11 +169,13 @@ public class SelectFood_Activity extends AppCompatActivity {
 
                 // TODO Auto-generated method stub
             }
+
+
         });
 
         btn_view_cart.setOnClickListener(v -> {
             //showAlertView();
-            Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
+            PickupSelect_Food_Fragment all_Food_fragment = PickupSelect_Food_Fragment.GetInstance();
             all_Food_fragment.cartListingView();
         });
 
@@ -172,16 +190,18 @@ public class SelectFood_Activity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 Log.d("pageno", ""+position);
+                tabLayout.selectTab(tabLayout.getTabAt(position));
                 current_tabactive=position;
+
                 FoodList_Tab foodList_tab = foodListArrayList.get(position);
                 category_id = foodList_tab.getId();
-                Select_Food_Fragment all_Food_fragment = Select_Food_Fragment.GetInstance();
+
+                PickupSelect_Food_Fragment all_Food_fragment = PickupSelect_Food_Fragment.GetInstance();
                 all_Food_fragment.callApi_food_1(category_id,booking_id);
 
             }
 
         });
-
         if (Utils.isNetworkAvailable(ctx)) {
             callapi_tablisting("1");
         }
@@ -194,12 +214,18 @@ public class SelectFood_Activity extends AppCompatActivity {
 
     private void fill_tablist() {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-
             for(int i = 0; i<foodListArrayList.size(); i++)
             {
                 FoodList_Tab foodList_tab = foodListArrayList.get(position);
-                //tab.setText(foodList_tab.getName());
+                //tab.setText(foodList_tab.getName().toLowerCase());
                 tab.setCustomView(getTabView(foodList_tab.getName().toLowerCase()));
+                //TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+                //tabOne.setText(foodList_tab.getName());
+                //tabLayout.getTabAt(i).setCustomView(tabOne);
+                //tabOne.setText(foodList_tab.getName().trim().toLowerCase());
+                //tab.setCustomView(tabOne);
+                //tabLayout.addTab(tabLayout.newTab().setText(foodList_tab.getName().trim().toLowerCase()));
+
             }
         }).attach();
     }
@@ -207,7 +233,7 @@ public class SelectFood_Activity extends AppCompatActivity {
 
     private void showAlertView()
     {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SelectFood_Activity.this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(PickupSelectFood_Activity.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.conform_tablefood_reservealert, null);
         alertDialog.setView(dialogView);
@@ -218,7 +244,7 @@ public class SelectFood_Activity extends AppCompatActivity {
 
         btn_share_order.setOnClickListener(v -> {
 
-            Intent intent = new Intent(SelectFood_Activity.this, BookingOrder_ReserverConformationActivity.class);
+            Intent intent = new Intent(PickupSelectFood_Activity.this, BookingOrder_ReserverConformationActivity.class);
             startActivity(intent);
             dialog.dismiss();
 
@@ -256,7 +282,7 @@ public class SelectFood_Activity extends AppCompatActivity {
                                             foodListArrayList.add(foodList_tab);
                                         }
                                         progressBar.setVisibility(View.GONE);
-                                        ViewPagerAdapter_SelectFood viewPagerAdapter_reserveSeat=new ViewPagerAdapter_SelectFood(getSupportFragmentManager(),getLifecycle(),foodListArrayList, tableList, restoData);
+                                        ViewPagerAdapter_PickupSelectFood viewPagerAdapter_reserveSeat=new ViewPagerAdapter_PickupSelectFood(getSupportFragmentManager(),getLifecycle(),foodListArrayList, tableList, restoData);
                                         viewPager.setAdapter(viewPagerAdapter_reserveSeat);
 
                                         fill_tablist();
@@ -289,16 +315,15 @@ public class SelectFood_Activity extends AppCompatActivity {
     private void Hidekeyboard()
     {
         etv_searchview.clearFocus();
-        InputMethodManager in = (InputMethodManager)SelectFood_Activity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager in = (InputMethodManager) PickupSelectFood_Activity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(etv_searchview.getWindowToken(), 0);
     }
 
+
     public View getTabView(String str) {
-        View tab = LayoutInflater.from(SelectFood_Activity.this).inflate(R.layout.custom_tab, null);
+        View tab = LayoutInflater.from(PickupSelectFood_Activity.this).inflate(R.layout.custom_tab, null);
         TextView tv = tab.findViewById(R.id.custom_text);
         tv.setText(str);
         return tab;
     }
-
-
 }

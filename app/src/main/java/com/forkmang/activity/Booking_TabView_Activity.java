@@ -144,11 +144,17 @@ public class Booking_TabView_Activity extends AppCompatActivity {
                 }
                 else if(current_tabactive == 3)
                 {
-                    if(s.toString().length() > 3)
+                    Pickup_Fragment pickup_fragment = Pickup_Fragment.GetInstance();
+                    //walking fragment
+                    if(s.toString().length()==0)
                     {
-                        //pickup fragment
-                        Pickup_Fragment pickup_Fragment = Pickup_Fragment.GetInstance();
-                        Log.d("current_tabactive","pickup");
+                        Hidekeyboard();
+                        pickup_fragment.call_reloadbooktable();
+                    }
+                    else if(s.toString().length() > 3)
+                    {
+                        Hidekeyboard();
+                        pickup_fragment.filter_booktable(etv_serach.getText().toString());
                     }
 
                 }

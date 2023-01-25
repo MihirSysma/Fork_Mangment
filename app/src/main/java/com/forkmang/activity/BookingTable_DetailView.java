@@ -664,7 +664,7 @@ public class BookingTable_DetailView extends Activity {
                                             JSONArray mjson_array_branch = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(i).getJSONArray("child_restaurant");
                                             BranchDropdown branchDropdown_first=new BranchDropdown();
                                             branchDropdown_first.setId("0");
-                                            branchDropdown_first.setBranch_name("Select Branch");
+                                            branchDropdown_first.setBranch_name("Branch");
                                             branchDropdownArrayList.add(branchDropdown_first);
                                             for(int j = 0; j<mjson_array_branch.length(); j++)
                                             {
@@ -932,9 +932,9 @@ public class BookingTable_DetailView extends Activity {
                     String time = String.format("%02d:%02d", hourOfDay, minute);
                     String AM_PM ;
                     if(hourOfDay < 12) {
-                        AM_PM = "AM";
+                        AM_PM = "am";
                     } else {
-                        AM_PM = "PM";
+                        AM_PM = "pm";
                     }
 
                     booking_date = booking_date + " "+ time + " "+AM_PM;
@@ -964,9 +964,9 @@ public class BookingTable_DetailView extends Activity {
 
         String AM_PM ;
         if(mHour < 12) {
-            AM_PM = "AM";
+            AM_PM = "am";
         } else {
-            AM_PM = "PM";
+            AM_PM = "pm";
         }
 
         String time = mHour + ":" + mMinute +" "+ AM_PM;

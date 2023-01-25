@@ -10,7 +10,7 @@
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="button_lang">English</string>
     <string name="button_lang_ar">إنجليزي</string>
-    <string name="button_login">Login</string>
+    <string name="button_login">Log in</string>
     <string name="button_reg">Register</string>
     <string name="forgot_pass">Forgot Password</string>
     <string name="secure_login">Secure Login</string>
@@ -20,7 +20,7 @@
     <string name="enter_as_guest"><u>Enter as Guest</u></string>
     <string name="forgot_password"><u>Forgot Password ?</u></string>
     <string name="enter_mobile_no">Enter Mobile No</string>
-    <string name="please_enter_the_details_below_to_continue">Please Enter The Details Below To Continue</string>
+    <string name="please_enter_the_details_below_to_continue">Please enter the details below to continue</string>
     <string name="enter_new_password">Enter New Password</string>
     <string name="enter_otp">Enter Otp</string>
     <string name="enter_otp_underline"><u>Enter Otp</u></string>
@@ -44,7 +44,7 @@
     <string name="user_name">User Name</string>
     <string name="face_id">Face ID</string>
     <string name="reset_password">Reset Password</string>
-    <string name="renter_new_password">Renter New Password</string>
+    <string name="renter_new_password">Re enter New Password</string>
     <string name="some_text_some_text_some_text_some_text">Some text some text some text some text</string>
     <string name="for_secure_and_faster_access_would_you_like_to_enable_face_id">For secure and faster access, would you like to enable face id?</string>
     <string name="please_use_face_id_to_login">Please use face ID to login</string>
@@ -55,14 +55,14 @@
     <string name="home">Home</string>
     <string name="orders">Orders</string>
     <string name="wallet">Wallet</string>
-    <string name="location">Location</string>
+    <string name="location">Locations</string>
     <string name="support">Support</string>
-    <string name="share">Share</string>
+    <string name="share">Share Falk</string>
     <string name="contact_amp_terms"><![CDATA[Contact & Terms]]></string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
     <string name="language">Language:</string>
-    <string name="arabic">Arabic</string>
+    <string name="arabic">عربي</string>
     <string name="english">English</string>
     <string name="need_to_contact_us">Need To Contact Us ?</string>
     <string name="need_support">Need Support ?</string>
@@ -82,7 +82,7 @@
     <string name="floor_ground">Floor Ground</string>
     <string name="floor">Floor</string>
     <string name="list">List</string>
-    <string name="pay_to_conform">Pay to Conform</string>
+    <string name="pay_to_conform">Pay To Conform</string>
     <string name="available">Available</string>
     <string name="selected">Selected</string>
     <string name="no_of_person">No of Person:</string>
@@ -167,7 +167,7 @@
     <string name="enter_full_name">Enter Full Name</string>
     <string name="enter_email_address">Enter Email Address</string>
     <string name="enter_phone_number">Enter Phone Number</string>
-    <string name="message">Message</string>
+    <string name="message">Enter Message</string>
     <string name="_3_april_4_00_pm">3 April, 4:00 PM</string>
     <string name="startbucks">Startbucks</string>
     <string name="april_14_5_00_pm_for_7_person">April 14 , 5:00 Pm For 7 Person</string>

@@ -219,7 +219,8 @@ public interface APIService {
             @Field("qty") String qty,
             @Field("booking_table_id") String booking_table_id,
             @Field("item_extra") String item_extra,
-            @Field("identifier") String identifier
+            @Field("identifier") String identifier,
+            @Field("type") String type
 
     );
 

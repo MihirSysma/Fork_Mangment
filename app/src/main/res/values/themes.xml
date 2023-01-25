@@ -49,9 +49,22 @@
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
+    <style name="TabLayout_Theme" parent="@style/Theme.ForkMangment">
+        <item name="android:singleLine">false</item>
+
+
+    </style>
+
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TabLayoutTextStyle1">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat">

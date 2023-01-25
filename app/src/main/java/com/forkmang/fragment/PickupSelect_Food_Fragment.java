@@ -33,16 +33,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
 import com.forkmang.activity.Activity_PaymentSummary;
-import com.forkmang.adapter.FoodList_Adapter;
-import com.forkmang.adapter.CartListingAdapter;
-import com.forkmang.data.RestoData;
+import com.forkmang.adapter.PickupFoodList_Adapter;
+import com.forkmang.adapter.PickupListingAdapter;
 import com.forkmang.data.CartBooking;
 import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.Extra_Topping;
+import com.forkmang.data.RestoData;
 import com.forkmang.helper.Constant;
 import com.forkmang.helper.StorePrefrence;
 import com.forkmang.helper.Utils;
-import com.forkmang.models.TableList;
 import com.forkmang.network_call.Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -59,10 +58,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
+public class PickupSelect_Food_Fragment extends Fragment {
 
-public class Select_Food_Fragment extends Fragment {
-
-    public static Select_Food_Fragment instance;
+    public  static PickupSelect_Food_Fragment instance_pickup;
     RecyclerView recyclerView;
     static String category_id ;
     ArrayList<Category_ItemList> category_itemLists;
@@ -71,31 +69,29 @@ public class Select_Food_Fragment extends Fragment {
     String booking_id="0";
     int selectedId_radiobtn_topping;
     StorePrefrence storePrefrence;
-    static TableList tableList_get;
     static RestoData restoData;
     ProgressBar progressBar;
     ProgressBar progressBar_alertview;
-    FoodList_Adapter all_orderFood_adapter;
+    PickupFoodList_Adapter all_orderFood_adapter;
     RecyclerView recycleView;
 
-    public static Select_Food_Fragment newInstance(TableList tableList, RestoData bookTable) {
+    public static PickupSelect_Food_Fragment newInstance(/*TableList tableList,*/ RestoData bookTable) {
         //category_id = category_id_val;
         //Log.d("idval",category_id);
-        tableList_get = tableList;
+        //tableList_get = tableList;
         restoData = bookTable;
-        return new Select_Food_Fragment();
+        return new PickupSelect_Food_Fragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orderfood_layout, container, false);
-        instance= this;
+        instance_pickup = this;
         storePrefrence=new StorePrefrence(getContext());
         progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.order_food_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         return view;
 
     }
@@ -161,7 +157,7 @@ public class Select_Food_Fragment extends Fragment {
                                     }
 
                                     progressBar.setVisibility(View.GONE);
-                                    all_orderFood_adapter = new FoodList_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
+                                    all_orderFood_adapter = new PickupFoodList_Adapter(getContext(),getActivity(), category_itemLists, PickupSelect_Food_Fragment.this,restoData);
                                     recyclerView.setAdapter(all_orderFood_adapter);
 
 
@@ -245,7 +241,7 @@ public class Select_Food_Fragment extends Fragment {
 
                                     }
                                     progressBar.setVisibility(View.GONE);
-                                    all_orderFood_adapter = new FoodList_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
+                                    all_orderFood_adapter = new PickupFoodList_Adapter(getContext(),getActivity(), category_itemLists, PickupSelect_Food_Fragment.this,restoData);
                                     recyclerView.setAdapter(all_orderFood_adapter);
                                 }
 
@@ -274,11 +270,11 @@ public class Select_Food_Fragment extends Fragment {
 
 
 
-    public void callApi_addtocart(String item_id, String qty, String booking_table_id, String item_extra, String type)
+    public void callApi_addtocart(String item_id, String qty, String booking_table_id, String item_extra,String type)
      {
         //showProgress();
         progressBar.setVisibility(View.VISIBLE);
-        Api.getInfo().additem_cart("Bearer "+storePrefrence.getString(TOKEN_LOGIN),item_id, qty, booking_table_id, item_extra,storePrefrence.getString(Constant.IDENTFIER),type).
+        Api.getInfo().additem_cart("Bearer "+ storePrefrence.getString(TOKEN_LOGIN),item_id, qty, booking_table_id, item_extra,storePrefrence.getString(Constant.IDENTFIER),type).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -464,7 +460,7 @@ public class Select_Food_Fragment extends Fragment {
             radio_btn_id_arr.clear();
            if(extra.length()==0)
            {
-               extra="1,2"; //hardcoded please coreect it
+               extra="1,2"; //hardcoded please correct it
            }
 
            Log.d("extra", extra);
@@ -475,7 +471,9 @@ public class Select_Food_Fragment extends Fragment {
            //api call
             if (Utils.isNetworkAvailable(getContext())) {
                 dialog.dismiss();
-                callApi_addtocart(item_id,qty,storePrefrence.getString(Constant.BOOKINGID),extra,"book_table");
+
+                callApi_addtocart(item_id,qty,"",extra, "pickup");
+
             }
             else{
                 Toast.makeText(getContext(), Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
@@ -500,11 +498,15 @@ public class Select_Food_Fragment extends Fragment {
         }
 
         Button btn_pay_table_food,btn_pay_table;
-
         ImageView img_close;
         TextView txt_restroname,txt_custname,txt_datetime, txt_phoneno;
         EditText etv_noperson;
+        LinearLayout linear_view1, linear_view_layout_2;
 
+        linear_view1 =dialog.findViewById(R.id.linear_view1);
+        linear_view1.setVisibility(View.GONE);
+        linear_view_layout_2 =dialog.findViewById(R.id.linear_view_layout_2);
+        linear_view_layout_2.setVisibility(View.GONE);
 
         txt_restroname=dialog.findViewById(R.id.txt_restroname);
         txt_custname=dialog.findViewById(R.id.txt_custname);
@@ -516,11 +518,11 @@ public class Select_Food_Fragment extends Fragment {
         btn_pay_table=dialog.findViewById(R.id.btn_pay_table);
         img_close=dialog.findViewById(R.id.img_close);
         progressBar_alertview=dialog.findViewById(R.id.progressBar_alertview);
-        txt_restroname.setText(tableList_get.getStr_hotel_name());
-        txt_custname.setText(tableList_get.getStr_customer_name());
-        etv_noperson.setText(tableList_get.getNumber_of_person());
+
+        txt_restroname.setText(restoData.getRest_name());
+        txt_custname.setText(storePrefrence.getString(Constant.NAME));
         txt_phoneno.setText(storePrefrence.getString(MOBILE));
-        txt_datetime.setText(tableList_get.getStr_time());
+        //txt_datetime.setText(tableList_get.getStr_time());
 
 
         img_close.setOnClickListener(v -> {
@@ -544,9 +546,9 @@ public class Select_Food_Fragment extends Fragment {
             final Intent mainIntent = new Intent(getContext(), Activity_PaymentSummary.class);
             //Bundle bundle = new Bundle();
             //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
-            mainIntent.putExtra("model",tableList_get);
+            mainIntent.putExtra("comingfrom", "PickupFood");
+
             mainIntent.putExtra("restromodel", restoData);
-            mainIntent.putExtra("comingfrom", "SelectFood");
             startActivity(mainIntent);
             //getActivity().finish();
 
@@ -557,7 +559,6 @@ public class Select_Food_Fragment extends Fragment {
         btn_pay_table.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
             }
         });
@@ -569,9 +570,9 @@ public class Select_Food_Fragment extends Fragment {
 
 
     //Fragment Instance
-    public static Select_Food_Fragment GetInstance()
+    public static PickupSelect_Food_Fragment GetInstance()
     {
-        return instance;
+        return instance_pickup;
     }
 
 
@@ -635,17 +636,7 @@ public class Select_Food_Fragment extends Fragment {
 
                                         //data obj
                                         cartBooking.setData_userid(data_obj.getString("user_id"));
-
-                                        if(data_obj.has("booking_table_id"))
-                                        {
-                                            cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
-                                        }
-                                        else{
-                                            cartBooking.setData_booking_table_id("");
-                                        }
-
-
-
+                                        cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
                                         cartBooking.setData_total(data_obj.getString("total"));
 
                                         //cart_item obj
@@ -724,8 +715,8 @@ public class Select_Food_Fragment extends Fragment {
 
                                     progressBar_alertview.setVisibility(View.GONE);
                                     //call adapter
-                                    CartListingAdapter cartBookingAdapter = new CartListingAdapter(getContext(),cartBookingArrayList);
-                                    recycleView.setAdapter(cartBookingAdapter);
+                                    PickupListingAdapter pickupListingAdapter = new PickupListingAdapter(getContext(),cartBookingArrayList);
+                                    recycleView.setAdapter(pickupListingAdapter);
 
                                 }
                             }
@@ -824,7 +815,6 @@ public class Select_Food_Fragment extends Fragment {
                     }
                 });
     }
-
 
     public void callApi_addqty(String cart_itemid,String qty)
     {
