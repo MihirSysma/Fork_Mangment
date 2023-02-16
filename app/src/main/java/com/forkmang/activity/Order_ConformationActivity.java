@@ -6,6 +6,7 @@ import static com.forkmang.helper.Constant.TOKEN_LOGIN;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,9 @@ public class Order_ConformationActivity extends AppCompatActivity {
     Context ctx = Order_ConformationActivity.this;
     StorePrefrence storePrefrence;
     String totalpay, order_id;
+    String comingfrom;
     ProgressBar progressbar;
+    LinearLayout linear_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +64,39 @@ public class Order_ConformationActivity extends AppCompatActivity {
         txt_rule = findViewById(R.id.txt_rule);
         txt_dresscode = findViewById(R.id.txt_dresscode);
         txt_ocassion = findViewById(R.id.txt_ocassion);
+        linear_view = findViewById(R.id.linear_view);
 
+        comingfrom = getIntent().getStringExtra("comingfrom");
+        if(comingfrom.equalsIgnoreCase("SelectFood"))
+        {
+            tableList_get = (TableList) getIntent().getSerializableExtra("model");
+        }
+        else if(comingfrom.equalsIgnoreCase("PickupFood"))
+        {
+              //not required table object
+            linear_view.setVisibility(View.GONE);
+        }
 
-        tableList_get = (TableList) getIntent().getSerializableExtra("model");
         restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
         totalpay = getIntent().getStringExtra("totalpay");
         order_id = getIntent().getStringExtra("orderid");
+
+        txt_order_id.setText("Order Id: "+order_id);
+        //String data_total = Select_Food_Fragment.cartBookingArrayList.get(0).getData_total();
+
+        if(comingfrom.equalsIgnoreCase("SelectFood"))
+        {
+            txt_customername.setText(tableList_get.getStr_customer_name());
+            txt_indoor.setText(tableList_get.getNumber_of_person() + " " + "Seats");
+        }
+        else if(comingfrom.equalsIgnoreCase("PickupFood"))
+        {
+            //not required table object
+            txt_customername.setText(storePrefrence.getString(Constant.NAME));
+            txt_indoor.setVisibility(View.GONE);
+        }
+
+        txt_mobileno.setText(storePrefrence.getString(Constant.MOBILE));
 
         if (Utils.isNetworkAvailable(ctx)) {
             callApi_getOrderDetail(order_id);
@@ -75,11 +105,8 @@ public class Order_ConformationActivity extends AppCompatActivity {
             Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show();
         }
 
-        txt_order_id.setText("Order Id: "+order_id);
-        //String data_total = Select_Food_Fragment.cartBookingArrayList.get(0).getData_total();
-        txt_customername.setText(tableList_get.getStr_customer_name());
-        txt_mobileno.setText(storePrefrence.getString(Constant.MOBILE));
-        txt_indoor.setText(tableList_get.getNumber_of_person() + " " + "Seats");
+
+
 
     }
 
@@ -98,13 +125,16 @@ public class Order_ConformationActivity extends AppCompatActivity {
                                 if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
                                     JSONObject dataobj = jsonObject.getJSONObject("data");
-                                    txt_rule.setText(dataobj.getJSONArray("booking_table").getJSONObject(0).getString("rules"));
-                                    txt_dresscode.setText(dataobj.getJSONArray("booking_table").getJSONObject(0).getString("dresscode"));
-                                    //txt_timeview.setText(tableList_get.getStr_time());
-                                    txt_timeview.setText((dataobj.getJSONArray("booking_table").getJSONObject(0).getString("date")));
-                                    txt_ocassion.setText((dataobj.getJSONArray("booking_table").getJSONObject(0).getString("occasion")));
 
+                                    if(dataobj.getJSONArray("booking_table").length() > 0)
+                                    {
+                                        txt_rule.setText(dataobj.getJSONArray("booking_table").getJSONObject(0).getString("rules"));
+                                        txt_dresscode.setText(dataobj.getJSONArray("booking_table").getJSONObject(0).getString("dresscode"));
+                                        //txt_timeview.setText(tableList_get.getStr_time());
+                                        txt_timeview.setText((dataobj.getJSONArray("booking_table").getJSONObject(0).getString("date")));
+                                        txt_ocassion.setText((dataobj.getJSONArray("booking_table").getJSONObject(0).getString("occasion")));
 
+                                    }
                                     txtrestroname.setText(dataobj.getJSONObject("restaurant").getString("rest_name"));
                                     txt_endtime.setText("Branch Name: "+dataobj.getJSONObject("restaurant").getString("rest_branch"));
                                     txt_distance.setText("ContactNo: "+dataobj.getJSONObject("restaurant").getString("contact"));
@@ -115,7 +145,6 @@ public class Order_ConformationActivity extends AppCompatActivity {
                                 else{
                                     Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                 }
-
                                 progressbar.setVisibility(View.GONE);
 
                             }

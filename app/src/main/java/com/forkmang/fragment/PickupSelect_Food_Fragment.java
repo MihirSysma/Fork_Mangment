@@ -505,8 +505,9 @@ public class PickupSelect_Food_Fragment extends Fragment {
 
         linear_view1 =dialog.findViewById(R.id.linear_view1);
         linear_view1.setVisibility(View.GONE);
-        linear_view_layout_2 =dialog.findViewById(R.id.linear_view_layout_2);
-        linear_view_layout_2.setVisibility(View.GONE);
+
+       // linear_view_layout_2 =dialog.findViewById(R.id.linear_view_layout_2);
+       // linear_view_layout_2.setVisibility(View.GONE);
 
         txt_restroname=dialog.findViewById(R.id.txt_restroname);
         txt_custname=dialog.findViewById(R.id.txt_custname);
@@ -547,7 +548,6 @@ public class PickupSelect_Food_Fragment extends Fragment {
             //Bundle bundle = new Bundle();
             //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
             mainIntent.putExtra("comingfrom", "PickupFood");
-
             mainIntent.putExtra("restromodel", restoData);
             startActivity(mainIntent);
             //getActivity().finish();
@@ -636,9 +636,17 @@ public class PickupSelect_Food_Fragment extends Fragment {
 
                                         //data obj
                                         cartBooking.setData_userid(data_obj.getString("user_id"));
-                                        cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
-                                        cartBooking.setData_total(data_obj.getString("total"));
 
+                                        if(data_obj.has("booking_table_id"))
+                                        {
+                                            cartBooking.setData_booking_table_id(data_obj.getString("booking_table_id"));
+                                        }
+                                        else{
+                                            cartBooking.setData_booking_table_id("");
+                                        }
+
+
+                                        cartBooking.setData_total(data_obj.getString("total"));
                                         //cart_item obj
                                         cartBooking.setCart_item_qty(cart_detail_obj.getString("qty"));
                                         cartBooking.setCart_item_cartid(cart_detail_obj.getString("cart_id"));

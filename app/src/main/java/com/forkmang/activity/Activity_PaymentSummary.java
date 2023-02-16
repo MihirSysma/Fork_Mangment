@@ -87,6 +87,7 @@ public class Activity_PaymentSummary extends AppCompatActivity {
         }
         else if(coming_from.equalsIgnoreCase("PickupFood"))
         {
+            restoData = (RestoData) getIntent().getSerializableExtra("restromodel");
             txt_hotelname.setText(restoData.getRest_name());
             txt_customername.setText(storePrefrence.getString(Constant.NAME));
             linear_1.setVisibility(View.GONE);
@@ -545,14 +546,30 @@ public class Activity_PaymentSummary extends AppCompatActivity {
 
                                     new Handler().postDelayed(() -> {
                                         dialog.dismiss();
-                                        final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
-                                        mainIntent.putExtra("model",tableList_get);
-                                        mainIntent.putExtra("restromodel", restoData);
-                                        mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
-                                        mainIntent.putExtra("orderid",order_id);
-                                        mainIntent.putExtra("isbooktable","no");
+                                        if(coming_from.equalsIgnoreCase("PickupFood"))
+                                        {
+                                            final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
+                                            mainIntent.putExtra("restromodel", restoData);
+                                            mainIntent.putExtra("comingfrom", "PickupFood");
+                                            mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
+                                            mainIntent.putExtra("orderid",order_id);
+                                            mainIntent.putExtra("isbooktable","no");
+                                            startActivity(mainIntent);
 
-                                        startActivity(mainIntent);
+                                        }
+                                        else{
+                                            final Intent mainIntent = new Intent(Activity_PaymentSummary.this, PaymentScreenActivity.class);
+                                            mainIntent.putExtra("model",tableList_get);
+                                            mainIntent.putExtra("restromodel", restoData);
+                                            mainIntent.putExtra("comingfrom", "SelectFood");
+                                            mainIntent.putExtra("totalpay",txt_totalPay.getText().toString());
+                                            mainIntent.putExtra("orderid",order_id);
+                                            mainIntent.putExtra("isbooktable","no");
+
+                                            startActivity(mainIntent);
+
+                                        }
+
                                         //finish();
                                     }, 1000);
                                 }

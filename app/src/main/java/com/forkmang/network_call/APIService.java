@@ -287,8 +287,6 @@ public interface APIService {
 
     );
 
-
-
     @POST(WebApi.RES_GETCARTDETAIL)
     @FormUrlEncoded
     Call<JsonObject> getcart_detail(

@@ -2,7 +2,6 @@ package com.forkmang.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.forkmang.R;
-import com.forkmang.activity.PickupSelectFood_Activity;
 import com.forkmang.data.Category_ItemList;
 import com.forkmang.data.RestoData;
 import com.forkmang.fragment.PickupSelect_Food_Fragment;
@@ -76,13 +74,15 @@ public class PickupFoodList_Adapter extends RecyclerView.Adapter<PickupFoodList_
             txt_price =  itemView.findViewById(R.id.txt_price);
 
             relative_view.setOnClickListener(v -> {
-                /*int position = getBindingAdapterPosition();
+
+
+                int position = getBindingAdapterPosition();
                 Category_ItemList category_itemList = category_itemLists.get(position);
                 row_index = position;
-                pickupSelect_food_fragment.showAlertView(category_itemList);*/
-                final Intent mainIntent = new Intent(ctx, PickupSelectFood_Activity.class);
-                mainIntent.putExtra("restromodel", restoData);
-                ctx.startActivity(mainIntent);
+                pickupSelect_food_fragment.showAlertView(category_itemList);
+                //final Intent mainIntent = new Intent(ctx, PickupSelectFood_Activity.class);
+                //mainIntent.putExtra("restromodel", restoData);
+                //ctx.startActivity(mainIntent);
 
             });
 

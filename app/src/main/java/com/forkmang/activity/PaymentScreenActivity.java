@@ -50,6 +50,7 @@ public class PaymentScreenActivity extends AppCompatActivity {
         Button btn_payment = findViewById(R.id.btn_payment);
 
         coming_from = getIntent().getStringExtra("comingfrom");
+
         if(coming_from.equalsIgnoreCase("SelectFood"))
         {
             tableList_get = (TableList) getIntent().getSerializableExtra("model");
@@ -57,6 +58,7 @@ public class PaymentScreenActivity extends AppCompatActivity {
         else if(coming_from.equalsIgnoreCase("PickupFood"))
         {
             // not to get table object
+
         }
         RestroData = (RestoData) getIntent().getSerializableExtra("restromodel");
         totalpay = getIntent().getStringExtra("totalpay");
@@ -136,7 +138,7 @@ public class PaymentScreenActivity extends AppCompatActivity {
 
     public void callApi_makepayment(String order_id, String booking_id, String payment_type, String order_type)
     {
-        Api.getInfo().make_payment("Bearer "+storePrefrence.getString(TOKEN_LOGIN),"",booking_id, payment_type,"table").
+        Api.getInfo().make_payment("Bearer "+storePrefrence.getString(TOKEN_LOGIN),order_id,booking_id, payment_type,order_type).
                 enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -145,10 +147,21 @@ public class PaymentScreenActivity extends AppCompatActivity {
                             if(response.code() == Constant.SUCCESS_CODE_n)
                             {
                                 JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+
+
+
                                 if(jsonObject.getString("status").equalsIgnoreCase(SUCCESS_CODE))
                                 {
                                     final Intent mainIntent = new Intent(PaymentScreenActivity.this, Order_ConformationActivity.class);
-                                    mainIntent.putExtra("model",tableList_get);
+                                    if(coming_from.equalsIgnoreCase("SelectFood"))
+                                    {
+                                        mainIntent.putExtra("model",tableList_get);
+                                        mainIntent.putExtra("comingfrom", "SelectFood");
+                                    }
+                                    else if(coming_from.equalsIgnoreCase("PickupFood"))
+                                    {
+                                        mainIntent.putExtra("comingfrom", "PickupFood");
+                                    }
                                     mainIntent.putExtra("restromodel", RestroData);
                                     mainIntent.putExtra("totalpay",totalpay);
                                     if(isbooktable.equalsIgnoreCase("yes"))

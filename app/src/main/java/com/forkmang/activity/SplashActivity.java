@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.forkmang.R;
 import com.forkmang.helper.StorePrefrence;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Locale;
 
@@ -18,14 +19,33 @@ import java.util.Locale;
 public class SplashActivity extends AppCompatActivity {
     StorePrefrence storePrefrence;
     Context ctx = SplashActivity.this;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         storePrefrence=new StorePrefrence(ctx);
+
+        /*Button crashButton = new Button(this);
+        crashButton.setText("Test Crash");
+        crashButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                throw new RuntimeException("Test Crash"); // Force a crash
+            }
+        });*/
+
+       /* addContentView(crashButton, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));*/
+
+
         //loadLocale();
-        GotoNextScreeen();
+        //GotoNextScreeen();
         //getToken();
+
+
 
 
     }
@@ -102,13 +122,13 @@ public class SplashActivity extends AppCompatActivity {
                  finish();
              }*/
 
-            /*final Intent mainIntent = new Intent(SplashActivity.this, DashBoard_Activity.class);
-            startActivity(mainIntent);
-            finish();*/
-
-            final Intent mainIntent = new Intent(SplashActivity.this, LoginFormActivity.class);
+            final Intent mainIntent = new Intent(SplashActivity.this, DashBoard_Activity.class);
             startActivity(mainIntent);
             finish();
+
+            /*final Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(mainIntent);
+            finish();*/
 
         }, 2000);
     }
