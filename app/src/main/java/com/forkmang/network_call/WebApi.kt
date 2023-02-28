@@ -1,0 +1,33 @@
+package com.forkmang.network_call
+
+object WebApi {
+    const val API_BASE =
+        "https://staging.greatly-done.com/fork-mgmt/fork-management/api/v1/customer/"
+    const val REGISTER_USER = API_BASE + "register"
+    const val LOGIN_USER = API_BASE + "login"
+    const val LOGIN_GUEST = API_BASE + "identifier"
+    const val FORGOT_PASSWORD = API_BASE + "forget-password"
+    const val RESET_PASSWORD = API_BASE + "reset-password"
+    const val REGISTER_SOCIALLOGIN = API_BASE + "social-login"
+    const val LIST_RES_FILTER = API_BASE + "restaurant-details"
+    const val LIST_RES = API_BASE + "restaurants"
+    const val RES_DETAILPAGE = API_BASE + "restaurant-details"
+    const val RES_FOODLIST = API_BASE + "food-list"
+    const val RES_CATLIST = API_BASE + "category-item-list"
+    const val RES_CATLIST_SEARCH = API_BASE + "category-item-list"
+    const val RES_ADDITEMCART = API_BASE + "add-item-cart"
+    const val RES_BOOKTABLE = API_BASE + "booking-table"
+    const val RES_GETCARTDETAIL = API_BASE + "get-cart-details"
+    const val RES_GETTERMS = API_BASE + "cmspage"
+    const val RES_CONTACT = API_BASE + "contact/save"
+    const val RES_UPDATEQTY = API_BASE + "update-qty"
+    const val RES_REMOVEITEMCART = API_BASE + "remove-item-cart"
+    const val RES_CREATEORDER = API_BASE + "create-order"
+    const val RES_MAKEPAYMENT = API_BASE + "payment"
+    const val RES_ORDERDETAIL = API_BASE + "get-order-details"
+    const val RES_GETTABLEORDERSLIST = API_BASE + "get-orders"
+    const val RES_QUEELIST = API_BASE + "queue-list"
+    const val RES_QUEECONFORMATION = API_BASE + "queue-confirmation-action"
+    const val RES_GETQUEE = API_BASE + "get-in-queue"
+    const val RES_GETPERSONQUEE = API_BASE + "customer-queue-list"
+}
