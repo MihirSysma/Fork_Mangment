@@ -229,7 +229,7 @@ class Walkin_listing_Fragment : Fragment() {
     }
 
     fun call_reloadbooktable() {
-        if (isNetworkAvailable(requireContext())) {
+        if (activity?.applicationContext?.let { isNetworkAvailable(it) } == true) {
             saveLatitude = 21.209589
             saveLongitude = 72.860824
             val service_id = "2"

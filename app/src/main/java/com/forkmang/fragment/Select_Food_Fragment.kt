@@ -304,12 +304,6 @@ class Select_Food_Fragment : Fragment() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val btn_add: Button
-        val btn_reserve: Button
-        val plus_btn: TextView
-        val txt_qty: TextView
-        val minus1: TextView
-        val lyt: LinearLayout
         val radio_btn_id_arr = ArrayList<String>()
         var radioButton4_extra: RadioButton
         var radioButton5_extra: RadioButton
@@ -326,8 +320,7 @@ class Select_Food_Fragment : Fragment() {
             radioButton4_extra
 
         }*/
-        val extra_toppingArrayList_get: ArrayList<Extra_Topping>?
-        extra_toppingArrayList_get = category_itemList.extra_toppingArrayList
+        val extra_toppingArrayList_get: ArrayList<Extra_Topping>? = category_itemList.extra_toppingArrayList
         val rb = extra_toppingArrayList_get?.size?.let { arrayOfNulls<RadioButton>(it) }
         val rg = RadioGroup(context) //create the RadioGroup
         rg.orientation = RadioGroup.VERTICAL //or RadioGroup.VERTICAL
@@ -364,14 +357,14 @@ class Select_Food_Fragment : Fragment() {
                     }
                 }
         }
-        lyt = dialogView.findViewById(R.id.lyt)
+        val lyt: LinearLayout = dialogView.findViewById(R.id.lyt)
         lyt.addView(layout2) //you add the whole RadioGroup to the layout
         //rg.setOnCheckedChangeListener((group, checkedId) -> selectedId_radiobtn_topping = rg.getCheckedRadioButtonId());
-        btn_add = dialogView.findViewById(R.id.btn_add)
-        btn_reserve = dialogView.findViewById(R.id.btn_reserve)
-        plus_btn = dialogView.findViewById(R.id.plus_btn)
-        minus1 = dialogView.findViewById(R.id.minus_btn)
-        txt_qty = dialogView.findViewById(R.id.txt_qty)
+        val btn_add: Button = dialogView.findViewById(R.id.btn_add)
+        val btn_reserve: Button = dialogView.findViewById(R.id.btn_reserve)
+        val plus_btn: TextView = dialogView.findViewById(R.id.plus_btn)
+        val minus1: TextView = dialogView.findViewById(R.id.minus_btn)
+        val txt_qty: TextView = dialogView.findViewById(R.id.txt_qty)
         plus_btn.setOnClickListener { v: View? ->
             var value = txt_qty.text.toString().toInt()
             ++value
@@ -433,22 +426,14 @@ class Select_Food_Fragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
-        val btn_pay_table_food: Button
-        val btn_pay_table: Button
-        val img_close: ImageView
-        val txt_restroname: TextView
-        val txt_custname: TextView
-        val txt_datetime: TextView
-        val txt_phoneno: TextView
-        val etv_noperson: EditText
-        txt_restroname = dialog.findViewById(R.id.txt_restroname)
-        txt_custname = dialog.findViewById(R.id.txt_custname)
-        txt_datetime = dialog.findViewById(R.id.txt_datetime)
-        txt_phoneno = dialog.findViewById(R.id.txt_phoneno)
-        etv_noperson = dialog.findViewById(R.id.etv_noperson)
-        btn_pay_table_food = dialog.findViewById(R.id.btn_pay_table_food)
-        btn_pay_table = dialog.findViewById(R.id.btn_pay_table)
-        img_close = dialog.findViewById(R.id.img_close)
+        val txt_restroname: TextView = dialog.findViewById(R.id.txt_restroname)
+        val txt_custname: TextView = dialog.findViewById(R.id.txt_custname)
+        val txt_datetime: TextView = dialog.findViewById(R.id.txt_datetime)
+        val txt_phoneno: TextView = dialog.findViewById(R.id.txt_phoneno)
+        val etv_noperson: EditText = dialog.findViewById(R.id.etv_noperson)
+        val btn_pay_table_food: Button = dialog.findViewById(R.id.btn_pay_table_food)
+        val btn_pay_table: Button = dialog.findViewById(R.id.btn_pay_table)
+        val img_close: ImageView = dialog.findViewById(R.id.img_close)
         progressBar_alertview = dialog.findViewById(R.id.progressBar_alertview)
         txt_restroname.text = tableList_get?.str_hotel_name
         txt_custname.text = tableList_get?.str_customer_name

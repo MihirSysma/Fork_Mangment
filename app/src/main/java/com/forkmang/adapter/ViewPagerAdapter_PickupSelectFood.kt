@@ -13,12 +13,12 @@ class ViewPagerAdapter_PickupSelectFood(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
     var foodListArrayList: ArrayList<FoodList_Tab>,
-    var tableList: TableList,
+    var tableList: TableList?,
     var restoData: RestoData
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun createFragment(position: Int): Fragment {
         val selectedFragment: Fragment
-        selectedFragment = PickupSelect_Food_Fragment.newInstance(restoData)
+        selectedFragment = PickupSelect_Food_Fragment.newInstance(restoData,foodListArrayList[position].id,restoData.id)
         return selectedFragment
     }
 

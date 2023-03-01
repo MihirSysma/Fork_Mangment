@@ -125,18 +125,12 @@ class SelectFood_Activity : AppCompatActivity() {
             all_Food_fragment.cartListingView()
         }
         binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-            public override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float, positionOffsetPixels: Int
-            ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-            }
 
-            public override fun onPageSelected(position: Int) {
+            override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 Log.d("pageno", "" + position)
                 current_tabactive = position
-                val foodList_tab: FoodList_Tab = foodListArrayList!!.get(position)
+                val foodList_tab: FoodList_Tab = foodListArrayList!![position]
                 category_id = foodList_tab.id
                 val all_Food_fragment  = Select_Food_Fragment()
                 booking_id?.let { all_Food_fragment.callApi_food_1(category_id, it) }
@@ -152,15 +146,14 @@ class SelectFood_Activity : AppCompatActivity() {
     private fun fill_tablist() {
         TabLayoutMediator(
             (binding.tabLayout),
-            (binding.viewPager),
-            TabConfigurationStrategy { tab: TabLayout.Tab, position: Int ->
-                for (i in foodListArrayList!!.indices) {
-                    val foodList_tab: FoodList_Tab = foodListArrayList!![position]
-                    //tab.setText(foodList_tab.getName());
-                    tab.customView = getTabView(foodList_tab.name!!.lowercase(Locale.getDefault()))
-                }
+            (binding.viewPager)
+        ) { tab: TabLayout.Tab, position: Int ->
+            for (i in foodListArrayList!!.indices) {
+                val foodList_tab: FoodList_Tab = foodListArrayList!![position]
+                //tab.setText(foodList_tab.getName());
+                tab.customView = getTabView(foodList_tab.name!!.lowercase(Locale.getDefault()))
             }
-        ).attach()
+        }.attach()
     }
 
     private fun showAlertView() {
@@ -212,7 +205,7 @@ class SelectFood_Activity : AppCompatActivity() {
                                     foodListArrayList!!.add(foodList_tab)
                                 }
                                 binding.progressBar.visibility = View.GONE
-                                val viewPagerAdapter_reserveSeat: ViewPagerAdapter_SelectFood =
+                                val viewPagerAdapter_reserveSeat =
                                     ViewPagerAdapter_SelectFood(
                                         supportFragmentManager,
                                         lifecycle,

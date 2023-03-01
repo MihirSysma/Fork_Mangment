@@ -28,7 +28,7 @@ class SpinnnerAdapter_Branch(
         return 0
     }
 
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         @SuppressLint("ViewHolder", "InflateParams") val view =
             inflter.inflate(R.layout.spinner_cell, null)
         val person = view.findViewById<TextView>(R.id.txt_person)

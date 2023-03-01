@@ -1,5 +1,6 @@
 package com.forkmang.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.forkmang.activity.PickupSelectFood_Activity
 import com.forkmang.adapter.Pickup_Fragment_BookTableAdapter
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentPickupLayoutBinding
@@ -106,13 +108,17 @@ class Pickup_Fragment : Fragment() {
                                         val double_val =
                                             Math.floor(mjson_obj.getDouble("distance") * 100) / 100
                                         bookTable.distance = java.lang.Double.toString(double_val)
-                                        restoDataArrayList!!.add(bookTable)
+                                        restoDataArrayList?.add(bookTable)
                                     }
                                     binding.progressbar.visibility = View.GONE
                                     val pickup_fragment_bookTableAdapter =
                                         Pickup_Fragment_BookTableAdapter(
-                                            activity!!, restoDataArrayList, "listing", context
-                                        )
+                                           requireActivity(), restoDataArrayList, "listing", context
+                                        ){
+                                            val mainIntent = Intent(activity, PickupSelectFood_Activity::class.java)
+                                            mainIntent.putExtra("restromodel", it)
+                                            activity?.startActivity(mainIntent)
+                                        }
                                     binding.pickRecycleview.adapter = pickup_fragment_bookTableAdapter
                                 } else {
                                     //no data in array list
@@ -179,7 +185,11 @@ class Pickup_Fragment : Fragment() {
                                 val pickup_fragment_bookTableAdapter =
                                     Pickup_Fragment_BookTableAdapter(
                                         requireActivity(), restoDataArrayList, "listing", context
-                                    )
+                                    ){
+                                        val mainIntent = Intent(activity, PickupSelectFood_Activity::class.java)
+                                        mainIntent.putExtra("restromodel", it)
+                                        activity?.startActivity(mainIntent)
+                                    }
                                 binding.pickRecycleview.adapter = pickup_fragment_bookTableAdapter
                             } else {
                                 //no data in array list

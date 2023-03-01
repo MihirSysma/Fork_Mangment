@@ -30,6 +30,7 @@ import com.forkmang.databinding.ActivityRegisterBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -162,37 +163,28 @@ class RegisterActivity : AppCompatActivity(),
                                             //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
                                             sentRequest(phoneNumber)
                                         } else {
-                                            Toast.makeText(
-                                                ctx,
-                                                Constant.PASSWORD_MATCH,
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            showToastMessage(Constant.PASSWORD_MATCH)
                                         }
                                     } else {
-                                        Toast.makeText(
-                                            ctx,
-                                            Constant.CNFPASSWORD_MATCH,
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        showToastMessage(Constant.CNFPASSWORD_MATCH)
                                     }
                                 } else {
-                                    Toast.makeText(ctx, Constant.PASSWORD, Toast.LENGTH_SHORT)
-                                        .show()
+                                    showToastMessage(Constant.PASSWORD)
                                 }
                             } else {
-                                Toast.makeText(ctx, Constant.VALIDEmail, Toast.LENGTH_SHORT).show()
+                                showToastMessage(Constant.VALIDEmail)
                             }
                         } else {
-                            Toast.makeText(ctx, Constant.EmptyEmail, Toast.LENGTH_SHORT).show()
+                            showToastMessage(Constant.EmptyEmail)
                         }
                     } else {
-                        Toast.makeText(ctx, Constant.VALID_NO, Toast.LENGTH_SHORT).show()
+                        showToastMessage(Constant.VALID_NO)
                     }
                 } else {
-                    Toast.makeText(ctx, Constant.ENTER_MOBILE, Toast.LENGTH_SHORT).show()
+                    showToastMessage(Constant.ENTER_MOBILE)
                 }
             } else {
-                Toast.makeText(ctx, Constant.ENTER_NAME, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.ENTER_NAME)
             }
         }
         Btn_Back.setOnClickListener { finish() }
@@ -203,8 +195,7 @@ class RegisterActivity : AppCompatActivity(),
                 // already logged out
                 binding.buttonFacebookRoot.performClick()
             } else {
-                Toast.makeText(ctx, "Already Login wait for Logout process", Toast.LENGTH_SHORT)
-                    .show()
+                showToastMessage("Already Login wait for Logout process")
                 disconnectFromFacebook()
             }
         }
@@ -267,7 +258,7 @@ class RegisterActivity : AppCompatActivity(),
                 callapi_registeruser(name, email, phoneNumber, password, cnfpassword, idToken)
                 dialog.dismiss()
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
                 dialog.dismiss()
             }
         }
@@ -288,12 +279,12 @@ class RegisterActivity : AppCompatActivity(),
             dialog.dismiss();
         });*/
         val Btn_Done: Button = dialogView.findViewById(R.id.btn_done)
-        Btn_Done.setOnClickListener(OnClickListener { v: View? ->
+        Btn_Done.setOnClickListener {
             val intent: Intent = Intent(ctx, LoginFormActivity::class.java)
             startActivity(intent)
             finish()
             dialog.dismiss()
-        })
+        }
         dialog.show()
     }
 
@@ -403,24 +394,16 @@ class RegisterActivity : AppCompatActivity(),
                                     .equals(Constant.SUCCESS_CODE_Ne, ignoreCase = true)
                             ) {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(
-                                    ctx,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showToastMessage(jsonObject.getString("message"))
                                 //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
-                                storePrefrence!!.setString(
+                                storePrefrence?.setString(
                                     Constant.NAME,
                                     jsonObject.getJSONObject("data").getString("name")
                                 )
                                 showAlertView_2()
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(
-                                    ctx,
-                                    "Error occur please try again",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                showToastMessage("Error occur please try again")
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
                             val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
@@ -431,34 +414,28 @@ class RegisterActivity : AppCompatActivity(),
                                 val error_msg_2: String =
                                     jsonObject.getJSONObject("message").getJSONArray("contact")
                                         .getString(0)
-                                Toast.makeText(ctx, error_msg, Toast.LENGTH_SHORT).show()
-                                Toast.makeText(ctx, error_msg_2, Toast.LENGTH_SHORT).show()
+                                showToastMessage(error_msg)
+                                showToastMessage(error_msg_2)
                                 binding.progressBar.visibility = View.GONE
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(
-                                    ctx,
-                                    "Error occur please try again",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                showToastMessage("Error occur please try again")
                             }
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         //stopProgress();
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     } catch (ex: IOException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage( "Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage( "Error occur please try again")
                     //stopProgress();
                     binding.progressBar.visibility = View.GONE
                 }
@@ -473,35 +450,33 @@ class RegisterActivity : AppCompatActivity(),
                     val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
                     Log.d("Result", jsonObject.toString())
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                            .show()
+                        showToastMessage( jsonObject.getString("message"))
                         //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
                         if (jsonObject.getJSONObject("data").has("name")) {
-                            storePrefrence!!.setString(
+                            storePrefrence?.setString(
                                 Constant.NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence!!.setString(Constant.NAME, type)
+                            storePrefrence?.setString(Constant.NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent: Intent = Intent(ctx, LoginFormActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage( "Error occur please try again")
                     }
                     binding.progressBar.visibility = View.GONE
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage( "Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                showToastMessage( "Error occur please try again")
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -527,7 +502,7 @@ class RegisterActivity : AppCompatActivity(),
         data: Intent?
     ) {
         // add this line
-        callbackManager!!.onActivityResult(
+        callbackManager?.onActivityResult(
             requestCode,
             resultCode,
             data
@@ -545,7 +520,7 @@ class RegisterActivity : AppCompatActivity(),
     }
 
     private fun handleSignInResult(result: GoogleSignInResult?) {
-        if (result!!.isSuccess) {
+        if (result?.isSuccess == true) {
             //gotoProfile();
             val account: GoogleSignInAccount? = result.signInAccount
             Log.d("id", (account!!.id)!!)
@@ -556,10 +531,10 @@ class RegisterActivity : AppCompatActivity(),
                     "google"
                 )
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         } else {
-            Toast.makeText(applicationContext, "Sign in cancel", Toast.LENGTH_LONG).show()
+            showToastMessage( "Sign in cancel")
         }
     }
 

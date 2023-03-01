@@ -25,7 +25,7 @@ class SpinnnerAdapter_ocassion(var context: Context, var ocassion_arr: Array<Str
         return 0
     }
 
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         @SuppressLint("ViewHolder", "InflateParams") val view =
             inflter.inflate(R.layout.spinner_cell, null)
         val ocassion = view.findViewById<TextView>(R.id.txt_person)

@@ -19,15 +19,18 @@ class Pickup_Fragment_BookTableAdapter :
     RecyclerView.Adapter<Pickup_Fragment_BookTableAdapter.BookTableItemHolder?> {
     var activity: Activity
     var resto_dataArrayList: ArrayList<RestoData>? = null
+    lateinit var onItemClicked:((clickPosition: RestoData) -> Unit)
 
     constructor(
         activity: Activity,
         resto_dataArrayList: ArrayList<RestoData>?,
         coming_from: String?,
-        ctx: Context?
+        ctx: Context?,
+        onItemClicked: ((clickPosition: RestoData) -> Unit)
     ) {
         this.activity = activity
         this.resto_dataArrayList = resto_dataArrayList
+        this.onItemClicked = onItemClicked
     }
 
     constructor(activity: Activity) {
@@ -73,13 +76,13 @@ class Pickup_Fragment_BookTableAdapter :
             txt_ratingno = itemView.findViewById<TextView>(R.id.txt_ratingno)
             imgproduct = itemView.findViewById<ImageView>(R.id.imgrestro)
             rating_bar = itemView.findViewById<RatingBar>(R.id.rating_bar)
-            relative_view.setOnClickListener(View.OnClickListener { v: View? ->
+            relative_view.setOnClickListener {
                 val position: Int = bindingAdapterPosition
-                val restoData: RestoData = resto_dataArrayList!![position]
-                val mainIntent = Intent(activity, PickupSelectFood_Activity::class.java)
-                mainIntent.putExtra("restromodel", restoData)
-                activity.startActivity(mainIntent)
-            })
+                val restoData: RestoData? = resto_dataArrayList?.get(position)
+                if (restoData != null) {
+                    onItemClicked(restoData)
+                }
+            }
         }
     }
 }

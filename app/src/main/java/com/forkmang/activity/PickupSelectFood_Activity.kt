@@ -101,7 +101,6 @@ class PickupSelectFood_Activity : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
-                // TODO Auto-generated method stub
                 if (s.toString().isEmpty()) {
                     Hidekeyboard()
                     if (Utils.isNetworkAvailable(ctx)) {
@@ -130,13 +129,6 @@ class PickupSelectFood_Activity : AppCompatActivity() {
             all_Food_fragment.cartListingView()
         }
         binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float, positionOffsetPixels: Int
-            ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-            }
-
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 Log.d("pageno", "" + position)
@@ -144,8 +136,8 @@ class PickupSelectFood_Activity : AppCompatActivity() {
                 current_tabactive = position
                 val foodList_tab: FoodList_Tab = foodListArrayList!![position]
                 category_id = foodList_tab.id
-                val all_Food_fragment = PickupSelect_Food_Fragment()
-                booking_id?.let { all_Food_fragment.callApi_food_1(category_id, it) }
+                /*val all_Food_fragment = PickupSelect_Food_Fragment()
+                all_Food_fragment.callApi_food_1()*/
             }
         })
         if (Utils.isNetworkAvailable(ctx)) {
@@ -228,7 +220,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
                                         supportFragmentManager,
                                         lifecycle,
                                         foodListArrayList!!,
-                                        tableList!!,
+                                        tableList,
                                         restoData!!
                                     )
                                 viewPager!!.adapter = viewPagerAdapter_reserveSeat

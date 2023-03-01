@@ -30,6 +30,7 @@ import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils.isNetworkAvailable
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -44,7 +45,6 @@ class PickupSelect_Food_Fragment : Fragment() {
     var category_itemLists: ArrayList<Category_ItemList>? = null
     var extra_toppingArrayList: ArrayList<Extra_Topping>? = null
     var cartBookingArrayList: ArrayList<CartBooking>? = null
-    var booking_id = "0"
     var selectedId_radiobtn_topping = 0
     var storePrefrence: StorePrefrence? = null
     var all_orderFood_adapter: PickupFoodList_Adapter? = null
@@ -60,6 +60,7 @@ class PickupSelect_Food_Fragment : Fragment() {
         _binding = FragmentPickupLayoutBinding.inflate(inflater, container, false)
         storePrefrence = StorePrefrence(requireContext())
         binding.pickRecycleview.layoutManager = LinearLayoutManager(context)
+        callApi_food_1()
         return binding.root
     }
 
@@ -128,13 +129,12 @@ class PickupSelect_Food_Fragment : Fragment() {
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                     binding.progressbar.visibility = View.GONE
-                    Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                        .show()
+                    context?.showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG).show()
+                context?.showToastMessage("Error occur please try again")
                 binding.progressbar.visibility = View.GONE
             }
         })
@@ -290,12 +290,11 @@ class PickupSelect_Food_Fragment : Fragment() {
             })
     }
 
-    fun callApi_food_1(category_id: String?, booking_id: String) {
+    fun callApi_food_1() {
         if (isNetworkAvailable(requireContext())) {
-            this.booking_id = booking_id
             callApi_fooditem(category_id)
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -309,12 +308,6 @@ class PickupSelect_Food_Fragment : Fragment() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val btn_add: Button
-        val btn_reserve: Button
-        val plus_btn: TextView
-        val txt_qty: TextView
-        val minus1: TextView
-        val lyt: LinearLayout
         val radio_btn_id_arr = ArrayList<String>()
         var radioButton4_extra: RadioButton
         var radioButton5_extra: RadioButton
@@ -368,14 +361,14 @@ class PickupSelect_Food_Fragment : Fragment() {
                     }
                 }
         }
-        lyt = dialogView.findViewById(R.id.lyt)
+        val lyt: LinearLayout = dialogView.findViewById(R.id.lyt)
         lyt.addView(layout2) //you add the whole RadioGroup to the layout
         //rg.setOnCheckedChangeListener((group, checkedId) -> selectedId_radiobtn_topping = rg.getCheckedRadioButtonId());
-        btn_add = dialogView.findViewById(R.id.btn_add)
-        btn_reserve = dialogView.findViewById(R.id.btn_reserve)
-        plus_btn = dialogView.findViewById(R.id.plus_btn)
-        minus1 = dialogView.findViewById(R.id.minus_btn)
-        txt_qty = dialogView.findViewById(R.id.txt_qty)
+        val btn_add: Button = dialogView.findViewById(R.id.btn_add)
+        val btn_reserve: Button = dialogView.findViewById(R.id.btn_reserve)
+        val plus_btn: TextView = dialogView.findViewById(R.id.plus_btn)
+        val minus1: TextView = dialogView.findViewById(R.id.minus_btn)
+        val txt_qty: TextView = dialogView.findViewById(R.id.txt_qty)
         plus_btn.setOnClickListener {
             var value = txt_qty.text.toString().toInt()
             ++value
@@ -433,27 +426,20 @@ class PickupSelect_Food_Fragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
-        val btn_pay_table_food: Button
-        val btn_pay_table: Button
-        val img_close: ImageView
-        val txt_restroname: TextView
-        val txt_custname: TextView
         val txt_datetime: TextView
-        val txt_phoneno: TextView
         val etv_noperson: EditText
-        val linear_view1: LinearLayout
         var linear_view_layout_2: LinearLayout
-        linear_view1 = dialog.findViewById(R.id.linear_view1)
+        val linear_view1: LinearLayout = dialog.findViewById(R.id.linear_view1)
         linear_view1.visibility = View.GONE
 
         // linear_view_layout_2 =dialog.findViewById(R.id.linear_view_layout_2);
         // linear_view_layout_2.setVisibility(View.GONE);
-        txt_restroname = dialog.findViewById(R.id.txt_restroname)
-        txt_custname = dialog.findViewById(R.id.txt_custname)
-        txt_phoneno = dialog.findViewById(R.id.txt_phoneno)
-        btn_pay_table_food = dialog.findViewById(R.id.btn_pay_table_food)
-        btn_pay_table = dialog.findViewById(R.id.btn_pay_table)
-        img_close = dialog.findViewById(R.id.img_close)
+        val txt_restroname: TextView = dialog.findViewById(R.id.txt_restroname)
+        val txt_custname: TextView = dialog.findViewById(R.id.txt_custname)
+        val txt_phoneno: TextView = dialog.findViewById(R.id.txt_phoneno)
+        val btn_pay_table_food: Button = dialog.findViewById(R.id.btn_pay_table_food)
+        val btn_pay_table: Button = dialog.findViewById(R.id.btn_pay_table)
+        val img_close: ImageView = dialog.findViewById(R.id.img_close)
         txt_restroname.text = restoData?.rest_name ?: ""
         txt_custname.text = storePrefrence?.getString(Constant.NAME)
         txt_phoneno.text = storePrefrence?.getString(MOBILE)
@@ -841,12 +827,16 @@ class PickupSelect_Food_Fragment : Fragment() {
     companion object {
         var category_id: String? = null
         var restoData: RestoData? = null
+        var booking_id: String? = "0"
         fun newInstance( /*TableList tableList,*/
-            bookTable: RestoData
+            bookTable: RestoData,
+            category_id_val: String?,
+            booking_id_val: String?
         ): PickupSelect_Food_Fragment {
-            //category_id = category_id_val;
+            category_id = category_id_val
             //Log.d("idval",category_id);
             //tableList_get = tableList;
+            booking_id = booking_id_val
             restoData = bookTable
             return PickupSelect_Food_Fragment()
         }

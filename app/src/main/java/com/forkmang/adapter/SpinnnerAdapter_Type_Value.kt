@@ -29,7 +29,7 @@ class SpinnnerAdapter_Type_Value(var context: Context, var type_value: Array<Str
         return 0
     }
 
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         @SuppressLint("ViewHolder", "InflateParams") val view =
             inflter.inflate(R.layout.spinner_cell, null)
         val person = view.findViewById<TextView>(R.id.txt_person)

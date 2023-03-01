@@ -22,6 +22,7 @@ import com.forkmang.fragment.Pickup_Fragment
 import com.forkmang.fragment.Walkin_listing_Fragment
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.showToastMessage
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -79,7 +80,8 @@ class Booking_TabView_Activity : AppCompatActivity() {
         }
         else{
             etv_serach.setEnabled(false);
-        }*/binding.etvSerach.addTextChangedListener(object : TextWatcher {
+        }*/
+        binding.etvSerach.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 // TODO Auto-generated method stub
                 if (current_tabactive == 0) {
@@ -102,7 +104,7 @@ class Booking_TabView_Activity : AppCompatActivity() {
                         Hidekeyboard()
                         walkin_listing_fragment.filter_booktable(binding.etvSerach.text.toString())
                     }
-                } else if (current_tabactive == 3) {
+                } else if (current_tabactive == 2) {
                     val pickup_fragment = Pickup_Fragment()
                     //walking fragment
                     if (s.toString().isEmpty()) {
@@ -118,7 +120,6 @@ class Booking_TabView_Activity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
-                // TODO Auto-generated method stub
             }
         })
         binding.etvSerach.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
@@ -157,15 +158,15 @@ class Booking_TabView_Activity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         storePrefrence = StorePrefrence(this@Booking_TabView_Activity)
-        if (storePrefrence!!.getCoordinates(Constant.KEY_LATITUDE) == "0.0" || storePrefrence!!.getCoordinates(
+        if (storePrefrence?.getCoordinates(Constant.KEY_LATITUDE) == "0.0" || storePrefrence?.getCoordinates(
                 Constant.KEY_LONGITUDE
             ) == "0.0"
         ) {
             longitude = 0.0
             latitude = 0.0
         } else {
-            longitude = storePrefrence!!.getCoordinates(Constant.KEY_LONGITUDE)!!.toDouble()
-            latitude = storePrefrence!!.getCoordinates(Constant.KEY_LATITUDE)!!.toDouble()
+            longitude = storePrefrence?.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble()?: 0.0
+            latitude = storePrefrence?.getCoordinates(Constant.KEY_LATITUDE)?.toDouble()?: 0.0
         }
     }
 }

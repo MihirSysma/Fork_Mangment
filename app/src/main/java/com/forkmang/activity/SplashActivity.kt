@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.stetho.Stetho
 import com.forkmang.R
 import com.forkmang.helper.StorePrefrence
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -21,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_screen)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         storePrefrence = StorePrefrence(ctx)
-
+        Stetho.initializeWithDefaults(this)
         /*Button crashButton = new Button(this);
         crashButton.setText("Test Crash");
         crashButton.setOnClickListener(new View.OnClickListener() {
