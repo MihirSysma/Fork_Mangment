@@ -78,19 +78,19 @@ class BookingTable_DetailView : Activity() {
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        binding.txtrestroname.text = restoData!!.rest_name
-        binding.txtTime.text = restoData!!.endtime
-        binding.txtTotalkm.text = restoData!!.distance + " km"
-        binding.btnPaymentConform.setOnClickListener({ v: View? -> })
-        binding.buttonFloor.setOnClickListener(View.OnClickListener { v: View? ->
+        binding.txtrestroname.text = restoData?.rest_name
+        binding.txtTime.text = restoData?.endtime
+        binding.txtTotalkm.text = restoData?.distance + " km"
+        binding.btnPaymentConform.setOnClickListener { }
+        binding.buttonFloor.setOnClickListener {
             binding.frameLayout.visibility = View.VISIBLE
-            binding.linearLayout.setVisibility(View.VISIBLE)
+            binding.linearLayout.visibility = View.VISIBLE
             binding.linearListview.visibility = View.GONE
-        })
-        binding.buttonList.setOnClickListener(View.OnClickListener { v: View? ->
+        }
+        binding.buttonList.setOnClickListener {
             binding.linearListview.visibility = View.VISIBLE
             binding.frameLayout.visibility = View.GONE
-            binding.linearLayout.setVisibility(View.GONE)
+            binding.linearLayout.visibility = View.GONE
             binding.tableRecycleview.layoutManager = LinearLayoutManager(
                 this@BookingTable_DetailView,
                 LinearLayoutManager.HORIZONTAL,
@@ -101,7 +101,7 @@ class BookingTable_DetailView : Activity() {
             } else {
                 Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
         binding.lytDatetime.setOnClickListener { datePicker() }
     }
 
@@ -130,7 +130,7 @@ class BookingTable_DetailView : Activity() {
             ) {
                 is_pesonselect = false
                 if (position > 0) {
-                    Toast.makeText(ctx, person.get(position), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, person[position], Toast.LENGTH_SHORT).show()
                     noof_person = person[position]
                     is_pesonselect = true
                 } else {
@@ -154,7 +154,7 @@ class BookingTable_DetailView : Activity() {
                 id: Long
             ) {
                 if (position > 0) {
-                    val branchDropdown: BranchDropdown = branchDropdownArrayList!!.get(position)
+                    val branchDropdown: BranchDropdown = branchDropdownArrayList?.get(position)!!
                     Toast.makeText(ctx, branchDropdown.branch_name, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -174,7 +174,7 @@ class BookingTable_DetailView : Activity() {
                 id: Long
             ) {
                 if (position > 0) {
-                    val flooDropdown: FlooDropdown = flooDropdownArrayList!!.get(position)
+                    val flooDropdown: FlooDropdown = flooDropdownArrayList!![position]
                     Toast.makeText(ctx, flooDropdown.floor_name, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -226,7 +226,7 @@ class BookingTable_DetailView : Activity() {
                 id: Long
             ) {
                 if (position > 0) {
-                    Toast.makeText(ctx, type_value.get(position), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, type_value[position], Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -256,7 +256,7 @@ class BookingTable_DetailView : Activity() {
         tv_ocassion.text = tableList.table_ocassion
         txt_reserveseat.text =
             "To Reserve:" + " " + ctx.resources.getString(R.string.rupee) + tableList.price
-        btn_select_nxt.setOnClickListener { v: View? ->
+        btn_select_nxt.setOnClickListener {
             dialog.dismiss()
             showAlertView_paymentconform(tableList)
         }
@@ -284,7 +284,7 @@ class BookingTable_DetailView : Activity() {
         txt_phoneno.text = tableList.str_phone
         val btn_select_food: Button = dialogView.findViewById(R.id.btn_select_food)
         val btn_cancel: Button = dialogView.findViewById(R.id.btn_cancel)
-        imgicon_edit.setOnClickListener { v: View? ->
+        imgicon_edit.setOnClickListener {
             /*imgicon_save.setVisibility(View.VISIBLE);
             imgicon_edit.setVisibility(View.GONE);
             etv_noperson.setEnabled(true);
@@ -392,28 +392,29 @@ class BookingTable_DetailView : Activity() {
                                         /* code end for table reservation */
 
 
-                                        /* code to get customer and other data into table object */tableList.str_hotel_name =
-                                            restoData!!.rest_name
-                                        if (storePrefrence!!.getString(Constant.NAME).isNullOrEmpty()) {
+                                        /* code to get customer and other data into table object */
+                                        tableList.str_hotel_name = restoData?.rest_name
+                                        if (storePrefrence?.getString(Constant.NAME).isNullOrEmpty()) {
                                             tableList.str_customer_name = "Test Customer Name"
                                         } else {
                                             tableList.str_customer_name =
-                                                storePrefrence!!.getString(
+                                                storePrefrence?.getString(
                                                     Constant.NAME
                                                 )
                                         }
 
                                         //tableList.setStr_noseat(noof_person+" "+"Seats");
                                         tableList.str_time = binding.txtDatetime.text.toString()
-                                        if (storePrefrence!!.getString(Constant.MOBILE).isNullOrEmpty()) {
+                                        if (storePrefrence?.getString(Constant.MOBILE).isNullOrEmpty()) {
                                             tableList.str_phone = "9000012345"
                                         } else {
-                                            tableList.str_phone = storePrefrence!!.getString(
+                                            tableList.str_phone = storePrefrence?.getString(
                                                 Constant.MOBILE
                                             )
                                         }
 
-                                        /* code to get customer and other data into table object end */tableListArrayList!!.add(
+                                        /* code to get customer and other data into table object end */
+                                        tableListArrayList?.add(
                                             tableList
                                         )
                                     }
@@ -451,7 +452,7 @@ class BookingTable_DetailView : Activity() {
 
     private fun callapi_filldropdown(restaurant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_detail(restaurant_id)!!.enqueue(object : Callback<JsonObject?> {
+        info.getres_detail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_n) {
@@ -475,13 +476,13 @@ class BookingTable_DetailView : Activity() {
                                     val areaDropdown_first = AreaDropdown()
                                     areaDropdown_first.id = "0"
                                     areaDropdown_first.area_name = "Select Area"
-                                    areaDropdownArrayList!!.add(areaDropdown_first)
+                                    areaDropdownArrayList?.add(areaDropdown_first)
                                     for (j in 0 until mjson_array_area.length()) {
                                         val areaDropdown = AreaDropdown()
                                         val mjson_object_area = mjson_array_area.getJSONObject(j)
                                         areaDropdown.id = mjson_object_area.getString("id")
                                         areaDropdown.area_name = mjson_object_area.getString("name")
-                                        areaDropdownArrayList!!.add(areaDropdown)
+                                        areaDropdownArrayList?.add(areaDropdown)
                                     }
                                     val spinnnerAdapter_type = SpinnnerAdapter_Type(
                                         applicationContext, areaDropdownArrayList!!
@@ -503,7 +504,7 @@ class BookingTable_DetailView : Activity() {
                                         flooDropdown.id = mjson_object_floor.getString("id")
                                         flooDropdown.floor_name =
                                             mjson_object_floor.getString("name")
-                                        flooDropdownArrayList!!.add(flooDropdown)
+                                        flooDropdownArrayList?.add(flooDropdown)
                                     }
                                     val spinnnerAdapter_floor = SpinnnerAdapter_Floor(
                                         applicationContext, flooDropdownArrayList!!
@@ -518,7 +519,7 @@ class BookingTable_DetailView : Activity() {
                                     val branchDropdown_first = BranchDropdown()
                                     branchDropdown_first.id = "0"
                                     branchDropdown_first.branch_name = "Branch"
-                                    branchDropdownArrayList!!.add(branchDropdown_first)
+                                    branchDropdownArrayList?.add(branchDropdown_first)
                                     for (j in 0 until mjson_array_branch.length()) {
                                         val mjson_object_branch =
                                             mjson_array_branch.getJSONObject(j)
@@ -526,7 +527,7 @@ class BookingTable_DetailView : Activity() {
                                         branchDropdown.id = mjson_object_branch.getString("id")
                                         branchDropdown.branch_name =
                                             mjson_object_branch.getString("rest_branch")
-                                        branchDropdownArrayList!!.add(branchDropdown)
+                                        branchDropdownArrayList?.add(branchDropdown)
                                     }
                                     val spinnnerAdapter_branch = SpinnnerAdapter_Branch(
                                         applicationContext, branchDropdownArrayList!!
@@ -571,22 +572,22 @@ class BookingTable_DetailView : Activity() {
         restaurant_id: String?, table_id: String?, rules: String?, dresscode: String?,
         occasion: String?, date: String?, tableList: TableList, bookTable: RestoData?
     ) {
-        Log.d("restaurant_id", (restaurant_id)!!)
-        Log.d("table_id", (table_id)!!)
-        Log.d("rules", (rules)!!)
-        Log.d("dresscode", (dresscode)!!)
-        Log.d("occasion", (occasion)!!)
-        Log.d("date", (date)!!)
+        Log.d("restaurant_id", (restaurant_id)?:"null")
+        Log.d("table_id", (table_id)?:"null")
+        Log.d("rules", (rules)?:"null")
+        Log.d("dresscode", (dresscode)?:"null")
+        Log.d("occasion", (occasion)?:"null")
+        Log.d("date", (date)?:"null")
         //"2022-12-13 09:12:12"
         //table_id="8";
         binding.progressBar.visibility = View.VISIBLE
         info.book_table(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
-            restaurant_id, table_id, rules, dresscode, occasion, date, storePrefrence!!.getString(
+            "Bearer " + storePrefrence?.getString(Constant.TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
+            restaurant_id, table_id, rules, dresscode, occasion, date, storePrefrence?.getString(
                 Constant.IDENTFIER
             )
-        )!!
-            .enqueue(object : Callback<JsonObject?> {
+        )
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
@@ -597,15 +598,15 @@ class BookingTable_DetailView : Activity() {
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 val mjson_obj = jsonObject.getJSONObject("data")
-                                storePrefrence!!.setString(
+                                storePrefrence?.setString(
                                     Constant.CUSTOMERID,
                                     mjson_obj.getString("customer_id")
                                 )
-                                storePrefrence!!.setString(
+                                storePrefrence?.setString(
                                     "paymentstatus",
                                     mjson_obj.getString("payment_status")
                                 )
-                                storePrefrence!!.setString(
+                                storePrefrence?.setString(
                                     Constant.BOOKINGID,
                                     mjson_obj.getString("id")
                                 )
@@ -673,18 +674,18 @@ class BookingTable_DetailView : Activity() {
                 val date: Int = selectedDay
                 var str_month: String = ""
                 var str_date: String = ""
-                if (month < 10) {
-                    str_month = "0$month"
+                str_month = if (month < 10) {
+                    "0$month"
                 } else {
-                    str_month = month.toString()
+                    month.toString()
                 }
-                if (date < 10) {
-                    str_date = "0$date"
+                str_date = if (date < 10) {
+                    "0$date"
                 } else {
-                    str_date = date.toString()
+                    date.toString()
                 }
                 booking_date = "$selectedYear-$str_month-$str_date"
-                Log.d("sendate==>", booking_date!!)
+                Log.d("sendate==>", booking_date?:"null")
                 binding.txtDatetime.text = ""
                 binding.txtDatetime.text = selectedDay.toString() + "-" + getMonth(selectedMonth + 1)
                 mYear = selectedYear
@@ -703,38 +704,39 @@ class BookingTable_DetailView : Activity() {
             }
         }
         datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE,
-            "OK", DialogInterface.OnClickListener { dialog, which ->
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    val datePicker = datePickerDialog
-                        .datePicker
-                    datePickerListener.onDateSet(
-                        datePicker,
-                        datePicker.year,
-                        datePicker.month,
-                        datePicker.dayOfMonth
-                    )
-                    var month = datePicker.month
-                    val date = datePicker.dayOfMonth
-                    var str_month = ""
-                    var str_date = ""
-                    month = month + 1
-                    if (month < 10) {
-                        str_month = "0$month"
-                    } else {
-                        str_month = month.toString()
-                    }
-                    if (date < 10) {
-                        str_date = "0$date"
-                    } else {
-                        str_date = date.toString()
-                    }
-                    Date_get = datePicker.year.toString() + "-" + str_month + "-" + str_date
-                    Log.d("sendate==>", Date_get)
-                    timePicker()
-
-                    //callApi_senddate(deliveryDate_get);
+            "OK"
+        ) { dialog, which ->
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                val datePicker = datePickerDialog
+                    .datePicker
+                datePickerListener.onDateSet(
+                    datePicker,
+                    datePicker.year,
+                    datePicker.month,
+                    datePicker.dayOfMonth
+                )
+                var month = datePicker.month
+                val date = datePicker.dayOfMonth
+                var str_month = ""
+                var str_date = ""
+                month += 1
+                str_month = if (month < 10) {
+                    "0$month"
+                } else {
+                    month.toString()
                 }
-            })
+                str_date = if (date < 10) {
+                    "0$date"
+                } else {
+                    date.toString()
+                }
+                Date_get = datePicker.year.toString() + "-" + str_month + "-" + str_date
+                Log.d("sendate==>", Date_get)
+                timePicker()
+
+                //callApi_senddate(deliveryDate_get);
+            }
+        }
         datePickerDialog.setCancelable(false)
         val now = System.currentTimeMillis()
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
@@ -766,8 +768,8 @@ class BookingTable_DetailView : Activity() {
                     "pm"
                 }
                 booking_date = "$booking_date $time $AM_PM"
-                Log.d("senddate", booking_date!!)
-                binding.txtDatetime.setText("$date, $time $AM_PM")
+                Log.d("senddate", booking_date?:"null")
+                binding.txtDatetime.text = "$date, $time $AM_PM"
             }, mHour, mMinute, false
         )
         timePickerDialog.show()
@@ -780,7 +782,6 @@ class BookingTable_DetailView : Activity() {
         var str_month = ""
         var str_date = ""
         val str_day: String
-        val selectedYear: String
         var booking_date_n: String
         mYear = c[Calendar.YEAR]
         mMonth = c[Calendar.MONTH]
@@ -809,7 +810,7 @@ class BookingTable_DetailView : Activity() {
         } else {
             str_date = date_n.toString()
         }
-        selectedYear = mYear.toString()
+        val selectedYear: String = mYear.toString()
         booking_date = "$selectedYear-$str_month-$str_date $time_send"
         /*"2022-12-13 09:12:12"*/binding.txtDatetime.text = ""
         binding.txtDatetime.text = str_day + "-" + getMonth(month_n) + " " + time
@@ -873,7 +874,7 @@ class BookingTable_DetailView : Activity() {
             mainIntent.putExtra("restromodel", restoData)
             mainIntent.putExtra(
                 "totalpay",
-                ctx.getResources().getString(R.string.rupee) + tableList.price
+                ctx.resources.getString(R.string.rupee) + tableList.price
             )
             mainIntent.putExtra("bookingid", booking_id)
             mainIntent.putExtra("isbooktable", "yes")
