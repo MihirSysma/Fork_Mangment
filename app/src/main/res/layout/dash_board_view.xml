@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -104,9 +102,7 @@
                 android:textColor="@color/orange_2"
                 android:textSize="16sp" />
 
-
         </LinearLayout>
-
 
     </androidx.cardview.widget.CardView>
 

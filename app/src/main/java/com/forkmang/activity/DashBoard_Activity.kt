@@ -17,23 +17,24 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.forkmang.R
+import com.forkmang.databinding.ActivityDashboardDrawerBinding
 import com.forkmang.fragment.*
 import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.showToastMessage
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
-import java.util.*
 
-
-class DashBoard_Activity constructor() : AppCompatActivity(),
+class DashBoard_Activity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener {
-    private val toolbar: Toolbar? = null
-    private var drawerLayout: DrawerLayout? = null
-    private var frameLayout: FrameLayout? = null
     var storePrefrence: StorePrefrence? = null
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private val binding by lazy { ActivityDashboardDrawerBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard_drawer)
+        supportActionBar?.hide()
+        setContentView(binding.root)
         storePrefrence = StorePrefrence(this@DashBoard_Activity)
         initializeViews()
         toggleDrawer()
@@ -44,24 +45,17 @@ class DashBoard_Activity constructor() : AppCompatActivity(),
      * Initialize all widgets
      */
     private fun initializeViews() {
-        /*toolbar = findViewById(R.id.toolbar_id);
-        toolbar.setTitle(R.string.app_name);
-        toolbar.getBackground().setAlpha(0);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);*/
-        drawerLayout = findViewById(R.id.drawer_layout_id)
-        frameLayout = findViewById(R.id.framelayout_id)
         val navigationView: NavigationView = findViewById(R.id.navigationview_id)
         navigationView.setNavigationItemSelectedListener(this)
-        val radius: Float = getResources().getDimension(R.dimen.roundcorner)
+        /*val radius: Float = getResources().getDimension(R.dimen.roundcorner)
         val navViewBackground: MaterialShapeDrawable =
-            navigationView.getBackground() as MaterialShapeDrawable
+            navigationView.background as MaterialShapeDrawable
         navViewBackground.shapeAppearanceModel = navViewBackground.shapeAppearanceModel
             .toBuilder()
             .setTopLeftCorner(CornerFamily.ROUNDED, radius)
             .setBottomLeftCorner(CornerFamily.ROUNDED, radius)
-            .build()
+            .build()*/
     }
 
     /**
@@ -86,24 +80,24 @@ class DashBoard_Activity constructor() : AppCompatActivity(),
      * 3) Attaches listener to open/close drawer on icon clicked and rotates the icon
      */
     private fun toggleDrawer() {
-        val drawerToggle: ActionBarDrawerToggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar,
+        actionBarDrawerToggle = ActionBarDrawerToggle(
+            this, binding.drawerLayoutId, binding.toolbarId,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
-        drawerLayout!!.addDrawerListener(drawerToggle)
-        drawerToggle.syncState()
+        binding.drawerLayoutId.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
     }
 
-    public override fun onBackPressed() {
+    override fun onBackPressed() {
         //Checks if the navigation drawer is open -- If so, close it
-        if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout!!.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayoutId.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayoutId.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
     }
 
-    public override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menu_scanorder -> {
                 supportFragmentManager.beginTransaction()
@@ -152,7 +146,7 @@ class DashBoard_Activity constructor() : AppCompatActivity(),
                     .commit()
                 closeDrawer()
             }
-            R.id.menu_share -> Toast.makeText(this, "Menu Share Pressed", Toast.LENGTH_SHORT).show()
+            R.id.menu_share -> showToastMessage("Menu Share Pressed")
             R.id.menu_contact -> {
                 //Toast.makeText(this, "Menu Contact Pressed", Toast.LENGTH_SHORT).show();
                 val intent_conatct_term: Intent =
@@ -174,13 +168,13 @@ class DashBoard_Activity constructor() : AppCompatActivity(),
      * Checks if the navigation drawer is open - if so, close it
      */
     fun closeDrawer() {
-        if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout!!.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayoutId.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayoutId.closeDrawer(GravityCompat.START)
         }
     }
 
     fun openDrawer() {
-        drawerLayout!!.openDrawer((drawerLayout)!!)
+        binding.drawerLayoutId.openDrawer((binding.drawerLayoutId))
     }
 
     /**
@@ -204,13 +198,13 @@ class DashBoard_Activity constructor() : AppCompatActivity(),
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog: AlertDialog = alertDialog.create()
-        Objects.requireNonNull(dialog.window)?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val btn_cancel: Button = dialogView.findViewById(R.id.btn_cancel)
         val btn_yes_logout: Button = dialogView.findViewById(R.id.btn_yes)
         btn_yes_logout.setOnClickListener {
             closeDrawer()
             dialog.dismiss()
-            storePrefrence!!.clear()
+            storePrefrence?.clear()
             val intent: Intent = Intent(this@DashBoard_Activity, LoginActivity::class.java)
             startActivity(intent)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

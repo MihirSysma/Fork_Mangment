@@ -6,7 +6,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import com.forkmang.R
 
-
 class DashBoardView : DrawerActivity() {
     var toolbar: Toolbar? = null
     var menu: Menu? = null
@@ -15,8 +14,8 @@ class DashBoardView : DrawerActivity() {
         layoutInflater.inflate(R.layout.activity_dash_board_view, frameLayout)
         toolbar = findViewById(R.id.toolbar_id)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setTitle(resources.getString(R.string.app_name))
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar?.title = resources.getString(R.string.app_name)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         drawerToggle = object : ActionBarDrawerToggle(
             this,
             drawer, toolbar,
