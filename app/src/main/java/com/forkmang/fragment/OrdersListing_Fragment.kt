@@ -17,32 +17,21 @@ class OrdersListing_Fragment : FragmentActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tabLayout_orders)
         val viewPagerAdapter_orders =
             ViewPagerAdapter_OrdersListing(supportFragmentManager, lifecycle)
-        viewPager.setAdapter(viewPagerAdapter_orders)
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float, positionOffsetPixels: Int
-            ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-            }
-
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                Log.d("pageno", "" + position)
-
-                //Table_OrdersListing_Fragment table_ordersListing_fragment = Table_OrdersListing_Fragment.GetInstance();
-            }
-        })
+        viewPager.adapter = viewPagerAdapter_orders
         TabLayoutMediator(
             tabLayout,
             viewPager
         ) { tab: TabLayout.Tab, position: Int ->
-            if (position == 0) {
-                tab.setText(R.string.book_table)
-            } else if (position == 1) {
-                tab.setText(R.string.walkin)
-            } else if (position == 2) {
-                tab.setText(R.string.pickup)
+            when (position) {
+                0 -> {
+                    tab.setText(R.string.book_table)
+                }
+                1 -> {
+                    tab.setText(R.string.walkin)
+                }
+                2 -> {
+                    tab.setText(R.string.pickup)
+                }
             }
         }.attach()
     } /*public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

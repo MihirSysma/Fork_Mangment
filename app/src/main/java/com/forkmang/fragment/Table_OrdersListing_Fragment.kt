@@ -4,12 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.forkmang.R
 import com.forkmang.adapter.TableOrdersListing_Adapter
 import com.forkmang.data.TableOrderListing
 import com.forkmang.databinding.FragmentBooktableLayoutOrdersBinding
@@ -17,6 +13,7 @@ import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils.isNetworkAvailable
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -50,15 +47,15 @@ class Table_OrdersListing_Fragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             callapi_gettableorderslist()
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
     //Api code for Book Table start
     private fun callapi_gettableorderslist() {
         binding.progressBar.visibility = View.VISIBLE
-        info.getbooktable_listing("Bearer " + storePrefrence!!.getString(TOKEN_LOGIN))!!
-            .enqueue(object : Callback<JsonObject?> {
+        info.getbooktable_listing("Bearer " + storePrefrence?.getString(TOKEN_LOGIN))
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
@@ -100,7 +97,7 @@ class Table_OrdersListing_Fragment : Fragment() {
                                         tableOrderListingArrayList?.add(tableOrderListing)
                                     }
                                     val bookTableAdapter_orders = TableOrdersListing_Adapter(
-                                        activity!!, tableOrderListingArrayList
+                                        requireActivity(), tableOrderListingArrayList
                                     )
                                     binding.booktableRecycleviewOrders.adapter =
                                         bookTableAdapter_orders
@@ -108,26 +105,25 @@ class Table_OrdersListing_Fragment : Fragment() {
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE
-                                    Toast.makeText(context, Constant.NODATA, Toast.LENGTH_LONG)
-                                        .show()
+                                    context?.showToastMessage(Constant.NODATA)
                                 }
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                                context?.showToastMessage(Constant.ERRORMSG)
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                            context?.showToastMessage(Constant.ERRORMSG)
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        context?.showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    context?.showToastMessage(Constant.ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })

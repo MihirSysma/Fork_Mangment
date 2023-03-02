@@ -451,7 +451,7 @@ class PickupSelect_Food_Fragment : Fragment() {
         } else {
             Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
         }
-        btn_pay_table_food.setOnClickListener { v: View? ->
+        btn_pay_table_food.setOnClickListener {
             dialog.dismiss()
             val mainIntent = Intent(context, Activity_PaymentSummary::class.java)
             //Bundle bundle = new Bundle();

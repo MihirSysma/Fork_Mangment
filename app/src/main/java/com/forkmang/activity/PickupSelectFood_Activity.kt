@@ -1,5 +1,6 @@
 package com.forkmang.activity
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +13,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.forkmang.R
@@ -21,6 +24,7 @@ import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivitySelectfoodBinding
 import com.forkmang.fragment.PickupSelect_Food_Fragment
 import com.forkmang.helper.Constant
+import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import com.forkmang.models.TableList
 import com.forkmang.network_call.Api.info
@@ -49,6 +53,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
     var current_tabactive: Int = 0
 
     private val binding by lazy { ActivitySelectfoodBinding.inflate(layoutInflater) }
+    private val storePrefrence by lazy { StorePrefrence(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,8 +130,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
         })
         binding.btnViewCart.setOnClickListener {
             //showAlertView();
-            val all_Food_fragment = PickupSelect_Food_Fragment()
-            all_Food_fragment.cartListingView()
+            cartListingView()
         }
         binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -145,6 +149,53 @@ class PickupSelectFood_Activity : AppCompatActivity() {
         } else {
             Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun cartListingView() {
+        val dialog = Dialog(this, R.style.FullHeightDialog)
+        dialog.setContentView(R.layout.cartview_alertview_2)
+        if (dialog.window != null) {
+            dialog.window?.setLayout(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+        val txt_datetime: TextView
+        val etv_noperson: EditText
+        var linear_view_layout_2: LinearLayout
+        val linear_view1: LinearLayout = dialog.findViewById(R.id.linear_view1)
+        linear_view1.visibility = View.GONE
+
+        // linear_view_layout_2 =dialog.findViewById(R.id.linear_view_layout_2);
+        // linear_view_layout_2.setVisibility(View.GONE);
+        val txt_restroname: TextView = dialog.findViewById(R.id.txt_restroname)
+        val txt_custname: TextView = dialog.findViewById(R.id.txt_custname)
+        val txt_phoneno: TextView = dialog.findViewById(R.id.txt_phoneno)
+        val btn_pay_table_food: Button = dialog.findViewById(R.id.btn_pay_table_food)
+        val btn_pay_table: Button = dialog.findViewById(R.id.btn_pay_table)
+        val img_close: ImageView = dialog.findViewById(R.id.img_close)
+        val recycler: RecyclerView = dialog.findViewById(R.id.recycleview)
+        txt_restroname.text = PickupSelect_Food_Fragment.restoData?.rest_name ?: ""
+        txt_custname.text = storePrefrence.getString(Constant.NAME)
+        txt_phoneno.text = storePrefrence.getString(Constant.MOBILE)
+        //txt_datetime.setText(tableList_get.getStr_time());
+        img_close.setOnClickListener { dialog.dismiss() }
+        if (Utils.isNetworkAvailable(this)) {
+            //callApi_cartListview()
+        } else {
+            Toast.makeText(this, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+        }
+        btn_pay_table_food.setOnClickListener {
+            dialog.dismiss()
+            val mainIntent = Intent(this, Activity_PaymentSummary::class.java)
+            //Bundle bundle = new Bundle();
+            //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
+            mainIntent.putExtra("comingfrom", "PickupFood")
+            mainIntent.putExtra("restromodel", PickupSelect_Food_Fragment.restoData)
+            startActivity(mainIntent)
+        }
+        btn_pay_table.setOnClickListener { dialog.dismiss() }
+        dialog.show()
     }
 
     private fun fill_tablist() {

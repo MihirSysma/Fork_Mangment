@@ -2,6 +2,7 @@ package com.forkmang.network_call
 
 import android.annotation.SuppressLint
 import android.util.Log
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -27,6 +28,7 @@ object Api {
                 .connectTimeout(300, TimeUnit.SECONDS)
                 .readTimeout(300, TimeUnit.SECONDS)
                 .writeTimeout(300, TimeUnit.SECONDS)
+                .addNetworkInterceptor(StethoInterceptor())
                 .build()
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
@@ -85,6 +87,7 @@ object Api {
             val builder = OkHttpClient.Builder()
             builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
             builder.hostnameVerifier { hostname, session -> true }
+            builder.addNetworkInterceptor(StethoInterceptor())
             builder
         } catch (e: Exception) {
             throw RuntimeException(e)
