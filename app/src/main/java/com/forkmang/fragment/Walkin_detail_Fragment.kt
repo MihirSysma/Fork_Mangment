@@ -257,11 +257,11 @@ class Walkin_detail_Fragment : FragmentActivity() {
                                     binding.progressBar.visibility = View.GONE
                                     walkin_listing_adapter = Walkin_listing_Adapter(
                                         this@Walkin_detail_Fragment,
-                                        restoDataArrayList,
                                         "detail",
                                         ctx
                                     )
                                     binding.walkinRecycleview.adapter = walkin_listing_adapter
+                                    walkin_listing_adapter?.resto_dataArrayList = restoDataArrayList as ArrayList<RestoData>
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE

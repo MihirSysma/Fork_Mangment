@@ -1,8 +1,6 @@
 package com.forkmang.adapter
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,34 +8,31 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
-import com.forkmang.activity.PickupSelectFood_Activity
 import com.forkmang.data.RestoData
 
-class Pickup_Fragment_BookTableAdapter :
-    RecyclerView.Adapter<Pickup_Fragment_BookTableAdapter.BookTableItemHolder?> {
-    var activity: Activity
-    var resto_dataArrayList: ArrayList<RestoData>? = null
-    lateinit var onItemClicked:((clickPosition: RestoData) -> Unit)
+class Pickup_Fragment_BookTableAdapter(
+    var onItemClicked: ((clickPosition: RestoData) -> Unit)
+) : ListAdapter<RestoData, Pickup_Fragment_BookTableAdapter.BookTableItemHolder>(ItemCallback) {
 
-    constructor(
-        activity: Activity,
-        resto_dataArrayList: ArrayList<RestoData>?,
-        coming_from: String?,
-        ctx: Context?,
-        onItemClicked: ((clickPosition: RestoData) -> Unit)
-    ) {
-        this.activity = activity
-        this.resto_dataArrayList = resto_dataArrayList
-        this.onItemClicked = onItemClicked
+    object ItemCallback : DiffUtil.ItemCallback<RestoData>() {
+        override fun areItemsTheSame(oldItem: RestoData, newItem: RestoData): Boolean =
+            oldItem.id == newItem.id
+
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(oldItem: RestoData, newItem: RestoData): Boolean =
+            oldItem == newItem
     }
 
-    constructor(activity: Activity) {
-        this.activity = activity
-    }
+    var resto_dataArrayList: List<RestoData> = emptyList()
+        set(value) {
+            field = value
+            submitList(field)
+        }
 
-    /*book_table_cell*/
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -47,10 +42,9 @@ class Pickup_Fragment_BookTableAdapter :
         return BookTableItemHolder(v)
     }
 
-    override fun getItemCount() = resto_dataArrayList!!.size
 
     override fun onBindViewHolder(holder: BookTableItemHolder, position: Int) {
-        val bookTable: RestoData = resto_dataArrayList!![position]
+        val bookTable: RestoData = resto_dataArrayList[position]
         holder.txtrestroname.text = bookTable.rest_name
         holder.txt_endtime.text = bookTable.endtime
         holder.txttotalkm.text = bookTable.distance + " Km"
@@ -78,7 +72,7 @@ class Pickup_Fragment_BookTableAdapter :
             rating_bar = itemView.findViewById<RatingBar>(R.id.rating_bar)
             relative_view.setOnClickListener {
                 val position: Int = bindingAdapterPosition
-                val restoData: RestoData? = resto_dataArrayList?.get(position)
+                val restoData: RestoData? = resto_dataArrayList.get(position)
                 if (restoData != null) {
                     onItemClicked(restoData)
                 }

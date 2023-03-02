@@ -12,10 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.facebook.FacebookSdk.getApplicationContext
 import com.forkmang.R
+import com.forkmang.ViewModel
 import com.forkmang.adapter.BookTableAdapter
 import com.forkmang.adapter.SpinnnerAdapter
 import com.forkmang.data.RestoData
@@ -24,6 +25,7 @@ import com.forkmang.helper.ApiConfig.getLocation
 import com.forkmang.helper.Constant
 import com.forkmang.helper.GPSTracker
 import com.forkmang.helper.Utils.isNetworkAvailable
+import com.forkmang.helper.logThis
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -121,6 +123,24 @@ class Book_Table_Fragment : Fragment() {
         binding.lytDatetime.setOnClickListener { datePicker() }
         current_dateshow()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.searchData.observe(viewLifecycleOwner) {
+            if (isVisible) {
+                logThis("BookTable Frag $it")
+                if (it.isNullOrEmpty()) {
+                    call_reloadbooktable()
+                } else {
+                    filter_booktable(it)
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -354,10 +374,10 @@ class Book_Table_Fragment : Fragment() {
                                 binding.progressBar.visibility = View.GONE
                                 bookTableAdapter = BookTableAdapter(
                                     requireActivity(),
-                                    bookTableArrayList,
                                     binding.txtDatetime.text.toString()
                                 )
                                 binding.booktableRecycleview.adapter = bookTableAdapter
+                                bookTableAdapter?.bookTable_dataArrayList = bookTableArrayList as ArrayList<RestoData>
                                 //Constant.IS_BookTableFragmentLoad=true;
                             } else {
                                 //no data in array list
@@ -422,10 +442,10 @@ class Book_Table_Fragment : Fragment() {
                                 binding.progressBar.visibility = View.GONE
                                 bookTableAdapter = BookTableAdapter(
                                     requireActivity(),
-                                    bookTableArrayList,
                                     binding.txtDatetime.text.toString()
                                 )
                                 binding.booktableRecycleview.adapter = bookTableAdapter
+                                bookTableAdapter?.bookTable_dataArrayList = bookTableArrayList as ArrayList<RestoData>
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
@@ -465,7 +485,9 @@ class Book_Table_Fragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): Book_Table_Fragment {
+        lateinit var viewModel : ViewModel
+        fun newInstance(viewModel: ViewModel): Book_Table_Fragment {
+            this.viewModel = viewModel
             return Book_Table_Fragment()
         }
 

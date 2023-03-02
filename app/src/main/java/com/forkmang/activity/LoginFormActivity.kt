@@ -19,6 +19,7 @@ import com.forkmang.databinding.ActivityLoginFormBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -32,7 +33,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-
 
 class LoginFormActivity : AppCompatActivity(),
     GoogleApiClient.OnConnectionFailedListener {
@@ -68,7 +68,7 @@ class LoginFormActivity : AppCompatActivity(),
                             "facebook"
                         )
                     } else {
-                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                        showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
 
@@ -87,7 +87,7 @@ class LoginFormActivity : AppCompatActivity(),
         // google login code end
         binding.etvMobile.setText("9829020700")
         binding.etvPassword.setText("123456")
-        binding.chekKeeplogin.setOnClickListener(View.OnClickListener { v: View? ->
+        binding.chekKeeplogin.setOnClickListener {
             if (binding.etvMobile.length() == 10 && binding.etvPassword.length() > 3) {
                 if (binding.chekKeeplogin.isChecked) {
                     Constant.KEEP_LOGIN = true
@@ -95,10 +95,10 @@ class LoginFormActivity : AppCompatActivity(),
                     Constant.KEEP_LOGIN = false
                 }
             } else {
-                Toast.makeText(ctx, Constant.MOBILE_PASSWORD, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.MOBILE_PASSWORD)
             }
-        })
-        BtnLogin.setOnClickListener { v: View? ->
+        }
+        BtnLogin.setOnClickListener {
             if (binding.etvMobile.length() > 0) {
                 if (binding.etvMobile.length() == 10) {
                     //password is valid or not
@@ -109,27 +109,25 @@ class LoginFormActivity : AppCompatActivity(),
                                 binding.etvPassword.text.toString()
                             )
                         } else {
-                            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                            showToastMessage(Constant.NETWORKEROORMSG)
                         }
-
-
                         //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(ctx, Constant.PASSWORD, Toast.LENGTH_SHORT).show()
+                        showToastMessage(Constant.PASSWORD)
                     }
                 } else {
-                    Toast.makeText(ctx, Constant.VALID_NO, Toast.LENGTH_SHORT).show()
+                    showToastMessage(Constant.VALID_NO)
                 }
             } else {
-                Toast.makeText(ctx, Constant.ENTER_MOBILE, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.ENTER_MOBILE)
             }
         }
-        txtForgotPassword.setOnClickListener { v: View? ->
+        txtForgotPassword.setOnClickListener {
             val mainIntent: Intent = Intent(this@LoginFormActivity, ForgotPassword::class.java)
             startActivity(mainIntent)
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
         }
-        BtnReg.setOnClickListener { v: View? ->
+        BtnReg.setOnClickListener {
             val mainIntent: Intent = Intent(this@LoginFormActivity, RegisterActivity::class.java)
             startActivity(mainIntent)
             finish()
@@ -142,8 +140,7 @@ class LoginFormActivity : AppCompatActivity(),
                 binding.buttonFacebookRoot.performClick()
             } else {
                 // already login logout
-                Toast.makeText(ctx, "Already Login wait for logout process", Toast.LENGTH_SHORT)
-                    .show()
+                showToastMessage("Already Login wait for logout process")
                 disconnectFromFacebook()
             }
         }
@@ -183,22 +180,21 @@ class LoginFormActivity : AppCompatActivity(),
                         if (jsonObject.getString("status")
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
-                            storePrefrence!!.setBoolean("keeplogin", Constant.KEEP_LOGIN)
-                            storePrefrence!!.setString(
+                            showToastMessage(jsonObject.getString("message"))
+                            storePrefrence?.setBoolean("keeplogin", Constant.KEEP_LOGIN)
+                            storePrefrence?.setString(
                                 Constant.MOBILE,
                                 jsonObject.getJSONObject("data").getString("contact")
                             )
-                            storePrefrence!!.setString(
+                            storePrefrence?.setString(
                                 Constant.NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
-                            storePrefrence!!.setString(
+                            storePrefrence?.setString(
                                 Constant.TOKEN_LOGIN,
                                 jsonObject.getJSONObject("data").getString("token")
                             )
-                            storePrefrence!!.setString(Constant.IDENTFIER, "")
+                            storePrefrence?.setString(Constant.IDENTFIER, "")
 
                             /*if(binding.chekKeeplogin.isChecked())
                                     {
@@ -212,8 +208,7 @@ class LoginFormActivity : AppCompatActivity(),
                             finish()
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                                .show()
+                            showToastMessage("Error occur please try again")
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
                         val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
@@ -222,26 +217,25 @@ class LoginFormActivity : AppCompatActivity(),
                         ) {
                             binding.progressBar.visibility = View.GONE
                             val error_msg: String = jsonObject.getString("message")
-                            Toast.makeText(ctx, error_msg, Toast.LENGTH_SHORT).show()
+                            showToastMessage(error_msg)
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                                .show()
+                            showToastMessage( "Error occur please try again")
                         }
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                showToastMessage("Error occur please try again")
                 //stopProgress();
                 binding.progressBar.visibility = View.GONE
             }
@@ -250,19 +244,19 @@ class LoginFormActivity : AppCompatActivity(),
 
     fun showProgress() {
         dialog = ProgressDialog(ctx)
-        dialog!!.setCancelable(false)
-        dialog!!.setMessage("Please wait...")
-        dialog!!.setCanceledOnTouchOutside(false)
-        dialog!!.show()
+        dialog?.setCancelable(false)
+        dialog?.setMessage("Please wait...")
+        dialog?.setCanceledOnTouchOutside(false)
+        dialog?.show()
     }
 
     fun stopProgress() {
-        dialog!!.dismiss()
+        dialog?.dismiss()
     }
 
     private fun callapi_sociallogin(token: String, userid: String, type: String) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.register_sociallogin(type, userid)!!.enqueue(object : Callback<JsonObject?> {
+        Api.info.register_sociallogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
@@ -271,38 +265,36 @@ class LoginFormActivity : AppCompatActivity(),
                     val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
                     Log.d("Result", jsonObject.toString())
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                            .show()
-                        storePrefrence!!.setString(
+                        showToastMessage(jsonObject.getString("message"))
+                        storePrefrence?.setString(
                             Constant.TOKEN_REG,
                             jsonObject.getJSONObject("data").getString("token")
                         )
                         if (jsonObject.getJSONObject("data").has("name")) {
-                            storePrefrence!!.setString(
+                            storePrefrence?.setString(
                                 Constant.NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence!!.setString(Constant.NAME, type)
+                            storePrefrence?.setString(Constant.NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent: Intent = Intent(ctx, DashBoard_Activity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage( "Error occur please try again")
                     }
                     binding.progressBar.visibility = View.GONE
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                showToastMessage("Error occur please try again")
                 binding.progressBar.visibility = View.GONE
             }
         })

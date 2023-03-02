@@ -9,6 +9,7 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.stetho.Stetho
 import com.forkmang.R
+import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
@@ -67,9 +68,11 @@ class SplashActivity : AppCompatActivity() {
 
     fun changeLang(lang: String?) {
         if (lang.equals("", ignoreCase = true)) return
-        val myLocale: Locale = Locale(lang)
+        val myLocale: Locale? = lang?.let { Locale(it) }
         saveLocale(lang)
-        Locale.setDefault(myLocale)
+        if (myLocale != null) {
+            Locale.setDefault(myLocale)
+        }
         val config: Configuration = Configuration()
         config.locale = myLocale
         baseContext.resources
@@ -84,30 +87,30 @@ class SplashActivity : AppCompatActivity() {
         )
         val editor: SharedPreferences.Editor = prefs.edit()
         editor.putString(langPref, lang)
-        editor.commit()
+        editor.apply()
     }
 
     private fun GotoNextScreeen() {
         Handler().postDelayed({
 
+            if(storePrefrence?.getString(Constant.NAME)?.length == 0)
+            {
+                val register_intent = Intent(this, RegisterActivity::class.java)
+                startActivity(register_intent);
+                finish();
+            }
+/*            else if (storePrefrence?.getBoolean("keeplogin") == true){
+                val dash_board_intent = Intent(this, DashBoardActivity_2::c ->  });
+                startActivity(dash_board_intent);
+                finish();
+            }*/
+            else if(storePrefrence?.getBoolean("keeplogin")?.not() == true)
+            {
+                val dash_board_intent = Intent(this, LoginFormActivity::class.java)
+                startActivity(dash_board_intent)
+                finish();
+            }
 
-            /*if(storePrefrence.getString(Constant.NAME).length() == 0)
-             {
-                 final Intent register_intent = new Intent(SplashActivity.this, RegisterActivity.class);
-                 startActivity(register_intent);
-                 finish();
-             }
-             else if (storePrefrence.getBoolean("keeplogin")){
-                 final Intent dash_board_intent = new Intent(SplashActivity.this, DashBoardActivity_2.class);
-                 startActivity(dash_board_intent);
-                 finish();
-             }
-             else if(!storePrefrence.getBoolean("keeplogin"))
-             {
-                 final Intent dash_board_intent = new Intent(SplashActivity.this, LoginFormActivity.class);
-                 startActivity(dash_board_intent);
-                 finish();
-             }*/
             val mainIntent: Intent = Intent(this@SplashActivity, DashBoard_Activity::class.java)
             startActivity(mainIntent)
             finish()

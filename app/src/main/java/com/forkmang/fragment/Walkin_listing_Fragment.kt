@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.forkmang.R
+import com.forkmang.ViewModel
 import com.forkmang.adapter.Walkin_listing_Adapter
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentWalkinlistingLayoutBinding
@@ -17,6 +16,7 @@ import com.forkmang.helper.ApiConfig
 import com.forkmang.helper.Constant
 import com.forkmang.helper.GPSTracker
 import com.forkmang.helper.Utils.isNetworkAvailable
+import com.forkmang.helper.logThis
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -80,6 +80,25 @@ class Walkin_listing_Fragment : Fragment() {
         callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString())
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.searchData.observe(viewLifecycleOwner) {
+            if (isVisible){
+                logThis("WalkIn Frag $it")
+                if (it.isNullOrEmpty()){
+                    call_reloadbooktable()
+                }
+                else{
+                    filter_booktable(it)
+                }
+            }
+        }
+    }
+
     //Api code for Book Table start
     private fun callapi_getbooktable(service_id: String, latitude: String, logitutde: String) {
         binding.progressBar.visibility = View.VISIBLE
@@ -126,11 +145,11 @@ class Walkin_listing_Fragment : Fragment() {
                                     binding.progressBar.visibility = View.GONE
                                     walkin_listing_adapter = Walkin_listing_Adapter(
                                         requireActivity(),
-                                        restoDataArrayList,
                                         "listing",
                                         context
                                     )
                                     binding.walkinlistingRecycleview.adapter = walkin_listing_adapter
+                                    walkin_listing_adapter?.resto_dataArrayList = restoDataArrayList as ArrayList<RestoData>
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE
@@ -195,11 +214,11 @@ class Walkin_listing_Fragment : Fragment() {
                                 binding.progressBar.visibility = View.GONE
                                 walkin_listing_adapter = Walkin_listing_Adapter(
                                     requireActivity(),
-                                    restoDataArrayList,
                                     "listing",
                                     context
                                 )
                                 binding.walkinlistingRecycleview.adapter = walkin_listing_adapter
+                                walkin_listing_adapter?.resto_dataArrayList = restoDataArrayList as ArrayList<RestoData>
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
@@ -240,7 +259,9 @@ class Walkin_listing_Fragment : Fragment() {
     } //Api code for Book Table end
 
     companion object {
-        fun newInstance(): Walkin_listing_Fragment {
+        lateinit var viewModel : ViewModel
+        fun newInstance(viewModel: ViewModel): Walkin_listing_Fragment {
+            this.viewModel = viewModel
             return Walkin_listing_Fragment()
         }
     }

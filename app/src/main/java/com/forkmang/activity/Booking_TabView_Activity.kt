@@ -13,27 +13,27 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.forkmang.R
+import com.forkmang.ViewModel
 import com.forkmang.adapter.ViewPagerAdapter
 import com.forkmang.databinding.ActivityBookingTabViewBinding
-import com.forkmang.fragment.Book_Table_Fragment
-import com.forkmang.fragment.Pickup_Fragment
-import com.forkmang.fragment.Walkin_listing_Fragment
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
-import com.forkmang.helper.showToastMessage
+import com.forkmang.helper.logThis
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class Booking_TabView_Activity : AppCompatActivity() {
     var activity: Activity = this@Booking_TabView_Activity
-    var current_tabactive = 0
     var storePrefrence: StorePrefrence? = null
     var longitude = 0.0
     var c_longitude = 0.0
     var c_latitude = 0.0
     var latitude = 0.0
+    private val viewModel by lazy { ViewModelProvider(this) [ViewModel::class.java] }
 
     private val binding by lazy { ActivityBookingTabViewBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,36 +43,22 @@ class Booking_TabView_Activity : AppCompatActivity() {
             val intent_walkin = Intent(this@Booking_TabView_Activity, MapsActivity::class.java)
             startActivity(intent_walkin)
         }
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle, this)
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle, this, viewModel)
         binding.viewPager.adapter = viewPagerAdapter
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float, positionOffsetPixels: Int
-            ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-            }
 
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                Log.d("pageno", "" + position)
-                current_tabactive = position
-            }
-        })
         val str_tab_no = intent.getStringExtra("tab_no")
         TabLayoutMediator(
             binding.tabLayout,
             binding.viewPager
         ) { tab: TabLayout.Tab, position: Int ->
-            if (position == 0) {
-                tab.setText(R.string.book_table)
-            } else if (position == 1) {
-                tab.setText(R.string.walkin)
-            } else if (position == 2) {
-                tab.setText(R.string.pickup)
+            tab.text = when (position) {
+                0 -> getString(R.string.book_table)
+                1 -> getString(R.string.walkin)
+                2 -> getString(R.string.pickup)
+                else -> "TAB"
             }
         }.attach()
-        selectPage(str_tab_no!!.toInt())
+        selectPage(str_tab_no?.toInt()?:1)
 
         /*if(Constant.IS_BookTableFragmentLoad)
         {
@@ -83,38 +69,7 @@ class Booking_TabView_Activity : AppCompatActivity() {
         }*/
         binding.etvSerach.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // TODO Auto-generated method stub
-                if (current_tabactive == 0) {
-                    val book_table_fragment = Book_Table_Fragment()
-                    //Book Table Fragment
-                    if (s.toString().isEmpty()) {
-                        Hidekeyboard()
-                        book_table_fragment.call_reloadbooktable()
-                    } else if (s.toString().length > 3) {
-                        Hidekeyboard()
-                        book_table_fragment.filter_booktable(binding.etvSerach.text.toString())
-                    }
-                } else if (current_tabactive == 1) {
-                    val walkin_listing_fragment = Walkin_listing_Fragment()
-                    //walking fragment
-                    if (s.toString().isEmpty()) {
-                        Hidekeyboard()
-                        walkin_listing_fragment.call_reloadbooktable()
-                    } else if (s.toString().length > 3) {
-                        Hidekeyboard()
-                        walkin_listing_fragment.filter_booktable(binding.etvSerach.text.toString())
-                    }
-                } else if (current_tabactive == 2) {
-                    val pickup_fragment = Pickup_Fragment()
-                    //walking fragment
-                    if (s.toString().isEmpty()) {
-                        Hidekeyboard()
-                        pickup_fragment.call_reloadbooktable()
-                    } else if (s.toString().length > 3) {
-                        Hidekeyboard()
-                        pickup_fragment.filter_booktable(binding.etvSerach.text.toString())
-                    }
-                }
+                viewModel.searchData.postValue(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -131,10 +86,6 @@ class Booking_TabView_Activity : AppCompatActivity() {
         })
     }
 
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        return super.onCreateView(name, context, attrs)
-    }
-
     fun selectPage(pageIndex: Int) {
         Log.d("tabno=>", "" + pageIndex)
         binding.tabLayout.setScrollPosition(pageIndex, 0f, true)
@@ -145,14 +96,6 @@ class Booking_TabView_Activity : AppCompatActivity() {
         binding.etvSerach.clearFocus()
         val `in` = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         `in`.hideSoftInputFromWindow(binding.etvSerach.windowToken, 0)
-    }
-
-    fun hide_search() {
-        binding.etvSerach.visibility = View.GONE
-    }
-
-    fun visble_search() {
-        binding.etvSerach.visibility = View.VISIBLE
     }
 
     override fun onResume() {

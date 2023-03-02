@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.forkmang.ViewModel
 import com.forkmang.activity.PickupSelectFood_Activity
 import com.forkmang.adapter.Pickup_Fragment_BookTableAdapter
 import com.forkmang.data.RestoData
@@ -17,6 +16,8 @@ import com.forkmang.helper.ApiConfig.getLocation
 import com.forkmang.helper.Constant
 import com.forkmang.helper.GPSTracker
 import com.forkmang.helper.Utils.isNetworkAvailable
+import com.forkmang.helper.logThis
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -25,6 +26,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.floor
 
 class Pickup_Fragment : Fragment() {
     var restoDataArrayList: ArrayList<RestoData>? = null
@@ -65,6 +67,23 @@ class Pickup_Fragment : Fragment() {
         saveLongitude = 72.367458
         callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString())
         //((Booking_TabView_Activity)getActivity()).hide_search();
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.searchData.observe(viewLifecycleOwner) {
+            if (isVisible) {
+                logThis("PickUp Frag $it")
+                if (it.isNullOrEmpty()) {
+                    call_reloadbooktable()
+                } else {
+                    filter_booktable(it)
+                }
+            }
+        }
     }
 
     //Api code for Book Table start
@@ -112,19 +131,18 @@ class Pickup_Fragment : Fragment() {
                                     }
                                     binding.progressbar.visibility = View.GONE
                                     val pickup_fragment_bookTableAdapter =
-                                        Pickup_Fragment_BookTableAdapter(
-                                           requireActivity(), restoDataArrayList, "listing", context
-                                        ){
+                                        Pickup_Fragment_BookTableAdapter {
                                             val mainIntent = Intent(activity, PickupSelectFood_Activity::class.java)
                                             mainIntent.putExtra("restromodel", it)
                                             activity?.startActivity(mainIntent)
                                         }
                                     binding.pickRecycleview.adapter = pickup_fragment_bookTableAdapter
+                                    pickup_fragment_bookTableAdapter.resto_dataArrayList =
+                                        restoDataArrayList as ArrayList<RestoData>
                                 } else {
                                     //no data in array list
                                     binding.progressbar.visibility = View.GONE
-                                    Toast.makeText(context, Constant.NODATA, Toast.LENGTH_LONG)
-                                        .show()
+                                    context?.showToastMessage(Constant.NODATA)
                                 }
                             } else {
                                 binding.progressbar.visibility = View.GONE
@@ -142,7 +160,7 @@ class Pickup_Fragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    context?.showToastMessage(Constant.ERRORMSG)
                     binding.progressbar.visibility = View.GONE
                 }
             })
@@ -177,35 +195,35 @@ class Pickup_Fragment : Fragment() {
                                     }
                                     bookTable.id = mjson_obj.getString("id")
                                     val double_val =
-                                        Math.floor(mjson_obj.getDouble("distance") * 100) / 100
-                                    bookTable.distance = java.lang.Double.toString(double_val)
-                                    restoDataArrayList!!.add(bookTable)
+                                        floor(mjson_obj.getDouble("distance") * 100) / 100
+                                    bookTable.distance = double_val.toString()
+                                    restoDataArrayList?.add(bookTable)
                                 }
                                 binding.progressbar.visibility = View.GONE
                                 val pickup_fragment_bookTableAdapter =
-                                    Pickup_Fragment_BookTableAdapter(
-                                        requireActivity(), restoDataArrayList, "listing", context
-                                    ){
+                                    Pickup_Fragment_BookTableAdapter{
                                         val mainIntent = Intent(activity, PickupSelectFood_Activity::class.java)
                                         mainIntent.putExtra("restromodel", it)
                                         activity?.startActivity(mainIntent)
                                     }
                                 binding.pickRecycleview.adapter = pickup_fragment_bookTableAdapter
+                                pickup_fragment_bookTableAdapter.resto_dataArrayList =
+                                    restoDataArrayList as ArrayList<RestoData>
                             } else {
                                 //no data in array list
                                 binding.progressbar.visibility = View.GONE
-                                Toast.makeText(context, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                context?.showToastMessage(Constant.NODATA)
                             }
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressbar.visibility = View.GONE
-                        Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        context?.showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    context?.showToastMessage(Constant.ERRORMSG)
                     binding.progressbar.visibility = View.GONE
                 }
             })
@@ -215,7 +233,7 @@ class Pickup_Fragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             callapi_searchbooktable(search_str, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -226,12 +244,14 @@ class Pickup_Fragment : Fragment() {
             val service_id = "3"
             callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
     companion object {
-        fun newInstance(): Pickup_Fragment {
+        lateinit var viewModel : ViewModel
+        fun newInstance(viewModel: ViewModel): Pickup_Fragment {
+            this.viewModel = viewModel
             return Pickup_Fragment()
         }
 
