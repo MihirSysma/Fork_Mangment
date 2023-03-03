@@ -38,6 +38,7 @@ import java.util.*
 import kotlin.math.floor
 
 class BookTableFragment : Fragment() {
+
     var bookTableArrayList: ArrayList<RestoData>? = null
     var bookTableAdapter: BookTableAdapter? = null
     var gps: GPSTracker? = null
@@ -54,7 +55,6 @@ class BookTableFragment : Fragment() {
 
     private var _binding: FragmentBooktableLayoutBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -174,7 +174,7 @@ class BookTableFragment : Fragment() {
                     selectedDay.toString()
                 }
                 booking_date = "$selectedYear-$str_month-$str_date"
-                Log.d("sendate==>", booking_date?:"")
+                Log.d("sendate==>", booking_date ?: "")
                 binding.txtDatetime.text = ""
                 binding.txtDatetime.text =
                     selectedDay.toString() + "-" + getMonth(selectedMonth + 1)
@@ -250,7 +250,8 @@ class BookTableFragment : Fragment() {
         val c = Calendar.getInstance()
         mHour = c[Calendar.HOUR_OF_DAY]
         mMinute = c[Calendar.MINUTE]
-        val timePickerDialog = TimePickerDialog(context, R.style.DialogTheme_picker,
+        val timePickerDialog = TimePickerDialog(
+            context, R.style.DialogTheme_picker,
             { view: TimePicker?, hourOfDay: Int, minute: Int ->
                 val date = binding.txtDatetime.text.toString()
                 binding.txtDatetime.text = ""
@@ -262,7 +263,7 @@ class BookTableFragment : Fragment() {
                     "pm"
                 }
                 booking_date = "$booking_date $time $AM_PM"
-                Log.d("senddate", booking_date?:"")
+                Log.d("senddate", booking_date ?: "")
                 binding.txtDatetime.text = "$date, $time $AM_PM"
             }, mHour, mMinute, false
         )
@@ -374,7 +375,8 @@ class BookTableFragment : Fragment() {
                                     binding.txtDatetime.text.toString()
                                 )
                                 binding.booktableRecycleview.adapter = bookTableAdapter
-                                bookTableAdapter?.bookTable_dataArrayList = bookTableArrayList as ArrayList<RestoData>
+                                bookTableAdapter?.bookTable_dataArrayList =
+                                    bookTableArrayList as ArrayList<RestoData>
                                 //Constant.IS_BookTableFragmentLoad=true;
                             } else {
                                 //no data in array list
@@ -442,7 +444,8 @@ class BookTableFragment : Fragment() {
                                     binding.txtDatetime.text.toString()
                                 )
                                 binding.booktableRecycleview.adapter = bookTableAdapter
-                                bookTableAdapter?.bookTable_dataArrayList = bookTableArrayList as ArrayList<RestoData>
+                                bookTableAdapter?.bookTable_dataArrayList =
+                                    bookTableArrayList as ArrayList<RestoData>
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
@@ -482,7 +485,7 @@ class BookTableFragment : Fragment() {
     }
 
     companion object {
-        lateinit var viewModel : ViewModel
+        lateinit var viewModel: ViewModel
         fun newInstance(viewModel: ViewModel): BookTableFragment {
             this.viewModel = viewModel
             return BookTableFragment()

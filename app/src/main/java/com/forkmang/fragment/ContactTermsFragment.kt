@@ -19,8 +19,8 @@ class ContactTermsFragment : FragmentActivity() {
         super.onCreate(savedInstanceState)
         activity = this@ContactTermsFragment
         setContentView(R.layout.fragment_contact_term_layout)
-        val viewPager:ViewPager2 = findViewById(R.id.viewPager_orders)
-        val tabLayout:TabLayout = findViewById(R.id.tabLayout_orders)
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager_orders)
+        val tabLayout: TabLayout = findViewById(R.id.tabLayout_orders)
         relative_view_nav = findViewById(R.id.relative_view_nav)
         val viewPagerAdapter_contact_term =
             ViewPagerAdapterContactTerm(supportFragmentManager, lifecycle)

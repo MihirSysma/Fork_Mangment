@@ -142,7 +142,8 @@ class WalkinListingFragment : Fragment() {
                                     walkInListingAdapter = WalkinListingAdapter(
                                         "listing"
                                     ) { restId, restroData ->
-                                        val intent = Intent(activity, WalkinDetailFragment::class.java)
+                                        val intent =
+                                            Intent(activity, WalkinDetailFragment::class.java)
                                         intent.putExtra("resturant_id", restId)
                                         intent.putExtra("restromodel", restroData)
                                         startActivity(intent)

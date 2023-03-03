@@ -19,7 +19,7 @@ import com.forkmang.helper.showToastMessage
 import java.util.*
 
 class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductItemHolder> {
-    var ctx: Context? = null
+    lateinit var ctx: Context
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var activity: Activity? = null
     lateinit var onItemClicked: ((func_name: String, cart_item_id: String?, qty_update: String?) -> Unit)
@@ -53,12 +53,10 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
         holder.txt_toopings.text = cartBooking.extra_item_details_name
         holder.txt_qty.text = cartBooking.cart_item_qty
         holder.txt_price.text =
-            ctx!!.resources.getString(R.string.rupee) + cartBooking.cart_item_details_price
+            ctx.resources.getString(R.string.rupee) + cartBooking.cart_item_details_price
     }
 
-    override fun getItemCount(): Int {
-        return cartBookingArrayList!!.size
-    }
+    override fun getItemCount() = cartBookingArrayList?.size?:0
 
     inner class CartProductItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtproductname: TextView
@@ -82,41 +80,39 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
             minus_btn = itemView.findViewById(R.id.minus_btn)
             img_del = itemView.findViewById(R.id.img_del)
             img_edit = itemView.findViewById(R.id.img_edit)
-            minus_btn.setOnClickListener { v: View? ->
+            minus_btn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
-                if (ctx?.let { Utils.isNetworkAvailable(it) } == true) {
+                if (Utils.isNetworkAvailable(ctx)) {
                     var qty_update = txt_qty.text.toString().toInt()
                     --qty_update
                     txt_qty.text = qty_update.toString()
                     onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
                 } else {
-                    ctx?.showToastMessage(Constant.NETWORKEROORMSG)
+                    ctx.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
-            plus_btn.setOnClickListener { v: View? ->
+            plus_btn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
-                if (ctx?.let { Utils.isNetworkAvailable(it) } == true) {
+                if (Utils.isNetworkAvailable(ctx)) {
                     var qty_update = txt_qty.text.toString().toInt()
                     ++qty_update
                     txt_qty.text = qty_update.toString()
                     onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
                 } else {
-                    ctx?.showToastMessage(Constant.NETWORKEROORMSG)
+                    ctx.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
             img_del.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
-                val alertDialog = AlertDialog.Builder(
-                    ctx!!
-                )
+                val alertDialog = AlertDialog.Builder(ctx)
                 val inflater =
-                    ctx!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 val dialogView = inflater.inflate(R.layout.msg_view_4, null)
                 alertDialog.setView(dialogView)
                 alertDialog.setCancelable(true)
@@ -128,13 +124,13 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                 val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
                 tvclose.setText(R.string.cancel)
                 tvremove.setText(R.string.remove)
-                txt_msg.text = ctx!!.resources.getString(R.string.deleteproductmsg)
+                txt_msg.text = ctx.resources.getString(R.string.deleteproductmsg)
                 tvremove.setOnClickListener {
                     dialog.dismiss()
-                    if (Utils.isNetworkAvailable(ctx!!)) {
+                    if (Utils.isNetworkAvailable(ctx)) {
                         onItemClicked(REMOVE_CART_ITEM, cart_item_id, null)
                     } else {
-                        ctx?.showToastMessage(Constant.NETWORKEROORMSG)
+                        ctx.showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
                 tvclose.setOnClickListener {

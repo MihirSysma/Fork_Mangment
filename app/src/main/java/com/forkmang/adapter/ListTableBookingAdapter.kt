@@ -11,8 +11,10 @@ import com.forkmang.R
 import com.forkmang.adapter.ListTableBookingAdapter.ListBookTableItemHolder
 import com.forkmang.models.TableList
 
-class ListTableBookingAdapter(var activity: Activity, var listTableBooking: ArrayList<TableList>?,
- private val onItemCLicked:((tableList: TableList) -> Unit)) :
+class ListTableBookingAdapter(
+    var activity: Activity, var listTableBooking: ArrayList<TableList>?,
+    private val onItemCLicked: ((tableList: TableList) -> Unit)
+) :
     RecyclerView.Adapter<ListBookTableItemHolder>() {
 
     override fun onCreateViewHolder(
@@ -25,13 +27,13 @@ class ListTableBookingAdapter(var activity: Activity, var listTableBooking: Arra
     }
 
     override fun onBindViewHolder(holder: ListBookTableItemHolder, position: Int) {
-        val tableList = listTableBooking!![position]
-        holder.txt_table_no.text = tableList.table_no
-        holder.txt_noperson.text = tableList.number_of_person
-        holder.txt_type.text = tableList.type
+        val tableList = listTableBooking?.get(position)
+        holder.txt_table_no.text = tableList?.table_no
+        holder.txt_noperson.text = tableList?.number_of_person
+        holder.txt_type.text = tableList?.type
     }
 
-    override fun getItemCount() = listTableBooking?.size?:0
+    override fun getItemCount() = listTableBooking?.size ?: 0
 
     inner class ListBookTableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txt_type: TextView

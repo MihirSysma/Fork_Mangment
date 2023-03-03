@@ -125,8 +125,8 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 Log.d("pageno", "" + position)
                 binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
                 current_tabactive = position
-                val foodList_tab: FoodList_Tab = foodListArrayList!![position]
-                category_id = foodList_tab.id
+                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
+                category_id = foodList_tab?.id
                 /*val all_Food_fragment = PickupSelect_Food_Fragment()
                 all_Food_fragment.callApi_food_1()*/
             }
@@ -191,9 +191,9 @@ class PickupSelectFoodActivity : AppCompatActivity() {
             (binding.viewPager)
         ) { tab: TabLayout.Tab, position: Int ->
             for (i in foodListArrayList?.indices!!) {
-                val foodList_tab: FoodList_Tab = foodListArrayList!![position]
+                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
                 //tab.setText(foodList_tab.getName().toLowerCase());
-                tab.customView = getTabView(foodList_tab.name?.lowercase(Locale.getDefault()))
+                tab.customView = getTabView(foodList_tab?.name?.lowercase(Locale.getDefault()))
                 //TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
                 //tabOne.setText(foodList_tab.getName());
                 //tabLayout.getTabAt(i).setCustomView(tabOne);
@@ -266,7 +266,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                             }
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject: JSONObject = JSONObject(response.errorBody()?.string())
+                        //val jsonObject: JSONObject = JSONObject(response.errorBody()?.string())
                         binding.progressBar.visibility = View.GONE
                     }
                 } catch (ex: JSONException) {

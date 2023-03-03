@@ -120,11 +120,11 @@ class SelectFoodActivity : AppCompatActivity() {
                 super.onPageSelected(position)
                 Log.d("pageno", "" + position)
                 current_tabactive = position
-                val foodList_tab: FoodList_Tab = foodListArrayList!![position]
-                category_id = foodList_tab.id
+                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
+                category_id = foodList_tab?.id
                 //TODO: redo this code, should not call frag instance
                 val all_Food_fragment = SelectFoodFragment()
-                booking_id?.let { all_Food_fragment.callApi_food_1(category_id, it) }
+                booking_id?.let { all_Food_fragment.callApiFood1(category_id, it) }
             }
         })
         if (Utils.isNetworkAvailable(ctx)) {
@@ -140,9 +140,9 @@ class SelectFoodActivity : AppCompatActivity() {
             (binding.viewPager)
         ) { tab: TabLayout.Tab, position: Int ->
             for (i in foodListArrayList!!.indices) {
-                val foodList_tab: FoodList_Tab = foodListArrayList!![position]
+                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
                 //tab.setText(foodList_tab.getName());
-                tab.customView = getTabView(foodList_tab.name!!.lowercase(Locale.getDefault()))
+                tab.customView = getTabView(foodList_tab?.name?.lowercase(Locale.getDefault()))
             }
         }.attach()
     }
@@ -187,13 +187,13 @@ class SelectFoodActivity : AppCompatActivity() {
                                 foodListArrayList = ArrayList()
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
-                                    val foodList_tab: FoodList_Tab = FoodList_Tab()
+                                    val foodList_tab = FoodList_Tab()
                                     val mjson_obj: JSONObject =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i)
                                     foodList_tab.name = mjson_obj.getString("name")
                                     foodList_tab.id = mjson_obj.getString("id")
-                                    foodListArrayList!!.add(foodList_tab)
+                                    foodListArrayList?.add(foodList_tab)
                                 }
                                 binding.progressBar.visibility = View.GONE
                                 val viewPagerAdapter_reserveSeat =
@@ -209,7 +209,7 @@ class SelectFoodActivity : AppCompatActivity() {
                             }
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject = JSONObject(response.errorBody()!!.string())
+                        //val jsonObject = JSONObject(response.errorBody()!!.string())
                         binding.progressBar.visibility = View.GONE
                     }
                 } catch (ex: JSONException) {

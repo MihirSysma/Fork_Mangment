@@ -27,8 +27,8 @@ object ApiConfig {
     var user_location: String? = ""
     var latitude1 = 0.0
     var longitude1 = 0.0
-    fun getAddress(lat: Double, lng: Double, activity: Activity?): String {
-        val geocoder = Geocoder(activity!!, Locale.getDefault())
+    fun getAddress(lat: Double, lng: Double, activity: Activity): String {
+        val geocoder = Geocoder(activity, Locale.getDefault())
         var address = ""
         try {
             val addresses = geocoder.getFromLocation(lat, lng, 1)

@@ -18,6 +18,7 @@ import javax.net.ssl.X509TrustManager
 object Api {
     private var retrofit: Retrofit? = null
     private var okHttpClient: OkHttpClient? = null
+
     @JvmStatic
     val info: APIService
         get() {

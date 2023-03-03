@@ -69,6 +69,7 @@ class PickupFragment : Fragment() {
         callApiGetBookTable(service_id, saveLatitude.toString(), saveLongitude.toString())
         //((Booking_TabView_Activity)getActivity()).hide_search();
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe()
@@ -133,7 +134,10 @@ class PickupFragment : Fragment() {
                                     binding.progressbar.visibility = View.GONE
                                     val pickupFragmentBookTableAdapter =
                                         PickupFragmentBookTableAdapter {
-                                            val mainIntent = Intent(activity, PickupSelectFoodActivity::class.java)
+                                            val mainIntent = Intent(
+                                                activity,
+                                                PickupSelectFoodActivity::class.java
+                                            )
                                             mainIntent.putExtra("restromodel", it)
                                             activity?.startActivity(mainIntent)
                                         }
@@ -202,8 +206,9 @@ class PickupFragment : Fragment() {
                                 }
                                 binding.progressbar.visibility = View.GONE
                                 val pickupFragmentBookTableAdapter =
-                                    PickupFragmentBookTableAdapter{
-                                        val mainIntent = Intent(activity, PickupSelectFoodActivity::class.java)
+                                    PickupFragmentBookTableAdapter {
+                                        val mainIntent =
+                                            Intent(activity, PickupSelectFoodActivity::class.java)
                                         mainIntent.putExtra("restromodel", it)
                                         activity?.startActivity(mainIntent)
                                     }
@@ -250,7 +255,7 @@ class PickupFragment : Fragment() {
     }
 
     companion object {
-        lateinit var viewModel : ViewModel
+        lateinit var viewModel: ViewModel
         fun newInstance(viewModel: ViewModel): PickupFragment {
             this.viewModel = viewModel
             return PickupFragment()

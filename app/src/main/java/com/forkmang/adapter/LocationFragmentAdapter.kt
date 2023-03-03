@@ -65,7 +65,7 @@ class LocationFragmentAdapter : RecyclerView.Adapter<LocationItemHolder> {
         val dialog = Dialog(activity, R.style.FullHeightDialog)
         dialog.setContentView(R.layout.location_alertview)
         if (dialog.window != null) {
-            dialog.window!!.setLayout(
+            dialog.window?.setLayout(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )

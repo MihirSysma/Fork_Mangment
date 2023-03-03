@@ -116,7 +116,9 @@ class ContactFragment : Fragment() {
         }
 
         fun isValidEmail(target: CharSequence?): Boolean {
-            return !TextUtils.isEmpty(target) && target?.let { Patterns.EMAIL_ADDRESS.matcher(it).matches() } == true
+            return !TextUtils.isEmpty(target) && target?.let {
+                Patterns.EMAIL_ADDRESS.matcher(it).matches()
+            } == true
         }
     }
 }

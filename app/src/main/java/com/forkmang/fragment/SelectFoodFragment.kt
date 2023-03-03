@@ -104,8 +104,8 @@ class SelectFoodFragment : Fragment() {
                             }
                             binding.progressBar.visibility = View.GONE
                             all_orderFood_adapter = FoodListAdapter(
-                                context!!,
-                                activity!!,
+                                requireContext(),
+                                requireActivity(),
                                 category_itemLists!!
                             ) {
                                 showAlertView(it)
@@ -123,7 +123,7 @@ class SelectFoodFragment : Fragment() {
                                     }*/
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject = JSONObject(response.errorBody()!!.string())
+                        //val jsonObject = JSONObject(response.errorBody()!!.string())
                         binding.progressBar.visibility = View.GONE
                     }
                 } catch (ex: Exception) {
@@ -275,7 +275,7 @@ class SelectFoodFragment : Fragment() {
             })
     }
 
-    fun callApi_food_1(category_id: String?, booking_id: String) {
+    fun callApiFood1(category_id: String?, booking_id: String) {
         if (isNetworkAvailable(requireContext())) {
             this.booking_id = booking_id
             callApiFoodItem(category_id)

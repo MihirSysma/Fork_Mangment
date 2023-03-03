@@ -75,9 +75,7 @@ class TableOrdersListingAdapter(
         }*/
     }
 
-    override fun getItemCount(): Int {
-        return bookTable_dataArrayList!!.size
-    }
+    override fun getItemCount() = bookTable_dataArrayList?.size ?: 0
 
     inner class BookTable_Orders_ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var linear_view_layout_1: LinearLayout
@@ -106,11 +104,11 @@ class TableOrdersListingAdapter(
             txt_restrobranch = itemView.findViewById(R.id.txt_restrobranch)
             txt_payment_status = itemView.findViewById(R.id.txt_payment_status)
             txt_order_status = itemView.findViewById(R.id.txt_order_status)
-            edit_rating_img.setOnClickListener { v: View? -> showAlertView_RatingView() }
+            edit_rating_img.setOnClickListener { showAlertViewRatingView() }
         }
     }
 
-    private fun showAlertView_RatingView() {
+    private fun showAlertViewRatingView() {
         val alertDialog = AlertDialog.Builder(activity)
         val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView = inflater.inflate(R.layout.rating_view, null)

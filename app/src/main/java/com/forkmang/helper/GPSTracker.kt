@@ -107,9 +107,9 @@ class GPSTracker : Service, LocationListener {
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
     override fun onProviderEnabled(provider: String) {}
     override fun onProviderDisabled(provider: String) {}
-    fun getGeocoderAddress(context: Context?): List<Address>? {
+    fun getGeocoderAddress(context: Context): List<Address>? {
         if (location != null) {
-            val geocoder = Geocoder(context!!, Locale.ENGLISH)
+            val geocoder = Geocoder(context, Locale.ENGLISH)
             try {
                 return geocoder.getFromLocation(latitude, longitude, geocoderMaxResults)
             } catch (e: IOException) {
@@ -119,7 +119,7 @@ class GPSTracker : Service, LocationListener {
         return null
     }
 
-    fun getAddressLine(context: Context?): String? {
+    fun getAddressLine(context: Context): String? {
         val addresses = getGeocoderAddress(context)
         return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
@@ -129,7 +129,7 @@ class GPSTracker : Service, LocationListener {
         }
     }
 
-    fun getLocality(context: Context?): String? {
+    fun getLocality(context: Context): String? {
         val addresses = getGeocoderAddress(context)
         return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
@@ -139,7 +139,7 @@ class GPSTracker : Service, LocationListener {
         }
     }
 
-    fun getPostalCode(context: Context?): String? {
+    fun getPostalCode(context: Context): String? {
         val addresses = getGeocoderAddress(context)
         return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
@@ -149,7 +149,7 @@ class GPSTracker : Service, LocationListener {
         }
     }
 
-    fun getCountryName(context: Context?): String? {
+    fun getCountryName(context: Context): String? {
         val addresses = getGeocoderAddress(context)
         return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
