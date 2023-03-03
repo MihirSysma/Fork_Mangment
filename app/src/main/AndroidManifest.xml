@@ -63,16 +63,16 @@
             android:name=".activity.Walkin_ActionPage"
             android:exported="false" />
         <activity
-            android:name=".activity.Order_ConformationActivity"
+            android:name=".activity.OrderConformationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ActivityPaymentSummary"
             android:exported="false" />
         <activity
-            android:name=".activity.SelectFood_Activity"
+            android:name=".activity.SelectFoodActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.BookingOrder_ReserverConformationActivity"
+            android:name=".activity.BookingOrderReserverConformationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.BookingTabViewActivity"
@@ -81,14 +81,14 @@
             android:name=".activity.DashBoardView"
             android:exported="true" />
         <activity
-            android:name=".activity.DashBoard_Activity"
+            android:name=".activity.DashBoardActivity"
             android:exported="true" />
         <activity
             android:name=".activity.DrawerActivity"
             android:exported="true" />
 
         <activity
-            android:name=".activity.PickupSelectFood_Activity"
+            android:name=".activity.PickupSelectFoodActivity"
             android:exported="true" />
 
         <activity
@@ -127,16 +127,16 @@
             android:name=".activity.FaceLogin"
             android:exported="true" />
         <activity
-            android:name=".activity.BookingTable_DetailView"
+            android:name=".activity.BookingTableDetailView"
             android:exported="true" />
         <activity
             android:name=".activity.ActivityPaymentSummaryWalkin"
             android:exported="true" />
         <activity
-            android:name=".activity.Walkin_ConformationActivity"
+            android:name=".activity.WalkinConformationActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.Pickup_ConformationActivity"
+            android:name=".activity.PickupConformationActivity"
             android:exported="true" />
 
         <activity
@@ -144,17 +144,17 @@
             />
 
         <activity
-            android:name=".fragment.OrdersListing_Fragment"
+            android:name=".fragment.OrdersListingFragment"
             android:exported="true" />
         <activity
-            android:name=".fragment.Contact_TermsFragment"
+            android:name=".fragment.ContactTermsFragment"
             android:exported="true" />
         <activity
             android:name=".activity.ActivityPaymentSummaryPickup"
             android:exported="true" />
 
         <activity
-            android:name="com.forkmang.fragment.Walkin_detail_Fragment"
+            android:name="com.forkmang.fragment.WalkinDetailFragment"
             android:exported="true" />
 
 

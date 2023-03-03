@@ -18,18 +18,13 @@ import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import java.util.*
 
-const val ADD_QTY = "ADD_QTY"
-const val REMOVE_CART_ITEM = "REMOVE_CART_ITEM"
-
-class PickupListingAdapter(
-    ctx: Context,
-    var cartBookingArrayList: ArrayList<CartBooking>?,
+class CartListingAdapterSummary(
+    ctx: Context, var cartBookingArrayList: ArrayList<CartBooking>?,
     private var onItemClicked: ((func_name: String, cart_item_id: String?, qty_update: String?) -> Unit)
 ) :
-    RecyclerView.Adapter<PickupListingAdapter.CartProductItemHolder>() {
+    RecyclerView.Adapter<CartListingAdapterSummary.CartProductItemHolder>() {
     var ctx: Context? = ctx
     var activity: Activity? = null
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -49,7 +44,9 @@ class PickupListingAdapter(
             ctx!!.resources.getString(R.string.rupee) + cartBooking.cart_item_details_price
     }
 
-    override fun getItemCount() = cartBookingArrayList?.size ?: 0
+    override fun getItemCount(): Int {
+        return cartBookingArrayList!!.size
+    }
 
     inner class CartProductItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtproductname: TextView
@@ -73,8 +70,7 @@ class PickupListingAdapter(
             minus_btn = itemView.findViewById(R.id.minus_btn)
             img_del = itemView.findViewById(R.id.img_del)
             img_edit = itemView.findViewById(R.id.img_edit)
-
-            minus_btn.setOnClickListener {
+            minus_btn.setOnClickListener { v: View? ->
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
@@ -87,8 +83,7 @@ class PickupListingAdapter(
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
-
-            plus_btn.setOnClickListener {
+            plus_btn.setOnClickListener { v: View? ->
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
@@ -97,11 +92,11 @@ class PickupListingAdapter(
                     ++qty_update
                     txt_qty.text = qty_update.toString()
                     onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+
                 } else {
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
-
             img_del.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
@@ -170,13 +165,13 @@ class PickupListingAdapter(
                         {
                             ex.printStackTrace();
                             //progressBar.setVisibility(View.GONE);
-                            ctx.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
+                            ctx?.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         //progressBar.setVisibility(View.GONE);
-                        ctx.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
+                        ctx?.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
 
                     }
                 });

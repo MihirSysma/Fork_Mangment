@@ -13,8 +13,9 @@ class TutorialScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial_screen)
         val txtSkip: TextView = findViewById(R.id.txtSkip)
+
         txtSkip.setOnClickListener {
-            val mainIntent: Intent = Intent(this@TutorialScreen, SelectLanguage::class.java)
+            val mainIntent = Intent(this@TutorialScreen, SelectLanguage::class.java)
             startActivity(mainIntent)
             finish()
         }

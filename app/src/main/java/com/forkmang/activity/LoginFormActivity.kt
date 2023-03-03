@@ -60,7 +60,7 @@ class LoginFormActivity : AppCompatActivity(),
                     Log.d("id", result.accessToken.userId)
                     Log.d("token", result.accessToken.token)
                     if (Utils.isNetworkAvailable(ctx)) {
-                        callapi_sociallogin(
+                        callApiSocialLogin(
                             result.accessToken.token,
                             result.accessToken.userId,
                             "facebook"
@@ -81,7 +81,7 @@ class LoginFormActivity : AppCompatActivity(),
         //facebook login code end
 
         //google login code start
-        google_intialization()
+        googleIntialization()
         // google login code end
         binding.etvMobile.setText("9829020700")
         binding.etvPassword.setText("123456")
@@ -102,7 +102,7 @@ class LoginFormActivity : AppCompatActivity(),
                     //password is valid or not
                     if (binding.etvPassword.length() > 3) {
                         if (Utils.isNetworkAvailable(ctx)) {
-                            callapi_loginuser(
+                            callApiLoginUser(
                                 binding.etvMobile.text.toString(),
                                 binding.etvPassword.text.toString()
                             )
@@ -151,7 +151,7 @@ class LoginFormActivity : AppCompatActivity(),
         }
     }
 
-    private fun google_intialization() {
+    private fun googleIntialization() {
         val gso: GoogleSignInOptions =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -162,7 +162,7 @@ class LoginFormActivity : AppCompatActivity(),
             .build()
     }
 
-    private fun callapi_loginuser(contact: String, password: String) {
+    private fun callApiLoginUser(contact: String, password: String) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.login_user(contact, password)?.enqueue(object : Callback<JsonObject?> {
@@ -201,7 +201,7 @@ class LoginFormActivity : AppCompatActivity(),
 
                             //stopProgress();
                             binding.progressBar.visibility = View.GONE
-                            val mainIntent: Intent = Intent(ctx, DashBoard_Activity::class.java)
+                            val mainIntent: Intent = Intent(ctx, DashBoardActivity::class.java)
                             startActivity(mainIntent)
                             finish()
                         } else {
@@ -252,7 +252,7 @@ class LoginFormActivity : AppCompatActivity(),
         dialog?.dismiss()
     }
 
-    private fun callapi_sociallogin(token: String, userid: String, type: String) {
+    private fun callApiSocialLogin(token: String, userid: String, type: String) {
         binding.progressBar.visibility = View.VISIBLE
         Api.info.register_sociallogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
@@ -277,7 +277,7 @@ class LoginFormActivity : AppCompatActivity(),
                             storePrefrence.setString(Constant.NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
-                        val intent: Intent = Intent(ctx, DashBoard_Activity::class.java)
+                        val intent: Intent = Intent(ctx, DashBoardActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -299,7 +299,8 @@ class LoginFormActivity : AppCompatActivity(),
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {}
-    fun disconnectFromFacebook() {
+
+    private fun disconnectFromFacebook() {
         if (AccessToken.getCurrentAccessToken() == null) {
             return  // already logged out
         }

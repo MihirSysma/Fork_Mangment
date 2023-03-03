@@ -12,6 +12,7 @@ import com.forkmang.R
 import com.forkmang.activity.BookingTabViewActivity
 
 class ScanOrderFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

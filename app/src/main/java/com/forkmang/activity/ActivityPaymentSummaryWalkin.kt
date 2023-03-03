@@ -30,7 +30,7 @@ class ActivityPaymentSummaryWalkin : AppCompatActivity() {
         binding.btnPaymentProceed.setOnClickListener {
             val mainIntent = Intent(
                 this@ActivityPaymentSummaryWalkin,
-                Walkin_ConformationActivity::class.java
+                WalkinConformationActivity::class.java
             )
             startActivity(mainIntent)
         }

@@ -14,7 +14,6 @@ import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +23,6 @@ import com.facebook.CallbackManager.Factory.create
 import com.facebook.FacebookSdk.sdkInitialize
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
 import com.forkmang.R
 import com.forkmang.databinding.ActivityRegisterBinding
 import com.forkmang.helper.Constant
@@ -37,11 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
@@ -64,9 +58,6 @@ class RegisterActivity : AppCompatActivity(),
     private val callbackManager by lazy { create() }
     var mAuth: FirebaseAuth? = null
     var mCallback: OnVerificationStateChangedCallbacks? = null
-    var btn_register: Button? = null
-    var button_facebook: ImageView? = null
-    var signin_button_img: ImageView? = null
     var ctx: Context = this@RegisterActivity
     private val storePrefrence by lazy { StorePrefrence(this) }
     var name: String? = null
@@ -76,20 +67,13 @@ class RegisterActivity : AppCompatActivity(),
     var email: String? = null
     var idToken: String? = null
     private var googleApiClient: GoogleApiClient? = null
-    private var mButtonFacebook: LoginButton? = null
-    private var signInButton: SignInButton? = null
 
     private val binding by lazy { ActivityRegisterBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        mButtonFacebook = findViewById(R.id.button_facebook_root)
-        signInButton = findViewById(R.id.sign_in_button_root)
-        button_facebook = findViewById(R.id.button_facebook)
-        signin_button_img = findViewById(R.id.signin_button_img)
         val Btn_Back: Button = findViewById(R.id.Btn_Back)
-        btn_register = findViewById(R.id.btn_register)
         binding.etvMobile.setText("9836608967")
         binding.etvUsername.setText("967 name")
         binding.etvEmail.setText("test967@gmail.com")
@@ -99,7 +83,7 @@ class RegisterActivity : AppCompatActivity(),
 
         //firebase login code
         mAuth = FirebaseAuth.getInstance()
-        StartFirebaseLogin()
+        startFirebaseLogin()
         //firebase login code end
 
 
@@ -120,7 +104,7 @@ class RegisterActivity : AppCompatActivity(),
                 override fun onSuccess(result: LoginResult) {
                     Log.d("id", result.accessToken.userId)
                     Log.d("token", result.accessToken.token)
-                    callapi_sociallogin(
+                    callApiSocialLogin(
                         result.accessToken.token,
                         result.accessToken.userId,
                         "facebook"
@@ -132,7 +116,7 @@ class RegisterActivity : AppCompatActivity(),
         //facebook login code end
 
         //google login code start
-        google_intialization()
+        googleIntialization()
         // google login code end
         binding.btnRegister.setOnClickListener{
             //validation
@@ -203,7 +187,7 @@ class RegisterActivity : AppCompatActivity(),
         }
     }
 
-    private fun google_intialization() {
+    private fun googleIntialization() {
         val gso: GoogleSignInOptions =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -253,7 +237,7 @@ class RegisterActivity : AppCompatActivity(),
             //String phoneNumber = ("+" + "91" + etv_mobile.getText().toString());
             val phoneNumber: String = Objects.requireNonNull(binding.etvMobile.text).toString()
             if (Utils.isNetworkAvailable(ctx)) {
-                callapi_registeruser(name, email, phoneNumber, password, cnfpassword, idToken)
+                callApiRegisterUser(name, email, phoneNumber, password, cnfpassword, idToken)
                 dialog.dismiss()
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
@@ -278,7 +262,7 @@ class RegisterActivity : AppCompatActivity(),
         });*/
         val Btn_Done: Button = dialogView.findViewById(R.id.btn_done)
         Btn_Done.setOnClickListener {
-            val intent: Intent = Intent(ctx, LoginFormActivity::class.java)
+            val intent = Intent(ctx, LoginFormActivity::class.java)
             startActivity(intent)
             finish()
             dialog.dismiss()
@@ -286,7 +270,7 @@ class RegisterActivity : AppCompatActivity(),
         dialog.show()
     }
 
-    fun sentRequest(phoneNumber: String?) {
+    private fun sentRequest(phoneNumber: String?) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             (phoneNumber)!!,  // Phone number to verify
             60,  // Timeout duration
@@ -296,7 +280,7 @@ class RegisterActivity : AppCompatActivity(),
         )
     }
 
-    private fun StartFirebaseLogin() {
+    private fun startFirebaseLogin() {
         mAuth = FirebaseAuth.getInstance()
         mCallback = object : OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
@@ -330,13 +314,13 @@ class RegisterActivity : AppCompatActivity(),
             ) { task ->
                 if (task.isSuccessful) {
                     //verification successful we will start the profile activity
-                    val message: String = "Success"
+                    val message = "Success"
                     println("====Success$message")
                     token
                 } else {
 
                     //verification unsuccessful.. display an error message
-                    var message: String = "Something is wrong, we will fix it soon..."
+                    var message = "Something is wrong, we will fix it soon..."
                     println("====failed$message")
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         message = "Invalid code entered..."
@@ -368,7 +352,7 @@ class RegisterActivity : AppCompatActivity(),
                 }
         }
 
-    private fun callapi_registeruser(
+    private fun callApiRegisterUser(
         name: String?,
         email: String?,
         mobile_no: String,
@@ -386,7 +370,7 @@ class RegisterActivity : AppCompatActivity(),
                 ) {
                     try {
                         if (response.code() == Constant.SUCCESS_CODE_2) {
-                            val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                            val jsonObject = JSONObject(Gson().toJson(response.body()))
                             //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
                                     .equals(Constant.SUCCESS_CODE_Ne, ignoreCase = true)
@@ -404,7 +388,7 @@ class RegisterActivity : AppCompatActivity(),
                                 showToastMessage("Error occur please try again")
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
-                            val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
+                            val jsonObject = JSONObject(response.errorBody()!!.string())
                             if (jsonObject.getString("status").equals("422", ignoreCase = true)) {
                                 val error_msg: String =
                                     jsonObject.getJSONObject("message").getJSONArray("email")
@@ -440,12 +424,12 @@ class RegisterActivity : AppCompatActivity(),
             })
     }
 
-    private fun callapi_sociallogin(token: String?, userid: String?, type: String) {
+    private fun callApiSocialLogin(token: String?, userid: String?, type: String) {
         binding.progressBar.visibility = View.VISIBLE
         Api.info.register_sociallogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                    val jsonObject = JSONObject(Gson().toJson(response.body()))
                     Log.d("Result", jsonObject.toString())
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
                         showToastMessage( jsonObject.getString("message"))
@@ -459,7 +443,7 @@ class RegisterActivity : AppCompatActivity(),
                             storePrefrence.setString(Constant.NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
-                        val intent: Intent = Intent(ctx, LoginFormActivity::class.java)
+                        val intent = Intent(ctx, LoginFormActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -480,7 +464,7 @@ class RegisterActivity : AppCompatActivity(),
         })
     }
 
-    fun disconnectFromFacebook() {
+    private fun disconnectFromFacebook() {
         if (AccessToken.getCurrentAccessToken() == null) {
             return  // already logged out
         }
@@ -523,7 +507,7 @@ class RegisterActivity : AppCompatActivity(),
             val account: GoogleSignInAccount? = result.signInAccount
             Log.d("id", account?.id.toString())
             if (Utils.isNetworkAvailable(ctx)) {
-                callapi_sociallogin(
+                callApiSocialLogin(
                     account?.idToken,
                     account?.id,
                     "google"

@@ -37,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         //loadLocale();
-        GotoNextScreeen()
+        gotoNextScreeen()
         //getToken();
     }
 
@@ -65,7 +65,7 @@ class SplashActivity : AppCompatActivity() {
         changeLang(language)
     }
 
-    fun changeLang(lang: String?) {
+    private fun changeLang(lang: String?) {
         if (lang.equals("", ignoreCase = true)) return
         val myLocale: Locale? = lang?.let { Locale(it) }
         saveLocale(lang)
@@ -78,7 +78,7 @@ class SplashActivity : AppCompatActivity() {
             .updateConfiguration(config, baseContext.resources.displayMetrics)
     }
 
-    fun saveLocale(lang: String?) {
+    private fun saveLocale(lang: String?) {
         val langPref: String = "Language"
         val prefs: SharedPreferences = getSharedPreferences(
             "CommonPrefs",
@@ -89,7 +89,7 @@ class SplashActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    private fun GotoNextScreeen() {
+    private fun gotoNextScreeen() {
         Handler().postDelayed({
 
             if(storePrefrence.getString(Constant.NAME)?.length == 0)
@@ -110,7 +110,7 @@ class SplashActivity : AppCompatActivity() {
                 finish();
             }
 
-            val mainIntent: Intent = Intent(this@SplashActivity, DashBoard_Activity::class.java)
+            val mainIntent: Intent = Intent(this@SplashActivity, DashBoardActivity::class.java)
             startActivity(mainIntent)
             finish()
         }, 2000)

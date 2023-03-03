@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.forkmang.R
 import com.forkmang.data.RestoData
+import com.forkmang.databinding.ActivityPaymentScreenBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
@@ -25,25 +26,21 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PaymentScreenActivity : AppCompatActivity() {
+    var ctx: Context = this@PaymentScreenActivity
     var tableList_get: TableList? = null
     var RestroData: RestoData? = null
     var totalpay: String? = null
-    var ctx: Context = this@PaymentScreenActivity
-    private val storePrefrence by lazy { StorePrefrence(this) }
     var order_id: String? = null
     var booking_id: String? = null
     var payment_type: String? = null
     var isbooktable: String? = null
-    var order_id_get: String? = null
     var coming_from: String? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val binding by lazy { ActivityPaymentScreenBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment_screen)
-        val relative_view_1: RelativeLayout = findViewById(R.id.relative_view_1)
-        val relative_view_2: RelativeLayout = findViewById(R.id.relative_view_2)
-        val radioButton_cash: RadioButton = findViewById(R.id.radioButton1)
-        val radioButton_online: RadioButton = findViewById(R.id.radioButton2)
-        val btn_payment: Button = findViewById(R.id.btn_payment)
+        setContentView(binding.root)
         coming_from = intent.getStringExtra("comingfrom")
         if (coming_from.equals("SelectFood", ignoreCase = true)) {
             tableList_get = intent.getSerializableExtra("model") as TableList?
@@ -58,36 +55,36 @@ class PaymentScreenActivity : AppCompatActivity() {
         } else if (isbooktable.equals("no", ignoreCase = true)) {
             order_id = intent.getStringExtra("orderid")
         }
-        relative_view_1.setOnClickListener {
-            relative_view_1.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2))
-            relative_view_2.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            radioButton_cash.setTextColor(ContextCompat.getColor(this, R.color.white))
-            radioButton_online.setTextColor(ContextCompat.getColor(this, R.color.black))
-            radioButton_online.isChecked = false
-            radioButton_cash.isChecked = true
+        binding.relativeView1.setOnClickListener {
+            binding.relativeView1.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2))
+            binding.relativeView2.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            binding.radioButton1.setTextColor(ContextCompat.getColor(this, R.color.white))
+            binding.radioButton2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            binding.radioButton2.isChecked = false
+            binding.radioButton1.isChecked = true
         }
-        relative_view_2.setOnClickListener {
-            relative_view_2.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2))
-            relative_view_1.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            radioButton_online.setTextColor(ContextCompat.getColor(this, R.color.white))
-            radioButton_cash.setTextColor(ContextCompat.getColor(this, R.color.black))
-            radioButton_cash.isChecked = false
-            radioButton_online.isChecked = true
+        binding.relativeView2.setOnClickListener {
+            binding.relativeView2.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2))
+            binding.relativeView1.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            binding.radioButton2.setTextColor(ContextCompat.getColor(this, R.color.white))
+            binding.radioButton1.setTextColor(ContextCompat.getColor(this, R.color.black))
+            binding.radioButton1.isChecked = false
+            binding.radioButton2.isChecked = true
         }
-        btn_payment.text = "Pay - $totalpay"
-        btn_payment.setOnClickListener { v: View? ->
-            if (radioButton_cash.isChecked) {
+        binding.btnPayment.text = "Pay - $totalpay"
+        binding.btnPayment.setOnClickListener { v: View? ->
+            if (binding.radioButton1.isChecked) {
                 payment_type = "cash"
-            } else if (radioButton_online.isChecked) {
+            } else if (binding.radioButton2.isChecked) {
                 payment_type = "online"
             }
             if (Utils.isNetworkAvailable(ctx)) {
                 if (isbooktable.equals("yes", ignoreCase = true)) {
                     //callApi_makepayment_1(order_id, payment_type);
-                    callApi_makepayment("", booking_id, payment_type, "table")
+                    callApiMakePayment("", booking_id, payment_type, "table")
                 } else {
                     if (coming_from.equals("SelectFood", ignoreCase = true)) {
-                        callApi_makepayment(
+                        callApiMakePayment(
                             order_id,
                             storePrefrence.getString(Constant.BOOKINGID),
                             payment_type,
@@ -95,7 +92,7 @@ class PaymentScreenActivity : AppCompatActivity() {
                         )
                     } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
                         // not to get table object
-                        callApi_makepayment(order_id, "", payment_type, "order")
+                        callApiMakePayment(order_id, "", payment_type, "order")
                     }
                 }
             } else {
@@ -104,7 +101,7 @@ class PaymentScreenActivity : AppCompatActivity() {
         }
     }
 
-    fun callApi_makepayment(
+    private fun callApiMakePayment(
         order_id: String?,
         booking_id: String?,
         payment_type: String?,
@@ -127,7 +124,7 @@ class PaymentScreenActivity : AppCompatActivity() {
                             ) {
                                 val mainIntent: Intent = Intent(
                                     this@PaymentScreenActivity,
-                                    Order_ConformationActivity::class.java
+                                    OrderConformationActivity::class.java
                                 )
                                 if (coming_from.equals("SelectFood", ignoreCase = true)) {
                                     mainIntent.putExtra("model", tableList_get)

@@ -16,7 +16,7 @@ class RedirectToFacelogin : AppCompatActivity() {
 
     private fun GotoNextScreeen() {
         Handler().postDelayed({
-            val mainIntent: Intent = Intent(this@RedirectToFacelogin, FaceLogin::class.java)
+            val mainIntent = Intent(this@RedirectToFacelogin, FaceLogin::class.java)
             startActivity(mainIntent)
             finish()
         }, 2000)

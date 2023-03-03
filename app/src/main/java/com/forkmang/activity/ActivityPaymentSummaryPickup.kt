@@ -25,10 +25,10 @@ class ActivityPaymentSummaryPickup : AppCompatActivity() {
             binding.lytArabic.visibility = View.GONE
             binding.lytEng.visibility = View.VISIBLE
         }
-        binding.btnPaymentProceed.setOnClickListener { v: View? ->
+        binding.btnPaymentProceed.setOnClickListener {
             val mainIntent = Intent(
                 this@ActivityPaymentSummaryPickup,
-                Pickup_ConformationActivity::class.java
+                PickupConformationActivity::class.java
             )
             startActivity(mainIntent)
         }

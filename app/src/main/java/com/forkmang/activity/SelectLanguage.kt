@@ -15,32 +15,32 @@ class SelectLanguage : AppCompatActivity() {
         setContentView(R.layout.activity_select_language)
         val BtnEnglish: Button = findViewById(R.id.BtnEnglish)
         val BtnArabic: Button = findViewById(R.id.BtnArabic)
-        BtnArabic.setOnClickListener { v: View? ->
-            val langPref: String = "Language"
+        BtnArabic.setOnClickListener {
+            val langPref = "Language"
             val prefs: SharedPreferences = getSharedPreferences(
                 "CommonPrefs",
                 MODE_PRIVATE
             )
             val editor: SharedPreferences.Editor = prefs.edit()
             editor.putString(langPref, "ar")
-            editor.commit()
+            editor.apply()
             GotoNextScreen()
         }
-        BtnEnglish.setOnClickListener { v: View? ->
-            val langPref: String = "Language"
+        BtnEnglish.setOnClickListener {
+            val langPref = "Language"
             val prefs: SharedPreferences = getSharedPreferences(
                 "CommonPrefs",
                 MODE_PRIVATE
             )
             val editor: SharedPreferences.Editor = prefs.edit()
             editor.putString(langPref, "en")
-            editor.commit()
+            editor.apply()
             GotoNextScreen()
         }
     }
 
     private fun GotoNextScreen() {
-        val mainIntent: Intent = Intent(this@SelectLanguage, LoginActivity::class.java)
+        val mainIntent = Intent(this@SelectLanguage, LoginActivity::class.java)
         startActivity(mainIntent)
         finish()
     }

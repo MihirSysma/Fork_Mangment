@@ -212,7 +212,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     @SuppressLint("MissingPermission")
-    public override fun onConnected(bundle: Bundle?) {
+    override fun onConnected(bundle: Bundle?) {
         if ((ContextCompat.checkSelfPermission(
                 this@MapsActivity,
                 Manifest.permission.ACCESS_FINE_LOCATION

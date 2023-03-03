@@ -15,11 +15,11 @@ class FaceLogin : AppCompatActivity() {
         val img_faceid: ImageView = findViewById(R.id.img_faceid)
         val BtnReg: Button = findViewById(R.id.BtnReg)
         BtnReg.setOnClickListener {
-            val mainIntent: Intent = Intent(this@FaceLogin, RegisterActivity::class.java)
+            val mainIntent = Intent(this@FaceLogin, RegisterActivity::class.java)
             startActivity(mainIntent)
         }
         img_faceid.setOnClickListener {
-            val mainIntent: Intent = Intent(this@FaceLogin, FaceLoginPermission::class.java)
+            val mainIntent = Intent(this@FaceLogin, FaceLoginPermission::class.java)
             startActivity(mainIntent)
         }
     }

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.R
 import com.forkmang.adapter.ADD_QTY
-import com.forkmang.adapter.CartListingAdapter_Summary
+import com.forkmang.adapter.CartListingAdapterSummary
 import com.forkmang.adapter.REMOVE_CART_ITEM
 import com.forkmang.data.*
 import com.forkmang.data.RestoData
@@ -74,9 +74,9 @@ class ActivityPaymentSummary : AppCompatActivity() {
         binding.btnPaymentProceed.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
                 if (coming_from.equals("SelectFood", ignoreCase = true)) {
-                    callApi_createorder()
+                    callApiCreateOrder()
                 } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
-                    callApi_createorder_pickup()
+                    callApiCreateOrderPickup()
                 }
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
@@ -84,13 +84,13 @@ class ActivityPaymentSummary : AppCompatActivity() {
         }
         binding.progressBar.visibility = View.GONE
         if (Utils.isNetworkAvailable(ctx)) {
-            callApi_cartListview()
+            callApiCartListView()
         } else {
             showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
-    fun callApi_cartListview() {
+    fun callApiCartListView() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.getcart_detail(
@@ -186,21 +186,21 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                 val data_total = cartBookingArrayList?.get(0)?.data_total
                                 binding.txtTotalPay.text = ctx.resources.getString(R.string.rupee) + data_total
                                 //call adapter
-                                val cartListingAdapter_summary =
-                                    CartListingAdapter_Summary(
+                                val cartListingAdapterSummary =
+                                    CartListingAdapterSummary(
                                         ctx,
                                         cartBookingArrayList
                                     ) { func_name, cart_item_id, qty_update ->
                                         when (func_name) {
                                             ADD_QTY -> {
-                                                callApi_addqty(cart_item_id, qty_update)
+                                                callApiAddQty(cart_item_id, qty_update)
                                             }
                                             REMOVE_CART_ITEM -> {
-                                                callApi_removeitemcart(cart_item_id)
+                                                callApiRemoveItemcart(cart_item_id)
                                             }
                                         }
                                     }
-                                binding.recycleview.adapter = cartListingAdapter_summary
+                                binding.recycleview.adapter = cartListingAdapterSummary
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
@@ -294,7 +294,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
             })
     }
 
-    fun callApi_addqty(cart_itemid: String?, qty: String?) {
+    fun callApiAddQty(cart_itemid: String?, qty: String?) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cart_updateqty(
@@ -315,7 +315,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                 showToastMessage(obj.getString("message"))
                                 binding.progressBar.visibility = View.GONE
                                 if (Utils.isNetworkAvailable(ctx)) {
-                                    callApi_cartListview()
+                                    callApiCartListView()
                                 } else {
                                     showToastMessage(Constant.NETWORKEROORMSG)
                                 }
@@ -339,7 +339,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
             })
     }
 
-    fun callApi_removeitemcart(cart_itemid: String?) {
+    fun callApiRemoveItemcart(cart_itemid: String?) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cart_removeqty(
@@ -359,7 +359,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                 showToastMessage(obj.getString("message"))
                                 binding.progressBar.visibility = View.GONE
                                 if (Utils.isNetworkAvailable(ctx)) {
-                                    callApi_cartListview()
+                                    callApiCartListView()
                                 } else {
                                     showToastMessage(Constant.NETWORKEROORMSG)
                                 }
@@ -383,7 +383,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
             })
     }
 
-    fun callApi_createorder() {
+    private fun callApiCreateOrder() {
         Api.info.create_order(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             restoData?.id,
@@ -406,7 +406,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                 val order_id = jsonObject.getString("data")
 
                                 //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
-                                val dialog = showAlertView_conformtable()
+                                val dialog = showAlertViewConfirmTable()
                                 Handler().postDelayed({
                                     dialog.dismiss()
                                     val mainIntent = Intent(
@@ -459,7 +459,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
             })
     }
 
-    fun callApi_createorder_pickup() {
+    private fun callApiCreateOrderPickup() {
         Api.info.create_order(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             restoData?.id, "pickup", "", "", storePrefrence.getString(Constant.IDENTFIER)
@@ -475,7 +475,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                             ) {
                                 val order_id = jsonObject.getString("data")
                                 //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
-                                val dialog = showAlertView_conformtable()
+                                val dialog = showAlertViewConfirmTable()
                                 Handler().postDelayed({
                                     dialog.dismiss()
                                     if (coming_from.equals("PickupFood", ignoreCase = true)) {
@@ -545,7 +545,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
         return prefs.getString(langPref, "")
     }
 
-    private fun showAlertView_conformtable(): AlertDialog {
+    private fun showAlertViewConfirmTable(): AlertDialog {
         val alertDialog = AlertDialog.Builder(this@ActivityPaymentSummary)
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView = inflater.inflate(R.layout.conform_tablereserve_view, null)

@@ -29,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.TextGuest.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
-                callapi_loginasguest()
+                callApiLoginAsGuest()
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
@@ -52,10 +52,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun callapi_loginasguest() {
+    private fun callApiLoginAsGuest() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        val identifier: String = "identifier123"
+        val identifier = "identifier123"
         Api.info.login_guest(identifier)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
 
                     //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
-                        val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                        val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
                                 "id",
                                 jsonObject.getJSONObject("data").getString("id")
                             )
-                            val mainIntent: Intent = Intent(ctx, DashBoard_Activity::class.java)
+                            val mainIntent: Intent = Intent(ctx, DashBoardActivity::class.java)
                             startActivity(mainIntent)
                             finish()
                         } else {
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                             showToastMessage("Error occur please try again")
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonObject = JSONObject(response.errorBody()!!.string())
                         if (jsonObject.getString("status")
                                 .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
                         ) {

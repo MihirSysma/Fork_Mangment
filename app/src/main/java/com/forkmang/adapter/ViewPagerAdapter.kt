@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.forkmang.ViewModel
-import com.forkmang.fragment.Book_Table_Fragment
-import com.forkmang.fragment.Pickup_Fragment
-import com.forkmang.fragment.Walkin_listing_Fragment
+import com.forkmang.fragment.BookTableFragment
+import com.forkmang.fragment.PickupFragment
+import com.forkmang.fragment.WalkinListingFragment
 
 class ViewPagerAdapter(
     fragmentManager: FragmentManager,
@@ -18,16 +18,16 @@ class ViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         val selectedFragment: Fragment = when (position) {
             0 -> {
-                Book_Table_Fragment.newInstance(viewModel)
+                BookTableFragment.newInstance(viewModel)
             }
             1 -> {
-                Walkin_listing_Fragment.newInstance(viewModel)
+                WalkinListingFragment.newInstance(viewModel)
             }
             2 -> {
-                Pickup_Fragment.newInstance(viewModel)
+                PickupFragment.newInstance(viewModel)
             }
             else ->                 //((Booking_TabView_Activity)ctx).visble_search();
-                return Book_Table_Fragment.newInstance(viewModel)
+                return BookTableFragment.newInstance(viewModel)
         }
         return selectedFragment
     }

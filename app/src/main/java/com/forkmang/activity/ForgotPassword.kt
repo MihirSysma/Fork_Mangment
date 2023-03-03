@@ -61,7 +61,7 @@ class ForgotPassword : AppCompatActivity() {
         })
     }
 
-    private fun callApi_forgetpassword_valid(contact: String) {
+    private fun callApiForgetPasswordValid(contact: String) {
         binding.progressBar.visibility = View.VISIBLE
         Api.info.forgot_pass(contact, idToken)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
@@ -70,7 +70,7 @@ class ForgotPassword : AppCompatActivity() {
             ) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_2) {
-                        val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                        val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
                         if (jsonObject.getString("status")
                                 .equals(Constant.SUCCESS_CODE_Ne, ignoreCase = true)
@@ -84,7 +84,7 @@ class ForgotPassword : AppCompatActivity() {
                             //storePrefrence.setString(Constant.TOKEN_FORGOTPASS, jsonObject.getJSONObject("data").getString("token"));
                             storePrefrence.setBoolean("keeplogin", false)
                             if (Utils.isNetworkAvailable(ctx)) {
-                                callApi_resetpassword(
+                                callApiResetPassword(
                                     jsonObject.getJSONObject("data").getString("contact"),
                                     Objects.requireNonNull(binding.etvNewpas.text).toString(),
                                     Objects.requireNonNull(binding.etvcnfPass.text).toString(),
@@ -100,7 +100,7 @@ class ForgotPassword : AppCompatActivity() {
                             showToastMessage("Error occur please try again")
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonObject = JSONObject(response.errorBody()!!.string())
                         if (jsonObject.getString("status")
                                 .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
                         ) {
@@ -132,7 +132,7 @@ class ForgotPassword : AppCompatActivity() {
         })
     }
 
-    private fun callApi_resetpassword(
+    private fun callApiResetPassword(
         contact: String,
         password: String,
         cnf_password: String,
@@ -205,7 +205,7 @@ class ForgotPassword : AppCompatActivity() {
                     Log.d("token", (idToken)?:"null")
                     //progressBar.setVisibility(View.GONE);
                     if (Utils.isNetworkAvailable(ctx)) {
-                        callApi_forgetpassword_valid(contact)
+                        callApiForgetPasswordValid(contact)
                     } else {
                         showToastMessage(Constant.NETWORKEROORMSG)
                     }
