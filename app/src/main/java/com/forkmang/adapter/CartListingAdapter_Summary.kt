@@ -16,26 +16,13 @@ import com.forkmang.R
 import com.forkmang.activity.Activity_PaymentSummary
 import com.forkmang.data.CartBooking
 import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import java.util.*
 
-class CartListingAdapter_Summary :
-    RecyclerView.Adapter<CartListingAdapter_Summary.CartProductItemHolder> {
-    var ctx: Context? = null
-    var cartBookingArrayList: ArrayList<CartBooking>? = null
+class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayList<CartBooking>?) :
+    RecyclerView.Adapter<CartListingAdapter_Summary.CartProductItemHolder>() {
+    var ctx: Context? = ctx
     var activity: Activity? = null
-    var storePrefrence: StorePrefrence? = null
-
-    constructor(ctx: Context, cartBookingArrayList: ArrayList<CartBooking>?) {
-        this.ctx = ctx
-        this.cartBookingArrayList = cartBookingArrayList
-        storePrefrence = StorePrefrence(ctx)
-    }
-
-    constructor(activity: Activity?) {
-        this.activity = activity
-    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -113,7 +100,7 @@ class CartListingAdapter_Summary :
                     Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
                 }
             }
-            img_del.setOnClickListener { v: View? ->
+            img_del.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
@@ -128,12 +115,9 @@ class CartListingAdapter_Summary :
                 val dialog = alertDialog.create()
                 Objects.requireNonNull(dialog.window)
                     ?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                val tvremove: TextView
-                val tvclose: TextView
-                val txt_msg: TextView
-                tvremove = dialogView.findViewById(R.id.tvcancel)
-                tvclose = dialogView.findViewById(R.id.tvclose)
-                txt_msg = dialogView.findViewById(R.id.txt_msg)
+                val tvremove: TextView = dialogView.findViewById(R.id.tvcancel)
+                val tvclose: TextView = dialogView.findViewById(R.id.tvclose)
+                val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
                 tvclose.setText(R.string.cancel)
                 tvremove.setText(R.string.remove)
                 txt_msg.text = ctx!!.resources.getString(R.string.deleteproductmsg)

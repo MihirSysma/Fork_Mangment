@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ import com.forkmang.databinding.ActivityPaymentViewBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
 import com.forkmang.network_call.Api
 import com.google.gson.Gson
@@ -31,7 +31,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
 
     var tableList_get: TableList? = null
     var restoData: RestoData? = null
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var ctx: Context = this@Activity_PaymentSummary
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var coming_from: String? = null
@@ -41,24 +41,23 @@ class Activity_PaymentSummary : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        storePrefrence = StorePrefrence(ctx)
         //ArrayList<CartBooking> cartBookingArrayList  = extras.getParcelableArrayList("cartbookingarraylist");
         coming_from = intent.getStringExtra("comingfrom")
         if (coming_from.equals("SelectFood", ignoreCase = true)) {
             tableList_get = intent.getSerializableExtra("model") as TableList?
-            binding.txtHotelname.text = tableList_get!!.str_hotel_name
-            binding.txtCustomername.text = tableList_get!!.str_customer_name
-            binding.txtNoofseat.text = tableList_get!!.number_of_person + " Seats"
-            binding.txtDateTime.text = tableList_get!!.str_time
+            binding.txtHotelname.text = tableList_get?.str_hotel_name
+            binding.txtCustomername.text = tableList_get?.str_customer_name
+            binding.txtNoofseat.text = tableList_get?.number_of_person + " Seats"
+            binding.txtDateTime.text = tableList_get?.str_time
         } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
             restoData = intent.getSerializableExtra("restromodel") as RestoData?
-            binding.txtHotelname.text = restoData!!.rest_name
-            binding.txtCustomername.text = storePrefrence!!.getString(Constant.NAME)
+            binding.txtHotelname.text = restoData?.rest_name
+            binding.txtCustomername.text = storePrefrence.getString(Constant.NAME)
             binding.linear1.visibility = View.GONE
             binding.linearViewLayout2.visibility = View.GONE
         }
         restoData = intent.getSerializableExtra("restromodel") as RestoData?
-        binding.txtPhoneno.text = storePrefrence!!.getString(Constant.MOBILE)
+        binding.txtPhoneno.text = storePrefrence.getString(Constant.MOBILE)
         binding.progressBar.visibility = View.VISIBLE
         binding.recycleview.layoutManager = LinearLayoutManager(this@Activity_PaymentSummary)
 
@@ -78,14 +77,14 @@ class Activity_PaymentSummary : AppCompatActivity() {
                     callApi_createorder_pickup()
                 }
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         })
         binding.progressBar.visibility = View.GONE
         if (Utils.isNetworkAvailable(ctx)) {
             callApi_cartListview()
         } else {
-            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -93,12 +92,12 @@ class Activity_PaymentSummary : AppCompatActivity() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.getcart_detail(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),
-            storePrefrence!!.getString(
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            storePrefrence.getString(
                 Constant.IDENTFIER
             )
-        )!!
-            .enqueue(object : Callback<JsonObject?> {
+        )
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
@@ -179,10 +178,10 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                         }
                                     }
                                     cartBooking.extra_item_details_price = str_extraprice
-                                    cartBookingArrayList!!.add(cartBooking)
+                                    cartBookingArrayList?.add(cartBooking)
                                 }
                                 binding.progressBar.visibility = View.GONE
-                                val data_total = cartBookingArrayList!![0].data_total
+                                val data_total = cartBookingArrayList?.get(0)?.data_total
                                 binding.txtTotalPay.text =
                                     ctx.resources.getString(R.string.rupee) + data_total
 
@@ -192,9 +191,8 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                 binding.recycleview.adapter = cartListingAdapter_summary
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
-                            val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                                .show()
+                            val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
+                            showToastMessage(jsonObject?.getString("message").toString())
                             binding.progressBar.visibility = View.GONE
                             /*JSONObject obj = new JSONObject(loadJSONFromAsset_t());
 
@@ -272,14 +270,13 @@ class Activity_PaymentSummary : AppCompatActivity() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                     //stopProgress();
                 }
             })
@@ -289,50 +286,43 @@ class Activity_PaymentSummary : AppCompatActivity() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cart_updateqty(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             cart_itemid,
             qty,
-            storePrefrence!!.getString(
+            storePrefrence.getString(
                 Constant.IDENTFIER
             )
-        )!!
-            .enqueue(object : Callback<JsonObject?> {
+        )
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
-                                Toast.makeText(ctx, obj.getString("message"), Toast.LENGTH_SHORT)
-                                    .show()
+                                showToastMessage(obj.getString("message"))
                                 binding.progressBar.visibility = View.GONE
                                 if (Utils.isNetworkAvailable(ctx)) {
                                     callApi_cartListview()
                                 } else {
-                                    Toast.makeText(
-                                        ctx,
-                                        Constant.NETWORKEROORMSG,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    showToastMessage(Constant.NETWORKEROORMSG)
                                 }
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
+                            showToastMessage(jsonObject.getString("message"))
                             binding.progressBar.visibility = View.GONE
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage( "Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             })
     }
@@ -341,65 +331,58 @@ class Activity_PaymentSummary : AppCompatActivity() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cart_removeqty(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             cart_itemid,
-            storePrefrence!!.getString(
+            storePrefrence.getString(
                 Constant.IDENTFIER
             )
-        )!!
-            .enqueue(object : Callback<JsonObject?> {
+        )
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
-                                Toast.makeText(ctx, obj.getString("message"), Toast.LENGTH_SHORT)
-                                    .show()
+                                showToastMessage( obj.getString("message"))
                                 binding.progressBar.visibility = View.GONE
                                 if (Utils.isNetworkAvailable(ctx)) {
                                     callApi_cartListview()
                                 } else {
-                                    Toast.makeText(
-                                        ctx,
-                                        Constant.NETWORKEROORMSG,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    showToastMessage(Constant.NETWORKEROORMSG)
                                 }
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
+                            showToastMessage(jsonObject.getString("message"))
                             binding.progressBar.visibility = View.GONE
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             })
     }
 
     fun callApi_createorder() {
         Api.info.create_order(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),
-            restoData!!.id,
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            restoData?.id,
             "book_table",
             "",
-            storePrefrence!!.getString(Constant.BOOKINGID),
-            storePrefrence!!.getString(
+            storePrefrence.getString(Constant.BOOKINGID),
+            storePrefrence.getString(
                 Constant.IDENTFIER
             )
-        )!!
-            .enqueue(object : Callback<JsonObject?> {
+        )
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
@@ -435,20 +418,14 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                     startActivity(mainIntent)
                                 }, 1000)
                             } else {
-                                Toast.makeText(
-                                    ctx,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showToastMessage(jsonObject.getString("message"))
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
+                            showToastMessage(jsonObject.getString("message"))
                         } else if (response.code() == Constant.GUESTUSERlOGIN) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
+                            showToastMessage(jsonObject.getString("message"))
                             val intent = Intent(ctx, LoginActivity::class.java)
                             startActivity(intent)
                             finish()
@@ -457,23 +434,22 @@ class Activity_PaymentSummary : AppCompatActivity() {
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             })
     }
 
     fun callApi_createorder_pickup() {
         Api.info.create_order(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),
-            restoData!!.id, "pickup", "", "", storePrefrence!!.getString(Constant.IDENTFIER)
-        )!!
-            .enqueue(object : Callback<JsonObject?> {
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            restoData?.id, "pickup", "", "", storePrefrence.getString(Constant.IDENTFIER)
+        )
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
@@ -519,20 +495,14 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                     }
                                 }, 1000)
                             } else {
-                                Toast.makeText(
-                                    ctx,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showToastMessage(jsonObject.getString("message"))
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
+                            showToastMessage(jsonObject.getString("message"))
                         } else if (response.code() == Constant.GUESTUSERlOGIN) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
+                            showToastMessage(jsonObject.getString("message"))
                             val intent = Intent(ctx, LoginActivity::class.java)
                             startActivity(intent)
                             finish()
@@ -541,13 +511,12 @@ class Activity_PaymentSummary : AppCompatActivity() {
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             })
     }

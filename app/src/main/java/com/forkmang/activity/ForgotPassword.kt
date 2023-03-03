@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.R
 import com.forkmang.databinding.ActivityForgotPasswordBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -30,41 +29,41 @@ class ForgotPassword : AppCompatActivity() {
 
     private val binding by lazy { ActivityForgotPasswordBinding.inflate(layoutInflater) }
     var ctx: Context = this@ForgotPassword
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var idToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
-        storePrefrence = StorePrefrence(ctx)
         binding.etvNewpas.setText("1234567")
         binding.etvcnfPass.setText("1234567")
         binding.btnReset.setOnClickListener(View.OnClickListener { v: View? ->
             /* final Intent mainIntent = new Intent(ForgotPassword.this, FaceLoginPermission.class);
             startActivity(mainIntent);
-            finish();*/if (binding.etvNewpas.text!!.isNotEmpty()) {
-            if (binding.etvcnfPass.text!!.isNotEmpty()) {
+            finish();*/
+            if (binding.etvNewpas.text?.isNotEmpty() == true) {
+            if (binding.etvcnfPass.text?.isNotEmpty() == true) {
                 if ((binding.etvNewpas.text.toString() == binding.etvcnfPass.text.toString())) {
                     //call api
-                    val contact: String? = storePrefrence!!.getString(Constant.MOBILE)
+                    val contact: String? = storePrefrence.getString(Constant.MOBILE)
                     if (contact != null) {
                         getToken(contact)
                     }
                 } else {
-                    Toast.makeText(ctx, Constant.PASSWORD_MATCH, Toast.LENGTH_SHORT).show()
+                    showToastMessage(Constant.PASSWORD_MATCH)
                 }
             } else {
-                Toast.makeText(ctx, Constant.CNFPASSWORD_MATCH, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.CNFPASSWORD_MATCH)
             }
         } else {
-            Toast.makeText(ctx, Constant.PASSWORD, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.PASSWORD)
         }
         })
     }
 
     private fun callApi_forgetpassword_valid(contact: String) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.forgot_pass(contact, idToken)!!.enqueue(object : Callback<JsonObject?> {
+        Api.info.forgot_pass(contact, idToken)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
@@ -77,14 +76,13 @@ class ForgotPassword : AppCompatActivity() {
                                 .equals(Constant.SUCCESS_CODE_Ne, ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
-                            storePrefrence!!.setString(
+                            showToastMessage(jsonObject.getString("message"))
+                            storePrefrence.setString(
                                 Constant.MOBILE,
                                 jsonObject.getJSONObject("data").getString("contact")
                             )
                             //storePrefrence.setString(Constant.TOKEN_FORGOTPASS, jsonObject.getJSONObject("data").getString("token"));
-                            storePrefrence!!.setBoolean("keeplogin", false)
+                            storePrefrence.setBoolean("keeplogin", false)
                             if (Utils.isNetworkAvailable(ctx)) {
                                 callApi_resetpassword(
                                     jsonObject.getJSONObject("data").getString("contact"),
@@ -93,17 +91,13 @@ class ForgotPassword : AppCompatActivity() {
                                     jsonObject.getJSONObject("data").getString("token")
                                 )
                             } else {
-                                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT)
-                                    .show()
+                                showToastMessage(Constant.NETWORKEROORMSG)
                             }
-
-
                             //stopProgress();
                         } else {
                             //stopProgress();
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                                .show()
+                            showToastMessage("Error occur please try again")
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
                         val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
@@ -112,27 +106,26 @@ class ForgotPassword : AppCompatActivity() {
                         ) {
                             binding.progressBar.visibility = View.GONE
                             val error_msg: String = jsonObject.getString("message")
-                            Toast.makeText(ctx, error_msg, Toast.LENGTH_SHORT).show()
+                            showToastMessage(error_msg)
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                                .show()
+                            showToastMessage("Error occur please try again")
                         }
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     //stopProgress();
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                showToastMessage("Error occur please try again")
                 //stopProgress();
                 binding.progressBar.visibility = View.GONE
             }
@@ -146,8 +139,8 @@ class ForgotPassword : AppCompatActivity() {
         token: String
     ) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.reset_pass(contact, password, cnf_password, token)!!
-            .enqueue(object : Callback<JsonObject?> {
+        Api.info.reset_pass(contact, password, cnf_password, token)
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(
                     call: Call<JsonObject?>,
                     response: Response<JsonObject?>
@@ -167,11 +160,7 @@ class ForgotPassword : AppCompatActivity() {
                             } else {
                                 //stopProgress();
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(
-                                    ctx,
-                                    "Error occur please try again",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                showToastMessage("Error occur please try again")
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
                             val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
@@ -180,32 +169,26 @@ class ForgotPassword : AppCompatActivity() {
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 val error_msg: String = jsonObject.getString("message")
-                                Toast.makeText(ctx, error_msg, Toast.LENGTH_SHORT).show()
+                                showToastMessage(error_msg)
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(
-                                    ctx,
-                                    "Error occur please try again",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                showToastMessage("Error occur please try again")
                             }
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         //stopProgress();
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     } catch (ex: IOException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                     //stopProgress();
                     binding.progressBar.visibility = View.GONE
                 }
@@ -214,17 +197,17 @@ class ForgotPassword : AppCompatActivity() {
 
     private fun getToken(contact: String) {
         //progressBar.setVisibility(View.VISIBLE);
-        val mUser: FirebaseUser? = FirebaseAuth.getInstance().getCurrentUser()
-        mUser!!.getIdToken(true)
-            .addOnCompleteListener { task ->
+        val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        mUser?.getIdToken(true)
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     idToken = task.result.token
-                    Log.d("token", (idToken)!!)
+                    Log.d("token", (idToken)?:"null")
                     //progressBar.setVisibility(View.GONE);
                     if (Utils.isNetworkAvailable(ctx)) {
                         callApi_forgetpassword_valid(contact)
                     } else {
-                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                        showToastMessage(Constant.NETWORKEROORMSG)
                     }
 
                     // Send token to your backend via HTTPS

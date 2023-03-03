@@ -15,6 +15,7 @@ import com.forkmang.databinding.ActivityWalkinActionBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -31,7 +32,7 @@ class Walkin_ActionPage : AppCompatActivity() {
     var txt_restophone: TextView? = null
     var txt_restroname: TextView? = null
     var progressBar: ProgressBar? = null
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var ctx: Context = this@Walkin_ActionPage
     var identifier: String? = null
     var quee_no: String? = null
@@ -44,7 +45,6 @@ class Walkin_ActionPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        storePrefrence = StorePrefrence(ctx)
         txt_queueno = findViewById(R.id.txt_queueno)
         val img_pass: ImageView = findViewById(R.id.img_pass)
         val img_cancel: ImageView = findViewById(R.id.img_cancel)
@@ -68,21 +68,21 @@ class Walkin_ActionPage : AppCompatActivity() {
             if (Utils.isNetworkAvailable(ctx)) {
                 callapi_action("accept", identifier!!)
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         img_cancel.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
                 callapi_action("cancel", identifier!!)
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         img_exit.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
                 callapi_action("exit", identifier!!)
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         binding.txtQueueno.setOnClickListener {
@@ -93,45 +93,42 @@ class Walkin_ActionPage : AppCompatActivity() {
     }
 
     private fun callapi_action(action: String, identifier: String) {
-        progressBar!!.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
         info.queue_action(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             action, restromodel!!.id, noofperson, occasion, area, identifier
-        )!!.enqueue(object : Callback<JsonObject?> {
+        )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
             ) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_n) {
-                        progressBar!!.visibility = View.GONE
+                        progressBar?.visibility = View.GONE
                         val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                            .show()
+                        showToastMessage(jsonObject.getString("message"))
                     } else if (response.code() == Constant.ERROR_CODE_n) {
-                        progressBar!!.visibility = View.GONE
+                        progressBar?.visibility = View.GONE
                         val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                            .show()
+                        showToastMessage(jsonObject.getString("message"))
                     } else {
-                        progressBar!!.visibility = View.GONE
+                        progressBar?.visibility = View.GONE
                         val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                            .show()
+                        showToastMessage(jsonObject.getString("message"))
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
-                    progressBar!!.visibility = View.GONE
-                    //Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    progressBar?.visibility = View.GONE
+                    //showToastMessage(Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                 } catch (ex: IOException) {
                     ex.printStackTrace()
-                    progressBar!!.visibility = View.GONE
+                    progressBar?.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                progressBar!!.visibility = View.GONE
-                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                progressBar?.visibility = View.GONE
+                showToastMessage(Constant.ERRORMSG)
             }
         })
     }

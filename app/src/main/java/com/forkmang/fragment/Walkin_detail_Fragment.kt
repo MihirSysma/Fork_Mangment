@@ -46,7 +46,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
     var saveLongitude: Double? = null
     var restoDataArrayList: ArrayList<RestoData>? = null
     var walkin_listing_adapter: Walkin_listing_Adapter? = null
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var quee_no: String? = null
     var noof_person: String? = null
     var occasion: String? = null
@@ -69,7 +69,6 @@ class Walkin_detail_Fragment : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         //instance= this;
-        storePrefrence = StorePrefrence(ctx)
         txtqno_bottom = findViewById(R.id.txtqno_bottom)
         relative_bottom = findViewById(R.id.relative_bottom)
         txtnextview = findViewById(R.id.txtnextview)
@@ -292,7 +291,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
     //Api code for get queue list no
     fun callapi_getquess(resturant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getqueelist("Bearer " + storePrefrence?.getString(TOKEN_LOGIN), resturant_id)
+        info.getqueelist("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -340,7 +339,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
     //Api code for get person queue  no
     fun callapi_personqueue_no(resturant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getpersonqueeno("Bearer " + storePrefrence?.getString(TOKEN_LOGIN), resturant_id)
+        info.getpersonqueeno("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -511,7 +510,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
     ) {
         binding.progressBar.visibility = View.VISIBLE
         info.queue_confirmation(
-            "Bearer " + storePrefrence?.getString(TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             action, restaurant_id, person, occasion, area, identifier
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
@@ -559,7 +558,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
     ) {
         binding.progressBar.visibility = View.VISIBLE
         info.queue_get(
-            "Bearer " + storePrefrence?.getString(TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             restaurant_id, person, occasion, area
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {

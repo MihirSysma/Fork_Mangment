@@ -16,7 +16,6 @@ import com.forkmang.R
 import com.forkmang.data.CartBooking
 import com.forkmang.fragment.Select_Food_Fragment
 import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import java.util.*
 
@@ -24,12 +23,10 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
     var ctx: Context? = null
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var activity: Activity? = null
-    var storePrefrence: StorePrefrence? = null
 
     constructor(ctx: Context, cartBookingArrayList: ArrayList<CartBooking>?) {
         this.ctx = ctx
         this.cartBookingArrayList = cartBookingArrayList
-        storePrefrence = StorePrefrence(ctx)
     }
 
     constructor(activity: Activity?) {

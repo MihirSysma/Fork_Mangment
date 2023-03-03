@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.forkmang.R
@@ -15,6 +14,7 @@ import com.forkmang.data.RestoData
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
 import com.forkmang.network_call.Api
 import com.google.gson.Gson
@@ -29,7 +29,7 @@ class PaymentScreenActivity : AppCompatActivity() {
     var RestroData: RestoData? = null
     var totalpay: String? = null
     var ctx: Context = this@PaymentScreenActivity
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var order_id: String? = null
     var booking_id: String? = null
     var payment_type: String? = null
@@ -39,7 +39,6 @@ class PaymentScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_screen)
-        storePrefrence = StorePrefrence(ctx)
         val relative_view_1: RelativeLayout = findViewById(R.id.relative_view_1)
         val relative_view_2: RelativeLayout = findViewById(R.id.relative_view_2)
         val radioButton_cash: RadioButton = findViewById(R.id.radioButton1)
@@ -59,7 +58,7 @@ class PaymentScreenActivity : AppCompatActivity() {
         } else if (isbooktable.equals("no", ignoreCase = true)) {
             order_id = intent.getStringExtra("orderid")
         }
-        relative_view_1.setOnClickListener { v: View? ->
+        relative_view_1.setOnClickListener {
             relative_view_1.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2))
             relative_view_2.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
             radioButton_cash.setTextColor(ContextCompat.getColor(this, R.color.white))
@@ -67,7 +66,7 @@ class PaymentScreenActivity : AppCompatActivity() {
             radioButton_online.isChecked = false
             radioButton_cash.isChecked = true
         }
-        relative_view_2.setOnClickListener { v: View? ->
+        relative_view_2.setOnClickListener {
             relative_view_2.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2))
             relative_view_1.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
             radioButton_online.setTextColor(ContextCompat.getColor(this, R.color.white))
@@ -90,7 +89,7 @@ class PaymentScreenActivity : AppCompatActivity() {
                     if (coming_from.equals("SelectFood", ignoreCase = true)) {
                         callApi_makepayment(
                             order_id,
-                            storePrefrence!!.getString(Constant.BOOKINGID),
+                            storePrefrence.getString(Constant.BOOKINGID),
                             payment_type,
                             "order"
                         )
@@ -100,7 +99,7 @@ class PaymentScreenActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
     }
@@ -112,13 +111,12 @@ class PaymentScreenActivity : AppCompatActivity() {
         order_type: String?
     ) {
         Api.info.make_payment(
-            "Bearer " + storePrefrence!!.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             order_id,
             booking_id,
             payment_type,
             order_type
-        )!!
-            .enqueue(object : Callback<JsonObject?> {
+        )?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
@@ -147,26 +145,20 @@ class PaymentScreenActivity : AppCompatActivity() {
                                 startActivity(mainIntent)
                                 finish()
                             } else {
-                                Toast.makeText(
-                                    ctx,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showToastMessage(jsonObject.getString("message"))
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
-                            val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_SHORT)
-                                .show()
+                            val jsonObject: JSONObject = JSONObject(response.errorBody()?.string())
+                            showToastMessage(jsonObject.getString("message"))
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             })
     } /*public void callApi_makepayment(String order_id,String payment_type)
@@ -191,14 +183,16 @@ class PaymentScreenActivity : AppCompatActivity() {
                                     startActivity(mainIntent);
                                 }
                                 else{
-                                    Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                    showToastMessage
+                                   (ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                 }
 
                             }
                             else if(response.code() == Constant.ERROR_CODE)
                             {
                                 JSONObject jsonObject = new JSONObject(response.errorBody().string());
-                                Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
+                                showToastMessage
+                               (ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -206,12 +200,14 @@ class PaymentScreenActivity : AppCompatActivity() {
                         {
                             ex.printStackTrace();
 
-                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                            showToastMessage
+                           (ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                        showToastMessage
+                       (ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
 
 
                     }

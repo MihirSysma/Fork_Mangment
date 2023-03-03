@@ -40,13 +40,12 @@ class LoginFormActivity : AppCompatActivity(),
     private var callbackManager: CallbackManager? = null
     var ctx: Context = this@LoginFormActivity
     private var dialog: ProgressDialog? = null
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var token: String = ""
     private var googleApiClient: GoogleApiClient? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        storePrefrence = StorePrefrence(ctx)
         val txtForgotPassword: TextView = findViewById(R.id.txtForgotPassword)
         val BtnReg: Button = findViewById(R.id.BtnReg)
         val BtnLogin: Button = findViewById(R.id.BtnLogin)
@@ -76,7 +75,7 @@ class LoginFormActivity : AppCompatActivity(),
                     Log.d("res", "cancle")
                 }
 
-                override fun onError(e: FacebookException) {
+                override fun onError(error: FacebookException) {
                     Log.d("res", "error")
                 }
             })
@@ -167,7 +166,7 @@ class LoginFormActivity : AppCompatActivity(),
     private fun callapi_loginuser(contact: String, password: String) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.login_user(contact, password)!!.enqueue(object : Callback<JsonObject?> {
+        Api.info.login_user(contact, password)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
@@ -181,20 +180,20 @@ class LoginFormActivity : AppCompatActivity(),
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
                             showToastMessage(jsonObject.getString("message"))
-                            storePrefrence?.setBoolean("keeplogin", Constant.KEEP_LOGIN)
-                            storePrefrence?.setString(
+                            storePrefrence.setBoolean("keeplogin", Constant.KEEP_LOGIN)
+                            storePrefrence.setString(
                                 Constant.MOBILE,
                                 jsonObject.getJSONObject("data").getString("contact")
                             )
-                            storePrefrence?.setString(
+                            storePrefrence.setString(
                                 Constant.NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
-                            storePrefrence?.setString(
+                            storePrefrence.setString(
                                 Constant.TOKEN_LOGIN,
                                 jsonObject.getJSONObject("data").getString("token")
                             )
-                            storePrefrence?.setString(Constant.IDENTFIER, "")
+                            storePrefrence.setString(Constant.IDENTFIER, "")
 
                             /*if(binding.chekKeeplogin.isChecked())
                                     {
@@ -266,17 +265,17 @@ class LoginFormActivity : AppCompatActivity(),
                     Log.d("Result", jsonObject.toString())
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
                         showToastMessage(jsonObject.getString("message"))
-                        storePrefrence?.setString(
+                        storePrefrence.setString(
                             Constant.TOKEN_REG,
                             jsonObject.getJSONObject("data").getString("token")
                         )
                         if (jsonObject.getJSONObject("data").has("name")) {
-                            storePrefrence?.setString(
+                            storePrefrence.setString(
                                 Constant.NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence?.setString(Constant.NAME, type)
+                            storePrefrence.setString(Constant.NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent: Intent = Intent(ctx, DashBoard_Activity::class.java)

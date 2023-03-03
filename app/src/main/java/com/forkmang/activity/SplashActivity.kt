@@ -15,14 +15,13 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var ctx: Context = this@SplashActivity
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        storePrefrence = StorePrefrence(ctx)
         Stetho.initializeWithDefaults(this)
         /*Button crashButton = new Button(this);
         crashButton.setText("Test Crash");
@@ -93,7 +92,7 @@ class SplashActivity : AppCompatActivity() {
     private fun GotoNextScreeen() {
         Handler().postDelayed({
 
-            if(storePrefrence?.getString(Constant.NAME)?.length == 0)
+            if(storePrefrence.getString(Constant.NAME)?.length == 0)
             {
                 val register_intent = Intent(this, RegisterActivity::class.java)
                 startActivity(register_intent);
@@ -104,7 +103,7 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(dash_board_intent);
                 finish();
             }*/
-            else if(storePrefrence?.getBoolean("keeplogin")?.not() == true)
+            else if(storePrefrence.getBoolean("keeplogin").not())
             {
                 val dash_board_intent = Intent(this, LoginFormActivity::class.java)
                 startActivity(dash_board_intent)

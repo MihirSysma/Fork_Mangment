@@ -15,18 +15,10 @@ import com.forkmang.R
 import com.forkmang.adapter.TableOrdersListing_Adapter.BookTable_Orders_ItemHolder
 import com.forkmang.data.TableOrderListing
 
-class TableOrdersListing_Adapter : RecyclerView.Adapter<BookTable_Orders_ItemHolder> {
-    var activity: Activity
-    var bookTable_dataArrayList: ArrayList<TableOrderListing>? = null
-
-    constructor(activity: Activity, bookTable_dataArrayList: ArrayList<TableOrderListing>?) {
-        this.activity = activity
-        this.bookTable_dataArrayList = bookTable_dataArrayList
-    }
-
-    constructor(activity: Activity) {
-        this.activity = activity
-    }
+class TableOrdersListing_Adapter(
+    var activity: Activity,
+    var bookTable_dataArrayList: ArrayList<TableOrderListing>?
+) : RecyclerView.Adapter<BookTable_Orders_ItemHolder>() {
 
     /*book_table_cell for orders*/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookTable_Orders_ItemHolder {

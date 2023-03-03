@@ -12,18 +12,8 @@ import com.forkmang.activity.BookingTable_DetailView
 import com.forkmang.adapter.ListTableBookingAdapter.ListBookTableItemHolder
 import com.forkmang.models.TableList
 
-class ListTableBookingAdapter : RecyclerView.Adapter<ListBookTableItemHolder> {
-    var activity: Activity
-    var listTableBooking: ArrayList<TableList>? = null
-
-    constructor(activity: Activity, listTableBooking: ArrayList<TableList>?) {
-        this.activity = activity
-        this.listTableBooking = listTableBooking
-    }
-
-    constructor(activity: Activity) {
-        this.activity = activity
-    }
+class ListTableBookingAdapter(var activity: Activity, var listTableBooking: ArrayList<TableList>?) :
+    RecyclerView.Adapter<ListBookTableItemHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

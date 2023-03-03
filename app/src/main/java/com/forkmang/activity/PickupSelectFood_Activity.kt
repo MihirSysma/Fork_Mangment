@@ -26,6 +26,7 @@ import com.forkmang.fragment.PickupSelect_Food_Fragment
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
 import com.forkmang.network_call.Api.info
 import com.google.android.material.tabs.TabLayout
@@ -86,17 +87,17 @@ class PickupSelectFood_Activity : AppCompatActivity() {
         txt_noofseat.setText(noseat+" "+"Seats");
         txt_view_day.setText(day);
         txt_view_day_2.setText(day);*/
-        txtrestroname.text = restoData!!.rest_name
-        txt_time.text = restoData!!.endtime
-        txt_totalkm.text = restoData!!.distance + " km"
-        booking_id = restoData!!.id
+        txtrestroname.text = restoData?.rest_name
+        txt_time.text = restoData?.endtime
+        txt_totalkm.text = restoData?.distance + " km"
+        booking_id = restoData?.id
         img_searchicon.setOnClickListener {
             val str_search: String = binding.etvSearchview.text.toString()
             val all_Food_fragment = PickupSelect_Food_Fragment()
             if (Utils.isNetworkAvailable(ctx)) {
                 all_Food_fragment.callApi_searchfooditem(category_id, str_search)
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         binding.etvSearchview.addTextChangedListener(object : TextWatcher {
@@ -112,7 +113,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
                         val all_Food_fragment = PickupSelect_Food_Fragment()
                         all_Food_fragment.callApi_fooditem(category_id)
                     } else {
-                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                        showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
             }
@@ -147,7 +148,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
         if (Utils.isNetworkAvailable(ctx)) {
             callapi_tablisting("1")
         } else {
-            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -183,7 +184,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
         if (Utils.isNetworkAvailable(this)) {
             //callApi_cartListview()
         } else {
-            Toast.makeText(this, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            showToastMessage(Constant.NETWORKEROORMSG)
         }
         btn_pay_table_food.setOnClickListener {
             dialog.dismiss()
@@ -203,10 +204,10 @@ class PickupSelectFood_Activity : AppCompatActivity() {
             (tabLayout)!!,
             (viewPager)!!
         ) { tab: TabLayout.Tab, position: Int ->
-            for (i in foodListArrayList!!.indices) {
+            for (i in foodListArrayList?.indices!!) {
                 val foodList_tab: FoodList_Tab = foodListArrayList!![position]
                 //tab.setText(foodList_tab.getName().toLowerCase());
-                tab.customView = getTabView(foodList_tab.name!!.lowercase(Locale.getDefault()))
+                tab.customView = getTabView(foodList_tab.name?.lowercase(Locale.getDefault()))
                 //TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
                 //tabOne.setText(foodList_tab.getName());
                 //tabLayout.getTabAt(i).setCustomView(tabOne);
@@ -239,7 +240,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
     private fun callapi_tablisting(branch_id: String) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_foodlist(branch_id)!!.enqueue(object : Callback<JsonObject?> {
+        info.getres_foodlist(branch_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
@@ -263,7 +264,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
                                             .getJSONObject(i)
                                     foodList_tab.name = mjson_obj.getString("name")
                                     foodList_tab.id = mjson_obj.getString("id")
-                                    foodListArrayList!!.add(foodList_tab)
+                                    foodListArrayList?.add(foodList_tab)
                                 }
                                 binding.progressBar.visibility = View.GONE
                                 val viewPagerAdapter_reserveSeat =
@@ -274,27 +275,27 @@ class PickupSelectFood_Activity : AppCompatActivity() {
                                         tableList,
                                         restoData!!
                                     )
-                                viewPager!!.adapter = viewPagerAdapter_reserveSeat
+                                viewPager?.adapter = viewPagerAdapter_reserveSeat
                                 fill_tablist()
                             }
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonObject: JSONObject = JSONObject(response.errorBody()?.string())
                         binding.progressBar.visibility = View.GONE
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                showToastMessage("Error occur please try again")
                 //stopProgress();
             }
         })

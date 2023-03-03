@@ -9,19 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.data.OrderFood_All
 
-class CartView_Adapter : RecyclerView.Adapter<CartView_Adapter.AllOrderFoodItemHolder> {
-    var activity: Activity
-    var orderFood_alls: ArrayList<OrderFood_All>? = null
+class CartView_Adapter(var activity: Activity, var orderFood_alls: ArrayList<OrderFood_All>?) :
+    RecyclerView.Adapter<CartView_Adapter.AllOrderFoodItemHolder>() {
     var row_index = 0
-
-    constructor(activity: Activity, orderFood_alls: ArrayList<OrderFood_All>?) {
-        this.activity = activity
-        this.orderFood_alls = orderFood_alls
-    }
-
-    constructor(activity: Activity) {
-        this.activity = activity
-    }
 
     /*book_table_cell*/
     override fun onCreateViewHolder(

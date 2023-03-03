@@ -26,6 +26,7 @@ import com.forkmang.databinding.ActivityBookingtableDetailviewBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
@@ -59,7 +60,7 @@ class BookingTable_DetailView : Activity() {
     var areaDropdownArrayList: ArrayList<AreaDropdown>? = null
     var branchDropdownArrayList: ArrayList<BranchDropdown>? = null
     var restoData: RestoData? = null
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var is_tableconform = false
     var is_pesonselect = false
     var is_areatype = false
@@ -68,7 +69,6 @@ class BookingTable_DetailView : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        storePrefrence = StorePrefrence(ctx)
         val intent = intent
         resturant_id = intent.getStringExtra("resturant_id")
         datetime = intent.getStringExtra("datetime")
@@ -99,7 +99,7 @@ class BookingTable_DetailView : Activity() {
             if (Utils.isNetworkAvailable(ctx)) {
                 callapi_booktablelist(resturant_id)
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         binding.lytDatetime.setOnClickListener { datePicker() }
@@ -130,7 +130,7 @@ class BookingTable_DetailView : Activity() {
             ) {
                 is_pesonselect = false
                 if (position > 0) {
-                    Toast.makeText(ctx, person[position], Toast.LENGTH_SHORT).show()
+                    showToastMessage(person[position])
                     noof_person = person[position]
                     is_pesonselect = true
                 } else {
@@ -139,7 +139,7 @@ class BookingTable_DetailView : Activity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(ctx, "not selected", Toast.LENGTH_SHORT).show()
+                showToastMessage("not selected")
             }
         }
         //spinner_person array adapter end
@@ -155,12 +155,12 @@ class BookingTable_DetailView : Activity() {
             ) {
                 if (position > 0) {
                     val branchDropdown: BranchDropdown = branchDropdownArrayList?.get(position)!!
-                    Toast.makeText(ctx, branchDropdown.branch_name, Toast.LENGTH_SHORT).show()
+                    showToastMessage(branchDropdown.branch_name.toString())
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(ctx, "not selected", Toast.LENGTH_SHORT).show()
+                showToastMessage("not selected")
             }
         }
         //spinner_branch array adapter
@@ -175,12 +175,12 @@ class BookingTable_DetailView : Activity() {
             ) {
                 if (position > 0) {
                     val flooDropdown: FlooDropdown = flooDropdownArrayList!![position]
-                    Toast.makeText(ctx, flooDropdown.floor_name, Toast.LENGTH_SHORT).show()
+                    showToastMessage(flooDropdown.floor_name.toString())
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(ctx, "not selected", Toast.LENGTH_SHORT).show()
+                showToastMessage("not selected")
             }
         }
         //spinner_floor array adapter
@@ -194,8 +194,8 @@ class BookingTable_DetailView : Activity() {
                 id: Long
             ) {
                 if (position > 0) {
-                    val areaDropdown: AreaDropdown = areaDropdownArrayList!!.get(position)
-                    Toast.makeText(ctx, areaDropdown.area_name, Toast.LENGTH_SHORT).show()
+                    val areaDropdown: AreaDropdown = areaDropdownArrayList!![position]
+                    showToastMessage(areaDropdown.area_name.toString())
                     str_area = areaDropdown.area_name
                     is_areatype = true
                     if (is_pesonselect) {
@@ -210,7 +210,7 @@ class BookingTable_DetailView : Activity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(ctx, "not selected", Toast.LENGTH_SHORT).show()
+                showToastMessage("not selected")
             }
         }
         //spinner_floor array adapter
@@ -226,12 +226,12 @@ class BookingTable_DetailView : Activity() {
                 id: Long
             ) {
                 if (position > 0) {
-                    Toast.makeText(ctx, type_value[position], Toast.LENGTH_SHORT).show()
+                    showToastMessage(type_value[position])
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(ctx, "not selected", Toast.LENGTH_SHORT).show()
+                showToastMessage("not selected")
             }
         }
         //spinner_floor array adapter
@@ -308,7 +308,7 @@ class BookingTable_DetailView : Activity() {
                     restoData
                 )
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         btn_select_food.setOnClickListener {
@@ -394,21 +394,21 @@ class BookingTable_DetailView : Activity() {
 
                                         /* code to get customer and other data into table object */
                                         tableList.str_hotel_name = restoData?.rest_name
-                                        if (storePrefrence?.getString(Constant.NAME).isNullOrEmpty()) {
+                                        if (storePrefrence.getString(Constant.NAME).isNullOrEmpty()) {
                                             tableList.str_customer_name = "Test Customer Name"
                                         } else {
                                             tableList.str_customer_name =
-                                                storePrefrence?.getString(
+                                                storePrefrence.getString(
                                                     Constant.NAME
                                                 )
                                         }
 
                                         //tableList.setStr_noseat(noof_person+" "+"Seats");
                                         tableList.str_time = binding.txtDatetime.text.toString()
-                                        if (storePrefrence?.getString(Constant.MOBILE).isNullOrEmpty()) {
+                                        if (storePrefrence.getString(Constant.MOBILE).isNullOrEmpty()) {
                                             tableList.str_phone = "9000012345"
                                         } else {
-                                            tableList.str_phone = storePrefrence?.getString(
+                                            tableList.str_phone = storePrefrence.getString(
                                                 Constant.MOBILE
                                             )
                                         }
@@ -429,23 +429,23 @@ class BookingTable_DetailView : Activity() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                showToastMessage(Constant.NODATA)
                             }
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        showToastMessage(Constant.ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                showToastMessage(Constant.ERRORMSG)
             }
         })
     }
@@ -547,23 +547,23 @@ class BookingTable_DetailView : Activity() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                showToastMessage(Constant.NODATA)
                             }
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        showToastMessage(Constant.ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                showToastMessage(Constant.ERRORMSG)
             }
         })
     }
@@ -582,8 +582,8 @@ class BookingTable_DetailView : Activity() {
         //table_id="8";
         binding.progressBar.visibility = View.VISIBLE
         info.book_table(
-            "Bearer " + storePrefrence?.getString(Constant.TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
-            restaurant_id, table_id, rules, dresscode, occasion, date, storePrefrence?.getString(
+            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
+            restaurant_id, table_id, rules, dresscode, occasion, date, storePrefrence.getString(
                 Constant.IDENTFIER
             )
         )
@@ -598,26 +598,22 @@ class BookingTable_DetailView : Activity() {
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 val mjson_obj = jsonObject.getJSONObject("data")
-                                storePrefrence?.setString(
+                                storePrefrence.setString(
                                     Constant.CUSTOMERID,
                                     mjson_obj.getString("customer_id")
                                 )
-                                storePrefrence?.setString(
+                                storePrefrence.setString(
                                     "paymentstatus",
                                     mjson_obj.getString("payment_status")
                                 )
-                                storePrefrence?.setString(
+                                storePrefrence.setString(
                                     Constant.BOOKINGID,
                                     mjson_obj.getString("id")
                                 )
                                 Log.d("table_id", mjson_obj.getString("table_id"))
                                 Log.d("restaurant_id", mjson_obj.getString("restaurant_id"))
                                 Log.d("rules", mjson_obj.getString("rules"))
-                                Toast.makeText(
-                                    ctx,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                showToastMessage(jsonObject.getString("message"))
                                 is_tableconform = true
                                 showAlertView_conformation(
                                     tableList,
@@ -626,36 +622,35 @@ class BookingTable_DetailView : Activity() {
                                 )
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                showToastMessage(Constant.NODATA)
                                 is_tableconform = false
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             binding.progressBar.visibility = View.GONE
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                                .show()
+                            showToastMessage(jsonObject.getString("message"))
                             is_tableconform = false
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                            showToastMessage(Constant.ERRORMSG)
                             is_tableconform = false
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        showToastMessage(Constant.ERRORMSG)
                         is_tableconform = false
                     } catch (ex: IOException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        showToastMessage(Constant.ERRORMSG)
                         is_tableconform = false
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                 }
             })
     }

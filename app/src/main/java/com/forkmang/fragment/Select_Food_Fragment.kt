@@ -46,7 +46,7 @@ class Select_Food_Fragment : Fragment() {
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var booking_id = "0"
     var selectedId_radiobtn_topping = 0
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
     var progressBar_alertview: ProgressBar? = null
     var all_orderFood_adapter: FoodList_Adapter? = null
 
@@ -59,7 +59,6 @@ class Select_Food_Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOrderfoodLayoutBinding.inflate(inflater, container, false)
-        storePrefrence = StorePrefrence(requireContext())
         binding.orderFoodRecycleview.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
@@ -216,12 +215,12 @@ class Select_Food_Fragment : Fragment() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         info.additem_cart(
-            "Bearer " + storePrefrence?.getString(TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             item_id,
             qty,
             booking_table_id,
             item_extra,
-            storePrefrence?.getString(
+            storePrefrence.getString(
                 Constant.IDENTFIER
             ),
             type
@@ -238,11 +237,11 @@ class Select_Food_Fragment : Fragment() {
                                     jsonObject.getString("message"),
                                     Toast.LENGTH_LONG
                                 ).show()
-                                storePrefrence?.setString(
+                                storePrefrence.setString(
                                     Constant.CARTID,
                                     jsonObject.getJSONObject("data").getString("cart_id")
                                 )
-                                storePrefrence?.setString(
+                                storePrefrence.setString(
                                     Constant.CART_ITEMID,
                                     jsonObject.getJSONObject("data").getString("item_id")
                                 )
@@ -405,7 +404,7 @@ class Select_Food_Fragment : Fragment() {
                 callApi_addtocart(
                     item_id,
                     qty,
-                    storePrefrence?.getString(Constant.BOOKINGID),
+                    storePrefrence.getString(Constant.BOOKINGID),
                     extra,
                     "book_table"
                 )
@@ -438,7 +437,7 @@ class Select_Food_Fragment : Fragment() {
         txt_restroname.text = tableList_get?.str_hotel_name
         txt_custname.text = tableList_get?.str_customer_name
         etv_noperson.setText(tableList_get?.number_of_person)
-        txt_phoneno.text = storePrefrence?.getString(MOBILE)
+        txt_phoneno.text = storePrefrence.getString(MOBILE)
         txt_datetime.text = tableList_get?.str_time
         img_close.setOnClickListener { dialog.dismiss() }
         binding.orderFoodRecycleview.layoutManager = LinearLayoutManager(activity)
@@ -497,7 +496,7 @@ class Select_Food_Fragment : Fragment() {
         //showProgress();
         progressBar_alertview?.visibility = View.VISIBLE
         info.getcart_detail(
-            "Bearer " + storePrefrence?.getString(TOKEN_LOGIN), storePrefrence?.getString(
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN), storePrefrence.getString(
                 Constant.IDENTFIER
             )
         )
@@ -708,10 +707,10 @@ class Select_Food_Fragment : Fragment() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         info.cart_updateqty(
-            "Bearer " + storePrefrence?.getString(TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             cart_itemid,
             qty,
-            storePrefrence?.getString(
+            storePrefrence.getString(
                 Constant.IDENTFIER
             )
         )
@@ -767,9 +766,9 @@ class Select_Food_Fragment : Fragment() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         info.cart_removeqty(
-            "Bearer " + storePrefrence!!.getString(TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             cart_itemid,
-            storePrefrence!!.getString(
+            storePrefrence.getString(
                 Constant.IDENTFIER
             )
         )!!

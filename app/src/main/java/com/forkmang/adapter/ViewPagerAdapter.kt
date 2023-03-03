@@ -1,6 +1,5 @@
 package com.forkmang.adapter
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -13,7 +12,6 @@ import com.forkmang.fragment.Walkin_listing_Fragment
 class ViewPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
-    var ctx: Context,
     var viewModel: ViewModel
 ) :
     FragmentStateAdapter(fragmentManager, lifecycle) {

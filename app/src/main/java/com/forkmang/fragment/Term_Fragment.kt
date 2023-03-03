@@ -22,7 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Term_Fragment : Fragment() {
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
     var progressBar: ProgressBar? = null
     var txt_term: TextView? = null
     override fun onCreateView(
@@ -31,7 +31,6 @@ class Term_Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_term_layout, container, false)
-        storePrefrence = StorePrefrence(requireContext())
         progressBar = view.findViewById(R.id.progressBar)
         txt_term = view.findViewById(R.id.txt_term)
         callapi_terms()
@@ -41,7 +40,7 @@ class Term_Fragment : Fragment() {
     //Api code for Book Table start
     private fun callapi_terms() {
         progressBar?.visibility = View.VISIBLE
-        info.getterms("Bearer " + storePrefrence!!.getString(TOKEN_LOGIN))!!
+        info.getterms("Bearer " + storePrefrence.getString(TOKEN_LOGIN))!!
             .enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {

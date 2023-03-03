@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity(),
     var button_facebook: ImageView? = null
     var signin_button_img: ImageView? = null
     var ctx: Context = this@RegisterActivity
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     var name: String? = null
     var mobile: String? = null
     var password: String? = null
@@ -90,7 +90,6 @@ class RegisterActivity : AppCompatActivity(),
         signin_button_img = findViewById(R.id.signin_button_img)
         val Btn_Back: Button = findViewById(R.id.Btn_Back)
         btn_register = findViewById(R.id.btn_register)
-        storePrefrence = StorePrefrence(ctx)
         binding.etvMobile.setText("9836608967")
         binding.etvUsername.setText("967 name")
         binding.etvEmail.setText("test967@gmail.com")
@@ -396,7 +395,7 @@ class RegisterActivity : AppCompatActivity(),
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("message"))
                                 //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
-                                storePrefrence?.setString(
+                                storePrefrence.setString(
                                     Constant.NAME,
                                     jsonObject.getJSONObject("data").getString("name")
                                 )
@@ -453,12 +452,12 @@ class RegisterActivity : AppCompatActivity(),
                         showToastMessage( jsonObject.getString("message"))
                         //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
                         if (jsonObject.getJSONObject("data").has("name")) {
-                            storePrefrence?.setString(
+                            storePrefrence.setString(
                                 Constant.NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence?.setString(Constant.NAME, type)
+                            storePrefrence.setString(Constant.NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent: Intent = Intent(ctx, LoginFormActivity::class.java)

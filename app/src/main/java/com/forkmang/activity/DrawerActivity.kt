@@ -61,6 +61,6 @@ open class DrawerActivity : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         //Sync the toggle state after onRestoreInstanceState has occurred.
-        drawerToggle!!.syncState()
+        drawerToggle?.syncState()
     }
 }

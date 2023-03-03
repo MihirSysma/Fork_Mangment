@@ -12,6 +12,7 @@ import com.forkmang.R
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -24,7 +25,7 @@ import java.util.*
 
 class Contact_Fragment : Fragment() {
 
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
     var progressBar: ProgressBar? = null
 
     override fun onCreateView(
@@ -33,16 +34,15 @@ class Contact_Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_contact_layout, container, false)
-        storePrefrence = StorePrefrence(requireContext())
         progressBar = view.findViewById(R.id.progressBar)
         val etv_username: EditText = view.findViewById(R.id.etv_username)
         val etv_email: EditText = view.findViewById(R.id.etv_email)
         val etv_mobile: EditText = view.findViewById(R.id.etv_mobile)
         val etv_msg: EditText = view.findViewById(R.id.etv_msg)
         val btn_submit: Button = view.findViewById(R.id.btn_submit)
-        etv_username.setText(storePrefrence?.getString(Constant.NAME))
+        etv_username.setText(storePrefrence.getString(Constant.NAME))
         //etv_email.setText("test@gmail.com");
-        etv_mobile.setText(storePrefrence?.getString(Constant.MOBILE))
+        etv_mobile.setText(storePrefrence.getString(Constant.MOBILE))
         //etv_msg.setText("Hi this is test msg");
         btn_submit.setOnClickListener {
             if (etv_username.text.isNotEmpty()) {
@@ -59,20 +59,19 @@ class Contact_Fragment : Fragment() {
                                     etv_msg.text.toString()
                                 )
                             } else {
-                                Toast.makeText(context, Constant.VALIDEmail, Toast.LENGTH_SHORT)
-                                    .show()
+                                context?.showToastMessage(Constant.VALIDEmail)
                             }
                         } else {
-                            Toast.makeText(context, Constant.EmptyEmail, Toast.LENGTH_SHORT).show()
+                            context?.showToastMessage(Constant.EmptyEmail)
                         }
                     } else {
-                        Toast.makeText(context, Constant.VALID_NO, Toast.LENGTH_SHORT).show()
+                        context?.showToastMessage(Constant.VALID_NO)
                     }
                 } else {
-                    Toast.makeText(context, Constant.ENTER_MOBILE, Toast.LENGTH_SHORT).show()
+                    context?.showToastMessage(Constant.ENTER_MOBILE)
                 }
             } else {
-                Toast.makeText(context, Constant.ENTER_NAME, Toast.LENGTH_SHORT).show()
+                context?.showToastMessage(Constant.ENTER_NAME)
             }
         }
         return view
@@ -80,34 +79,33 @@ class Contact_Fragment : Fragment() {
 
     //Api code for Book Table start
     private fun callapi_contact(name: String, email: String, phone: String, msg: String) {
-        progressBar!!.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
         info.contact(
-            "Bearer " + storePrefrence!!.getString(TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             name, email, phone, msg
-        )!!.enqueue(object : Callback<JsonObject?> {
+        )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
-                        Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                            .show()
-                        progressBar!!.visibility = View.GONE
-                        activity!!.finish()
+                        context?.showToastMessage(jsonObject.getString("message"))
+                        progressBar?.visibility = View.GONE
+                        activity?.finish()
                         //Log.d("Result", jsonObject.toString());
                     } else {
-                        progressBar!!.visibility = View.GONE
-                        Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        progressBar?.visibility = View.GONE
+                        context?.showToastMessage(Constant.ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
-                    progressBar!!.visibility = View.GONE
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    progressBar?.visibility = View.GONE
+                    context?.showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
-                progressBar!!.visibility = View.GONE
+                context?.showToastMessage(Constant.ERRORMSG)
+                progressBar?.visibility = View.GONE
             }
         })
     }
@@ -118,7 +116,7 @@ class Contact_Fragment : Fragment() {
         }
 
         fun isValidEmail(target: CharSequence?): Boolean {
-            return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
+            return !TextUtils.isEmpty(target) && target?.let { Patterns.EMAIL_ADDRESS.matcher(it).matches() } == true
         }
     }
 }

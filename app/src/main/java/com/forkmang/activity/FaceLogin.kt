@@ -8,17 +8,17 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.R
 
-class FaceLogin constructor() : AppCompatActivity() {
+class FaceLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_face_login)
         val img_faceid: ImageView = findViewById(R.id.img_faceid)
         val BtnReg: Button = findViewById(R.id.BtnReg)
-        BtnReg.setOnClickListener { v: View? ->
+        BtnReg.setOnClickListener {
             val mainIntent: Intent = Intent(this@FaceLogin, RegisterActivity::class.java)
             startActivity(mainIntent)
         }
-        img_faceid.setOnClickListener { v: View? ->
+        img_faceid.setOnClickListener {
             val mainIntent: Intent = Intent(this@FaceLogin, FaceLoginPermission::class.java)
             startActivity(mainIntent)
         }

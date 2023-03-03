@@ -20,10 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.forkmang.R
-import com.forkmang.helper.ApiConfig
-import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
-import com.forkmang.helper.Utils
+import com.forkmang.helper.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.android.gms.common.api.GoogleApiClient
@@ -57,14 +54,13 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     var text: TextView? = null
     var mapFragment: SupportMapFragment? = null
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.maps_activity)
         val btn_updateloc: Button = findViewById(R.id.btn_updateloc)
         ApiConfig.getLocation(this)
-        storePrefrence = StorePrefrence(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = supportFragmentManager
@@ -73,15 +69,15 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         text = findViewById(R.id.tvLocation)
         val fabSatellite: FloatingActionButton = findViewById(R.id.fabSatellite)
         val fabStreet: FloatingActionButton = findViewById(R.id.fabStreet)
-        mapFragment!!.getMapAsync(this@MapsActivity)
+        mapFragment?.getMapAsync(this@MapsActivity)
         btn_updateloc.setOnClickListener { updateloc() }
         fabSatellite.setOnClickListener(OnClickListener {
-            mMap!!.mapType = GoogleMap.MAP_TYPE_HYBRID
-            mapFragment!!.getMapAsync(this@MapsActivity)
+            mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
+            mapFragment?.getMapAsync(this@MapsActivity)
         })
         fabStreet.setOnClickListener(OnClickListener {
-            mMap!!.mapType = GoogleMap.MAP_TYPE_NORMAL
-            mapFragment!!.getMapAsync(this@MapsActivity)
+            mMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
+            mapFragment?.getMapAsync(this@MapsActivity)
         })
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
@@ -105,8 +101,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             }
             buildGoogleApiClient()
         } else {
-            Toast.makeText(this, "Location not supported in this device", Toast.LENGTH_SHORT)
-                .show()
+            showToastMessage("Location not supported in this device")
         }
     }
 
@@ -122,11 +117,11 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         Log.d(TAG, "OnMapReady")
         mMap = googleMap
-        mMap!!.setOnCameraChangeListener { cameraPosition ->
+        mMap?.setOnCameraChangeListener { cameraPosition ->
             Log.d("Camera postion change" + "", cameraPosition.toString() + "")
             //latLng = cameraPosition.target;
             val latLng: LatLng = cameraPosition.target
-            mMap!!.clear()
+            mMap?.clear()
             try {
                 val mLocation: Location = Location("")
                 mLocation.latitude = latLng.latitude
@@ -188,7 +183,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         Log.d("clat==>", "" + c_latitude)
         val handler: Handler = Handler()
         handler.postDelayed({
-            text!!.text = getString(R.string.location_1) + ApiConfig.getAddress(
+            text?.text = getString(R.string.location_1) + ApiConfig.getAddress(
                 latitude,
                 longitude,
                 this@MapsActivity
@@ -201,8 +196,8 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     fun saveLocation(latitude: Double, longitude: Double) {
-        storePrefrence!!.setData(Constant.KEY_LATITUDE, latitude.toString())
-        storePrefrence!!.setData(Constant.KEY_LONGITUDE, longitude.toString())
+        storePrefrence.setData(Constant.KEY_LATITUDE, latitude.toString())
+        storePrefrence.setData(Constant.KEY_LONGITUDE, longitude.toString())
         finish()
         //storePrefrence.setString(Constant.KEY_LATITUDE, String.valueOf(latitude));
         //storePrefrence.setString(Constant.KEY_LONGITUDE, String.valueOf(longitude));
@@ -265,7 +260,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
                     //longitude = location.getLongitude();
                     //latitude = location.getLatitude();
-                    if ((storePrefrence!!.getCoordinates(Constant.KEY_LATITUDE) == "0.0") || (storePrefrence!!.getCoordinates(
+                    if ((storePrefrence.getCoordinates(Constant.KEY_LATITUDE) == "0.0") || (storePrefrence.getCoordinates(
                             Constant.KEY_LONGITUDE
                         ) == "0.0")
                     ) {
@@ -273,9 +268,9 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                         latitude = location.latitude
                     } else {
                         longitude =
-                            storePrefrence!!.getCoordinates(Constant.KEY_LONGITUDE)!!.toDouble()
+                            storePrefrence.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble()?:0.0
                         latitude =
-                            storePrefrence!!.getCoordinates(Constant.KEY_LATITUDE)!!.toDouble()
+                            storePrefrence.getCoordinates(Constant.KEY_LATITUDE)?.toDouble()?:0.0
                     }
                     Log.d("c_latitude==>", "" + c_latitude)
                     Log.d("c_longitude==>", "" + c_longitude)
@@ -297,14 +292,14 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    public override fun onConnectionSuspended(i: Int) {
+    override fun onConnectionSuspended(i: Int) {
         Log.i(TAG, "Connection suspended")
-        mGoogleApiClient!!.connect()
+        mGoogleApiClient?.connect()
     }
 
-    public override fun onLocationChanged(location: Location) {
+    override fun onLocationChanged(location: Location) {
         try {
-            if (location != null) moveMap(location, false)
+            moveMap(location, false)
             LocationServices.FusedLocationApi.removeLocationUpdates(
                 (mGoogleApiClient)!!, this
             )
@@ -326,13 +321,13 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onStart() {
         super.onStart()
         try {
-            mGoogleApiClient!!.connect()
+            mGoogleApiClient?.connect()
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    public override fun onBackPressed() {
+    override fun onBackPressed() {
         super.onBackPressed()
         saveLocation(latitude, longitude)
         //saveLocation(c_latitude, c_longitude);
@@ -340,7 +335,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onResume() {
         super.onResume()
-        mapFragment!!.getMapAsync(this)
+        mapFragment?.getMapAsync(this)
     }
 
     /*@Override
@@ -359,8 +354,8 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         } catch (e: RuntimeException) {
             e.printStackTrace()
         }
-        if (mGoogleApiClient != null && mGoogleApiClient!!.isConnected()) {
-            mGoogleApiClient!!.disconnect()
+        if (mGoogleApiClient != null && mGoogleApiClient?.isConnected == true) {
+            mGoogleApiClient?.disconnect()
         }
     }
 
@@ -371,7 +366,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 GooglePlayServicesUtil.getErrorDialog(
                     resultCode, this,
                     PLAY_SERVICES_RESOLUTION_REQUEST
-                )!!.show()
+                )?.show()
             } else {
                 //finish();
             }
@@ -381,7 +376,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     private fun moveMap(location: Location, isfirst: Boolean) {
-        Log.d(TAG, "Reaching map" + mMap)
+        Log.d(TAG, "Reaching map$mMap")
         if ((ContextCompat.checkSelfPermission(
                 this@MapsActivity,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -420,31 +415,27 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         // check if map is created successfully or not
         if (mMap != null) {
-            mMap!!.uiSettings.isZoomControlsEnabled = false
+            mMap?.uiSettings?.isZoomControlsEnabled = false
             val latLong: LatLng = LatLng(latitude, longitude)
             val cameraPosition: CameraPosition = CameraPosition.Builder()
                 .target(latLong).zoom(15f).tilt(60f).build()
-            mMap!!.isMyLocationEnabled = true
-            mMap!!.uiSettings.isMyLocationButtonEnabled = true
+            mMap?.isMyLocationEnabled = true
+            mMap?.uiSettings?.isMyLocationButtonEnabled = true
             if (isfirst) {
-                mMap!!.animateCamera(
+                mMap?.animateCamera(
                     CameraUpdateFactory
                         .newCameraPosition(cameraPosition)
                 )
             }
             Log.d("lat%", "" + latitude)
             Log.d("long%", "" + longitude)
-            text!!.text = getString(R.string.location_1) + ApiConfig.getAddress(
+            text?.text = getString(R.string.location_1) + ApiConfig.getAddress(
                 latitude,
                 longitude,
                 this@MapsActivity
             )
         } else {
-            Toast.makeText(
-                this,
-                "Sorry! unable to create maps", Toast.LENGTH_SHORT
-            )
-                .show()
+            showToastMessage("Sorry! unable to create maps")
         }
     }
 

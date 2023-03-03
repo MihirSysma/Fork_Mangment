@@ -8,26 +8,20 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.forkmang.R
 import com.forkmang.databinding.ActivityDashboardDrawerBinding
 import com.forkmang.fragment.*
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.showToastMessage
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.MaterialShapeDrawable
 
 class DashBoard_Activity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener {
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(this) }
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private val binding by lazy { ActivityDashboardDrawerBinding.inflate(layoutInflater) }
 
@@ -35,7 +29,6 @@ class DashBoard_Activity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(binding.root)
-        storePrefrence = StorePrefrence(this@DashBoard_Activity)
         initializeViews()
         toggleDrawer()
         initializeDefaultFragment(savedInstanceState, 0)
@@ -133,7 +126,8 @@ class DashBoard_Activity : AppCompatActivity(),
             R.id.menu_wallet -> {
                 //Toast.makeText(this, "Menu Wallet Pressed", Toast.LENGTH_SHORT).show();
                 /*Intent intent = new Intent(DashBoardActivity_2.this,WalletView.class);
-                startActivity(intent);*/supportFragmentManager.beginTransaction()
+                startActivity(intent);*/
+                supportFragmentManager.beginTransaction()
                     .replace(R.id.framelayout_id, WalletView_Fragment())
                     .commit()
                 closeDrawer()
@@ -141,7 +135,8 @@ class DashBoard_Activity : AppCompatActivity(),
             R.id.menu_location -> {
                 //Toast.makeText(this, "Menu Location Pressed", Toast.LENGTH_SHORT).show();
                 /*Intent location_intent = new Intent(DashBoardActivity_2.this, LocationScreen_Fragment.class);
-                startActivity(location_intent);*/supportFragmentManager.beginTransaction()
+                startActivity(location_intent);*/
+                supportFragmentManager.beginTransaction()
                     .replace(R.id.framelayout_id, LocationScreen_Fragment())
                     .commit()
                 closeDrawer()
@@ -204,7 +199,7 @@ class DashBoard_Activity : AppCompatActivity(),
         btn_yes_logout.setOnClickListener {
             closeDrawer()
             dialog.dismiss()
-            storePrefrence?.clear()
+            storePrefrence.clear()
             val intent: Intent = Intent(this@DashBoard_Activity, LoginActivity::class.java)
             startActivity(intent)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -24,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Table_OrdersListing_Fragment : Fragment() {
-    var storePrefrence: StorePrefrence? = null
+    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
     var tableOrderListingArrayList: ArrayList<TableOrderListing>? = null
 
     private var _binding: FragmentBooktableLayoutOrdersBinding? = null
@@ -37,7 +37,6 @@ class Table_OrdersListing_Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBooktableLayoutOrdersBinding.inflate(inflater, container, false)
-        storePrefrence = StorePrefrence(requireContext())
         binding.booktableRecycleviewOrders.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
@@ -54,7 +53,7 @@ class Table_OrdersListing_Fragment : Fragment() {
     //Api code for Book Table start
     private fun callapi_gettableorderslist() {
         binding.progressBar.visibility = View.VISIBLE
-        info.getbooktable_listing("Bearer " + storePrefrence?.getString(TOKEN_LOGIN))
+        info.getbooktable_listing("Bearer " + storePrefrence.getString(TOKEN_LOGIN))
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {

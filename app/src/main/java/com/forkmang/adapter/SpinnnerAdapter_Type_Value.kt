@@ -11,11 +11,7 @@ import com.forkmang.R
 
 class SpinnnerAdapter_Type_Value(var context: Context, var type_value: Array<String>) :
     BaseAdapter() {
-    var inflter: LayoutInflater
-
-    init {
-        inflter = LayoutInflater.from(context)
-    }
+    var inflter: LayoutInflater = LayoutInflater.from(context)
 
     override fun getCount(): Int {
         return type_value.size

@@ -16,25 +16,13 @@ import com.forkmang.R
 import com.forkmang.data.CartBooking
 import com.forkmang.fragment.PickupSelect_Food_Fragment
 import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import java.util.*
 
-class PickupListingAdapter : RecyclerView.Adapter<PickupListingAdapter.CartProductItemHolder> {
-    var ctx: Context? = null
-    var cartBookingArrayList: ArrayList<CartBooking>? = null
+class PickupListingAdapter(ctx: Context, var cartBookingArrayList: ArrayList<CartBooking>?) :
+    RecyclerView.Adapter<PickupListingAdapter.CartProductItemHolder>() {
+    var ctx: Context? = ctx
     var activity: Activity? = null
-    var storePrefrence: StorePrefrence? = null
-
-    constructor(ctx: Context, cartBookingArrayList: ArrayList<CartBooking>?) {
-        this.ctx = ctx
-        this.cartBookingArrayList = cartBookingArrayList
-        storePrefrence = StorePrefrence(ctx)
-    }
-
-    constructor(activity: Activity?) {
-        this.activity = activity
-    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
