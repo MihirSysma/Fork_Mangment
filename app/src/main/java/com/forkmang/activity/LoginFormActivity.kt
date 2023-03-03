@@ -34,8 +34,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-class LoginFormActivity : AppCompatActivity(),
-    GoogleApiClient.OnConnectionFailedListener {
+class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedListener {
+
     private val binding by lazy { ActivityLoginFormBinding.inflate(layoutInflater) }
     private val callbackManager by lazy { create() }
     var ctx: Context = this@LoginFormActivity
@@ -43,6 +43,7 @@ class LoginFormActivity : AppCompatActivity(),
     private val storePrefrence by lazy { StorePrefrence(this) }
     var token: String = ""
     private var googleApiClient: GoogleApiClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -121,12 +122,12 @@ class LoginFormActivity : AppCompatActivity(),
             }
         }
         txtForgotPassword.setOnClickListener {
-            val mainIntent: Intent = Intent(this@LoginFormActivity, ForgotPassword::class.java)
+            val mainIntent = Intent(this@LoginFormActivity, ForgotPassword::class.java)
             startActivity(mainIntent)
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
         }
         BtnReg.setOnClickListener {
-            val mainIntent: Intent = Intent(this@LoginFormActivity, RegisterActivity::class.java)
+            val mainIntent = Intent(this@LoginFormActivity, RegisterActivity::class.java)
             startActivity(mainIntent)
             finish()
         }
@@ -174,7 +175,7 @@ class LoginFormActivity : AppCompatActivity(),
 
                     //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
-                        val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                        val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
@@ -209,7 +210,7 @@ class LoginFormActivity : AppCompatActivity(),
                             showToastMessage("Error occur please try again")
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
+                        val jsonObject = JSONObject(response.errorBody()!!.string())
                         if (jsonObject.getString("status")
                                 .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
                         ) {
@@ -260,7 +261,7 @@ class LoginFormActivity : AppCompatActivity(),
                 response: Response<JsonObject?>
             ) {
                 try {
-                    val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                    val jsonObject = JSONObject(Gson().toJson(response.body()))
                     Log.d("Result", jsonObject.toString())
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
                         showToastMessage(jsonObject.getString("message"))
@@ -277,7 +278,7 @@ class LoginFormActivity : AppCompatActivity(),
                             storePrefrence.setString(Constant.NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
-                        val intent: Intent = Intent(ctx, DashBoardActivity::class.java)
+                        val intent = Intent(ctx, DashBoardActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

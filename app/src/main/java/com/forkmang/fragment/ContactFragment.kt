@@ -52,7 +52,7 @@ class ContactFragment : Fragment() {
                         if (Objects.requireNonNull(etv_email.text).isNotEmpty()) {
                             //Email is valid or not
                             if (isValidEmail(etv_email.text.toString())) {
-                                callapi_contact(
+                                callApiContact(
                                     etv_username.text.toString(),
                                     etv_email.text.toString(),
                                     etv_mobile.text.toString(),
@@ -78,7 +78,7 @@ class ContactFragment : Fragment() {
     }
 
     //Api code for Book Table start
-    private fun callapi_contact(name: String, email: String, phone: String, msg: String) {
+    private fun callApiContact(name: String, email: String, phone: String, msg: String) {
         progressBar?.visibility = View.VISIBLE
         info.contact(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),

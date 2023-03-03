@@ -213,7 +213,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         val dialog: AlertDialog = alertDialog.create()
         val btn_share_order: Button = dialogView.findViewById(R.id.btn_share_order)
         btn_share_order.setOnClickListener {
-            val intent: Intent = Intent(
+            val intent = Intent(
                 this@PickupSelectFoodActivity,
                 BookingOrderReserverConformationActivity::class.java
             )

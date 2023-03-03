@@ -165,8 +165,8 @@ class WalkinDetailFragment : FragmentActivity() {
 
         //spinner area array adapter end
         if (isNetworkAvailable(ctx)) {
-            callapi_getquess(resturant_id)
-            callapi_filldropdown(resturant_id)
+            callApiGetQueeList(resturant_id)
+            callApiFillDropdown(resturant_id)
         } else {
             showToastMessage(Constant.NETWORKEROORMSG)
         }
@@ -204,14 +204,14 @@ class WalkinDetailFragment : FragmentActivity() {
         saveLongitude = 72.860824;*/saveLatitude = 23.933689
         saveLongitude = 72.367458
         if (isNetworkAvailable(ctx)) {
-            callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString())
+            callApiGetBookTable(service_id, saveLatitude.toString(), saveLongitude.toString())
         } else {
             showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
     //Api code for Book Table start
-    private fun callapi_getbooktable(service_id: String, latitude: String, logitutde: String) {
+    private fun callApiGetBookTable(service_id: String, latitude: String, logitutde: String) {
         binding.progressBar.visibility = View.VISIBLE
         info.getlist_res_walkin(service_id, latitude, logitutde)
             ?.enqueue(object : Callback<JsonObject?> {
@@ -257,7 +257,7 @@ class WalkinDetailFragment : FragmentActivity() {
                                     walkin_listing_adapter = WalkinListingAdapter(
                                         "detail"
                                     ) { restId, _ ->
-                                        callapi_getquess(restId)
+                                        callApiGetQueeList(restId)
                                     }
                                     binding.walkinRecycleview.adapter = walkin_listing_adapter
                                     walkin_listing_adapter?.resto_dataArrayList =
@@ -290,7 +290,7 @@ class WalkinDetailFragment : FragmentActivity() {
     }
 
     //Api code for get queue list no
-    fun callapi_getquess(resturant_id: String?) {
+    fun callApiGetQueeList(resturant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
         info.getqueelist("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
             ?.enqueue(object : Callback<JsonObject?> {
@@ -342,7 +342,7 @@ class WalkinDetailFragment : FragmentActivity() {
     }
 
     //Api code for get person queue  no
-    fun callapi_personqueue_no(resturant_id: String?) {
+    fun callApiPersonQueueNo(resturant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
         info.getpersonqueeno("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
             ?.enqueue(object : Callback<JsonObject?> {
@@ -394,15 +394,15 @@ class WalkinDetailFragment : FragmentActivity() {
         val tvno: TextView = dialogView.findViewById(R.id.tvno)
         txt_msg.text =
             "new queue no is grater than previous quee no still you want to set new queue no ?"
-        tvyes.setOnClickListener { v: View? ->
+        tvyes.setOnClickListener {
             dialog.dismiss()
             binding.txtQueeno.text = quee_no
         }
-        tvno.setOnClickListener { v: View? -> dialog.dismiss() }
+        tvno.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
-    fun showAlertView_yeswantbook(msg: String?) {
+    fun showAlertViewYesWantBook(msg: String?) {
         val alertDialog = AlertDialog.Builder(ctx)
         val inflater = ctx.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView = inflater.inflate(R.layout.quee_alertview, null)
@@ -413,7 +413,7 @@ class WalkinDetailFragment : FragmentActivity() {
         val tvyes: TextView = dialogView.findViewById(R.id.tvyes)
         val tvno: TextView = dialogView.findViewById(R.id.tvno)
         txt_msg.text = msg
-        tvyes.setOnClickListener { v: View? ->
+        tvyes.setOnClickListener {
             dialog.dismiss()
             if (isNetworkAvailable(ctx)) {
                 callapi_getqueeconform(
@@ -428,11 +428,11 @@ class WalkinDetailFragment : FragmentActivity() {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
-        tvno.setOnClickListener { v: View? -> dialog.dismiss() }
+        tvno.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
-    private fun callapi_filldropdown(restaurant_id: String?) {
+    private fun callApiFillDropdown(restaurant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
         info.getres_detail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
@@ -516,7 +516,7 @@ class WalkinDetailFragment : FragmentActivity() {
                         //Log.d("Result", jsonObject.toString());
                         showToastMessage(jsonObject.getString("message"))
                         if (isNetworkAvailable(ctx)) {
-                            callapi_personqueue_no(restaurant_id)
+                            callApiPersonQueueNo(restaurant_id)
                         } else {
                             showToastMessage(Constant.NETWORKEROORMSG)
                         }
@@ -564,14 +564,14 @@ class WalkinDetailFragment : FragmentActivity() {
                             val is_showalert =
                                 jsonObject.getJSONObject("data").getBoolean("showalert")
                             if (is_showalert) {
-                                showAlertView_yeswantbook(jsonObject.getString("message"))
+                                showAlertViewYesWantBook(jsonObject.getString("message"))
                             } else {
                                 showToastMessage(jsonObject.getString("message"))
                             }
                         } else {
                             ctx.showToastMessage(jsonObject.getString("message"))
                             if (isNetworkAvailable(ctx)) {
-                                callapi_personqueue_no(restaurant_id)
+                                callApiPersonQueueNo(restaurant_id)
                             } else {
                                 ctx.showToastMessage(Constant.NETWORKEROORMSG)
                             }
@@ -581,7 +581,7 @@ class WalkinDetailFragment : FragmentActivity() {
                         val jsonObject = JSONObject(response.errorBody()!!.string())
                         ctx.showToastMessage(jsonObject.getString("message"))
                         if (isNetworkAvailable(ctx)) {
-                            callapi_personqueue_no(restaurant_id)
+                            callApiPersonQueueNo(restaurant_id)
                         } else {
                             ctx.showToastMessage(Constant.NETWORKEROORMSG)
                         }

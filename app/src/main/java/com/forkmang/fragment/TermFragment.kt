@@ -42,8 +42,8 @@ class TermFragment : Fragment() {
     //Api code for Book Table start
     private fun callApiTerms() {
         progressBar?.visibility = View.VISIBLE
-        info.getterms("Bearer " + storePrefrence.getString(TOKEN_LOGIN))!!
-            .enqueue(object : Callback<JsonObject?> {
+        info.getterms("Bearer " + storePrefrence.getString(TOKEN_LOGIN))
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         if (response.code() == Constant.SUCCESS_CODE_n) {

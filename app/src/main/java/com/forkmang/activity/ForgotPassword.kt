@@ -37,28 +37,28 @@ class ForgotPassword : AppCompatActivity() {
         setContentView(R.layout.activity_forgot_password)
         binding.etvNewpas.setText("1234567")
         binding.etvcnfPass.setText("1234567")
-        binding.btnReset.setOnClickListener(View.OnClickListener { v: View? ->
+        binding.btnReset.setOnClickListener {
             /* final Intent mainIntent = new Intent(ForgotPassword.this, FaceLoginPermission.class);
             startActivity(mainIntent);
             finish();*/
             if (binding.etvNewpas.text?.isNotEmpty() == true) {
-            if (binding.etvcnfPass.text?.isNotEmpty() == true) {
-                if ((binding.etvNewpas.text.toString() == binding.etvcnfPass.text.toString())) {
-                    //call api
-                    val contact: String? = storePrefrence.getString(Constant.MOBILE)
-                    if (contact != null) {
-                        getToken(contact)
+                if (binding.etvcnfPass.text?.isNotEmpty() == true) {
+                    if ((binding.etvNewpas.text.toString() == binding.etvcnfPass.text.toString())) {
+                        //call api
+                        val contact: String? = storePrefrence.getString(Constant.MOBILE)
+                        if (contact != null) {
+                            getToken(contact)
+                        }
+                    } else {
+                        showToastMessage(Constant.PASSWORD_MATCH)
                     }
                 } else {
-                    showToastMessage(Constant.PASSWORD_MATCH)
+                    showToastMessage(Constant.CNFPASSWORD_MATCH)
                 }
             } else {
-                showToastMessage(Constant.CNFPASSWORD_MATCH)
-            }
-        } else {
                 showToastMessage(Constant.PASSWORD)
+            }
         }
-        })
     }
 
     private fun callApiForgetPasswordValid(contact: String) {

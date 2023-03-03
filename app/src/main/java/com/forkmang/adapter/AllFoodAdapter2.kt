@@ -52,7 +52,7 @@ class AllFoodAdapter2(
             img_food = itemView.findViewById(R.id.img_food)
             txt_foodname = itemView.findViewById(R.id.txt_foodname)
             txt_price = itemView.findViewById(R.id.txt_price)
-            relative_view.setOnClickListener { v: View? ->
+            relative_view.setOnClickListener {
                 val position = bindingAdapterPosition
                 val category_itemList = category_itemLists[position]
                 row_index = position

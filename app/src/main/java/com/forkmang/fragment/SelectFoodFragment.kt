@@ -143,8 +143,8 @@ class SelectFoodFragment : Fragment() {
     fun callApiSearchFoodItem(category_id: String?, search_item: String?) {
         //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_catitemlist_search(category_id, search_item)!!
-            .enqueue(object : Callback<JsonObject?> {
+        info.getres_catitemlist_search(category_id, search_item)
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
@@ -438,7 +438,7 @@ class SelectFoodFragment : Fragment() {
         } else {
             context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
-        btn_pay_table_food.setOnClickListener { v: View? ->
+        btn_pay_table_food.setOnClickListener {
             dialog.dismiss()
             val mainIntent = Intent(context, ActivityPaymentSummary::class.java)
             //Bundle bundle = new Bundle();

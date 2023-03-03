@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.adapter.WalletFragmentAdapter.WalletItemHolder
@@ -25,19 +26,18 @@ class WalletFragmentAdapter : RecyclerView.Adapter<WalletItemHolder> {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletItemHolder {
-        val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.wallet_cell, null)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.wallet_cell, null)
         return WalletItemHolder(v)
     }
 
     override fun onBindViewHolder(holder: WalletItemHolder, position: Int) {
         if (position % 2 == 0) {
             holder.relative_view.background =
-                activity.resources.getDrawable(R.drawable.layout_rectangle_gray_2)
+                ContextCompat.getDrawable(activity, R.drawable.layout_rectangle_gray_2)
             holder.money_transaction_icon.setImageResource(R.drawable.money_out)
         } else {
             holder.relative_view.background =
-                activity.resources.getDrawable(R.drawable.layout_rectangle_gray_2_1)
+                ContextCompat.getDrawable(activity, R.drawable.layout_rectangle_gray_2_1)
             holder.money_transaction_icon.setImageResource(R.drawable.charge)
         }
     }

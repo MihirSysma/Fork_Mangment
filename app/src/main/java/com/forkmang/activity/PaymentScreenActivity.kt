@@ -72,7 +72,7 @@ class PaymentScreenActivity : AppCompatActivity() {
             binding.radioButton2.isChecked = true
         }
         binding.btnPayment.text = "Pay - $totalpay"
-        binding.btnPayment.setOnClickListener { v: View? ->
+        binding.btnPayment.setOnClickListener {
             if (binding.radioButton1.isChecked) {
                 payment_type = "cash"
             } else if (binding.radioButton2.isChecked) {

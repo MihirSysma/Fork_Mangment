@@ -71,14 +71,14 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val fabStreet: FloatingActionButton = findViewById(R.id.fabStreet)
         mapFragment?.getMapAsync(this@MapsActivity)
         btn_updateloc.setOnClickListener { updateloc() }
-        fabSatellite.setOnClickListener(OnClickListener {
+        fabSatellite.setOnClickListener {
             mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
             mapFragment?.getMapAsync(this@MapsActivity)
-        })
-        fabStreet.setOnClickListener(OnClickListener {
+        }
+        fabStreet.setOnClickListener {
             mMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
             mapFragment?.getMapAsync(this@MapsActivity)
-        })
+        }
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
             // Otherwise, prompt user to get valid Play Services APK.

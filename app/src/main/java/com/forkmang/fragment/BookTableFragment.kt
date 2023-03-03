@@ -213,7 +213,7 @@ class BookTableFragment : Fragment() {
                 val date = datePicker.dayOfMonth
                 var str_month = ""
                 var str_date = ""
-                month = month + 1
+                month += 1
                 str_month = if (month < 10) {
                     "0$month"
                 } else {
@@ -256,8 +256,7 @@ class BookTableFragment : Fragment() {
                 val date = binding.txtDatetime.text.toString()
                 binding.txtDatetime.text = ""
                 val time = String.format("%02d:%02d", hourOfDay, minute)
-                val AM_PM: String
-                AM_PM = if (hourOfDay < 12) {
+                val AM_PM: String = if (hourOfDay < 12) {
                     "am"
                 } else {
                     "pm"

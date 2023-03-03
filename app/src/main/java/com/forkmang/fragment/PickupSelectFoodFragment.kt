@@ -404,7 +404,7 @@ class PickupSelectFoodFragment : Fragment() {
                 context?.showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
-        btn_reserve.setOnClickListener { v: View? -> dialog.dismiss() }
+        btn_reserve.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
