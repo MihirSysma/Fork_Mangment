@@ -23,10 +23,16 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
     var ctx: Context? = null
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var activity: Activity? = null
+    lateinit var onItemClicked: ((func_name: String, cart_item_id: String?, qty_update: String?) -> Unit)
 
-    constructor(ctx: Context, cartBookingArrayList: ArrayList<CartBooking>?) {
+    constructor(
+        ctx: Context,
+        cartBookingArrayList: ArrayList<CartBooking>?,
+        onItemClicked: ((func_name: String, cart_item_id: String?, qty_update: String?) -> Unit)
+    ) {
         this.ctx = ctx
         this.cartBookingArrayList = cartBookingArrayList
+        this.onItemClicked = onItemClicked
     }
 
     constructor(activity: Activity?) {
@@ -85,10 +91,7 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                     var qty_update = txt_qty.text.toString().toInt()
                     --qty_update
                     txt_qty.text = qty_update.toString()
-                    Select_Food_Fragment().callApi_addqty(
-                        cart_item_id,
-                        qty_update.toString()
-                    )
+                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
                 } else {
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
@@ -101,10 +104,7 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                     var qty_update = txt_qty.text.toString().toInt()
                     ++qty_update
                     txt_qty.text = qty_update.toString()
-                    Select_Food_Fragment().callApi_addqty(
-                        cart_item_id,
-                        qty_update.toString()
-                    )
+                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
                 } else {
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
@@ -133,7 +133,7 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                 tvremove.setOnClickListener {
                     dialog.dismiss()
                     if (Utils.isNetworkAvailable(ctx!!)) {
-                        Select_Food_Fragment().callApi_removeitemcart(cart_item_id)
+                        onItemClicked(REMOVE_CART_ITEM, cart_item_id, null)
                     } else {
                         ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                     }

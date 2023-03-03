@@ -37,7 +37,7 @@ import java.io.IOException
 class LoginFormActivity : AppCompatActivity(),
     GoogleApiClient.OnConnectionFailedListener {
     private val binding by lazy { ActivityLoginFormBinding.inflate(layoutInflater) }
-    private var callbackManager: CallbackManager? = null
+    private val callbackManager by lazy { create() }
     var ctx: Context = this@LoginFormActivity
     private var dialog: ProgressDialog? = null
     private val storePrefrence by lazy { StorePrefrence(this) }
@@ -53,9 +53,8 @@ class LoginFormActivity : AppCompatActivity(),
         //facebook login code start
         //printHashKey();
         sdkInitialize(applicationContext)
-        callbackManager = create()
         binding.buttonFacebookRoot.registerCallback(
-            callbackManager!!,
+            callbackManager,
             object: FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     Log.d("id", result.accessToken.userId)

@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.data.Category_ItemList
 import com.forkmang.data.RestoData
-import com.forkmang.fragment.PickupSelect_Food_Fragment
 
 class PickupFoodList_Adapter(
     var ctx: Context,
     var activity: Activity,
     var category_itemLists: ArrayList<Category_ItemList>,
-    var pickupSelect_food_fragment: PickupSelect_Food_Fragment,
-    var restoData: RestoData
+    var restoData: RestoData,
+    private val onItemClicked: ((categoryItemList: Category_ItemList) -> Unit)
 ) : RecyclerView.Adapter<PickupFoodList_Adapter.AllOrderFoodItemHolder>() {
     var row_index = 0
 
@@ -58,7 +57,7 @@ class PickupFoodList_Adapter(
                 val position = bindingAdapterPosition
                 val category_itemList = category_itemLists[position]
                 row_index = position
-                pickupSelect_food_fragment.showAlertView(category_itemList)
+                onItemClicked(category_itemList)
             }
         }
     }

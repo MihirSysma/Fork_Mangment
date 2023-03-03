@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.adapter.CartListingAdapter
 import com.forkmang.databinding.ActivityPaymentSummaryPickupBinding
 
-class Activity_PaymentSummary_PickupFragment : AppCompatActivity() {
+class ActivityPaymentSummaryPickup : AppCompatActivity() {
 
     private val binding by lazy { ActivityPaymentSummaryPickupBinding.inflate(layoutInflater) }
 
@@ -16,7 +16,7 @@ class Activity_PaymentSummary_PickupFragment : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.recycleview.layoutManager = LinearLayoutManager(this@Activity_PaymentSummary_PickupFragment)
+        binding.recycleview.layoutManager = LinearLayoutManager(this@ActivityPaymentSummaryPickup)
         if (loadLocale().equals("ar", ignoreCase = true)) {
             binding.lytEng.visibility = View.GONE
             binding.lytArabic.visibility = View.VISIBLE
@@ -27,12 +27,12 @@ class Activity_PaymentSummary_PickupFragment : AppCompatActivity() {
         }
         binding.btnPaymentProceed.setOnClickListener { v: View? ->
             val mainIntent = Intent(
-                this@Activity_PaymentSummary_PickupFragment,
+                this@ActivityPaymentSummaryPickup,
                 Pickup_ConformationActivity::class.java
             )
             startActivity(mainIntent)
         }
-        val cartBookingAdapter = CartListingAdapter(this@Activity_PaymentSummary_PickupFragment)
+        val cartBookingAdapter = CartListingAdapter(this@ActivityPaymentSummaryPickup)
         binding.recycleview.adapter = cartBookingAdapter
     }
 

@@ -11,13 +11,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.data.Category_ItemList
-import com.forkmang.fragment.Select_Food_Fragment
 
 class FoodList_Adapter(
     var ctx: Context,
     var activity: Activity,
     var category_itemLists: ArrayList<Category_ItemList>,
-    var all_Food_fragment: Select_Food_Fragment
+    private val onItemClicked: ((categoryItemList: Category_ItemList) -> Unit)
 ) : RecyclerView.Adapter<FoodList_Adapter.AllOrderFoodItemHolder>() {
     var row_index = 0
 
@@ -56,7 +55,7 @@ class FoodList_Adapter(
                 val position = bindingAdapterPosition
                 val category_itemList = category_itemLists[position]
                 row_index = position
-                all_Food_fragment.showAlertView(category_itemList)
+                onItemClicked(category_itemList)
             }
         }
     }

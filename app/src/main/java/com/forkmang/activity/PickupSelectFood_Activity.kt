@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -188,7 +187,7 @@ class PickupSelectFood_Activity : AppCompatActivity() {
         }
         btn_pay_table_food.setOnClickListener {
             dialog.dismiss()
-            val mainIntent = Intent(this, Activity_PaymentSummary::class.java)
+            val mainIntent = Intent(this, ActivityPaymentSummary::class.java)
             //Bundle bundle = new Bundle();
             //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
             mainIntent.putExtra("comingfrom", "PickupFood")

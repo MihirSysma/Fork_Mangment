@@ -61,7 +61,7 @@ import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity(),
     GoogleApiClient.OnConnectionFailedListener {
-    private var callbackManager: CallbackManager? = null
+    private val callbackManager by lazy { create() }
     var mAuth: FirebaseAuth? = null
     var mCallback: OnVerificationStateChangedCallbacks? = null
     var btn_register: Button? = null
@@ -106,9 +106,8 @@ class RegisterActivity : AppCompatActivity(),
         //facebook login code start
         printHashKey()
         sdkInitialize(applicationContext)
-        callbackManager = create()
         binding.buttonFacebookRoot.registerCallback(
-            callbackManager!!,
+            callbackManager,
             object : FacebookCallback<LoginResult>{
                 override fun onCancel() {
                     Log.d("res", "cancle")
@@ -501,7 +500,7 @@ class RegisterActivity : AppCompatActivity(),
         data: Intent?
     ) {
         // add this line
-        callbackManager?.onActivityResult(
+        callbackManager.onActivityResult(
             requestCode,
             resultCode,
             data

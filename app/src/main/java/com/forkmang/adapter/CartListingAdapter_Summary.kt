@@ -9,18 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
-import com.forkmang.activity.Activity_PaymentSummary
 import com.forkmang.data.CartBooking
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import java.util.*
 
-class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayList<CartBooking>?) :
+class CartListingAdapter_Summary(
+    ctx: Context, var cartBookingArrayList: ArrayList<CartBooking>?,
+    private var onItemClicked: ((func_name: String, cart_item_id: String?, qty_update: String?) -> Unit)
+) :
     RecyclerView.Adapter<CartListingAdapter_Summary.CartProductItemHolder>() {
     var ctx: Context? = ctx
     var activity: Activity? = null
@@ -77,10 +78,7 @@ class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayLi
                     var qty_update = txt_qty.text.toString().toInt()
                     --qty_update
                     txt_qty.text = qty_update.toString()
-                    (ctx as Activity_PaymentSummary?)!!.callApi_addqty(
-                        cart_item_id,
-                        qty_update.toString()
-                    )
+                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
                 } else {
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
@@ -93,10 +91,8 @@ class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayLi
                     var qty_update = txt_qty.text.toString().toInt()
                     ++qty_update
                     txt_qty.text = qty_update.toString()
-                    (ctx as Activity_PaymentSummary?)!!.callApi_addqty(
-                        cart_item_id,
-                        qty_update.toString()
-                    )
+                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+
                 } else {
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
@@ -125,7 +121,7 @@ class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayLi
                 tvremove.setOnClickListener {
                     dialog.dismiss()
                     if (Utils.isNetworkAvailable(ctx!!)) {
-                        (ctx as Activity_PaymentSummary?)!!.callApi_removeitemcart(cart_item_id)
+                        onItemClicked(REMOVE_CART_ITEM, cart_item_id, null)
                     } else {
                         ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                     }

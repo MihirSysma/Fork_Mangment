@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.forkmang.R
-import com.forkmang.activity.Booking_TabView_Activity
+import com.forkmang.activity.BookingTabViewActivity
 
 class ScanOrderFragment : Fragment() {
     override fun onCreateView(
@@ -24,7 +23,7 @@ class ScanOrderFragment : Fragment() {
         txt_need_support.setOnClickListener { }
         txt.setOnClickListener {
             Log.d("HI", "Hello")
-            val intent = Intent(activity, Booking_TabView_Activity::class.java)
+            val intent = Intent(activity, BookingTabViewActivity::class.java)
             intent.putExtra("tab_no", "0")
             startActivity(intent)
         }

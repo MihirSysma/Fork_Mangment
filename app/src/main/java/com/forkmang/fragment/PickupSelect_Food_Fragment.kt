@@ -14,11 +14,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
-import com.forkmang.activity.Activity_PaymentSummary
+import com.forkmang.activity.ActivityPaymentSummary
+import com.forkmang.adapter.ADD_QTY
 import com.forkmang.adapter.PickupFoodList_Adapter
 import com.forkmang.adapter.PickupListingAdapter
+import com.forkmang.adapter.REMOVE_CART_ITEM
 import com.forkmang.data.CartBooking
 import com.forkmang.data.Category_ItemList
 import com.forkmang.data.Extra_Topping
@@ -105,9 +106,10 @@ class PickupSelect_Food_Fragment : Fragment() {
                                     requireContext(),
                                     requireActivity(),
                                     category_itemLists!!,
-                                    this@PickupSelect_Food_Fragment,
                                     it
-                                )
+                                ) {
+                                    showAlertView(it)
+                                }
                             }
                             binding.pickRecycleview.adapter = all_orderFood_adapter
 
@@ -184,9 +186,10 @@ class PickupSelect_Food_Fragment : Fragment() {
                                         requireContext(),
                                         requireActivity(),
                                         category_itemLists!!,
-                                        this@PickupSelect_Food_Fragment,
                                         it
-                                    )
+                                    ) {
+                                        showAlertView(it)
+                                    }
                                 }
                                 binding.pickRecycleview.adapter = all_orderFood_adapter
                             }
@@ -311,7 +314,8 @@ class PickupSelect_Food_Fragment : Fragment() {
             radioButton4_extra
 
         }*/
-        val extra_toppingArrayList_get: ArrayList<Extra_Topping>? = category_itemList.extra_toppingArrayList
+        val extra_toppingArrayList_get: ArrayList<Extra_Topping>? =
+            category_itemList.extra_toppingArrayList
         val rb = extra_toppingArrayList_get?.size?.let { arrayOfNulls<RadioButton>(it) }
         val rg = RadioGroup(context) //create the RadioGroup
         rg.orientation = RadioGroup.VERTICAL //or RadioGroup.VERTICAL
@@ -440,7 +444,7 @@ class PickupSelect_Food_Fragment : Fragment() {
         }
         btn_pay_table_food.setOnClickListener {
             dialog.dismiss()
-            val mainIntent = Intent(context, Activity_PaymentSummary::class.java)
+            val mainIntent = Intent(context, ActivityPaymentSummary::class.java)
             //Bundle bundle = new Bundle();
             //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
             mainIntent.putExtra("comingfrom", "PickupFood")
@@ -593,7 +597,16 @@ class PickupSelect_Food_Fragment : Fragment() {
                                 //call adapter
                                 val pickupListingAdapter = PickupListingAdapter(
                                     requireContext(), cartBookingArrayList
-                                )
+                                ) { func_name, cart_item_id, qty_update ->
+                                    when (func_name) {
+                                        ADD_QTY -> {
+                                            callApi_addqty(cart_item_id, qty_update)
+                                        }
+                                        REMOVE_CART_ITEM -> {
+                                            callApi_removeitemcart(cart_item_id)
+                                        }
+                                    }
+                                }
                                 binding.pickRecycleview.adapter = pickupListingAdapter
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {

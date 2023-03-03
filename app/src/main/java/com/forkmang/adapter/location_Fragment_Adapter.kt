@@ -57,7 +57,7 @@ class location_Fragment_Adapter : RecyclerView.Adapter<LocationItemHolder> {
         init {
             imgrightchek = itemView.findViewById(R.id.imgrightchek)
             linear_layout_default = itemView.findViewById(R.id.linear_layout_default)
-            linear_layout_default.setOnClickListener { v: View? -> showAlertView_2() }
+            linear_layout_default.setOnClickListener { showAlertView_2() }
         }
     }
 

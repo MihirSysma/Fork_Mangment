@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.R
 import com.forkmang.data.RestoData
@@ -87,7 +86,7 @@ class Walkin_ActionPage : AppCompatActivity() {
         }
         binding.txtQueueno.setOnClickListener {
             val mainIntent: Intent =
-                Intent(this@Walkin_ActionPage, Activity_PaymentSummary_WalkinFragment::class.java)
+                Intent(this@Walkin_ActionPage, ActivityPaymentSummaryWalkin::class.java)
             startActivity(mainIntent)
         }
     }

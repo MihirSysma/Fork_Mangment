@@ -424,7 +424,9 @@ class BookingTable_DetailView : Activity() {
                                 val listTableBookingAdapter = ListTableBookingAdapter(
                                     this@BookingTable_DetailView,
                                     tableListArrayList
-                                )
+                                ) {
+                                    showAlertView_tableselctionrule(it)
+                                }
                                 binding.tableRecycleview.adapter = listTableBookingAdapter
                             } else {
                                 //no data in array list

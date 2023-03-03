@@ -20,8 +20,8 @@ import com.forkmang.helper.StorePrefrence
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class Booking_TabView_Activity : AppCompatActivity() {
-    var activity: Activity = this@Booking_TabView_Activity
+class BookingTabViewActivity : AppCompatActivity() {
+    var activity: Activity = this@BookingTabViewActivity
     private val storePrefrence by lazy { StorePrefrence(this) }
     var longitude = 0.0
     var c_longitude = 0.0
@@ -34,7 +34,7 @@ class Booking_TabView_Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.imgLoc.setOnClickListener {
-            val intent_walkin = Intent(this@Booking_TabView_Activity, MapsActivity::class.java)
+            val intent_walkin = Intent(this@BookingTabViewActivity, MapsActivity::class.java)
             startActivity(intent_walkin)
         }
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle, viewModel)

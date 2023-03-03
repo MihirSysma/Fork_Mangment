@@ -2,10 +2,10 @@ package com.forkmang.helper
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
-import android.text.TextUtils
 
 object Utils {
     private const val TAG = ""
@@ -13,28 +13,35 @@ object Utils {
     var App_Code = ""
     @JvmStatic
     fun isNetworkAvailable(context: Context): Boolean {
-        return (context
-            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-            .activeNetworkInfo != null
+        if(Build.VERSION.SDK_INT > 23) {
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val network = connectivityManager.activeNetwork ?: return false
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            val isNetworkConnected = when {
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+            return isNetworkConnected
+        }else {
+            return (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+                .activeNetworkInfo != null
+        }
     }
 
     fun isLocationEnabled(context: Context): Boolean {
         var locationMode = 0
         val locationProviders: String
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 locationMode =
                     Settings.Secure.getInt(context.contentResolver, Settings.Secure.LOCATION_MODE)
             } catch (e: SettingNotFoundException) {
                 e.printStackTrace()
             }
-            locationMode != Settings.Secure.LOCATION_MODE_OFF
-        } else {
-            locationProviders = Settings.Secure.getString(
-                context.contentResolver,
-                Settings.Secure.LOCATION_PROVIDERS_ALLOWED
-            )
-            !TextUtils.isEmpty(locationProviders)
-        }
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF
     }
 }

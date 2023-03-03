@@ -102,7 +102,7 @@ class DashBoard_Activity : AppCompatActivity(),
                 /*getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new WalkinFragment())
                         .commit();*/
                 val intent_walkin: Intent =
-                    Intent(this@DashBoard_Activity, Booking_TabView_Activity::class.java)
+                    Intent(this@DashBoard_Activity, BookingTabViewActivity::class.java)
                 intent_walkin.putExtra("tab_no", "1")
                 startActivity(intent_walkin)
                 closeDrawer()
@@ -112,7 +112,7 @@ class DashBoard_Activity : AppCompatActivity(),
             R.id.menu_home -> {
                 //Toast.makeText(this, "Home Pressed", Toast.LENGTH_SHORT).show();
                 val intent_home: Intent =
-                    Intent(this@DashBoard_Activity, Booking_TabView_Activity::class.java)
+                    Intent(this@DashBoard_Activity, BookingTabViewActivity::class.java)
                 intent_home.putExtra("tab_no", "0")
                 startActivity(intent_home)
                 closeDrawer()

@@ -14,11 +14,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
-import com.forkmang.activity.Activity_PaymentSummary
+import com.forkmang.activity.ActivityPaymentSummary
+import com.forkmang.adapter.ADD_QTY
 import com.forkmang.adapter.CartListingAdapter
 import com.forkmang.adapter.FoodList_Adapter
+import com.forkmang.adapter.REMOVE_CART_ITEM
 import com.forkmang.data.CartBooking
 import com.forkmang.data.Category_ItemList
 import com.forkmang.data.Extra_Topping
@@ -67,7 +68,7 @@ class Select_Food_Fragment : Fragment() {
     fun callApi_fooditem(category_id: String?) {
         //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_catitemlist(category_id)!!.enqueue(object : Callback<JsonObject?> {
+        info.getres_catitemlist(category_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     //Log.d("Result", jsonObject.toString());
@@ -104,9 +105,10 @@ class Select_Food_Fragment : Fragment() {
                             all_orderFood_adapter = FoodList_Adapter(
                                 context!!,
                                 activity!!,
-                                category_itemLists!!,
-                                this@Select_Food_Fragment
-                            )
+                                category_itemLists!!
+                            ) {
+                                showAlertView(it)
+                            }
                             binding.orderFoodRecycleview.adapter = all_orderFood_adapter
 
 
@@ -180,9 +182,10 @@ class Select_Food_Fragment : Fragment() {
                                 all_orderFood_adapter = FoodList_Adapter(
                                     requireContext(),
                                     requireActivity(),
-                                    category_itemLists!!,
-                                    this@Select_Food_Fragment
-                                )
+                                    category_itemLists!!
+                                ) {
+                                    showAlertView(it)
+                                }
                                 binding.orderFoodRecycleview.adapter = all_orderFood_adapter
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
@@ -435,7 +438,7 @@ class Select_Food_Fragment : Fragment() {
         }
         btn_pay_table_food.setOnClickListener { v: View? ->
             dialog.dismiss()
-            val mainIntent = Intent(context, Activity_PaymentSummary::class.java)
+            val mainIntent = Intent(context, ActivityPaymentSummary::class.java)
             //Bundle bundle = new Bundle();
             //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
             mainIntent.putExtra("model", tableList_get)
@@ -589,7 +592,16 @@ class Select_Food_Fragment : Fragment() {
                                 progressBar_alertview?.visibility = View.GONE
                                 //call adapter
                                 val cartBookingAdapter =
-                                    CartListingAdapter(requireContext(), cartBookingArrayList)
+                                    CartListingAdapter(requireContext(), cartBookingArrayList) { func_name, cart_item_id, qty_update ->
+                                        when (func_name) {
+                                            ADD_QTY -> {
+                                                callApi_addqty(cart_item_id, qty_update)
+                                            }
+                                            REMOVE_CART_ITEM -> {
+                                                callApi_removeitemcart(cart_item_id)
+                                            }
+                                        }
+                                    }
                                 binding.orderFoodRecycleview.adapter = cartBookingAdapter
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {

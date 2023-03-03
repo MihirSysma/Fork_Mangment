@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
@@ -20,10 +19,18 @@ import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import java.util.*
 
-class PickupListingAdapter(ctx: Context, var cartBookingArrayList: ArrayList<CartBooking>?) :
+const val ADD_QTY = "ADD_QTY"
+const val REMOVE_CART_ITEM = "REMOVE_CART_ITEM"
+
+class PickupListingAdapter(
+    ctx: Context,
+    var cartBookingArrayList: ArrayList<CartBooking>?,
+    private var onItemClicked: ((func_name: String, cart_item_id: String?, qty_update: String?) -> Unit)
+) :
     RecyclerView.Adapter<PickupListingAdapter.CartProductItemHolder>() {
     var ctx: Context? = ctx
     var activity: Activity? = null
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -43,9 +50,7 @@ class PickupListingAdapter(ctx: Context, var cartBookingArrayList: ArrayList<Car
             ctx!!.resources.getString(R.string.rupee) + cartBooking.cart_item_details_price
     }
 
-    override fun getItemCount(): Int {
-        return cartBookingArrayList!!.size
-    }
+    override fun getItemCount() = cartBookingArrayList?.size ?: 0
 
     inner class CartProductItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtproductname: TextView
@@ -69,7 +74,8 @@ class PickupListingAdapter(ctx: Context, var cartBookingArrayList: ArrayList<Car
             minus_btn = itemView.findViewById(R.id.minus_btn)
             img_del = itemView.findViewById(R.id.img_del)
             img_edit = itemView.findViewById(R.id.img_edit)
-            minus_btn.setOnClickListener { v: View? ->
+
+            minus_btn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
@@ -77,15 +83,13 @@ class PickupListingAdapter(ctx: Context, var cartBookingArrayList: ArrayList<Car
                     var qty_update = txt_qty.text.toString().toInt()
                     --qty_update
                     txt_qty.text = qty_update.toString()
-                    PickupSelect_Food_Fragment().callApi_addqty(
-                        cart_item_id,
-                        qty_update.toString()
-                    )
+                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
                 } else {
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
-            plus_btn.setOnClickListener { v: View? ->
+
+            plus_btn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
@@ -93,15 +97,13 @@ class PickupListingAdapter(ctx: Context, var cartBookingArrayList: ArrayList<Car
                     var qty_update = txt_qty.text.toString().toInt()
                     ++qty_update
                     txt_qty.text = qty_update.toString()
-                    PickupSelect_Food_Fragment().callApi_addqty(
-                        cart_item_id,
-                        qty_update.toString()
-                    )
+                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
                 } else {
                     ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
-            img_del.setOnClickListener { v: View? ->
+
+            img_del.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cart_item_id = cartBooking.cart_item_id
@@ -125,9 +127,7 @@ class PickupListingAdapter(ctx: Context, var cartBookingArrayList: ArrayList<Car
                 tvremove.setOnClickListener {
                     dialog.dismiss()
                     if (Utils.isNetworkAvailable(ctx!!)) {
-                        PickupSelect_Food_Fragment().callApi_removeitemcart(
-                            cart_item_id
-                        )
+                        onItemClicked(REMOVE_CART_ITEM, cart_item_id, null)
                     } else {
                         ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                     }

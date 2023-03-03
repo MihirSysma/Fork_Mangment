@@ -72,10 +72,8 @@ class Pickup_Fragment_BookTableAdapter(
             rating_bar = itemView.findViewById<RatingBar>(R.id.rating_bar)
             relative_view.setOnClickListener {
                 val position: Int = bindingAdapterPosition
-                val restoData: RestoData? = resto_dataArrayList.get(position)
-                if (restoData != null) {
-                    onItemClicked(restoData)
-                }
+                val restoData: RestoData = resto_dataArrayList[position]
+                onItemClicked(restoData)
             }
         }
     }

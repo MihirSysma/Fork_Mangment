@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.adapter.CartListingAdapter
 import com.forkmang.databinding.ActivityPaymentSummaryWalkinBinding
 
-class Activity_PaymentSummary_WalkinFragment : AppCompatActivity() {
+class ActivityPaymentSummaryWalkin : AppCompatActivity() {
 
     private val binding by lazy { ActivityPaymentSummaryWalkinBinding.inflate(layoutInflater) }
 
@@ -17,7 +17,7 @@ class Activity_PaymentSummary_WalkinFragment : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.recycleview.layoutManager =
-            LinearLayoutManager(this@Activity_PaymentSummary_WalkinFragment)
+            LinearLayoutManager(this@ActivityPaymentSummaryWalkin)
         if (loadLocale().equals("ar", ignoreCase = true)) {
             //arabic
             binding.lytEng.visibility = View.GONE
@@ -29,12 +29,12 @@ class Activity_PaymentSummary_WalkinFragment : AppCompatActivity() {
         }
         binding.btnPaymentProceed.setOnClickListener {
             val mainIntent = Intent(
-                this@Activity_PaymentSummary_WalkinFragment,
+                this@ActivityPaymentSummaryWalkin,
                 Walkin_ConformationActivity::class.java
             )
             startActivity(mainIntent)
         }
-        val cartBookingAdapter = CartListingAdapter(this@Activity_PaymentSummary_WalkinFragment)
+        val cartBookingAdapter = CartListingAdapter(this@ActivityPaymentSummaryWalkin)
         binding.recycleview.adapter = cartBookingAdapter
     }
 

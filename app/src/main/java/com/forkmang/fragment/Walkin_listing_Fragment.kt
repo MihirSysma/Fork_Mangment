@@ -1,12 +1,11 @@
 package com.forkmang.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.ViewModel
 import com.forkmang.adapter.Walkin_listing_Adapter
@@ -84,12 +83,11 @@ class Walkin_listing_Fragment : Fragment() {
 
     private fun observe() {
         viewModel.searchData.observe(viewLifecycleOwner) {
-            if (isVisible){
+            if (isVisible) {
                 logThis("WalkIn Frag $it")
-                if (it.isNullOrEmpty()){
+                if (it.isNullOrEmpty()) {
                     call_reloadbooktable()
-                }
-                else{
+                } else {
                     filter_booktable(it)
                 }
             }
@@ -141,12 +139,17 @@ class Walkin_listing_Fragment : Fragment() {
                                     }
                                     binding.progressBar.visibility = View.GONE
                                     walkin_listing_adapter = Walkin_listing_Adapter(
-                                        requireActivity(),
-                                        "listing",
-                                        context
-                                    )
-                                    binding.walkinlistingRecycleview.adapter = walkin_listing_adapter
-                                    walkin_listing_adapter?.resto_dataArrayList = restoDataArrayList as ArrayList<RestoData>
+                                        "listing"
+                                    ) { restId, restroData ->
+                                        val intent = Intent(activity, Walkin_detail_Fragment::class.java)
+                                        intent.putExtra("resturant_id", restId)
+                                        intent.putExtra("restromodel", restroData)
+                                        startActivity(intent)
+                                    }
+                                    binding.walkinlistingRecycleview.adapter =
+                                        walkin_listing_adapter
+                                    walkin_listing_adapter?.resto_dataArrayList =
+                                        restoDataArrayList as ArrayList<RestoData>
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE
@@ -209,12 +212,16 @@ class Walkin_listing_Fragment : Fragment() {
                                 }
                                 binding.progressBar.visibility = View.GONE
                                 walkin_listing_adapter = Walkin_listing_Adapter(
-                                    requireActivity(),
-                                    "listing",
-                                    context
-                                )
+                                    "listing"
+                                ) { restId, restroData ->
+                                    val intent = Intent(activity, Walkin_detail_Fragment::class.java)
+                                    intent.putExtra("resturant_id", restId)
+                                    intent.putExtra("restromodel", restroData)
+                                    startActivity(intent)
+                                }
                                 binding.walkinlistingRecycleview.adapter = walkin_listing_adapter
-                                walkin_listing_adapter?.resto_dataArrayList = restoDataArrayList as ArrayList<RestoData>
+                                walkin_listing_adapter?.resto_dataArrayList =
+                                    restoDataArrayList as ArrayList<RestoData>
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
@@ -255,7 +262,7 @@ class Walkin_listing_Fragment : Fragment() {
     } //Api code for Book Table end
 
     companion object {
-        lateinit var viewModel : ViewModel
+        lateinit var viewModel: ViewModel
         fun newInstance(viewModel: ViewModel): Walkin_listing_Fragment {
             this.viewModel = viewModel
             return Walkin_listing_Fragment()

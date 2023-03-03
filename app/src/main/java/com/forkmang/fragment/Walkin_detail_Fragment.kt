@@ -9,7 +9,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.activity.Walkin_ActionPage
 import com.forkmang.adapter.SpinnnerAdapter
@@ -256,12 +255,13 @@ class Walkin_detail_Fragment : FragmentActivity() {
                                     }
                                     binding.progressBar.visibility = View.GONE
                                     walkin_listing_adapter = Walkin_listing_Adapter(
-                                        this@Walkin_detail_Fragment,
-                                        "detail",
-                                        ctx
-                                    )
+                                        "detail"
+                                    ) { restId, _ ->
+                                        callapi_getquess(restId)
+                                    }
                                     binding.walkinRecycleview.adapter = walkin_listing_adapter
-                                    walkin_listing_adapter?.resto_dataArrayList = restoDataArrayList as ArrayList<RestoData>
+                                    walkin_listing_adapter?.resto_dataArrayList =
+                                        restoDataArrayList as ArrayList<RestoData>
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE
@@ -308,10 +308,14 @@ class Walkin_detail_Fragment : FragmentActivity() {
                                 if (binding.txtQueeno.text.toString() == "0") {
                                     //set quee_no
                                     binding.txtQueeno.text = quee_no
-                                } else if (binding.txtQueeno.text.toString().toInt() < quee_no.toInt()) {
+                                } else if (binding.txtQueeno.text.toString()
+                                        .toInt() < quee_no.toInt()
+                                ) {
                                     binding.progressBar.visibility = View.GONE
                                     showAlertView(quee_no)
-                                } else if (binding.txtQueeno.text.toString().toInt() > quee_no.toInt()) {
+                                } else if (binding.txtQueeno.text.toString()
+                                        .toInt() > quee_no.toInt()
+                                ) {
                                     binding.txtQueeno.text = quee_no
                                 } else {
                                     binding.txtQueeno.text = quee_no

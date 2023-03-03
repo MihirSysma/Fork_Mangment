@@ -66,7 +66,7 @@
             android:name=".activity.Order_ConformationActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.Activity_PaymentSummary"
+            android:name=".activity.ActivityPaymentSummary"
             android:exported="false" />
         <activity
             android:name=".activity.SelectFood_Activity"
@@ -75,7 +75,7 @@
             android:name=".activity.BookingOrder_ReserverConformationActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.Booking_TabView_Activity"
+            android:name=".activity.BookingTabViewActivity"
             android:exported="false" />
         <activity
             android:name=".activity.DashBoardView"
@@ -130,7 +130,7 @@
             android:name=".activity.BookingTable_DetailView"
             android:exported="true" />
         <activity
-            android:name=".activity.Activity_PaymentSummary_WalkinFragment"
+            android:name=".activity.ActivityPaymentSummaryWalkin"
             android:exported="true" />
         <activity
             android:name=".activity.Walkin_ConformationActivity"
@@ -150,7 +150,7 @@
             android:name=".fragment.Contact_TermsFragment"
             android:exported="true" />
         <activity
-            android:name=".activity.Activity_PaymentSummary_PickupFragment"
+            android:name=".activity.ActivityPaymentSummaryPickup"
             android:exported="true" />
 
         <activity

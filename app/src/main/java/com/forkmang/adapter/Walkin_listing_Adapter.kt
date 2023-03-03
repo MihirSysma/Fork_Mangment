@@ -17,9 +17,8 @@ import com.forkmang.data.RestoData
 import com.forkmang.fragment.Walkin_detail_Fragment
 
 class Walkin_listing_Adapter(
-    var activity: Activity,
     var coming_from: String?,
-    var ctx: Context?
+    private val ItemOnClick: ((restId: String, restroData: RestoData?) -> Unit)
 ) : ListAdapter<RestoData, Walkin_listing_Adapter.RestoListItemHolder>(ItemCallback) {
 
     object ItemCallback : DiffUtil.ItemCallback<RestoData>() {
@@ -80,12 +79,9 @@ class Walkin_listing_Adapter(
                 val restoData = resto_dataArrayList[position]
                 val resturant_id = restoData.id
                 if (coming_from.equals("listing", ignoreCase = true)) {
-                    val intent = Intent(activity, Walkin_detail_Fragment::class.java)
-                    intent.putExtra("resturant_id", resturant_id)
-                    intent.putExtra("restromodel", restoData)
-                    activity.startActivity(intent)
+                    ItemOnClick(resturant_id?:"", restoData)
                 } else {
-                    (ctx as Walkin_detail_Fragment?)!!.callapi_getquess(resturant_id)
+                    ItemOnClick(resturant_id?:"",null)
                 }
             }
         }

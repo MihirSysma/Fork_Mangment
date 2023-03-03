@@ -117,9 +117,8 @@ class TableOrdersListing_Adapter(
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val Btn_Submit: Button
-        Btn_Submit = dialogView.findViewById(R.id.btn_submit)
-        Btn_Submit.setOnClickListener { v: View? -> dialog.dismiss() }
+        val Btn_Submit: Button = dialogView.findViewById(R.id.btn_submit)
+        Btn_Submit.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 }

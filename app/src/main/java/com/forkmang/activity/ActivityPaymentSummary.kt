@@ -10,7 +10,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.R
+import com.forkmang.adapter.ADD_QTY
 import com.forkmang.adapter.CartListingAdapter_Summary
+import com.forkmang.adapter.REMOVE_CART_ITEM
 import com.forkmang.data.*
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivityPaymentViewBinding
@@ -27,12 +29,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Activity_PaymentSummary : AppCompatActivity() {
+class ActivityPaymentSummary : AppCompatActivity() {
 
     var tableList_get: TableList? = null
     var restoData: RestoData? = null
     private val storePrefrence by lazy { StorePrefrence(this) }
-    var ctx: Context = this@Activity_PaymentSummary
+    var ctx: Context = this@ActivityPaymentSummary
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var coming_from: String? = null
 
@@ -59,7 +61,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
         restoData = intent.getSerializableExtra("restromodel") as RestoData?
         binding.txtPhoneno.text = storePrefrence.getString(Constant.MOBILE)
         binding.progressBar.visibility = View.VISIBLE
-        binding.recycleview.layoutManager = LinearLayoutManager(this@Activity_PaymentSummary)
+        binding.recycleview.layoutManager = LinearLayoutManager(this@ActivityPaymentSummary)
 
         if (loadLocale().equals("ar", ignoreCase = true)) {
             binding.lytEng.visibility = View.GONE
@@ -69,7 +71,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
             binding.lytArabic.visibility = View.GONE
             binding.lytEng.visibility = View.VISIBLE
         }
-        binding.btnPaymentProceed.setOnClickListener(View.OnClickListener { v: View? ->
+        binding.btnPaymentProceed.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
                 if (coming_from.equals("SelectFood", ignoreCase = true)) {
                     callApi_createorder()
@@ -79,7 +81,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
-        })
+        }
         binding.progressBar.visibility = View.GONE
         if (Utils.isNetworkAvailable(ctx)) {
             callApi_cartListview()
@@ -182,12 +184,22 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                 }
                                 binding.progressBar.visibility = View.GONE
                                 val data_total = cartBookingArrayList?.get(0)?.data_total
-                                binding.txtTotalPay.text =
-                                    ctx.resources.getString(R.string.rupee) + data_total
-
+                                binding.txtTotalPay.text = ctx.resources.getString(R.string.rupee) + data_total
                                 //call adapter
                                 val cartListingAdapter_summary =
-                                    CartListingAdapter_Summary(ctx, cartBookingArrayList)
+                                    CartListingAdapter_Summary(
+                                        ctx,
+                                        cartBookingArrayList
+                                    ) { func_name, cart_item_id, qty_update ->
+                                        when (func_name) {
+                                            ADD_QTY -> {
+                                                callApi_addqty(cart_item_id, qty_update)
+                                            }
+                                            REMOVE_CART_ITEM -> {
+                                                callApi_removeitemcart(cart_item_id)
+                                            }
+                                        }
+                                    }
                                 binding.recycleview.adapter = cartListingAdapter_summary
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
@@ -316,7 +328,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage( "Error occur please try again")
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
@@ -344,7 +356,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
-                                showToastMessage( obj.getString("message"))
+                                showToastMessage(obj.getString("message"))
                                 binding.progressBar.visibility = View.GONE
                                 if (Utils.isNetworkAvailable(ctx)) {
                                     callApi_cartListview()
@@ -398,7 +410,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                 Handler().postDelayed({
                                     dialog.dismiss()
                                     val mainIntent = Intent(
-                                        this@Activity_PaymentSummary,
+                                        this@ActivityPaymentSummary,
                                         PaymentScreenActivity::class.java
                                     )
                                     if (coming_from.equals("SelectFood", ignoreCase = true)) {
@@ -412,7 +424,10 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                     }
                                     mainIntent.putExtra("comingfrom", coming_from)
                                     mainIntent.putExtra("restromodel", restoData)
-                                    mainIntent.putExtra("totalpay", binding.txtTotalPay.text.toString())
+                                    mainIntent.putExtra(
+                                        "totalpay",
+                                        binding.txtTotalPay.text.toString()
+                                    )
                                     mainIntent.putExtra("orderid", order_id)
                                     mainIntent.putExtra("isbooktable", "no")
                                     startActivity(mainIntent)
@@ -465,7 +480,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                     dialog.dismiss()
                                     if (coming_from.equals("PickupFood", ignoreCase = true)) {
                                         val mainIntent = Intent(
-                                            this@Activity_PaymentSummary,
+                                            this@ActivityPaymentSummary,
                                             PaymentScreenActivity::class.java
                                         )
                                         mainIntent.putExtra("restromodel", restoData)
@@ -479,7 +494,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
                                         startActivity(mainIntent)
                                     } else {
                                         val mainIntent = Intent(
-                                            this@Activity_PaymentSummary,
+                                            this@ActivityPaymentSummary,
                                             PaymentScreenActivity::class.java
                                         )
                                         mainIntent.putExtra("model", tableList_get)
@@ -531,7 +546,7 @@ class Activity_PaymentSummary : AppCompatActivity() {
     }
 
     private fun showAlertView_conformtable(): AlertDialog {
-        val alertDialog = AlertDialog.Builder(this@Activity_PaymentSummary)
+        val alertDialog = AlertDialog.Builder(this@ActivityPaymentSummary)
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView = inflater.inflate(R.layout.conform_tablereserve_view, null)
         alertDialog.setView(dialogView)

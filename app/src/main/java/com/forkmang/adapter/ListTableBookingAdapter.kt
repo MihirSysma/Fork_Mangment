@@ -8,11 +8,11 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
-import com.forkmang.activity.BookingTable_DetailView
 import com.forkmang.adapter.ListTableBookingAdapter.ListBookTableItemHolder
 import com.forkmang.models.TableList
 
-class ListTableBookingAdapter(var activity: Activity, var listTableBooking: ArrayList<TableList>?) :
+class ListTableBookingAdapter(var activity: Activity, var listTableBooking: ArrayList<TableList>?,
+ private val onItemCLicked:((tableList: TableList) -> Unit)) :
     RecyclerView.Adapter<ListBookTableItemHolder>() {
 
     override fun onCreateViewHolder(
@@ -31,9 +31,7 @@ class ListTableBookingAdapter(var activity: Activity, var listTableBooking: Arra
         holder.txt_type.text = tableList.type
     }
 
-    override fun getItemCount(): Int {
-        return listTableBooking!!.size
-    }
+    override fun getItemCount() = listTableBooking?.size?:0
 
     inner class ListBookTableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txt_type: TextView
@@ -46,10 +44,10 @@ class ListTableBookingAdapter(var activity: Activity, var listTableBooking: Arra
             txt_type = itemView.findViewById(R.id.txt_type)
             txt_noperson = itemView.findViewById(R.id.txt_noperson)
             txt_table_no = itemView.findViewById(R.id.txt_table_no)
-            relative_view.setOnClickListener { v: View? ->
+            relative_view.setOnClickListener {
                 val position = bindingAdapterPosition
                 val tableList = listTableBooking!![position]
-                (activity as BookingTable_DetailView).showAlertView_tableselctionrule(tableList)
+                onItemCLicked(tableList)
             }
         }
     }
