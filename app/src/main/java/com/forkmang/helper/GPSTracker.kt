@@ -60,7 +60,7 @@ class GPSTracker : Service, LocationListener {
                             ), 0
                         )
                     }
-                    locationManager!!.requestLocationUpdates(
+                    locationManager?.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES.toFloat(),
@@ -68,26 +68,26 @@ class GPSTracker : Service, LocationListener {
                     )
                     if (locationManager != null) {
                         location =
-                            locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                            locationManager?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                         if (location != null) {
-                            latitude = location!!.latitude
-                            longitude = location!!.longitude
+                            latitude = location?.latitude?:0.0
+                            longitude = location?.longitude?:0.0
                         }
                     }
                 }
                 if (isGPSEnabled) {
                     if (location == null) {
-                        locationManager!!.requestLocationUpdates(
+                        locationManager?.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER,
                             MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES.toFloat(), this
                         )
                         if (locationManager != null) {
                             location =
-                                locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                                locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                             if (location != null) {
-                                latitude = location!!.latitude
-                                longitude = location!!.longitude
+                                latitude = location?.latitude?:0.0
+                                longitude = location?.longitude?:0.0
                             }
                         }
                     }
@@ -121,7 +121,7 @@ class GPSTracker : Service, LocationListener {
 
     fun getAddressLine(context: Context?): String? {
         val addresses = getGeocoderAddress(context)
-        return if (addresses != null && addresses.size > 0) {
+        return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
             address.getAddressLine(0)
         } else {
@@ -131,7 +131,7 @@ class GPSTracker : Service, LocationListener {
 
     fun getLocality(context: Context?): String? {
         val addresses = getGeocoderAddress(context)
-        return if (addresses != null && addresses.size > 0) {
+        return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
             address.locality
         } else {
@@ -141,7 +141,7 @@ class GPSTracker : Service, LocationListener {
 
     fun getPostalCode(context: Context?): String? {
         val addresses = getGeocoderAddress(context)
-        return if (addresses != null && addresses.size > 0) {
+        return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
             address.postalCode
         } else {
@@ -151,7 +151,7 @@ class GPSTracker : Service, LocationListener {
 
     fun getCountryName(context: Context?): String? {
         val addresses = getGeocoderAddress(context)
-        return if (addresses != null && addresses.size > 0) {
+        return if (addresses != null && addresses.isNotEmpty()) {
             val address = addresses[0]
             address.countryName
         } else {
@@ -161,13 +161,13 @@ class GPSTracker : Service, LocationListener {
 
     fun stopUsingGPS() {
         if (locationManager != null) {
-            locationManager!!.removeUpdates(this@GPSTracker)
+            locationManager?.removeUpdates(this@GPSTracker)
         }
     }
 
     fun getLatitude(): Double {
         if (location != null) {
-            latitude = location!!.latitude
+            latitude = location?.latitude?:0.0
         }
 
         // return latitude
@@ -176,7 +176,7 @@ class GPSTracker : Service, LocationListener {
 
     fun getLongitude(): Double {
         if (location != null) {
-            longitude = location!!.longitude
+            longitude = location?.longitude?:0.0
         }
         return longitude
     }
@@ -187,8 +187,8 @@ class GPSTracker : Service, LocationListener {
 
     fun updateGPSCoordinates() {
         if (location != null) {
-            latitude = location!!.latitude
-            longitude = location!!.longitude
+            latitude = location?.latitude?:0.0
+            longitude = location?.longitude?:0.0
         }
     }
 

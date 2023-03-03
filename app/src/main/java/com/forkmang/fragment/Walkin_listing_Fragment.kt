@@ -12,11 +12,8 @@ import com.forkmang.ViewModel
 import com.forkmang.adapter.Walkin_listing_Adapter
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentWalkinlistingLayoutBinding
-import com.forkmang.helper.ApiConfig
-import com.forkmang.helper.Constant
-import com.forkmang.helper.GPSTracker
+import com.forkmang.helper.*
 import com.forkmang.helper.Utils.isNetworkAvailable
-import com.forkmang.helper.logThis
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -153,26 +150,25 @@ class Walkin_listing_Fragment : Fragment() {
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE
-                                    Toast.makeText(context, Constant.NODATA, Toast.LENGTH_LONG)
-                                        .show()
+                                    context?.showToastMessage(Constant.NODATA)
                                 }
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                // getContext.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            // getContext.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        //getContext.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    context?.showToastMessage(Constant.ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -222,18 +218,18 @@ class Walkin_listing_Fragment : Fragment() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(context, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                context?.showToastMessage(Constant.NODATA)
                             }
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        context?.showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    context?.showToastMessage(Constant.ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -243,7 +239,7 @@ class Walkin_listing_Fragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             callapi_searchbooktable(search_str, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -254,7 +250,7 @@ class Walkin_listing_Fragment : Fragment() {
             val service_id = "2"
             callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     } //Api code for Book Table end
 

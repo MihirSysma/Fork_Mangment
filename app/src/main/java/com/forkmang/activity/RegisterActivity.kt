@@ -142,9 +142,9 @@ class RegisterActivity : AppCompatActivity(),
             password = Objects.requireNonNull(binding.etvPassword.text).toString()
             cnfpassword = Objects.requireNonNull(binding.etvCnfpassword.text).toString()
             email = Objects.requireNonNull(binding.etvEmail.text).toString()
-            if (binding.etvUsername.text!!.isNotEmpty()) {
-                if (mobile!!.isNotEmpty()) {
-                    if (mobile!!.length == 10) {
+            if (binding.etvUsername.text?.isNotEmpty() == true) {
+                if (mobile?.isNotEmpty() == true) {
+                    if (mobile?.length == 10) {
                         //Email is empty or not
                         if (Objects.requireNonNull<Editable?>(binding.etvEmail.text).isNotEmpty()) {
                             //Email is valid or not
@@ -153,8 +153,8 @@ class RegisterActivity : AppCompatActivity(),
                                 )
                             ) {
                                 //password is valid or not
-                                if (password!!.length > 3) {
-                                    if (cnfpassword!!.length > 3) {
+                                if ((password?.length ?: 0) > 3) {
+                                    if ((cnfpassword?.length ?: 0) > 3) {
                                         if ((password == cnfpassword)) {
                                             //call api
                                             val phoneNumber: String =
@@ -325,8 +325,8 @@ class RegisterActivity : AppCompatActivity(),
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, otptext: String) {
         binding.progressBar.visibility = View.VISIBLE
-        mAuth!!.signInWithCredential(credential)
-            .addOnCompleteListener(
+        mAuth?.signInWithCredential(credential)
+            ?.addOnCompleteListener(
                 this@RegisterActivity
             ) { task ->
                 if (task.isSuccessful) {
@@ -353,13 +353,13 @@ class RegisterActivity : AppCompatActivity(),
     private val token: Unit
         get() {
             val mUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-            mUser!!.getIdToken(true)
-                .addOnCompleteListener { p0 ->
+            mUser?.getIdToken(true)
+                ?.addOnCompleteListener { p0 ->
                     if (p0.isSuccessful) {
                         idToken = p0.result?.token
                         binding.progressBar.visibility = View.GONE
                         showAlertView()
-                        Log.d("token", (idToken)!!)
+                        Log.d("token", idToken.toString())
                         // Send token to your backend via HTTPS
                         // ...
                     } else {
@@ -379,8 +379,8 @@ class RegisterActivity : AppCompatActivity(),
     ) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.register_user(name, email, mobile_no, password, cnf_password, token)!!
-            .enqueue(object : Callback<JsonObject?> {
+        Api.info.register_user(name, email, mobile_no, password, cnf_password, token)
+            ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(
                     call: Call<JsonObject?>,
                     response: Response<JsonObject?>
@@ -443,7 +443,7 @@ class RegisterActivity : AppCompatActivity(),
 
     private fun callapi_sociallogin(token: String?, userid: String?, type: String) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.register_sociallogin(type, userid)!!.enqueue(object : Callback<JsonObject?> {
+        Api.info.register_sociallogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
@@ -522,11 +522,11 @@ class RegisterActivity : AppCompatActivity(),
         if (result?.isSuccess == true) {
             //gotoProfile();
             val account: GoogleSignInAccount? = result.signInAccount
-            Log.d("id", (account!!.id)!!)
+            Log.d("id", account?.id.toString())
             if (Utils.isNetworkAvailable(ctx)) {
                 callapi_sociallogin(
-                    account.idToken,
-                    account.id,
+                    account?.idToken,
+                    account?.id,
                     "google"
                 )
             } else {

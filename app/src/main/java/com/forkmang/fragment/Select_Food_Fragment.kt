@@ -30,6 +30,7 @@ import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils.isNetworkAvailable
+import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
@@ -64,7 +65,7 @@ class Select_Food_Fragment : Fragment() {
     }
 
     fun callApi_fooditem(category_id: String?) {
-        //Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
+        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
         binding.progressBar.visibility = View.VISIBLE
         info.getres_catitemlist(category_id)!!.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
@@ -125,20 +126,19 @@ class Select_Food_Fragment : Fragment() {
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                        .show()
+                    context?.showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG).show()
+                context?.showToastMessage("Error occur please try again")
                 binding.progressBar.visibility = View.GONE
             }
         })
     }
 
     fun callApi_searchfooditem(category_id: String?, search_item: String?) {
-        //Toast.makeText(getContext(),"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
+        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
         binding.progressBar.visibility = View.VISIBLE
         info.getres_catitemlist_search(category_id, search_item)!!
             .enqueue(object : Callback<JsonObject?> {
@@ -192,14 +192,12 @@ class Select_Food_Fragment : Fragment() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        context?.showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                        .show()
+                    context?.showToastMessage("Error occur please try again")
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -232,11 +230,7 @@ class Select_Food_Fragment : Fragment() {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status").equals("200", ignoreCase = true)) {
-                                Toast.makeText(
-                                    context,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                context?.showToastMessage(jsonObject.getString("message"))
                                 storePrefrence.setString(
                                     Constant.CARTID,
                                     jsonObject.getJSONObject("data").getString("cart_id")
@@ -251,17 +245,12 @@ class Select_Food_Fragment : Fragment() {
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(
-                                context,
-                                jsonObject.getString("message"),
-                                Toast.LENGTH_LONG
-                            ).show()
+                            context?.showToastMessage(jsonObject.getString("message"))
 
                             /*JSONObject obj = new JSONObject(loadJSONFromAsset());
                                 if(obj.getString("status").equalsIgnoreCase("200"))
                                 {
-                                    Toast.makeText(getContext(), obj.getString("message")+" offline ", Toast.LENGTH_LONG).show();
-                                    storePrefrence.setString("cartid", obj.getJSONObject("data").getString("cart_id"));
+                                    context?.showToastMessage(, obj.getString("message")+" offline "                                   storePrefrence.setString("cartid", obj.getJSONObject("data").getString("cart_id"));
                                     storePrefrence.setString("item_id", obj.getJSONObject("data").getString("item_id"));
                                     cartListingView();
 
@@ -270,14 +259,12 @@ class Select_Food_Fragment : Fragment() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        context?.showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                        .show()
+                    context?.showToastMessage("Error occur please try again")
                     binding.progressBar.visibility = View.GONE
                     //stopProgress();
                 }
@@ -289,7 +276,7 @@ class Select_Food_Fragment : Fragment() {
             this.booking_id = booking_id
             callApi_fooditem(category_id)
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -409,7 +396,7 @@ class Select_Food_Fragment : Fragment() {
                     "book_table"
                 )
             } else {
-                Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                context?.showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         btn_reserve.setOnClickListener { v: View? -> dialog.dismiss() }
@@ -444,7 +431,7 @@ class Select_Food_Fragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             callApi_cartListview()
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
         btn_pay_table_food.setOnClickListener { v: View? ->
             dialog.dismiss()
@@ -607,11 +594,7 @@ class Select_Food_Fragment : Fragment() {
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
-                            Toast.makeText(
-                                context,
-                                jsonObject?.getString("message"),
-                                Toast.LENGTH_LONG
-                            ).show()
+                            context?.showToastMessage(jsonObject?.getString("message").toString())
                             progressBar_alertview?.visibility = View.GONE
                             /*JSONObject obj = new JSONObject(loadJSONFromAsset_t());
 
@@ -689,15 +672,13 @@ class Select_Food_Fragment : Fragment() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         progressBar_alertview?.visibility = View.GONE
-                        Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        context?.showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     progressBar_alertview?.visibility = View.GONE
-                    Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                        .show()
+                    context?.showToastMessage("Error occur please try again")
                     //stopProgress();
                 }
             })
@@ -721,43 +702,29 @@ class Select_Food_Fragment : Fragment() {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
-                                Toast.makeText(
-                                    context,
-                                    obj.getString("message"),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                context?.showToastMessage(obj.getString("message"))
                                 binding.progressBar.visibility = View.GONE
                                 if (isNetworkAvailable(requireContext())) {
                                     callApi_cartListview()
                                 } else {
-                                    Toast.makeText(
-                                        context,
-                                        Constant.NETWORKEROORMSG,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    context?.showToastMessage(Constant.NETWORKEROORMSG)
                                 }
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
-                            Toast.makeText(
-                                context,
-                                jsonObject?.getString("message"),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            context?.showToastMessage(jsonObject?.getString("message").toString())
                             binding.progressBar.visibility = View.GONE
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        context?.showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                        .show()
+                    context?.showToastMessage("Error occur please try again")
                 }
             })
     }
@@ -779,43 +746,29 @@ class Select_Food_Fragment : Fragment() {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
-                                Toast.makeText(
-                                    context,
-                                    obj.getString("message"),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                context?.showToastMessage(obj.getString("message"))
                                 binding.progressBar.visibility = View.GONE
                                 if (isNetworkAvailable(requireContext())) {
                                     callApi_cartListview()
                                 } else {
-                                    Toast.makeText(
-                                        context,
-                                        Constant.NETWORKEROORMSG,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    context?.showToastMessage(Constant.NETWORKEROORMSG)
                                 }
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            Toast.makeText(
-                                context,
-                                jsonObject.getString("message"),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            context?.showToastMessage(jsonObject.getString("message"))
                             binding.progressBar.visibility = View.GONE
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                            .show()
+                        context?.showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(context, "Error occur please try again", Toast.LENGTH_LONG)
-                        .show()
+                    context?.showToastMessage("Error occur please try again")
                 }
             })
     }

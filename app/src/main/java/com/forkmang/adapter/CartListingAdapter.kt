@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
@@ -17,6 +16,7 @@ import com.forkmang.data.CartBooking
 import com.forkmang.fragment.Select_Food_Fragment
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import java.util.*
 
 class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductItemHolder> {
@@ -90,7 +90,7 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                         qty_update.toString()
                     )
                 } else {
-                    Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                    ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
             plus_btn.setOnClickListener { v: View? ->
@@ -106,7 +106,7 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                         qty_update.toString()
                     )
                 } else {
-                    Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                    ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
             img_del.setOnClickListener {
@@ -124,12 +124,9 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                 val dialog = alertDialog.create()
                 Objects.requireNonNull(dialog.window)
                     ?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                val tvremove: TextView
-                val tvclose: TextView
-                val txt_msg: TextView
-                tvremove = dialogView.findViewById(R.id.tvcancel)
-                tvclose = dialogView.findViewById(R.id.tvclose)
-                txt_msg = dialogView.findViewById(R.id.txt_msg)
+                val tvremove: TextView = dialogView.findViewById(R.id.tvcancel)
+                val tvclose: TextView = dialogView.findViewById(R.id.tvclose)
+                val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
                 tvclose.setText(R.string.cancel)
                 tvremove.setText(R.string.remove)
                 txt_msg.text = ctx!!.resources.getString(R.string.deleteproductmsg)
@@ -138,7 +135,7 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                     if (Utils.isNetworkAvailable(ctx!!)) {
                         Select_Food_Fragment().callApi_removeitemcart(cart_item_id)
                     } else {
-                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                        ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
                 tvclose.setOnClickListener {
@@ -180,13 +177,13 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                         {
                             ex.printStackTrace();
                             //progressBar.setVisibility(View.GONE);
-                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                            ctx.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         //progressBar.setVisibility(View.GONE);
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                        ctx.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
 
                     }
                 });

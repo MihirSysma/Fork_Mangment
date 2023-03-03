@@ -33,14 +33,16 @@ object ApiConfig {
         var address = ""
         try {
             val addresses = geocoder.getFromLocation(lat, lng, 1)
-            if (addresses!!.size != 0) {
-                val obj = addresses[0]
-                val add = obj.getAddressLine(0)
-                address = add
+            if (addresses?.size != 0) {
+                val obj = addresses?.get(0)
+                val add = obj?.getAddressLine(0)
+                if (add != null) {
+                    address = add
+                }
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
+            activity.showToastMessage(e.message.toString())
         }
         return address
     }
@@ -118,12 +120,12 @@ object ApiConfig {
                 }
             } else {
                 gps = GPSTracker(activity)
-                if (gps!!.canGetLocation()) {
-                    user_location = gps!!.getAddressLine(activity)
+                if (gps?.canGetLocation() == true) {
+                    user_location = gps?.getAddressLine(activity)
                 }
                 if (gps?.isGPSTrackingEnabled == true) {
-                    latitude1 = gps!!.latitude
-                    longitude1 = gps!!.longitude
+                    latitude1 = gps?.latitude?:0.0
+                    longitude1 = gps?.longitude?:0.0
                 }
             }
         } catch (e: Exception) {

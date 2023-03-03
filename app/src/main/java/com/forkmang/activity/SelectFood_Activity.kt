@@ -22,6 +22,7 @@ import com.forkmang.databinding.ActivitySelectfoodBinding
 import com.forkmang.fragment.Select_Food_Fragment
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
 import com.forkmang.network_call.Api.info
 import com.google.android.material.tabs.TabLayout
@@ -73,20 +74,20 @@ class SelectFood_Activity : AppCompatActivity() {
         val noseat: String? = intent.getStringExtra("noseat")
         txt_datetime.text = timedate
         txt_day.text = day
-        txt_noofseat.text = noseat + " " + "Seats"
+        txt_noofseat.text = "$noseat Seats"
         txt_view_day.text = day
         txt_view_day_2.text = day
-        txtrestroname.text = restoData!!.rest_name
-        txt_time.text = restoData!!.endtime
-        txt_totalkm.text = restoData!!.distance + " km"
-        booking_id = restoData!!.id
+        txtrestroname.text = restoData?.rest_name
+        txt_time.text = restoData?.endtime
+        txt_totalkm.text = restoData?.distance + " km"
+        booking_id = restoData?.id
         img_searchicon.setOnClickListener {
             val str_search: String = binding.etvSearchview.text.toString()
             val all_Food_fragment = Select_Food_Fragment()
             if (Utils.isNetworkAvailable(ctx)) {
                 all_Food_fragment.callApi_searchfooditem(category_id, str_search)
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         binding.etvSearchview.addTextChangedListener(object : TextWatcher {
@@ -103,7 +104,7 @@ class SelectFood_Activity : AppCompatActivity() {
                         val all_Food_fragment = Select_Food_Fragment()
                         all_Food_fragment.callApi_fooditem(category_id)
                     } else {
-                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                        showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
             }
@@ -139,7 +140,7 @@ class SelectFood_Activity : AppCompatActivity() {
         if (Utils.isNetworkAvailable(ctx)) {
             callapi_tablisting("1")
         } else {
-            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -178,7 +179,7 @@ class SelectFood_Activity : AppCompatActivity() {
     private fun callapi_tablisting(branch_id: String) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_foodlist(branch_id)!!.enqueue(object : Callback<JsonObject?> {
+        info.getres_foodlist(branch_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
@@ -224,27 +225,27 @@ class SelectFood_Activity : AppCompatActivity() {
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                    showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show()
+                showToastMessage("Error occur please try again")
                 //stopProgress();
             }
         })
     }
 
     private fun Hidekeyboard() {
-        etv_searchview!!.clearFocus()
+        etv_searchview?.clearFocus()
         val `in`: InputMethodManager = this@SelectFood_Activity.getSystemService(
             INPUT_METHOD_SERVICE
         ) as InputMethodManager
-        `in`.hideSoftInputFromWindow(etv_searchview!!.windowToken, 0)
+        `in`.hideSoftInputFromWindow(etv_searchview?.windowToken, 0)
     }
 
     fun getTabView(str: String?): View {

@@ -26,6 +26,7 @@ import com.forkmang.helper.Constant
 import com.forkmang.helper.GPSTracker
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.logThis
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -96,7 +97,7 @@ class Book_Table_Fragment : Fragment() {
                 id: Long
             ) {
                 if (position > 0) {
-                    Toast.makeText(context, person[position], Toast.LENGTH_SHORT).show()
+                    context?.showToastMessage(person[position])
                 }
 
                 /* String str = person[position];
@@ -115,7 +116,7 @@ class Book_Table_Fragment : Fragment() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(context, "not selected", Toast.LENGTH_SHORT).show()
+                context?.showToastMessage("not selected")
             }
         }
 
@@ -382,25 +383,25 @@ class Book_Table_Fragment : Fragment() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(context, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                context?.showToastMessage(Constant.NODATA)
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            // getContext.showToastMessage(, Constant.ERRORMSG);
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        // getContext.showToastMessage(, Constant.ERRORMSG);
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    //getContext.showToastMessage(, Constant.ERRORMSG);
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                context?.showToastMessage(Constant.ERRORMSG)
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -449,18 +450,18 @@ class Book_Table_Fragment : Fragment() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(context, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                context?.showToastMessage(Constant.NODATA)
                             }
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        context?.showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    context?.showToastMessage(Constant.ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -470,7 +471,7 @@ class Book_Table_Fragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             callapi_searchbooktable(search_str, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -480,7 +481,7 @@ class Book_Table_Fragment : Fragment() {
             saveLongitude = 72.375741
             callapi_getbooktable("2", saveLatitude.toString(), saveLongitude.toString())
         } else {
-            Toast.makeText(context, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 

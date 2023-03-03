@@ -12,6 +12,7 @@ import com.forkmang.R
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -66,7 +67,7 @@ class Term_Fragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(context, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    context?.showToastMessage(Constant.ERRORMSG)
                     txt_term?.text = "Error Occur During  Fetching Terms & Condition"
                     progressBar?.visibility = View.GONE
                 }

@@ -327,7 +327,7 @@ class BookingTable_DetailView : Activity() {
 
     private fun callapi_booktablelist(restaurant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_detail(restaurant_id)!!.enqueue(object : Callback<JsonObject?> {
+        info.getres_detail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_n) {

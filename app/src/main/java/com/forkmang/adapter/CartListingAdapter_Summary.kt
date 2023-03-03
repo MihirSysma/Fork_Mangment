@@ -17,6 +17,7 @@ import com.forkmang.activity.Activity_PaymentSummary
 import com.forkmang.data.CartBooking
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Utils
+import com.forkmang.helper.showToastMessage
 import java.util.*
 
 class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayList<CartBooking>?) :
@@ -81,7 +82,7 @@ class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayLi
                         qty_update.toString()
                     )
                 } else {
-                    Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                    ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
             plus_btn.setOnClickListener { v: View? ->
@@ -97,7 +98,7 @@ class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayLi
                         qty_update.toString()
                     )
                 } else {
-                    Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                    ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
             img_del.setOnClickListener {
@@ -126,7 +127,7 @@ class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayLi
                     if (Utils.isNetworkAvailable(ctx!!)) {
                         (ctx as Activity_PaymentSummary?)!!.callApi_removeitemcart(cart_item_id)
                     } else {
-                        Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                        ctx?.showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
                 tvclose.setOnClickListener {
@@ -168,13 +169,13 @@ class CartListingAdapter_Summary(ctx: Context, var cartBookingArrayList: ArrayLi
                         {
                             ex.printStackTrace();
                             //progressBar.setVisibility(View.GONE);
-                            Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                            ctx?.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         //progressBar.setVisibility(View.GONE);
-                        Toast.makeText(ctx, "Error occur please try again", Toast.LENGTH_LONG).show();
+                        ctx?.showToastMessage("Error occur please try again", Toast.LENGTH_LONG).show();
 
                     }
                 });

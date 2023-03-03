@@ -24,6 +24,7 @@ import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils.isNetworkAvailable
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -92,7 +93,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
             ) {
                 is_pesonselect = false
                 if (position > 0) {
-                    Toast.makeText(ctx, person_arr[position], Toast.LENGTH_SHORT).show()
+                    showToastMessage(person_arr[position])
                     noof_person = person_arr[position]
                     val arrOfStr = noof_person?.split(" ".toRegex(), limit = 2)?.toTypedArray()
                     noof_person = arrOfStr?.get(0)
@@ -103,7 +104,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(ctx, "not selected", Toast.LENGTH_SHORT).show()
+                showToastMessage("not selected")
             }
         }
         //spinner_person array adapter end
@@ -122,7 +123,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
                 ) {
                     is_occasionselect = false
                     if (position > 0) {
-                        Toast.makeText(ctx, occasion_arr[position], Toast.LENGTH_SHORT).show()
+                        showToastMessage(occasion_arr[position])
                         occasion = occasion_arr[position]
                         is_occasionselect = true
                     } else {
@@ -131,7 +132,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    Toast.makeText(ctx, "not selected", Toast.LENGTH_SHORT).show()
+                    showToastMessage("not selected")
                 }
             }
         //spinner_occasion array adapter end
@@ -147,7 +148,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
             ) {
                 if (position > 0) {
                     val areaDropdown = areaDropdownArrayList?.get(position)
-                    Toast.makeText(ctx, areaDropdown?.area_name, Toast.LENGTH_SHORT).show()
+                    showToastMessage(areaDropdown?.area_name.toString())
                     area = areaDropdown?.area_name
                     str_area_id = areaDropdown?.id
                     is_areatype = true
@@ -168,7 +169,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
             callapi_getquess(resturant_id)
             callapi_filldropdown(resturant_id)
         } else {
-            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            showToastMessage(Constant.NETWORKEROORMSG)
         }
         binding.txtnextview.setOnClickListener {
             //testing purpose
@@ -191,7 +192,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
             if (isNetworkAvailable(ctx)) {
                 callapi_getquee(resturant_id, noof_person!!, occasion!!, area!!)
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
     }
@@ -206,7 +207,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
         if (isNetworkAvailable(ctx)) {
             callapi_getbooktable(service_id, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+            showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
@@ -264,25 +265,25 @@ class Walkin_detail_Fragment : FragmentActivity() {
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE
-                                    Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                    showToastMessage(Constant.NODATA)
                                 }
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        //getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -301,7 +302,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
                             if (jsonObject.getString("status")
                                     .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
-                                //Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                //ctx?.showToastMessage(jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                 quee_no = jsonObject.getString("data")
                                 val quee_no = jsonObject.getString("data")
                                 if (binding.txtQueeno.text.toString() == "0") {
@@ -316,21 +317,21 @@ class Walkin_detail_Fragment : FragmentActivity() {
                                     binding.txtQueeno.text = quee_no
                                 }
                             } else {
-                                // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                         }
                         binding.progressBar.visibility = View.GONE
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        //getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    // Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    // ctx?.showToastMessage(Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -350,32 +351,28 @@ class Walkin_detail_Fragment : FragmentActivity() {
                                     .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
                                 binding.relativeBottom.visibility = View.VISIBLE
-                                Toast.makeText(
-                                    ctx,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                showToastMessage(jsonObject.getString("message"))
                                 binding.txtqnoBottom.text =
                                     "No in current queue: " + jsonObject.getJSONObject("data")
                                         .getString("queue_id")
                             } else {
                                 binding.relativeBottom.visibility = View.GONE
-                                // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                             }
                         } else {
                             binding.relativeBottom.visibility = View.GONE
-                            // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                         }
                         binding.progressBar.visibility = View.GONE
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        //getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -388,12 +385,9 @@ class Walkin_detail_Fragment : FragmentActivity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val txt_msg: TextView
-        val tvyes: TextView
-        val tvno: TextView
-        txt_msg = dialogView.findViewById(R.id.txt_msg)
-        tvyes = dialogView.findViewById(R.id.tvyes)
-        tvno = dialogView.findViewById(R.id.tvno)
+        val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
+        val tvyes: TextView = dialogView.findViewById(R.id.tvyes)
+        val tvno: TextView = dialogView.findViewById(R.id.tvno)
         txt_msg.text =
             "new queue no is grater than previous quee no still you want to set new queue no ?"
         tvyes.setOnClickListener { v: View? ->
@@ -411,12 +405,9 @@ class Walkin_detail_Fragment : FragmentActivity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val txt_msg: TextView
-        val tvyes: TextView
-        val tvno: TextView
-        txt_msg = dialogView.findViewById(R.id.txt_msg)
-        tvyes = dialogView.findViewById(R.id.tvyes)
-        tvno = dialogView.findViewById(R.id.tvno)
+        val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
+        val tvyes: TextView = dialogView.findViewById(R.id.tvyes)
+        val tvno: TextView = dialogView.findViewById(R.id.tvno)
         txt_msg.text = msg
         tvyes.setOnClickListener { v: View? ->
             dialog.dismiss()
@@ -430,7 +421,7 @@ class Walkin_detail_Fragment : FragmentActivity() {
                     identifier
                 )
             } else {
-                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
         tvno.setOnClickListener { v: View? -> dialog.dismiss() }
@@ -479,23 +470,23 @@ class Walkin_detail_Fragment : FragmentActivity() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(ctx, Constant.NODATA, Toast.LENGTH_LONG).show()
+                                showToastMessage(Constant.NODATA)
                             }
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                        showToastMessage(Constant.ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                showToastMessage(Constant.ERRORMSG)
             }
         })
     }
@@ -519,33 +510,31 @@ class Walkin_detail_Fragment : FragmentActivity() {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage(jsonObject.getString("message"))
                         if (isNetworkAvailable(ctx)) {
                             callapi_personqueue_no(restaurant_id)
                         } else {
-                            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                            showToastMessage(Constant.NETWORKEROORMSG)
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(response.errorBody()!!.string())
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                            .show()
+                        showToastMessage(jsonObject.getString("message"))
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                showToastMessage(Constant.ERRORMSG)
             }
         })
     }
@@ -573,31 +562,24 @@ class Walkin_detail_Fragment : FragmentActivity() {
                             if (is_showalert) {
                                 showAlertView_yeswantbook(jsonObject.getString("message"))
                             } else {
-                                Toast.makeText(
-                                    ctx,
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                showToastMessage(jsonObject.getString("message"))
                             }
                         } else {
-                            Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                                .show()
+                            ctx.showToastMessage(jsonObject.getString("message"))
                             if (isNetworkAvailable(ctx)) {
                                 callapi_personqueue_no(restaurant_id)
                             } else {
-                                Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT)
-                                    .show()
+                                ctx.showToastMessage(Constant.NETWORKEROORMSG)
                             }
                         }
                     } else if (response.code() == Constant.ERROR_CODE_n) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(response.errorBody()!!.string())
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                            .show()
+                        ctx.showToastMessage(jsonObject.getString("message"))
                         if (isNetworkAvailable(ctx)) {
                             callapi_personqueue_no(restaurant_id)
                         } else {
-                            Toast.makeText(ctx, Constant.NETWORKEROORMSG, Toast.LENGTH_SHORT).show()
+                            ctx.showToastMessage(Constant.NETWORKEROORMSG)
                         }
                         /* if (jsonObject.has("data") && !jsonObject.isNull("data"))
                                 {
@@ -608,29 +590,28 @@ class Walkin_detail_Fragment : FragmentActivity() {
                                         showAlertView_yeswantbook(jsonObject.getString("message"));
                                     }
                                     else{
-                                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                        ctx?.showToastMessage(jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                     }
                                 }*/
                     } else if (response.code() == Constant.ERROR_CODE) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(response.errorBody()!!.string())
-                        Toast.makeText(ctx, jsonObject.getString("message"), Toast.LENGTH_LONG)
-                            .show()
+                        ctx.showToastMessage(jsonObject.getString("message"))
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    ctx.showToastMessage(Constant.ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                    ctx.showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(ctx, Constant.ERRORMSG, Toast.LENGTH_LONG).show()
+                ctx.showToastMessage(Constant.ERRORMSG)
             }
         })
     }
