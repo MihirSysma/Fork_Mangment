@@ -14,13 +14,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.forkmang.PickUpSelectFoodViewModel
+import com.forkmang.vm.PickUpSelectFoodViewModel
 import com.forkmang.R
 import com.forkmang.adapter.ViewPagerAdapterPickupSelectFood
 import com.forkmang.data.FoodList_Tab
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivitySelectfoodBinding
-import com.forkmang.fragment.PickupSelectFoodFragment
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
 import com.forkmang.helper.Utils

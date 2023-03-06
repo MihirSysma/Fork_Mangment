@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.forkmang.SelectFoodViewModel
+import com.forkmang.vm.SelectFoodViewModel
 import com.forkmang.data.FoodList_Tab
 import com.forkmang.data.RestoData
 import com.forkmang.fragment.SelectFoodFragment

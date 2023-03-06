@@ -4,11 +4,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.forkmang.PickUpSelectFoodViewModel
+import com.forkmang.vm.PickUpSelectFoodViewModel
 import com.forkmang.data.FoodList_Tab
 import com.forkmang.data.RestoData
 import com.forkmang.fragment.PickupSelectFoodFragment
-import com.forkmang.models.TableList
 
 class ViewPagerAdapterPickupSelectFood(
     fragmentManager: FragmentManager,

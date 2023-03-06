@@ -15,7 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.R
-import com.forkmang.SelectFoodViewModel
+import com.forkmang.vm.SelectFoodViewModel
 import com.forkmang.activity.ActivityPaymentSummary
 import com.forkmang.adapter.ADD_QTY
 import com.forkmang.adapter.CartListingAdapter
@@ -28,7 +28,6 @@ import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentOrderfoodLayoutBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.MOBILE
-import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils.isNetworkAvailable
@@ -44,11 +43,7 @@ import retrofit2.Response
 import java.io.IOException
 
 class SelectFoodFragment : Fragment() {
-
-    var category_itemLists: ArrayList<Category_ItemList>? = null
-    var extra_toppingArrayList: ArrayList<Extra_Topping>? = null
     var cartBookingArrayList: ArrayList<CartBooking>? = null
-    var booking_id = "0"
     var selectedId_radiobtn_topping = 0
     var progressBar_alertview: ProgressBar? = null
     var all_orderFood_adapter: FoodListAdapter? = null
@@ -64,11 +59,13 @@ class SelectFoodFragment : Fragment() {
     ): View {
         _binding = FragmentOrderfoodLayoutBinding.inflate(inflater, container, false)
         binding.orderFoodRecycleview.layoutManager = LinearLayoutManager(context)
-        listenToActivity()
+        binding.orderFoodRecycleview.adapter = all_orderFood_adapter
+        observe()
         return binding.root
     }
 
-    private fun listenToActivity() {
+    private fun observe() {
+
         viewModel.command.observe(viewLifecycleOwner) { command  ->
             when (command) {
                 Constant.COMMAND_CART_LIST_VIEW -> {
@@ -76,147 +73,27 @@ class SelectFoodFragment : Fragment() {
                 }
             }
         }
-    }
 
-    fun callApiFoodItem(category_id: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        binding.progressBar.visibility = View.VISIBLE
-        info.getres_catitemlist(category_id)?.enqueue(object : Callback<JsonObject?> {
-            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                try {
-                    //Log.d("Result", jsonObject.toString());
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
-                        val jsonObject = JSONObject(Gson().toJson(response.body()))
-                        if (jsonObject.getString("status")
-                                .equals(SUCCESS_CODE, ignoreCase = true)
-                        ) {
-                            category_itemLists = ArrayList()
-                            val mjson_arr = jsonObject.getJSONArray("data")
-                            for (i in 0 until mjson_arr.length()) {
-                                val category_itemList = Category_ItemList()
-                                val mjson_obj = mjson_arr.getJSONObject(i)
-                                category_itemList.id = mjson_obj.getString("id")
-                                category_itemList.category_id = mjson_obj.getString("category_id")
-                                category_itemList.name = mjson_obj.getString("name")
-                                category_itemList.price = mjson_obj.getString("price")
-                                category_itemList.image = mjson_obj.getString("image")
-                                val mjson_arr_extra = mjson_obj.getJSONArray("extra")
-                                extra_toppingArrayList = ArrayList()
-                                for (j in 0 until mjson_arr_extra.length()) {
-                                    val mjson_obj_extra = mjson_arr_extra.getJSONObject(j)
-                                    val extra_topping = Extra_Topping()
-                                    extra_topping.id = mjson_obj_extra.getString("id")
-                                    extra_topping.item_id = mjson_obj_extra.getString("item_id")
-                                    extra_topping.name = mjson_obj_extra.getString("name")
-                                    extra_topping.price = mjson_obj_extra.getString("price")
-                                    extra_toppingArrayList?.add(extra_topping)
-                                }
-                                category_itemList.extra_toppingArrayList = extra_toppingArrayList
-                                category_itemLists!!.add(category_itemList)
-                            }
-                            binding.progressBar.visibility = View.GONE
-                            all_orderFood_adapter = FoodListAdapter(
-                                requireContext(),
-                                requireActivity(),
-                                category_itemLists!!
-                            ) {
-                                showAlertView(it)
-                            }
-                            binding.orderFoodRecycleview.adapter = all_orderFood_adapter
-
-
-                            /*if(all_orderFood_adapter == null)
-                                    {
-                                        all_orderFood_adapter = new All_Food_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
-                                        recyclerView.setAdapter(all_orderFood_adapter);
-                                    }
-                                    else{
-                                        all_orderFood_adapter.notifyDataSetChanged();
-                                    }*/
-                        }
-                    } else if (response.code() == Constant.ERROR_CODE) {
-                        //val jsonObject = JSONObject(response.errorBody()!!.string())
-                        binding.progressBar.visibility = View.GONE
-                    }
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                    binding.progressBar.visibility = View.GONE
-                    context?.showToastMessage("Error occur please try again")
-                }
+        viewModel.searchFoodItemData.observe(viewLifecycleOwner) { data ->
+            all_orderFood_adapter = FoodListAdapter(
+                requireContext(),
+                requireActivity(),
+                data
+            ) {
+                showAlertView(it)
             }
+        }
 
-            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                context?.showToastMessage("Error occur please try again")
-                binding.progressBar.visibility = View.GONE
+        viewModel.categoryItemData.observe(viewLifecycleOwner) { data ->
+            all_orderFood_adapter = FoodListAdapter(
+                requireContext(),
+                requireActivity(),
+                data
+            ) {
+                showAlertView(it)
             }
-        })
-    }
+        }
 
-    fun callApiSearchFoodItem(category_id: String?, search_item: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        binding.progressBar.visibility = View.VISIBLE
-        info.getres_catitemlist_search(category_id, search_item)
-            ?.enqueue(object : Callback<JsonObject?> {
-                override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                    try {
-                        //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
-                            val jsonObject = JSONObject(Gson().toJson(response.body()))
-                            if (jsonObject.getString("status")
-                                    .equals(SUCCESS_CODE, ignoreCase = true)
-                            ) {
-                                category_itemLists = ArrayList()
-                                val mjson_arr = jsonObject.getJSONArray("data")
-                                for (i in 0 until mjson_arr.length()) {
-                                    val category_itemList = Category_ItemList()
-                                    val mjson_obj = mjson_arr.getJSONObject(i)
-                                    category_itemList.id = mjson_obj.getString("id")
-                                    category_itemList.category_id =
-                                        mjson_obj.getString("category_id")
-                                    category_itemList.name = mjson_obj.getString("name")
-                                    category_itemList.price = mjson_obj.getString("price")
-                                    category_itemList.image = mjson_obj.getString("image")
-                                    val mjson_arr_extra = mjson_obj.getJSONArray("extra")
-                                    extra_toppingArrayList = ArrayList()
-                                    for (j in 0 until mjson_arr_extra.length()) {
-                                        val mjson_obj_extra = mjson_arr_extra.getJSONObject(j)
-                                        val extra_topping = Extra_Topping()
-                                        extra_topping.id = mjson_obj_extra.getString("id")
-                                        extra_topping.item_id = mjson_obj_extra.getString("item_id")
-                                        extra_topping.name = mjson_obj_extra.getString("name")
-                                        extra_topping.price = mjson_obj_extra.getString("price")
-                                        extra_toppingArrayList?.add(extra_topping)
-                                    }
-                                    category_itemList.extra_toppingArrayList =
-                                        extra_toppingArrayList
-                                    category_itemLists?.add(category_itemList)
-                                }
-                                binding.progressBar.visibility = View.GONE
-                                all_orderFood_adapter = FoodListAdapter(
-                                    requireContext(),
-                                    requireActivity(),
-                                    category_itemLists!!
-                                ) {
-                                    showAlertView(it)
-                                }
-                                binding.orderFoodRecycleview.adapter = all_orderFood_adapter
-                            }
-                        } else if (response.code() == Constant.ERROR_CODE) {
-                            //val jsonObject = JSONObject(response.errorBody()!!.string())
-                            binding.progressBar.visibility = View.GONE
-                        }
-                    } catch (ex: Exception) {
-                        ex.printStackTrace()
-                        binding.progressBar.visibility = View.GONE
-                        context?.showToastMessage("Error occur please try again")
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    context?.showToastMessage("Error occur please try again")
-                    binding.progressBar.visibility = View.GONE
-                }
-            })
     }
 
     private fun callApiAddToCart(
@@ -287,15 +164,6 @@ class SelectFoodFragment : Fragment() {
             })
     }
 
-    fun callApiFood1(category_id: String?, booking_id: String) {
-        if (isNetworkAvailable(requireContext())) {
-            this.booking_id = booking_id
-            callApiFoodItem(category_id)
-        } else {
-            context?.showToastMessage(Constant.NETWORKEROORMSG)
-        }
-    }
-
     fun showAlertView(category_itemList: Category_ItemList) {
         val alertDialog = AlertDialog.Builder(
             requireActivity()
@@ -353,7 +221,7 @@ class SelectFoodFragment : Fragment() {
 
             //rg.addView(rb[i]);
             layout2.addView(rb?.get(i)!!)
-            rb.get(i)
+            rb[i]
                 ?.setOnCheckedChangeListener { buttonView: CompoundButton, isChecked: Boolean ->
                     if (buttonView.isChecked) {
                         radio_btn_id_arr.add(buttonView.id.toString())

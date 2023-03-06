@@ -1,4 +1,4 @@
-package com.forkmang
+package com.forkmang.vm
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

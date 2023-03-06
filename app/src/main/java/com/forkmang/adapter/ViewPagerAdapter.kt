@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.forkmang.ViewModel
+import com.forkmang.vm.ViewModel
 import com.forkmang.fragment.BookTableFragment
 import com.forkmang.fragment.PickupFragment
 import com.forkmang.fragment.WalkinListingFragment

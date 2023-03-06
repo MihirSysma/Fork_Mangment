@@ -14,7 +14,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.forkmang.PickUpSelectFoodViewModel
+import com.forkmang.vm.PickUpSelectFoodViewModel
 import com.forkmang.R
 import com.forkmang.activity.ActivityPaymentSummary
 import com.forkmang.adapter.ADD_QTY
@@ -29,7 +29,6 @@ import com.forkmang.databinding.FragmentPickupLayoutBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
 import com.forkmang.helper.Constant.MOBILE
-import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils.isNetworkAvailable

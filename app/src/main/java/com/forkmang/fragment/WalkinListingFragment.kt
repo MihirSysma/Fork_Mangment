@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.forkmang.ViewModel
+import com.forkmang.vm.ViewModel
 import com.forkmang.adapter.WalkinListingAdapter
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentWalkinlistingLayoutBinding

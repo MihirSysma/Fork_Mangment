@@ -1,16 +1,11 @@
-package com.forkmang
+package com.forkmang.vm
 
 import android.app.Application
-import android.content.Context
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.forkmang.adapter.PickupFoodListAdapter
 import com.forkmang.data.Category_ItemList
 import com.forkmang.data.Extra_Topping
-import com.forkmang.fragment.PickupSelectFoodFragment
 import com.forkmang.helper.Constant
-import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -22,9 +17,11 @@ import retrofit2.Response
 class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
 
     val command = MutableLiveData<String>()
+    // TODO: can make them both in one?
     val searchFoodItemData = MutableLiveData<ArrayList<Category_ItemList>>()
     val categoryItemData = MutableLiveData<ArrayList<Category_ItemList>>()
 
+    // TODO: handle the toasts and the progressbar
     fun callApiSearchFoodItem(category_id: String?, search_item: String?) {
         //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
         Api.info.getres_catitemlist_search(category_id, search_item)

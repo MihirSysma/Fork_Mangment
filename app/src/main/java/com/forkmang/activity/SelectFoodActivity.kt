@@ -15,12 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.forkmang.R
-import com.forkmang.SelectFoodViewModel
+import com.forkmang.vm.SelectFoodViewModel
 import com.forkmang.adapter.ViewPagerAdapterSelectFood
 import com.forkmang.data.FoodList_Tab
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivitySelectfoodBinding
-import com.forkmang.fragment.SelectFoodFragment
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
 import com.forkmang.helper.Utils
@@ -72,10 +71,8 @@ class SelectFoodActivity : AppCompatActivity() {
         booking_id = restoData?.id
         binding.imgSearchicon.setOnClickListener {
             val str_search: String = binding.etvSearchview.text.toString()
-            val all_Food_fragment = SelectFoodFragment()
             if (Utils.isNetworkAvailable(ctx)) {
-                //TODO: redo this code, should not call frag instance
-                all_Food_fragment.callApiSearchFoodItem(category_id, str_search)
+                viewModel.callApiSearchFoodItem(category_id, str_search)
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
@@ -91,9 +88,7 @@ class SelectFoodActivity : AppCompatActivity() {
                 if (s.toString().isEmpty()) {
                     hidekeyboard()
                     if (Utils.isNetworkAvailable(ctx)) {
-                        //TODO: redo this code, should not call frag instance
-                        val all_Food_fragment = SelectFoodFragment()
-                        all_Food_fragment.callApiFoodItem(category_id)
+                        viewModel.callApiFoodItem(category_id)
                     } else {
                         showToastMessage(Constant.NETWORKEROORMSG)
                     }
@@ -113,7 +108,6 @@ class SelectFoodActivity : AppCompatActivity() {
         })
         binding.btnViewCart.setOnClickListener {
             //showAlertView();
-            //TODO: redo this code, should not call frag instance
             viewModel.command.postValue(COMMAND_CART_LIST_VIEW)
         }
         binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -124,9 +118,11 @@ class SelectFoodActivity : AppCompatActivity() {
                 current_tabactive = position
                 val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
                 category_id = foodList_tab?.id
-                //TODO: redo this code, should not call frag instance
-                val all_Food_fragment = SelectFoodFragment()
-                booking_id?.let { all_Food_fragment.callApiFood1(category_id, it) }
+                if (Utils.isNetworkAvailable(this@SelectFoodActivity)) {
+                    viewModel.callApiFoodItem(category_id)
+                } else {
+                    showToastMessage(Constant.NETWORKEROORMSG)
+                }
             }
         })
         if (Utils.isNetworkAvailable(ctx)) {

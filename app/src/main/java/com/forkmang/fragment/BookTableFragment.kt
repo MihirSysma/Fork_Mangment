@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.FacebookSdk.getApplicationContext
 import com.forkmang.R
-import com.forkmang.ViewModel
+import com.forkmang.vm.ViewModel
 import com.forkmang.adapter.BookTableAdapter
 import com.forkmang.adapter.SpinnerAdapter
 import com.forkmang.data.RestoData

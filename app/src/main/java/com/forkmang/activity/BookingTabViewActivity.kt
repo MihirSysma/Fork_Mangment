@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.forkmang.R
-import com.forkmang.ViewModel
+import com.forkmang.vm.ViewModel
 import com.forkmang.adapter.ViewPagerAdapter
 import com.forkmang.databinding.ActivityBookingTabViewBinding
 import com.forkmang.helper.Constant
