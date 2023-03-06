@@ -303,8 +303,8 @@ class WalkinDetailFragment : FragmentActivity() {
                                     .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
                                 //ctx?.showToastMessage(jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-                                quee_no = jsonObject.getString("data")
-                                val quee_no = jsonObject.getString("data")
+                                val data = jsonObject.getJSONObject("data")
+                                val quee_no = data.getString("queue_number")
                                 if (binding.txtQueeno.text.toString() == "0") {
                                     //set quee_no
                                     binding.txtQueeno.text = quee_no
