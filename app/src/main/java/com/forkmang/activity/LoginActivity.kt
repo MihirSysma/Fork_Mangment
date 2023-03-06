@@ -21,9 +21,11 @@ import retrofit2.Response
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
+
     private val storePrefrence by lazy { StorePrefrence(this) }
     var ctx: Context = this@LoginActivity
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -39,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
                     Constant.NAME
                 )?.isEmpty() == true
             ) {
-                val mainIntent: Intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                val mainIntent = Intent(this@LoginActivity, RegisterActivity::class.java)
                 startActivity(mainIntent)
                 //finish();
             } else {
@@ -62,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<JsonObject?>
             ) {
                 try {
-//
+
                     //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
@@ -79,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
                                 "id",
                                 jsonObject.getJSONObject("data").getString("id")
                             )
-                            val mainIntent: Intent = Intent(ctx, DashBoardActivity::class.java)
+                            val mainIntent = Intent(ctx, DashBoardActivity::class.java)
                             startActivity(mainIntent)
                             finish()
                         } else {

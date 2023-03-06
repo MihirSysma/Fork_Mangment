@@ -80,7 +80,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
             val all_Food_fragment = PickupSelectFoodFragment()
             //TODO: redo this code, should not call frag instance
             if (Utils.isNetworkAvailable(ctx)) {
-                all_Food_fragment.callApiSearchFoodItem(category_id, str_search)
+                all_Food_fragment.callApiSearchFoodItem(this, this,category_id, str_search)
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }

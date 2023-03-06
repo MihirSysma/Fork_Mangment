@@ -69,11 +69,11 @@ class ForgotPassword : AppCompatActivity() {
                 response: Response<JsonObject?>
             ) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_2) {
+                    if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE_Ne, ignoreCase = true)
+                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
                             showToastMessage(jsonObject.getString("message"))
@@ -146,11 +146,11 @@ class ForgotPassword : AppCompatActivity() {
                     response: Response<JsonObject?>
                 ) {
                     try {
-                        if (response.code() == Constant.SUCCESS_CODE_2) {
+                        if (response.code() == Constant.SUCCESS_CODE_n) {
                             val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
                             //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
-                                    .equals(Constant.SUCCESS_CODE_Ne, ignoreCase = true)
+                                    .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 val mainIntent: Intent =

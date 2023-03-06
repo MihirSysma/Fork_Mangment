@@ -1,5 +1,6 @@
 package com.forkmang.fragment
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -141,9 +142,9 @@ class PickupSelectFoodFragment : Fragment() {
         })
     }
 
-    fun callApiSearchFoodItem(category_id: String?, search_item: String?) {
+    fun callApiSearchFoodItem(context: Context, activity: Activity, category_id: String?, search_item: String?) {
         //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        binding.progressbar.visibility = View.VISIBLE
+        _binding?.progressbar?.visibility = View.VISIBLE
         info.getres_catitemlist_search(category_id, search_item)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
@@ -180,33 +181,33 @@ class PickupSelectFoodFragment : Fragment() {
                                         extra_toppingArrayList
                                     category_itemLists?.add(category_itemList)
                                 }
-                                binding.progressbar.visibility = View.GONE
+                                _binding?.progressbar?.visibility = View.GONE
                                 all_orderFood_adapter = restoData?.let {
                                     PickupFoodListAdapter(
-                                        requireContext(),
-                                        requireActivity(),
+                                        context,
+                                        activity,
                                         category_itemLists!!,
                                         it
                                     ) {
                                         showAlertView(it)
                                     }
                                 }
-                                binding.pickRecycleview.adapter = all_orderFood_adapter
+                                _binding?.pickRecycleview?.adapter = all_orderFood_adapter
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
-                            binding.progressbar.visibility = View.GONE
+                            _binding?.progressbar?.visibility = View.GONE
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        binding.progressbar.visibility = View.GONE
+                        _binding?.progressbar?.visibility = View.GONE
                         context?.showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     context?.showToastMessage("Error occur please try again")
-                    binding.progressbar.visibility = View.GONE
+                    _binding?.progressbar?.visibility = View.GONE
                 }
             })
     }

@@ -72,14 +72,14 @@ class SplashActivity : AppCompatActivity() {
         if (myLocale != null) {
             Locale.setDefault(myLocale)
         }
-        val config: Configuration = Configuration()
+        val config = Configuration()
         config.locale = myLocale
         baseContext.resources
             .updateConfiguration(config, baseContext.resources.displayMetrics)
     }
 
     private fun saveLocale(lang: String?) {
-        val langPref: String = "Language"
+        val langPref = "Language"
         val prefs: SharedPreferences = getSharedPreferences(
             "CommonPrefs",
             MODE_PRIVATE
@@ -94,20 +94,9 @@ class SplashActivity : AppCompatActivity() {
 
             if(storePrefrence.getString(Constant.NAME)?.length == 0)
             {
-                val intentRegister = Intent(this, RegisterActivity::class.java)
-                startActivity(intentRegister);
-                finish();
-            }
-/*            else if (storePrefrence?.getBoolean("keeplogin") == true){
-                val dash_board_intent = Intent(this, DashBoardActivity_2::c ->  });
-                startActivity(dash_board_intent);
-                finish();
-            }*/
-            else if(storePrefrence.getBoolean("keeplogin").not())
-            {
-                val intentLoginForm = Intent(this, LoginFormActivity::class.java)
-                startActivity(intentLoginForm)
-                finish();
+                val intentLogin = Intent(this, LoginActivity::class.java)
+                startActivity(intentLogin)
+                finish()
             }
             else {
                 val intentDashBoard = Intent(this@SplashActivity, DashBoardActivity::class.java)

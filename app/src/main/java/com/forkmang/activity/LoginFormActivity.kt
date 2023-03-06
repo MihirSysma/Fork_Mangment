@@ -202,7 +202,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
 
                             //stopProgress();
                             binding.progressBar.visibility = View.GONE
-                            val mainIntent: Intent = Intent(ctx, DashBoardActivity::class.java)
+                            val mainIntent = Intent(ctx, DashBoardActivity::class.java)
                             startActivity(mainIntent)
                             finish()
                         } else {

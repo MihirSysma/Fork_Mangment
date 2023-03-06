@@ -5,11 +5,9 @@ object Constant {
 
     @JvmField
     var SUCCESS_CODE = "200"
-    var SUCCESS_CODE_Ne = "201"
 
     @JvmField
     var SUCCESS_CODE_n = 200
-    var SUCCESS_CODE_2 = 201
 
     @JvmField
     var ERROR_CODE = 422
