@@ -143,7 +143,12 @@ class RegisterActivity : AppCompatActivity(),
                                             val phoneNumber: String =
                                                 ("+" + "91" + binding.etvMobile.text.toString())
                                             //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
-                                            sentRequest(phoneNumber)
+                                            try {
+                                                sentRequest(phoneNumber)
+                                            } catch (e:Exception) {
+                                                e.printStackTrace()
+                                                showToastMessage(e.message?:"null")
+                                            }
                                         } else {
                                             showToastMessage(Constant.PASSWORD_MATCH)
                                         }

@@ -94,8 +94,8 @@ class SplashActivity : AppCompatActivity() {
 
             if(storePrefrence.getString(Constant.NAME)?.length == 0)
             {
-                val register_intent = Intent(this, RegisterActivity::class.java)
-                startActivity(register_intent);
+                val intentRegister = Intent(this, RegisterActivity::class.java)
+                startActivity(intentRegister);
                 finish();
             }
 /*            else if (storePrefrence?.getBoolean("keeplogin") == true){
@@ -105,14 +105,16 @@ class SplashActivity : AppCompatActivity() {
             }*/
             else if(storePrefrence.getBoolean("keeplogin").not())
             {
-                val dash_board_intent = Intent(this, LoginFormActivity::class.java)
-                startActivity(dash_board_intent)
+                val intentLoginForm = Intent(this, LoginFormActivity::class.java)
+                startActivity(intentLoginForm)
                 finish();
             }
+            else {
+                val intentDashBoard = Intent(this@SplashActivity, DashBoardActivity::class.java)
+                startActivity(intentDashBoard)
+                finish()
+            }
 
-            val mainIntent: Intent = Intent(this@SplashActivity, DashBoardActivity::class.java)
-            startActivity(mainIntent)
-            finish()
         }, 2000)
     }
 }
