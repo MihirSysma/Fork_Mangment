@@ -106,8 +106,6 @@ class PickupSelectFoodFragment : Fragment() {
     }
 
 
-
-
     fun callApiAddToCart(
         item_id: String?,
         qty: String?,

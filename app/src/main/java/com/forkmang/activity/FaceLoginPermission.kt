@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.R
 
 class FaceLoginPermission : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_faceloginpermission)
+
         val Btn_Enable: Button = findViewById(R.id.btn_enable)
         Btn_Enable.setOnClickListener { showAlertView() }
     }

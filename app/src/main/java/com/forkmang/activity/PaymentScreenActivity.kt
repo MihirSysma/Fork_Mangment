@@ -26,6 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PaymentScreenActivity : AppCompatActivity() {
+
     var ctx: Context = this@PaymentScreenActivity
     var tableList_get: TableList? = null
     var RestroData: RestoData? = null
@@ -35,12 +36,14 @@ class PaymentScreenActivity : AppCompatActivity() {
     var payment_type: String? = null
     var isbooktable: String? = null
     var coming_from: String? = null
+
     private val storePrefrence by lazy { StorePrefrence(this) }
     private val binding by lazy { ActivityPaymentScreenBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         coming_from = intent.getStringExtra("comingfrom")
         if (coming_from.equals("SelectFood", ignoreCase = true)) {
             tableList_get = intent.getSerializableExtra("model") as TableList?

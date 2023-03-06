@@ -69,6 +69,7 @@ class WalkinDetailFragment : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         //instance= this;
+
         txtqno_bottom = findViewById(R.id.txtqno_bottom)
         relative_bottom = findViewById(R.id.relative_bottom)
         txtnextview = findViewById(R.id.txtnextview)

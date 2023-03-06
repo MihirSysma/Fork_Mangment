@@ -53,6 +53,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         binding.linearView1.visibility = View.GONE
         binding.linearView2.visibility = View.GONE
         binding.linearView3.visibility = View.GONE

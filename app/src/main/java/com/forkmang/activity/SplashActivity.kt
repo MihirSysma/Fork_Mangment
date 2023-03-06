@@ -15,9 +15,11 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
+
     private val storePrefrence by lazy { StorePrefrence(this) }
     var ctx: Context = this@SplashActivity
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)

@@ -35,6 +35,7 @@ class ForgotPassword : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
+
         binding.etvNewpas.setText("1234567")
         binding.etvcnfPass.setText("1234567")
         binding.btnReset.setOnClickListener {
@@ -202,7 +203,7 @@ class ForgotPassword : AppCompatActivity() {
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     idToken = task.result.token
-                    Log.d("token", (idToken)?:"null")
+                    Log.d("token", (idToken) ?: "null")
                     //progressBar.setVisibility(View.GONE);
                     if (Utils.isNetworkAvailable(ctx)) {
                         callApiForgetPasswordValid(contact)

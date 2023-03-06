@@ -43,6 +43,7 @@ import retrofit2.Response
 import java.io.IOException
 
 class SelectFoodFragment : Fragment() {
+
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var selectedId_radiobtn_topping = 0
     var progressBar_alertview: ProgressBar? = null
@@ -66,7 +67,7 @@ class SelectFoodFragment : Fragment() {
 
     private fun observe() {
 
-        viewModel.command.observe(viewLifecycleOwner) { command  ->
+        viewModel.command.observe(viewLifecycleOwner) { command ->
             when (command) {
                 Constant.COMMAND_CART_LIST_VIEW -> {
                     cartListingView()

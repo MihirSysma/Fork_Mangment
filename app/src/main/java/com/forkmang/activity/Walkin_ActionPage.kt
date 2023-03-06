@@ -25,6 +25,7 @@ import retrofit2.Response
 import java.io.IOException
 
 class Walkin_ActionPage : AppCompatActivity() {
+
     private val storePrefrence by lazy { StorePrefrence(this) }
     var ctx: Context = this@Walkin_ActionPage
     var identifier: String? = null
@@ -38,12 +39,14 @@ class Walkin_ActionPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         val intent: Intent = intent
         quee_no = intent.getStringExtra("quee_no")
         noofperson = intent.getStringExtra("person")
         occasion = intent.getStringExtra("occasion")
         area = intent.getStringExtra("area")
         restromodel = getIntent().getSerializableExtra("restromodel") as RestoData?
+
         binding.txtQueueno.text = "No in current queue: $quee_no"
         binding.txtRestroname.text = restromodel!!.rest_name
 

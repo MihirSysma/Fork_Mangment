@@ -91,7 +91,7 @@ class RegisterActivity : AppCompatActivity(),
         sdkInitialize(applicationContext)
         binding.buttonFacebookRoot.registerCallback(
             callbackManager,
-            object : FacebookCallback<LoginResult>{
+            object : FacebookCallback<LoginResult> {
                 override fun onCancel() {
                     Log.d("res", "cancle")
                 }
@@ -117,7 +117,7 @@ class RegisterActivity : AppCompatActivity(),
         //google login code start
         googleIntialization()
         // google login code end
-        binding.btnRegister.setOnClickListener{
+        binding.btnRegister.setOnClickListener {
             //validation
             name = Objects.requireNonNull(binding.etvUsername.text).toString()
             mobile = Objects.requireNonNull(binding.etvMobile.text).toString()
@@ -145,9 +145,9 @@ class RegisterActivity : AppCompatActivity(),
                                             try {
                                                 binding.progressBar.visibility = View.VISIBLE
                                                 sentRequest(phoneNumber)
-                                            } catch (e:Exception) {
+                                            } catch (e: Exception) {
                                                 e.printStackTrace()
-                                                showToastMessage(e.message?:"null")
+                                                showToastMessage(e.message ?: "null")
                                             }
                                         } else {
                                             showToastMessage(Constant.PASSWORD_MATCH)
@@ -309,7 +309,7 @@ class RegisterActivity : AppCompatActivity(),
     }
 
 
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, status: ((status:String)->Unit)) {
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, status: ((status: String) -> Unit)) {
         binding.progressBar.visibility = View.VISIBLE
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(
@@ -424,12 +424,12 @@ class RegisterActivity : AppCompatActivity(),
                     } catch (ex: IOException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage( "Error occur please try again")
+                        showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    showToastMessage( "Error occur please try again")
+                    showToastMessage("Error occur please try again")
                     //stopProgress();
                     binding.progressBar.visibility = View.GONE
                 }
@@ -444,7 +444,7 @@ class RegisterActivity : AppCompatActivity(),
                     val jsonObject = JSONObject(Gson().toJson(response.body()))
                     Log.d("Result", jsonObject.toString())
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
-                        showToastMessage( jsonObject.getString("message"))
+                        showToastMessage(jsonObject.getString("message"))
                         //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
                         if (jsonObject.getJSONObject("data").has("name")) {
                             storePrefrence.setString(
@@ -459,18 +459,18 @@ class RegisterActivity : AppCompatActivity(),
                         startActivity(intent)
                         finish()
                     } else {
-                        showToastMessage( "Error occur please try again")
+                        showToastMessage("Error occur please try again")
                     }
                     binding.progressBar.visibility = View.GONE
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage( "Error occur please try again")
+                    showToastMessage("Error occur please try again")
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage( "Error occur please try again")
+                showToastMessage("Error occur please try again")
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -528,7 +528,7 @@ class RegisterActivity : AppCompatActivity(),
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
         } else {
-            showToastMessage( "Sign in cancel")
+            showToastMessage("Sign in cancel")
         }
     }
 

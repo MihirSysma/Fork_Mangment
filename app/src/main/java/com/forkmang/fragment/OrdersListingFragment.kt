@@ -13,6 +13,7 @@ class OrdersListingFragment : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_orders_layout)
+
         val viewPager: ViewPager2 = findViewById(R.id.viewPager_orders)
         val tabLayout: TabLayout = findViewById(R.id.tabLayout_orders)
         val viewPagerAdapter_orders =

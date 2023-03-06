@@ -7,11 +7,14 @@ import androidx.appcompat.widget.Toolbar
 import com.forkmang.R
 
 class DashBoardView : DrawerActivity() {
+
     var toolbar: Toolbar? = null
     var menu: Menu? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         layoutInflater.inflate(R.layout.activity_dash_board_view, frameLayout)
+
         toolbar = findViewById(R.id.toolbar_id)
         setSupportActionBar(toolbar)
         supportActionBar?.title = resources.getString(R.string.app_name)

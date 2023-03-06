@@ -21,18 +21,21 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class BookingTabViewActivity : AppCompatActivity() {
+
     var activity: Activity = this@BookingTabViewActivity
     private val storePrefrence by lazy { StorePrefrence(this) }
     var longitude = 0.0
     var c_longitude = 0.0
     var c_latitude = 0.0
     var latitude = 0.0
-    private val viewModel by lazy { ViewModelProvider(this) [ViewModel::class.java] }
 
+    private val viewModel by lazy { ViewModelProvider(this)[ViewModel::class.java] }
     private val binding by lazy { ActivityBookingTabViewBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         binding.imgLoc.setOnClickListener {
             val intent_walkin = Intent(this@BookingTabViewActivity, MapsActivity::class.java)
             startActivity(intent_walkin)
@@ -52,7 +55,7 @@ class BookingTabViewActivity : AppCompatActivity() {
                 else -> "TAB"
             }
         }.attach()
-        selectPage(str_tab_no?.toInt()?:1)
+        selectPage(str_tab_no?.toInt() ?: 1)
 
         /*if(Constant.IS_BookTableFragmentLoad)
         {
@@ -101,8 +104,8 @@ class BookingTabViewActivity : AppCompatActivity() {
             longitude = 0.0
             latitude = 0.0
         } else {
-            longitude = storePrefrence.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble()?: 0.0
-            latitude = storePrefrence.getCoordinates(Constant.KEY_LATITUDE)?.toDouble()?: 0.0
+            longitude = storePrefrence.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble() ?: 0.0
+            latitude = storePrefrence.getCoordinates(Constant.KEY_LATITUDE)?.toDouble() ?: 0.0
         }
     }
 }

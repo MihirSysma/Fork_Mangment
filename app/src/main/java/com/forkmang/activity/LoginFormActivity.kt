@@ -47,6 +47,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         val txtForgotPassword: TextView = findViewById(R.id.txtForgotPassword)
         val BtnReg: Button = findViewById(R.id.BtnReg)
         val BtnLogin: Button = findViewById(R.id.BtnLogin)
@@ -56,7 +57,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
         sdkInitialize(applicationContext)
         binding.buttonFacebookRoot.registerCallback(
             callbackManager,
-            object: FacebookCallback<LoginResult> {
+            object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     Log.d("id", result.accessToken.userId)
                     Log.d("token", result.accessToken.token)
@@ -219,7 +220,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                             showToastMessage(error_msg)
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            showToastMessage( "Error occur please try again")
+                            showToastMessage("Error occur please try again")
                         }
                     }
                 } catch (ex: JSONException) {
@@ -282,7 +283,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                         startActivity(intent)
                         finish()
                     } else {
-                        showToastMessage( "Error occur please try again")
+                        showToastMessage("Error occur please try again")
                     }
                     binding.progressBar.visibility = View.GONE
                 } catch (ex: JSONException) {

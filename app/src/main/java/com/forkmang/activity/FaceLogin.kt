@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.R
 
 class FaceLogin : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_face_login)
+
         val img_faceid: ImageView = findViewById(R.id.img_faceid)
         val BtnReg: Button = findViewById(R.id.BtnReg)
         BtnReg.setOnClickListener {

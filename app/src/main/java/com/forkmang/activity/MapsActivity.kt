@@ -42,6 +42,7 @@ import com.google.android.material.snackbar.Snackbar
 open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
     LocationListener {
+
     private var longitude: Double = 0.0
     private var c_longitude: Double = 0.0
     private var c_latitude: Double = 0.0
@@ -59,6 +60,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.maps_activity)
+
         val btn_updateloc: Button = findViewById(R.id.btn_updateloc)
         ApiConfig.getLocation(this)
 

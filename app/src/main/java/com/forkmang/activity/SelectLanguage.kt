@@ -10,9 +10,11 @@ import com.forkmang.R
 
 
 class SelectLanguage : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_language)
+
         val BtnEnglish: Button = findViewById(R.id.BtnEnglish)
         val BtnArabic: Button = findViewById(R.id.BtnArabic)
         BtnArabic.setOnClickListener {
@@ -26,6 +28,7 @@ class SelectLanguage : AppCompatActivity() {
             editor.apply()
             GotoNextScreen()
         }
+
         BtnEnglish.setOnClickListener {
             val langPref = "Language"
             val prefs: SharedPreferences = getSharedPreferences(

@@ -21,6 +21,7 @@ import com.google.android.material.navigation.NavigationView
 
 class DashBoardActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener {
+
     private val storePrefrence by lazy { StorePrefrence(this) }
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private val binding by lazy { ActivityDashboardDrawerBinding.inflate(layoutInflater) }
@@ -29,6 +30,7 @@ class DashBoardActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(binding.root)
+
         initializeViews()
         toggleDrawer()
         initializeDefaultFragment(savedInstanceState, 0)

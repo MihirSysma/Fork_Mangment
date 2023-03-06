@@ -41,6 +41,7 @@ import java.io.IOException
 import java.util.*
 
 class BookingTableDetailView : Activity() {
+
     private val binding by lazy { ActivityBookingtableDetailviewBinding.inflate(layoutInflater) }
     var ctx: Context = this@BookingTableDetailView
     var mYear = 0
@@ -67,9 +68,11 @@ class BookingTableDetailView : Activity() {
     var is_areatype = false
     var person = arrayOf("Select Person", "1", "2 ", "3", "4", "5", "6", "7", "8", "9", "10")
     var type_value = arrayOf("Value", "0.7", "0.8", "0.9", "1.0")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         val intent = intent
         resturant_id = intent.getStringExtra("resturant_id")
         datetime = intent.getStringExtra("datetime")
