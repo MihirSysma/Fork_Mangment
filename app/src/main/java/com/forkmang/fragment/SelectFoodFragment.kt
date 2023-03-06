@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.R
+import com.forkmang.SelectFoodViewModel
 import com.forkmang.activity.ActivityPaymentSummary
 import com.forkmang.adapter.ADD_QTY
 import com.forkmang.adapter.CartListingAdapter
@@ -63,7 +64,18 @@ class SelectFoodFragment : Fragment() {
     ): View {
         _binding = FragmentOrderfoodLayoutBinding.inflate(inflater, container, false)
         binding.orderFoodRecycleview.layoutManager = LinearLayoutManager(context)
+        listenToActivity()
         return binding.root
+    }
+
+    private fun listenToActivity() {
+        viewModel.command.observe(viewLifecycleOwner) { command  ->
+            when (command) {
+                Constant.COMMAND_CART_LIST_VIEW -> {
+                    cartListingView()
+                }
+            }
+        }
     }
 
     fun callApiFoodItem(category_id: String?) {
@@ -469,7 +481,7 @@ class SelectFoodFragment : Fragment() {
     }
 
     fun loadJSONFromAsset_t(): String? {
-        var json: String? = try {
+        val json: String? = try {
             val `is` = requireActivity().assets.open("local4.json")
             val size = `is`.available()
             val buffer = ByteArray(size)
@@ -793,11 +805,13 @@ class SelectFoodFragment : Fragment() {
         //var category_id: String? = null
         var tableList_get: TableList? = null
         var restoData: RestoData? = null
-        fun newInstance(tableList: TableList?, bookTable: RestoData?): SelectFoodFragment {
+        lateinit var viewModel: SelectFoodViewModel
+        fun newInstance(tableList: TableList?, bookTable: RestoData?, vm: SelectFoodViewModel): SelectFoodFragment {
             //category_id = category_id_val;
             //Log.d("idval",category_id);
             tableList_get = tableList
             restoData = bookTable
+            viewModel = vm
             return SelectFoodFragment()
         }
     }

@@ -12,14 +12,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.forkmang.R
+import com.forkmang.SelectFoodViewModel
 import com.forkmang.adapter.ViewPagerAdapterSelectFood
 import com.forkmang.data.FoodList_Tab
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivitySelectfoodBinding
 import com.forkmang.fragment.SelectFoodFragment
 import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
@@ -47,6 +50,7 @@ class SelectFoodActivity : AppCompatActivity() {
     var current_tabactive: Int = 0
 
     private val binding by lazy { ActivitySelectfoodBinding.inflate(layoutInflater) }
+    private val viewModel by lazy { ViewModelProvider(this)[SelectFoodViewModel::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,9 +114,7 @@ class SelectFoodActivity : AppCompatActivity() {
         binding.btnViewCart.setOnClickListener {
             //showAlertView();
             //TODO: redo this code, should not call frag instance
-
-            val all_Food_fragment = SelectFoodFragment()
-            all_Food_fragment.cartListingView()
+            viewModel.command.postValue(COMMAND_CART_LIST_VIEW)
         }
         binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
 
@@ -202,7 +204,8 @@ class SelectFoodActivity : AppCompatActivity() {
                                         lifecycle,
                                         foodListArrayList!!,
                                         tableList!!,
-                                        restoData!!
+                                        restoData!!,
+                                        viewModel
                                     )
                                 binding.viewPager.adapter = viewPagerAdapter_reserveSeat
                                 fillTabList()

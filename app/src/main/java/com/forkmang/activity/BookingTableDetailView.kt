@@ -315,7 +315,7 @@ class BookingTableDetailView : Activity() {
         }
         btn_select_food.setOnClickListener {
             dialog.dismiss()
-            val mainIntent: Intent =
+            val mainIntent =
                 Intent(this@BookingTableDetailView, SelectFoodActivity::class.java)
             mainIntent.putExtra("restromodel", restoData)
             mainIntent.putExtra("table_model", tableList)

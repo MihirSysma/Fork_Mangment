@@ -1,6 +1,5 @@
 package com.forkmang.fragment
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -15,6 +14,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.forkmang.PickUpSelectFoodViewModel
 import com.forkmang.R
 import com.forkmang.activity.ActivityPaymentSummary
 import com.forkmang.adapter.ADD_QTY
@@ -27,6 +27,7 @@ import com.forkmang.data.Extra_Topping
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentPickupLayoutBinding
 import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
 import com.forkmang.helper.Constant.MOBILE
 import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
@@ -44,8 +45,6 @@ import java.io.IOException
 
 class PickupSelectFoodFragment : Fragment() {
 
-    var category_itemLists: ArrayList<Category_ItemList>? = null
-    var extra_toppingArrayList: ArrayList<Extra_Topping>? = null
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var selectedId_radiobtn_topping = 0
     private val storePrefrence by lazy { StorePrefrence(requireContext()) }
@@ -61,156 +60,54 @@ class PickupSelectFoodFragment : Fragment() {
     ): View {
         _binding = FragmentPickupLayoutBinding.inflate(inflater, container, false)
         binding.pickRecycleview.layoutManager = LinearLayoutManager(context)
+        binding.pickRecycleview.adapter = all_orderFood_adapter
         callApiFood1()
+        observe()
         return binding.root
     }
 
-    fun callApiFoodItem(category_id: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        binding.progressbar.visibility = View.VISIBLE
-        info.getres_catitemlist(category_id)?.enqueue(object : Callback<JsonObject?> {
-            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                try {
-                    //Log.d("Result", jsonObject.toString());
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
-                        val jsonObject = JSONObject(Gson().toJson(response.body()))
-                        if (jsonObject.getString("status")
-                                .equals(SUCCESS_CODE, ignoreCase = true)
-                        ) {
-                            category_itemLists = ArrayList()
-                            val mjson_arr = jsonObject.getJSONArray("data")
-                            for (i in 0 until mjson_arr.length()) {
-                                val category_itemList = Category_ItemList()
-                                val mjson_obj = mjson_arr.getJSONObject(i)
-                                category_itemList.id = mjson_obj.getString("id")
-                                category_itemList.category_id = mjson_obj.getString("category_id")
-                                category_itemList.name = mjson_obj.getString("name")
-                                category_itemList.price = mjson_obj.getString("price")
-                                category_itemList.image = mjson_obj.getString("image")
-                                val mjson_arr_extra = mjson_obj.getJSONArray("extra")
-                                extra_toppingArrayList = ArrayList()
-                                for (j in 0 until mjson_arr_extra.length()) {
-                                    val mjson_obj_extra = mjson_arr_extra.getJSONObject(j)
-                                    val extra_topping = Extra_Topping()
-                                    extra_topping.id = mjson_obj_extra.getString("id")
-                                    extra_topping.item_id = mjson_obj_extra.getString("item_id")
-                                    extra_topping.name = mjson_obj_extra.getString("name")
-                                    extra_topping.price = mjson_obj_extra.getString("price")
-                                    extra_toppingArrayList?.add(extra_topping)
-                                }
-                                category_itemList.extra_toppingArrayList = extra_toppingArrayList
-                                category_itemLists?.add(category_itemList)
-                            }
-                            binding.progressbar.visibility = View.GONE
-                            all_orderFood_adapter = restoData?.let { it1 ->
-                                PickupFoodListAdapter(
-                                    requireContext(),
-                                    requireActivity(),
-                                    category_itemLists!!,
-                                    it1
-                                ) {
-                                    showAlertView(it)
-                                }
-                            }
-                            binding.pickRecycleview.adapter = all_orderFood_adapter
+    private fun observe() {
 
-
-                            /*if(all_orderFood_adapter == null)
-                                    {
-                                        all_orderFood_adapter = new All_Food_Adapter(getContext(),getActivity(), category_itemLists, Select_Food_Fragment.this);
-                                        recyclerView.setAdapter(all_orderFood_adapter);
-                                    }
-                                    else{
-                                        all_orderFood_adapter.notifyDataSetChanged();
-                                    }*/
-                        }
-                    } else if (response.code() == Constant.ERROR_CODE) {
-                        val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
-                        binding.progressbar.visibility = View.GONE
-                    }
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                    binding.progressbar.visibility = View.GONE
-                    context?.showToastMessage("Error occur please try again")
+        viewModel.command.observe(viewLifecycleOwner) { command ->
+            when (command) {
+                COMMAND_CART_LIST_VIEW -> {
+                    cartListingView()
                 }
             }
+        }
 
-            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                context?.showToastMessage("Error occur please try again")
-                binding.progressbar.visibility = View.GONE
+        viewModel.searchFoodItemData.observe(viewLifecycleOwner) { data ->
+            all_orderFood_adapter = restoData?.let {
+                PickupFoodListAdapter(
+                    requireContext(),
+                    requireActivity(),
+                    data,
+                    it
+                ) { itemList ->
+                    showAlertView(itemList)
+                }
             }
-        })
+            binding.progressbar.visibility = View.GONE
+        }
+
+        viewModel.categoryItemData.observe(viewLifecycleOwner) { data ->
+            all_orderFood_adapter = restoData?.let { it1 ->
+                PickupFoodListAdapter(
+                    requireContext(),
+                    requireActivity(),
+                    data,
+                    it1
+                ) {
+                    showAlertView(it)
+                }
+            }
+            binding.progressbar.visibility = View.GONE
+        }
+
     }
 
-    fun callApiSearchFoodItem(context: Context, activity: Activity, category_id: String?, search_item: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        _binding?.progressbar?.visibility = View.VISIBLE
-        info.getres_catitemlist_search(category_id, search_item)
-            ?.enqueue(object : Callback<JsonObject?> {
-                override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                    try {
-                        //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
-                            val jsonObject = JSONObject(Gson().toJson(response.body()))
-                            if (jsonObject.getString("status")
-                                    .equals(SUCCESS_CODE, ignoreCase = true)
-                            ) {
-                                category_itemLists = ArrayList()
-                                val mjson_arr = jsonObject.getJSONArray("data")
-                                for (i in 0 until mjson_arr.length()) {
-                                    val category_itemList = Category_ItemList()
-                                    val mjson_obj = mjson_arr.getJSONObject(i)
-                                    category_itemList.id = mjson_obj.getString("id")
-                                    category_itemList.category_id =
-                                        mjson_obj.getString("category_id")
-                                    category_itemList.name = mjson_obj.getString("name")
-                                    category_itemList.price = mjson_obj.getString("price")
-                                    category_itemList.image = mjson_obj.getString("image")
-                                    val mjson_arr_extra = mjson_obj.getJSONArray("extra")
-                                    extra_toppingArrayList = ArrayList()
-                                    for (j in 0 until mjson_arr_extra.length()) {
-                                        val mjson_obj_extra = mjson_arr_extra.getJSONObject(j)
-                                        val extra_topping = Extra_Topping()
-                                        extra_topping.id = mjson_obj_extra.getString("id")
-                                        extra_topping.item_id = mjson_obj_extra.getString("item_id")
-                                        extra_topping.name = mjson_obj_extra.getString("name")
-                                        extra_topping.price = mjson_obj_extra.getString("price")
-                                        extra_toppingArrayList?.add(extra_topping)
-                                    }
-                                    category_itemList.extra_toppingArrayList =
-                                        extra_toppingArrayList
-                                    category_itemLists?.add(category_itemList)
-                                }
-                                _binding?.progressbar?.visibility = View.GONE
-                                all_orderFood_adapter = restoData?.let {
-                                    PickupFoodListAdapter(
-                                        context,
-                                        activity,
-                                        category_itemLists!!,
-                                        it
-                                    ) {
-                                        showAlertView(it)
-                                    }
-                                }
-                                _binding?.pickRecycleview?.adapter = all_orderFood_adapter
-                            }
-                        } else if (response.code() == Constant.ERROR_CODE) {
-                            val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
-                            _binding?.progressbar?.visibility = View.GONE
-                        }
-                    } catch (ex: Exception) {
-                        ex.printStackTrace()
-                        _binding?.progressbar?.visibility = View.GONE
-                        context?.showToastMessage("Error occur please try again")
-                    }
-                }
 
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    context?.showToastMessage("Error occur please try again")
-                    _binding?.progressbar?.visibility = View.GONE
-                }
-            })
-    }
+
 
     fun callApiAddToCart(
         item_id: String?,
@@ -283,7 +180,7 @@ class PickupSelectFoodFragment : Fragment() {
 
     fun callApiFood1() {
         if (isNetworkAvailable(requireContext())) {
-            callApiFoodItem(category_id)
+            viewModel.callApiFoodItem(category_id)
         } else {
             context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
@@ -795,16 +692,19 @@ class PickupSelectFoodFragment : Fragment() {
         var category_id: String? = null
         var restoData: RestoData? = null
         var booking_id: String? = "0"
+        lateinit var viewModel: PickUpSelectFoodViewModel
         fun newInstance( /*TableList tableList,*/
             bookTable: RestoData,
             category_id_val: String?,
-            booking_id_val: String?
+            booking_id_val: String?,
+            vm: PickUpSelectFoodViewModel
         ): PickupSelectFoodFragment {
             category_id = category_id_val
             //Log.d("idval",category_id);
             //tableList_get = tableList;
             booking_id = booking_id_val
             restoData = bookTable
+            viewModel = vm
             return PickupSelectFoodFragment()
         }
     }

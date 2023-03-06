@@ -1,6 +1,5 @@
 package com.forkmang.activity
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,8 +12,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.forkmang.PickUpSelectFoodViewModel
 import com.forkmang.R
 import com.forkmang.adapter.ViewPagerAdapterPickupSelectFood
 import com.forkmang.data.FoodList_Tab
@@ -22,10 +22,9 @@ import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivitySelectfoodBinding
 import com.forkmang.fragment.PickupSelectFoodFragment
 import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
-import com.forkmang.models.TableList
 import com.forkmang.network_call.Api.info
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -40,16 +39,17 @@ import java.io.IOException
 import java.util.*
 
 class PickupSelectFoodActivity : AppCompatActivity() {
+
     var ctx: Context = this@PickupSelectFoodActivity
     var foodListArrayList: ArrayList<FoodList_Tab>? = null
+    private lateinit var viewPagerAdapterReserveSeat: ViewPagerAdapterPickupSelectFood
     var restoData: RestoData? = null
-    var tableList: TableList? = null
     var booking_id: String? = null
     var category_id: String? = null
     var current_tabactive: Int = 0
 
     private val binding by lazy { ActivitySelectfoodBinding.inflate(layoutInflater) }
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val viewModel by lazy { ViewModelProvider(this)[PickUpSelectFoodViewModel::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,10 +77,8 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         booking_id = restoData?.id
         binding.imgSearchicon.setOnClickListener {
             val str_search: String = binding.etvSearchview.text.toString()
-            val all_Food_fragment = PickupSelectFoodFragment()
-            //TODO: redo this code, should not call frag instance
             if (Utils.isNetworkAvailable(ctx)) {
-                all_Food_fragment.callApiSearchFoodItem(this, this,category_id, str_search)
+                viewModel.callApiSearchFoodItem(category_id, str_search)
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
@@ -95,9 +93,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 if (s.toString().isEmpty()) {
                     Hidekeyboard()
                     if (Utils.isNetworkAvailable(ctx)) {
-                        //TODO: redo this code, should not call frag instance
-                        val all_Food_fragment = PickupSelectFoodFragment()
-                        all_Food_fragment.callApiFoodItem(category_id)
+                        viewModel.callApiFoodItem(category_id)
                     } else {
                         showToastMessage(Constant.NETWORKEROORMSG)
                     }
@@ -117,7 +113,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         })
         binding.btnViewCart.setOnClickListener {
             //showAlertView();
-            cartListingView()
+            viewModel.command.postValue(COMMAND_CART_LIST_VIEW)
         }
         binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -127,8 +123,6 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 current_tabactive = position
                 val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
                 category_id = foodList_tab?.id
-                /*val all_Food_fragment = PickupSelect_Food_Fragment()
-                all_Food_fragment.callApi_food_1()*/
             }
         })
         if (Utils.isNetworkAvailable(ctx)) {
@@ -136,53 +130,6 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         } else {
             showToastMessage(Constant.NETWORKEROORMSG)
         }
-    }
-
-    fun cartListingView() {
-        val dialog = Dialog(this, R.style.FullHeightDialog)
-        dialog.setContentView(R.layout.cartview_alertview_2)
-        if (dialog.window != null) {
-            dialog.window?.setLayout(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-        val txt_datetime: TextView
-        val etv_noperson: EditText
-        var linear_view_layout_2: LinearLayout
-        val linear_view1: LinearLayout = dialog.findViewById(R.id.linear_view1)
-        linear_view1.visibility = View.GONE
-
-        // linear_view_layout_2 =dialog.findViewById(R.id.linear_view_layout_2);
-        // linear_view_layout_2.setVisibility(View.GONE);
-        val txt_restroname: TextView = dialog.findViewById(R.id.txt_restroname)
-        val txt_custname: TextView = dialog.findViewById(R.id.txt_custname)
-        val txt_phoneno: TextView = dialog.findViewById(R.id.txt_phoneno)
-        val btn_pay_table_food: Button = dialog.findViewById(R.id.btn_pay_table_food)
-        val btn_pay_table: Button = dialog.findViewById(R.id.btn_pay_table)
-        val img_close: ImageView = dialog.findViewById(R.id.img_close)
-        val recycler: RecyclerView = dialog.findViewById(R.id.recycleview)
-        txt_restroname.text = PickupSelectFoodFragment.restoData?.rest_name ?: ""
-        txt_custname.text = storePrefrence.getString(Constant.NAME)
-        txt_phoneno.text = storePrefrence.getString(Constant.MOBILE)
-        //txt_datetime.setText(tableList_get.getStr_time());
-        img_close.setOnClickListener { dialog.dismiss() }
-        if (Utils.isNetworkAvailable(this)) {
-            //callApi_cartListview()
-        } else {
-            showToastMessage(Constant.NETWORKEROORMSG)
-        }
-        btn_pay_table_food.setOnClickListener {
-            dialog.dismiss()
-            val mainIntent = Intent(this, ActivityPaymentSummary::class.java)
-            //Bundle bundle = new Bundle();
-            //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
-            mainIntent.putExtra("comingfrom", "PickupFood")
-            mainIntent.putExtra("restromodel", PickupSelectFoodFragment.restoData)
-            startActivity(mainIntent)
-        }
-        btn_pay_table.setOnClickListener { dialog.dismiss() }
-        dialog.show()
     }
 
     private fun fill_tablist() {
@@ -253,15 +200,15 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                                     foodListArrayList?.add(foodList_tab)
                                 }
                                 binding.progressBar.visibility = View.GONE
-                                val viewPagerAdapter_reserveSeat =
+                                viewPagerAdapterReserveSeat =
                                     ViewPagerAdapterPickupSelectFood(
                                         supportFragmentManager,
                                         lifecycle,
                                         foodListArrayList!!,
-                                        tableList,
-                                        restoData!!
+                                        restoData!!,
+                                        viewModel
                                     )
-                                binding.viewPager.adapter = viewPagerAdapter_reserveSeat
+                                binding.viewPager.adapter = viewPagerAdapterReserveSeat
                                 fill_tablist()
                             }
                         }

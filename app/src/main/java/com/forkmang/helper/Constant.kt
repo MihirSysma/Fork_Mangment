@@ -72,4 +72,6 @@ object Constant {
     var NETWORKEROORMSG = "Check Internet Connection"
     const val KEY_LATITUDE = "latitude"
     const val KEY_LONGITUDE = "longitude"
+
+    const val COMMAND_CART_LIST_VIEW = "COMMAND_CART_LIST_VIEW"
 }
