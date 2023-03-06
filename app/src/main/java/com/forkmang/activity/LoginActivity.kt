@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<JsonObject?>
             ) {
                 try {
-
+//
                     //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
