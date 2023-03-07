@@ -24,7 +24,6 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        Stetho.initializeWithDefaults(this)
         /*Button crashButton = new Button(this);
         crashButton.setText("Test Crash");
         crashButton.setOnClickListener(new View.OnClickListener() {

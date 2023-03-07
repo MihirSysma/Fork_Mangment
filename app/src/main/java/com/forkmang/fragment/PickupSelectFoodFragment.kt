@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.vm.PickUpSelectFoodViewModel
 import com.forkmang.R
 import com.forkmang.activity.ActivityPaymentSummary
@@ -52,6 +53,8 @@ class PickupSelectFoodFragment : Fragment() {
     private var _binding: FragmentPickupLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var rvCartDialog: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,7 +62,7 @@ class PickupSelectFoodFragment : Fragment() {
     ): View {
         _binding = FragmentPickupLayoutBinding.inflate(inflater, container, false)
         binding.pickRecycleview.layoutManager = LinearLayoutManager(context)
-        binding.pickRecycleview.adapter = all_orderFood_adapter
+
         callApiFood1()
         observe()
         return binding.root
@@ -86,10 +89,12 @@ class PickupSelectFoodFragment : Fragment() {
                     showAlertView(itemList)
                 }
             }
+            binding.pickRecycleview.adapter = all_orderFood_adapter
             binding.progressbar.visibility = View.GONE
         }
 
         viewModel.categoryItemData.observe(viewLifecycleOwner) { data ->
+            context?.showToastMessage("reached in observe with $data")
             all_orderFood_adapter = restoData?.let { it1 ->
                 PickupFoodListAdapter(
                     requireContext(),
@@ -100,6 +105,7 @@ class PickupSelectFoodFragment : Fragment() {
                     showAlertView(it)
                 }
             }
+            binding.pickRecycleview.adapter = all_orderFood_adapter
             binding.progressbar.visibility = View.GONE
         }
 
@@ -124,7 +130,8 @@ class PickupSelectFoodFragment : Fragment() {
             storePrefrence.getString(
                 Constant.IDENTFIER
             ),
-            type
+            type,
+            restoData?.id
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
@@ -326,12 +333,13 @@ class PickupSelectFoodFragment : Fragment() {
         val btn_pay_table_food: Button = dialog.findViewById(R.id.btn_pay_table_food)
         val btn_pay_table: Button = dialog.findViewById(R.id.btn_pay_table)
         val img_close: ImageView = dialog.findViewById(R.id.img_close)
+        rvCartDialog = dialog.findViewById(R.id.recycleview)
         txt_restroname.text = restoData?.rest_name ?: ""
         txt_custname.text = storePrefrence.getString(Constant.NAME)
         txt_phoneno.text = storePrefrence.getString(MOBILE)
         //txt_datetime.setText(tableList_get.getStr_time());
         img_close.setOnClickListener { dialog.dismiss() }
-        binding.pickRecycleview.layoutManager = LinearLayoutManager(activity)
+        rvCartDialog.layoutManager = LinearLayoutManager(activity)
         if (isNetworkAvailable(requireContext())) {
             callApiCartListView()
         } else {
@@ -413,7 +421,11 @@ class PickupSelectFoodFragment : Fragment() {
                                     } else {
                                         cartBooking.data_booking_table_id = ""
                                     }
-                                    cartBooking.data_total = data_obj.getString("total")
+                                    if(data_obj.has("total")) {
+                                        cartBooking.data_total = data_obj.getString("total")
+                                    } else {
+                                        cartBooking.data_total = ""
+                                    }
                                     //cart_item obj
                                     cartBooking.cart_item_qty = cart_detail_obj.getString("qty")
                                     cartBooking.cart_item_cartid =
@@ -426,23 +438,22 @@ class PickupSelectFoodFragment : Fragment() {
                                         cartBooking.cart_item_extra_id = "0"
                                     }
                                     //cart_item_details obj
-                                    cartBooking.cart_item_details_category_id =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
-                                            .getString("category_id")
-                                    cartBooking.cart_item_details_name =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
-                                            .getString("name")
-                                    cartBooking.cart_item_details_price =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
-                                            .getString("price")
+                                    if (cart_detail_obj.has("cart_item_details")) {
+                                        cartBooking.cart_item_details_category_id =
+                                            cart_detail_obj.getJSONObject("cart_item_details")
+                                                .getString("category_id")
+                                        cartBooking.cart_item_details_name =
+                                            cart_detail_obj.getJSONObject("cart_item_details")
+                                                .getString("name")
+                                        cartBooking.cart_item_details_price =
+                                            cart_detail_obj.getJSONObject("cart_item_details")
+                                                .getString("price")
+                                    }
 
-
-                                    //extra_item_details obj
+/*                                    //extra_item_details obj
                                     val extra_namelist = ArrayList<String>()
                                     val extra_pricelist = ArrayList<String>()
-                                    if (cart_detail_obj.getJSONArray("extra_item_details")
-                                            .length() > 0
-                                    ) {
+                                    if (cart_detail_obj.getJSONArray("extra_item_details").length() > 0) {
                                         for (j in 0 until cart_detail_obj.getJSONArray("extra_item_details")
                                             .length()) {
                                             val extra_item_obj =
@@ -485,7 +496,7 @@ class PickupSelectFoodFragment : Fragment() {
                                             str_extraprice + "," + extra_pricelist[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_price = str_extraprice
+                                    cartBooking.extra_item_details_price = str_extraprice*/
                                     cartBookingArrayList?.add(cartBooking)
                                 }
                                 binding.progressbar.visibility = View.GONE
@@ -502,7 +513,7 @@ class PickupSelectFoodFragment : Fragment() {
                                         }
                                     }
                                 }
-                                binding.pickRecycleview.adapter = pickupListingAdapter
+                                rvCartDialog.adapter = pickupListingAdapter
                             }
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }

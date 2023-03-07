@@ -297,7 +297,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/layout_rectangle_orange"
                 android:fontFamily="@font/generalsansmedium"
-                android:text="@string/pay_for_table_food"
+                android:text="@string/pay_for_table_only"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="14sp"

@@ -250,6 +250,7 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="area_type">Area Type</string>
     <string name="your_queue_no">Your Queue No</string>
+    <string name="pay_for_table_only">Pay For Table Only</string>
 
 
 </resources>

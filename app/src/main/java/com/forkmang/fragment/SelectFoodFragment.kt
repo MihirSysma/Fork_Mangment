@@ -115,7 +115,8 @@ class SelectFoodFragment : Fragment() {
             storePrefrence.getString(
                 Constant.IDENTFIER
             ),
-            type
+            type,
+            restoData?.id,
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {

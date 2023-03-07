@@ -188,7 +188,8 @@ interface APIService {
         @Field("booking_table_id") booking_table_id: String?,
         @Field("item_extra") item_extra: String?,
         @Field("identifier") identifier: String?,
-        @Field("type") type: String?
+        @Field("type") type: String?,
+        @Field("restaurant_id") restaurant_id: String?,
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_UPDATEQTY)
