@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.data.CartBooking
 import com.forkmang.helper.Constant
-import com.forkmang.helper.Utils
+import com.forkmang.helper.Constant.NETWORKEROORMSG
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.showToastMessage
 import java.util.*
@@ -77,26 +77,26 @@ class PickupListingAdapter(
             minus_btn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 if (isNetworkAvailable(ctx)) {
-                    var qty_update = txt_qty.text.toString().toInt()
-                    --qty_update
-                    txt_qty.text = qty_update.toString()
-                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+                    var qtyUpdate = txt_qty.text.toString().toInt()
+                    --qtyUpdate
+                    txt_qty.text = qtyUpdate.toString()
+                    onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
                 } else {
-                    ctx.showToastMessage(Constant.NETWORKEROORMSG)
+                    ctx.showToastMessage(NETWORKEROORMSG)
                 }
             }
 
             plus_btn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 if (isNetworkAvailable(ctx)) {
-                    var qty_update = txt_qty.text.toString().toInt()
-                    ++qty_update
-                    txt_qty.text = qty_update.toString()
-                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+                    var qtyUpdate = txt_qty.text.toString().toInt()
+                    ++qtyUpdate
+                    txt_qty.text = qtyUpdate.toString()
+                    onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
                 } else {
                     ctx.showToastMessage(Constant.NETWORKEROORMSG)
                 }
@@ -105,7 +105,7 @@ class PickupListingAdapter(
             img_del.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 val alertDialog = AlertDialog.Builder(ctx)
                 val inflater =
                     ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -114,21 +114,21 @@ class PickupListingAdapter(
                 alertDialog.setCancelable(true)
                 val dialog = alertDialog.create()
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                val tvremove: TextView = dialogView.findViewById(R.id.tvcancel)
-                val tvclose: TextView = dialogView.findViewById(R.id.tvclose)
-                val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
-                tvclose.setText(R.string.cancel)
-                tvremove.setText(R.string.remove)
-                txt_msg.text = ctx.resources.getString(R.string.deleteproductmsg)
-                tvremove.setOnClickListener {
+                val tvRemove: TextView = dialogView.findViewById(R.id.tvcancel)
+                val tvClose: TextView = dialogView.findViewById(R.id.tvclose)
+                val txtMsg: TextView = dialogView.findViewById(R.id.txt_msg)
+                tvClose.setText(R.string.cancel)
+                tvRemove.setText(R.string.remove)
+                txtMsg.text = ctx.resources.getString(R.string.deleteproductmsg)
+                tvRemove.setOnClickListener {
                     dialog.dismiss()
                     if (isNetworkAvailable(ctx)) {
-                        onItemClicked(REMOVE_CART_ITEM, cart_item_id, null)
+                        onItemClicked(REMOVE_CART_ITEM, cartItemId, null)
                     } else {
                         ctx.showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
-                tvclose.setOnClickListener {
+                tvClose.setOnClickListener {
                     dialog.dismiss()
                     //onBackPressed();
                 }

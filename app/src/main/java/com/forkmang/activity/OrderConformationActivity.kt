@@ -81,33 +81,33 @@ class OrderConformationActivity : AppCompatActivity() {
                         if (jsonObject.getString("status")
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
-                            val dataobj: JSONObject = jsonObject.getJSONObject("data")
-                            if (dataobj.getJSONArray("booking_table").length() > 0) {
+                            val dataObj: JSONObject = jsonObject.getJSONObject("data")
+                            if (dataObj.getJSONArray("booking_table").length() > 0) {
                                 binding.txtRule.text =
-                                    dataobj.getJSONArray("booking_table").getJSONObject(0)
+                                    dataObj.getJSONArray("booking_table").getJSONObject(0)
                                         .getString("rules")
                                 binding.txtDresscode.text =
-                                    dataobj.getJSONArray("booking_table").getJSONObject(0)
+                                    dataObj.getJSONArray("booking_table").getJSONObject(0)
                                         .getString("dresscode")
                                 //txt_timeview.setText(tableList_get.getStr_time());
                                 binding.txtTimeview.text =
-                                    (dataobj.getJSONArray("booking_table").getJSONObject(0)
+                                    (dataObj.getJSONArray("booking_table").getJSONObject(0)
                                         .getString("date"))
                                 binding.txtOcassion.text =
-                                    (dataobj.getJSONArray("booking_table").getJSONObject(0)
+                                    (dataObj.getJSONArray("booking_table").getJSONObject(0)
                                         .getString("occasion"))
                             }
                             binding.txtHotelname.text =
-                                dataobj.getJSONObject("restaurant").getString("rest_name")
+                                dataObj.getJSONObject("restaurant").getString("rest_name")
                             binding.txtEndtime.text =
-                                "Branch Name: " + dataobj.getJSONObject("restaurant")
+                                "Branch Name: " + dataObj.getJSONObject("restaurant")
                                     .getString("rest_branch")
                             binding.txtDistance.text =
-                                "ContactNo: " + dataobj.getJSONObject("restaurant")
+                                "ContactNo: " + dataObj.getJSONObject("restaurant")
                                     .getString("contact")
                             binding.txtTotalkm.text = restoData?.distance + " Km"
                             binding.txtTotalPaidamt.text = ctx.resources
-                                .getString(R.string.rupee) + dataobj.getString("total")
+                                .getString(R.string.rupee) + dataObj.getString("total")
                         } else {
                             showToastMessage(jsonObject.getString("message"))
                         }
@@ -120,12 +120,12 @@ class OrderConformationActivity : AppCompatActivity() {
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                     binding.progressbar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage("Error occur please try again")
+                showToastMessage(Constant.ERRORMSG)
                 binding.progressbar.visibility = View.GONE
             }
         })

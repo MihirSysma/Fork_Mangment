@@ -94,8 +94,8 @@ class LoginActivity : AppCompatActivity() {
                                 .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
-                            val error_msg: String = jsonObject.getString("message")
-                            showToastMessage(error_msg)
+                            val errorMsg: String = jsonObject.getString("message")
+                            showToastMessage(errorMsg)
                         } else {
                             binding.progressBar.visibility = View.GONE
                             showToastMessage("Error occur please try again")

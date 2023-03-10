@@ -76,9 +76,9 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         binding.txtTotalkm.text = restoData?.distance + " km"
         booking_id = restoData?.id
         binding.imgSearchicon.setOnClickListener {
-            val str_search: String = binding.etvSearchview.text.toString()
+            val strSearch: String = binding.etvSearchview.text.toString()
             if (Utils.isNetworkAvailable(ctx)) {
-                viewModel.callApiSearchFoodItem(category_id, str_search)
+                viewModel.callApiSearchFoodItem(category_id, strSearch)
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
@@ -121,26 +121,26 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 Log.d("pageno", "" + position)
                 binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
                 current_tabactive = position
-                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
-                category_id = foodList_tab?.id
+                val foodListTab: FoodList_Tab? = foodListArrayList?.get(position)
+                category_id = foodListTab?.id
             }
         })
         if (Utils.isNetworkAvailable(ctx)) {
-            callapi_tablisting("1")
+            callApiTabListing("1")
         } else {
             showToastMessage(Constant.NETWORKEROORMSG)
         }
     }
 
-    private fun fill_tablist() {
+    private fun fillTablist() {
         TabLayoutMediator(
             (binding.tabLayout),
             (binding.viewPager)
         ) { tab: TabLayout.Tab, position: Int ->
             for (i in foodListArrayList?.indices!!) {
-                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
+                val foodListTab: FoodList_Tab? = foodListArrayList?.get(position)
                 //tab.setText(foodList_tab.getName().toLowerCase());
-                tab.customView = getTabView(foodList_tab?.name?.lowercase(Locale.getDefault()))
+                tab.customView = getTabView(foodListTab?.name?.lowercase(Locale.getDefault()))
                 //TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
                 //tabOne.setText(foodList_tab.getName());
                 //tabLayout.getTabAt(i).setCustomView(tabOne);
@@ -158,8 +158,8 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog: AlertDialog = alertDialog.create()
-        val btn_share_order: Button = dialogView.findViewById(R.id.btn_share_order)
-        btn_share_order.setOnClickListener {
+        val btnShareOrder: Button = dialogView.findViewById(R.id.btn_share_order)
+        btnShareOrder.setOnClickListener {
             val intent = Intent(
                 this@PickupSelectFoodActivity,
                 BookingOrderReserverConformationActivity::class.java
@@ -170,8 +170,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun callapi_tablisting(branch_id: String) {
-        //showProgress();
+    private fun callApiTabListing(branch_id: String) {
         binding.progressBar.visibility = View.VISIBLE
         info.getResFoodList(branch_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
@@ -181,7 +180,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 try {
                     //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
-                        val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                        val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
@@ -191,13 +190,13 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                                 foodListArrayList = ArrayList()
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
-                                    val foodList_tab = FoodList_Tab()
-                                    val mjson_obj: JSONObject =
+                                    val foodListTab = FoodList_Tab()
+                                    val mjsonObj: JSONObject =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i)
-                                    foodList_tab.name = mjson_obj.getString("name")
-                                    foodList_tab.id = mjson_obj.getString("id")
-                                    foodListArrayList?.add(foodList_tab)
+                                    foodListTab.name = mjsonObj.getString("name")
+                                    foodListTab.id = mjsonObj.getString("id")
+                                    foodListArrayList?.add(foodListTab)
                                 }
                                 binding.progressBar.visibility = View.GONE
                                 viewPagerAdapterReserveSeat =
@@ -209,7 +208,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                                         viewModel
                                     )
                                 binding.viewPager.adapter = viewPagerAdapterReserveSeat
-                                fill_tablist()
+                                fillTablist()
                             }
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
@@ -219,17 +218,16 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(Constant.ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage("Error occur please try again")
-                //stopProgress();
+                showToastMessage(Constant.ERRORMSG)
             }
         })
     }
@@ -242,7 +240,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         `in`.hideSoftInputFromWindow(binding.etvSearchview.windowToken, 0)
     }
 
-    fun getTabView(str: String?): View {
+    private fun getTabView(str: String?): View {
         val tab: View =
             LayoutInflater.from(this@PickupSelectFoodActivity).inflate(R.layout.custom_tab, null)
         val tv: TextView = tab.findViewById(R.id.custom_text)

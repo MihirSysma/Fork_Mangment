@@ -104,8 +104,8 @@ class ForgotPassword : AppCompatActivity() {
                                 .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
-                            val error_msg: String = jsonObject.getString("message")
-                            showToastMessage(error_msg)
+                            val errorMsg: String = jsonObject.getString("message")
+                            showToastMessage(errorMsg)
                         } else {
                             binding.progressBar.visibility = View.GONE
                             showToastMessage("Error occur please try again")
@@ -144,13 +144,13 @@ class ForgotPassword : AppCompatActivity() {
                 ) {
                     try {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
-                            val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
+                            val jsonObject = JSONObject(Gson().toJson(response.body()))
                             //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
                                     .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                             ) {
                                 binding.progressBar.visibility = View.GONE
-                                val mainIntent: Intent =
+                                val mainIntent =
                                     Intent(this@ForgotPassword, LoginFormActivity::class.java)
                                 startActivity(mainIntent)
                                 finish()
@@ -159,13 +159,13 @@ class ForgotPassword : AppCompatActivity() {
                                 showToastMessage("Error occur please try again")
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
-                            val jsonObject: JSONObject = JSONObject(response.errorBody()!!.string())
+                            val jsonObject = JSONObject(response.errorBody()!!.string())
                             if (jsonObject.getString("status")
                                     .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
                             ) {
                                 binding.progressBar.visibility = View.GONE
-                                val error_msg: String = jsonObject.getString("message")
-                                showToastMessage(error_msg)
+                                val errorMsg: String = jsonObject.getString("message")
+                                showToastMessage(errorMsg)
                             } else {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage("Error occur please try again")

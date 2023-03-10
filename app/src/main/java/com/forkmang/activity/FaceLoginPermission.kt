@@ -14,8 +14,8 @@ class FaceLoginPermission : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_faceloginpermission)
 
-        val Btn_Enable: Button = findViewById(R.id.btn_enable)
-        Btn_Enable.setOnClickListener { showAlertView() }
+        val btnEnable: Button = findViewById(R.id.btn_enable)
+        btnEnable.setOnClickListener { showAlertView() }
     }
 
     private fun showAlertView() {
@@ -25,10 +25,10 @@ class FaceLoginPermission : AppCompatActivity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog: AlertDialog = alertDialog.create()
-        val Btn_Cancel: Button = dialogView.findViewById(R.id.btn_cancel)
-        val Btn_Yes: Button = dialogView.findViewById(R.id.btn_yes)
-        Btn_Cancel.setOnClickListener { dialog.dismiss() }
-        Btn_Yes.setOnClickListener { dialog.dismiss() }
+        val btnCancel: Button = dialogView.findViewById(R.id.btn_cancel)
+        val btnYes: Button = dialogView.findViewById(R.id.btn_yes)
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        btnYes.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 }

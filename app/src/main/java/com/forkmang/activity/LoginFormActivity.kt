@@ -16,6 +16,18 @@ import com.facebook.login.LoginResult
 import com.forkmang.R
 import com.forkmang.databinding.ActivityLoginFormBinding
 import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ENTER_MOBILE
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.ERROR_CODE
+import com.forkmang.helper.Constant.IDENTFIER
+import com.forkmang.helper.Constant.KEEP_LOGIN
+import com.forkmang.helper.Constant.MOBILE
+import com.forkmang.helper.Constant.NAME
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.PASSWORD
+import com.forkmang.helper.Constant.TOKEN_LOGIN
+import com.forkmang.helper.Constant.TOKEN_REG
+import com.forkmang.helper.Constant.VALID_NO
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
@@ -47,8 +59,8 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
         setContentView(binding.root)
 
         val txtForgotPassword: TextView = findViewById(R.id.txtForgotPassword)
-        val BtnReg: Button = findViewById(R.id.BtnReg)
-        val BtnLogin: Button = findViewById(R.id.BtnLogin)
+        val btnReg: Button = findViewById(R.id.BtnReg)
+        val btnLogin: Button = findViewById(R.id.BtnLogin)
 
         //facebook login code start
         //printHashKey();
@@ -66,7 +78,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                             "facebook"
                         )
                     } else {
-                        showToastMessage(Constant.NETWORKEROORMSG)
+                        showToastMessage(NETWORKEROORMSG)
                     }
                 }
 
@@ -88,15 +100,15 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
         binding.chekKeeplogin.setOnClickListener {
             if (binding.etvMobile.length() == 10 && binding.etvPassword.length() > 3) {
                 if (binding.chekKeeplogin.isChecked) {
-                    Constant.KEEP_LOGIN = true
+                    KEEP_LOGIN = true
                 } else if (!binding.chekKeeplogin.isChecked) {
-                    Constant.KEEP_LOGIN = false
+                    KEEP_LOGIN = false
                 }
             } else {
                 showToastMessage(Constant.MOBILE_PASSWORD)
             }
         }
-        BtnLogin.setOnClickListener {
+        btnLogin.setOnClickListener {
             if (binding.etvMobile.length() > 0) {
                 if (binding.etvMobile.length() == 10) {
                     //password is valid or not
@@ -107,29 +119,29 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                                 binding.etvPassword.text.toString()
                             )
                         } else {
-                            showToastMessage(Constant.NETWORKEROORMSG)
+                            showToastMessage(NETWORKEROORMSG)
                         }
                         //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
                     } else {
-                        showToastMessage(Constant.PASSWORD)
+                        showToastMessage(PASSWORD)
                     }
                 } else {
-                    showToastMessage(Constant.VALID_NO)
+                    showToastMessage(VALID_NO)
                 }
             } else {
-                showToastMessage(Constant.ENTER_MOBILE)
+                showToastMessage(ENTER_MOBILE)
             }
         }
         txtForgotPassword.setOnClickListener {
             storePrefrence.setString(
-                Constant.MOBILE,
+                MOBILE,
                 binding.etvMobile.text.toString()
             )
             val mainIntent = Intent(this@LoginFormActivity, ForgotPassword::class.java)
             startActivity(mainIntent)
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
         }
-        BtnReg.setOnClickListener {
+        btnReg.setOnClickListener {
             val mainIntent = Intent(this@LoginFormActivity, RegisterActivity::class.java)
             startActivity(mainIntent)
             finish()
@@ -167,7 +179,6 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
     }
 
     private fun callApiLoginUser(contact: String, password: String) {
-        //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.loginUser(contact, password)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
@@ -175,7 +186,6 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                 response: Response<JsonObject?>
             ) {
                 try {
-
                     //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
@@ -183,62 +193,60 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
                             showToastMessage(jsonObject.getString("message"))
-                            storePrefrence.setBoolean("keeplogin", Constant.KEEP_LOGIN)
+                            storePrefrence.setBoolean("keeplogin", KEEP_LOGIN)
                             storePrefrence.setString(
-                                Constant.MOBILE,
+                                MOBILE,
                                 jsonObject.getJSONObject("data").getString("contact")
                             )
                             storePrefrence.setString(
-                                Constant.NAME,
+                                NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                             storePrefrence.setString(
-                                Constant.TOKEN_LOGIN,
+                                TOKEN_LOGIN,
                                 jsonObject.getJSONObject("data").getString("token")
                             )
-                            storePrefrence.setString(Constant.IDENTFIER, "")
+                            storePrefrence.setString(IDENTFIER, "")
 
                             /*if(binding.chekKeeplogin.isChecked())
                                     {
                                         storePrefrence.setString(Constant.TOKEN_LOGIN, jsonObject.getJSONObject("data").getString("token"));
                                     }*/
 
-                            //stopProgress();
                             binding.progressBar.visibility = View.GONE
                             val mainIntent = Intent(ctx, DashBoardActivity::class.java)
                             startActivity(mainIntent)
                             finish()
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            showToastMessage("Error occur please try again")
+                            showToastMessage(ERRORMSG)
                         }
-                    } else if (response.code() == Constant.ERROR_CODE) {
+                    } else if (response.code() == ERROR_CODE) {
                         val jsonObject = JSONObject(response.errorBody()!!.string())
                         if (jsonObject.getString("status")
-                                .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
+                                .equals(ERROR_CODE.toString(), ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
-                            val error_msg: String = jsonObject.getString("message")
-                            showToastMessage(error_msg)
+                            val errorMsg: String = jsonObject.getString("message")
+                            showToastMessage(errorMsg)
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            showToastMessage("Error occur please try again")
+                            showToastMessage(ERRORMSG)
                         }
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 showToastMessage("Error occur please try again")
-                //stopProgress();
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -257,34 +265,34 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
                         showToastMessage(jsonObject.getString("message"))
                         storePrefrence.setString(
-                            Constant.TOKEN_REG,
+                            TOKEN_REG,
                             jsonObject.getJSONObject("data").getString("token")
                         )
                         if (jsonObject.getJSONObject("data").has("name")) {
                             storePrefrence.setString(
-                                Constant.NAME,
+                                NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence.setString(Constant.NAME, type)
+                            storePrefrence.setString(NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent = Intent(ctx, DashBoardActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                     binding.progressBar.visibility = View.GONE
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage("Error occur please try again")
+                showToastMessage(ERRORMSG)
                 binding.progressBar.visibility = View.GONE
             }
         })

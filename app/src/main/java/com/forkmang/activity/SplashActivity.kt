@@ -37,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         //loadLocale();
-        gotoNextScreeen()
+        gotoNextScreen()
         //getToken();
     }
 
@@ -89,7 +89,7 @@ class SplashActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    private fun gotoNextScreeen() {
+    private fun gotoNextScreen() {
         Handler().postDelayed({
 
             if(storePrefrence.getString(Constant.NAME)?.length == 0)
