@@ -128,7 +128,7 @@ class RegisterActivity : AppCompatActivity(),
             email = binding.etvEmail.text.toString()
             if (binding.etvUsername.text?.isNotEmpty() == true) {
                 if (mobile?.isNotEmpty() == true) {
-                    if (mobile?.length == 9) {
+                    if (mobile?.length == 9) { // change? 12 digit number in Saudi Arabia, 966 added later so 9 digit check
                         //Email is empty or not
                         if (email.isNullOrEmpty().not()) {
                             //Email is valid or not

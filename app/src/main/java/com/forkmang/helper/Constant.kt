@@ -52,7 +52,7 @@ object Constant {
     var PASSWORD = "Please enter password and must be grater than 3 char"
 
     @JvmField
-    var VALID_NO = "Please enter valid 10 digit mobile no"
+    var VALID_NO = "Please enter valid 9 digit mobile no"
     var MOBILE_PASSWORD = "Please enter mobile no and password"
 
     @JvmField
