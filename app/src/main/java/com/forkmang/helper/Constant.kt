@@ -62,7 +62,7 @@ object Constant {
     var VALIDEmail = "Please add valid email address"
 
     @JvmField
-    var ERRORMSG = "Error occur please try again"
+    var ERRORMSG = "An Error occurred, Please try again"
 
     @JvmField
     var NODATA = "No Data Available"

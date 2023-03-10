@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
 import android.util.Base64
 import android.util.Log
@@ -25,7 +24,23 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.forkmang.R
 import com.forkmang.databinding.ActivityRegisterBinding
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.CNFPASSWORD_MATCH
+import com.forkmang.helper.Constant.ENTER_MOBILE
+import com.forkmang.helper.Constant.ENTER_NAME
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.ERROR_CODE
+import com.forkmang.helper.Constant.EmptyEmail
+import com.forkmang.helper.Constant.IDENTFIER
+import com.forkmang.helper.Constant.MOBILE
+import com.forkmang.helper.Constant.NAME
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.PASSWORD
+import com.forkmang.helper.Constant.PASSWORD_MATCH
+import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
+import com.forkmang.helper.Constant.TOKEN_LOGIN
+import com.forkmang.helper.Constant.VALIDEmail
+import com.forkmang.helper.Constant.VALID_NO
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
@@ -68,7 +83,7 @@ class RegisterActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val Btn_Back: Button = findViewById(R.id.Btn_Back)
-        binding.etvMobile.setText("9836608967")
+        binding.etvMobile.setText("539114359")
         binding.etvUsername.setText("967 name")
         binding.etvEmail.setText("test967@gmail.com")
         binding.etvPassword.setText("123456")
@@ -113,12 +128,12 @@ class RegisterActivity : AppCompatActivity(),
             email = binding.etvEmail.text.toString()
             if (binding.etvUsername.text?.isNotEmpty() == true) {
                 if (mobile?.isNotEmpty() == true) {
-                    if (mobile?.length == 10) {
+                    if (mobile?.length == 9) {
                         //Email is empty or not
-                        if (Objects.requireNonNull<Editable?>(binding.etvEmail.text).isNotEmpty()) {
+                        if (email.isNullOrEmpty().not()) {
                             //Email is valid or not
                             if (isValidEmail(
-                                    binding.etvEmail.text.toString()
+                                    email
                                 )
                             ) {
                                 //password is valid or not
@@ -126,8 +141,7 @@ class RegisterActivity : AppCompatActivity(),
                                     if ((confpassword?.length ?: 0) > 3) {
                                         if ((password == confpassword)) {
                                             //call api
-                                            val phoneNumber: String =
-                                                ("+" + "96" + binding.etvMobile.text.toString())
+                                            val phoneNumber: String = ("966$mobile")
                                             //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
                                             try {
                                                 binding.progressBar.visibility = View.VISIBLE
@@ -144,28 +158,28 @@ class RegisterActivity : AppCompatActivity(),
                                                 showToastMessage(e.message ?: "null")
                                             }
                                         } else {
-                                            showToastMessage(Constant.PASSWORD_MATCH)
+                                            showToastMessage(PASSWORD_MATCH)
                                         }
                                     } else {
-                                        showToastMessage(Constant.CNFPASSWORD_MATCH)
+                                        showToastMessage(CNFPASSWORD_MATCH)
                                     }
                                 } else {
-                                    showToastMessage(Constant.PASSWORD)
+                                    showToastMessage(PASSWORD)
                                 }
                             } else {
-                                showToastMessage(Constant.VALIDEmail)
+                                showToastMessage(VALIDEmail)
                             }
                         } else {
-                            showToastMessage(Constant.EmptyEmail)
+                            showToastMessage(EmptyEmail)
                         }
                     } else {
-                        showToastMessage(Constant.VALID_NO)
+                        showToastMessage(VALID_NO)
                     }
                 } else {
-                    showToastMessage(Constant.ENTER_MOBILE)
+                    showToastMessage(ENTER_MOBILE)
                 }
             } else {
-                showToastMessage(Constant.ENTER_NAME)
+                showToastMessage(ENTER_NAME)
             }
         }
         Btn_Back.setOnClickListener { finish() }
@@ -217,7 +231,9 @@ class RegisterActivity : AppCompatActivity(),
                 )
             }
         } catch (ignored: PackageManager.NameNotFoundException) {
+            ignored.printStackTrace()
         } catch (ignored: NoSuchAlgorithmException) {
+            ignored.printStackTrace()
         }
     }
 
@@ -230,8 +246,9 @@ class RegisterActivity : AppCompatActivity(),
         val dialog: AlertDialog = alertDialog.create()
         val Btn_Submit: Button = dialogView.findViewById(R.id.btn_submit)
         val firstPinView: PinView = dialogView.findViewById(R.id.firstPinView)
+        val resendOtp: TextView = dialogView.findViewById(R.id.resend_otp)
+
         Btn_Submit.setOnClickListener {
-            // TODO: call verify otp API
             Api.info.verifyOtp(verificationId, firstPinView.text.toString(), CustId)
                 ?.enqueue(object : Callback<JsonObject?> {
                     override fun onResponse(
@@ -239,12 +256,20 @@ class RegisterActivity : AppCompatActivity(),
                         response: Response<JsonObject?>
                     ) {
                         try {
-                            if (response.code() == Constant.SUCCESS_CODE_n) {
+                            if (response.code() == SUCCESS_CODE_n) {
                                 binding.progressBar.visibility = View.GONE
                                 val jsonObject = JSONObject(Gson().toJson(response.body()))
                                 // TODO: on success call this dialog
+                                storePrefrence.setString(
+                                    TOKEN_LOGIN,
+                                    jsonObject.getJSONObject("data").getString("token")
+                                )
+                                storePrefrence.setString(
+                                    NAME,
+                                    jsonObject.getJSONObject("data").getString("name")
+                                )
                                 showAlertView_2()
-                            } else if (response.code() == Constant.ERROR_CODE) {
+                            } else if (response.code() == ERROR_CODE) {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage("Error occur please try again")
                             }
@@ -262,6 +287,11 @@ class RegisterActivity : AppCompatActivity(),
 
                 })
         }
+
+        resendOtp.setOnClickListener {
+            // TODO: handle it
+        }
+
         dialog.show()
     }
 
@@ -297,36 +327,31 @@ class RegisterActivity : AppCompatActivity(),
                     response: Response<JsonObject?>
                 ) {
                     try {
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
-                                    .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                    .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("message"))
                                 //TODO: get new details from API
                                 //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
                                 storePrefrence.setString(
-                                    Constant.NAME,
-                                    jsonObject.getJSONObject("data").getString("name")
-                                )
-                                storePrefrence.setString(
-                                    Constant.MOBILE,
+                                    MOBILE,
                                     jsonObject.getJSONObject("data").getString("contact")
                                 )
-                                storePrefrence.setString(
-                                    Constant.TOKEN_LOGIN,
-                                    jsonObject.getJSONObject("data").getString("token")
-                                )
-                                storePrefrence.setString(Constant.IDENTFIER, "")
-                                showAlertView("","") // TODO get verification ID, custID from api
+
+                                val vID = jsonObject.getJSONObject("data").getInt("verfication_id")
+                                val custID = jsonObject.getJSONObject("data").getString("id")
+                                storePrefrence.setString(IDENTFIER, "")
+                                showAlertView(vID.toString(), custID) // TODO get verification ID, custID from api
                                 //showAlertView_2()
                             } else {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("status"))
                             }
-                        } else if (response.code() == Constant.ERROR_CODE) {
+                        } else if (response.code() == ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             if (jsonObject.getString("status").equals("422", ignoreCase = true)) {
                                 val error_msg: String =
@@ -349,16 +374,16 @@ class RegisterActivity : AppCompatActivity(),
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     } catch (ex: IOException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -376,29 +401,29 @@ class RegisterActivity : AppCompatActivity(),
                         //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
                         if (jsonObject.getJSONObject("data").has("name")) {
                             storePrefrence.setString(
-                                Constant.NAME,
+                                NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence.setString(Constant.NAME, type)
+                            storePrefrence.setString(NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent = Intent(ctx, LoginFormActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                     binding.progressBar.visibility = View.GONE
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage("Error occur please try again")
+                showToastMessage(ERRORMSG)
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -453,7 +478,7 @@ class RegisterActivity : AppCompatActivity(),
                     "google"
                 )
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         } else {
             showToastMessage("Sign in cancel")

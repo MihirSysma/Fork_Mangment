@@ -49,7 +49,7 @@ class ContactFragment : Fragment() {
                 if (etv_mobile.text.toString().isNotEmpty()) {
                     if (etv_mobile.text.toString().length == 10) {
                         //Email is empty or not
-                        if (Objects.requireNonNull(etv_email.text).isNotEmpty()) {
+                        if (etv_email.text.isNullOrEmpty().not()) {
                             //Email is valid or not
                             if (isValidEmail(etv_email.text.toString())) {
                                 callApiContact(

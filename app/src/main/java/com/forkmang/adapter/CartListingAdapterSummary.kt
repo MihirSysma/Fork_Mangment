@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.data.CartBooking
 import com.forkmang.helper.Constant
-import com.forkmang.helper.Utils
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.showToastMessage
 import java.util.*
@@ -106,8 +105,7 @@ class CartListingAdapterSummary(
                 alertDialog.setView(dialogView)
                 alertDialog.setCancelable(true)
                 val dialog = alertDialog.create()
-                Objects.requireNonNull(dialog.window)
-                    ?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 val tvremove: TextView = dialogView.findViewById(R.id.tvcancel)
                 val tvclose: TextView = dialogView.findViewById(R.id.tvclose)
                 val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)

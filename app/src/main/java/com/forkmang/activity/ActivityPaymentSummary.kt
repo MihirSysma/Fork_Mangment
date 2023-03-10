@@ -113,7 +113,6 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                     val cartBooking = CartBooking()
                                     val cart_detail_obj = cart_array_item.getJSONObject(i)
 
-
                                     //data obj
                                     cartBooking.data_userid = data_obj.getString("user_id")
                                     if (data_obj.has("booking_table_id")) {

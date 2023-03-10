@@ -23,7 +23,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import java.util.*
 
 class ForgotPassword : AppCompatActivity() {
 
@@ -36,8 +35,9 @@ class ForgotPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
-        binding.etvNewpas.setText("1234567")
-        binding.etvcnfPass.setText("1234567")
+        /*binding.etvNewpas.setText("1234567")
+        binding.etvcnfPass.setText("1234567")*/
+
         binding.btnReset.setOnClickListener {
             /* final Intent mainIntent = new Intent(ForgotPassword.this, FaceLoginPermission.class);
             startActivity(mainIntent);
@@ -87,16 +87,14 @@ class ForgotPassword : AppCompatActivity() {
                             if (Utils.isNetworkAvailable(ctx)) {
                                 callApiResetPassword(
                                     jsonObject.getJSONObject("data").getString("contact"),
-                                    Objects.requireNonNull(binding.etvNewpas.text).toString(),
-                                    Objects.requireNonNull(binding.etvcnfPass.text).toString(),
+                                    binding.etvNewpas.text.toString(),
+                                    binding.etvcnfPass.text.toString(),
                                     jsonObject.getJSONObject("data").getString("token")
                                 )
                             } else {
                                 showToastMessage(Constant.NETWORKEROORMSG)
                             }
-                            //stopProgress();
                         } else {
-                            //stopProgress();
                             binding.progressBar.visibility = View.GONE
                             showToastMessage("Error occur please try again")
                         }
@@ -115,7 +113,6 @@ class ForgotPassword : AppCompatActivity() {
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
-                    //stopProgress();
                     binding.progressBar.visibility = View.GONE
                     showToastMessage("Error occur please try again")
                 } catch (ex: IOException) {
@@ -127,7 +124,6 @@ class ForgotPassword : AppCompatActivity() {
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 showToastMessage("Error occur please try again")
-                //stopProgress();
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -159,7 +155,6 @@ class ForgotPassword : AppCompatActivity() {
                                 startActivity(mainIntent)
                                 finish()
                             } else {
-                                //stopProgress();
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage("Error occur please try again")
                             }
@@ -178,7 +173,6 @@ class ForgotPassword : AppCompatActivity() {
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
-                        //stopProgress();
                         binding.progressBar.visibility = View.GONE
                         showToastMessage("Error occur please try again")
                     } catch (ex: IOException) {
@@ -190,7 +184,6 @@ class ForgotPassword : AppCompatActivity() {
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     showToastMessage("Error occur please try again")
-                    //stopProgress();
                     binding.progressBar.visibility = View.GONE
                 }
             })

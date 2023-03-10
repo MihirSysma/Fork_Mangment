@@ -1,6 +1,5 @@
 package com.forkmang.activity
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -39,7 +38,6 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
     private val binding by lazy { ActivityLoginFormBinding.inflate(layoutInflater) }
     private val callbackManager by lazy { create() }
     var ctx: Context = this@LoginFormActivity
-    private var dialog: ProgressDialog? = null
     private val storePrefrence by lazy { StorePrefrence(this) }
     var token: String = ""
     private var googleApiClient: GoogleApiClient? = null
@@ -244,18 +242,6 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                 binding.progressBar.visibility = View.GONE
             }
         })
-    }
-
-    fun showProgress() {
-        dialog = ProgressDialog(ctx)
-        dialog?.setCancelable(false)
-        dialog?.setMessage("Please wait...")
-        dialog?.setCanceledOnTouchOutside(false)
-        dialog?.show()
-    }
-
-    fun stopProgress() {
-        dialog?.dismiss()
     }
 
     private fun callApiSocialLogin(token: String, userid: String, type: String) {

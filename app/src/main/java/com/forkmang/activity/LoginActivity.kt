@@ -114,7 +114,6 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 showToastMessage("Error occur please try again")
-                //stopProgress();
                 binding.progressBar.visibility = View.GONE
             }
         })
