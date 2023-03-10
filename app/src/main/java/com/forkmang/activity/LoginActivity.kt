@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         val identifier = "identifier123"
-        Api.info.login_guest(identifier)?.enqueue(object : Callback<JsonObject?> {
+        Api.info.loginGuest(identifier)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>

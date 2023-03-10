@@ -24,7 +24,7 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
     // TODO: handle the toasts and the progressbar
     fun callApiSearchFoodItem(category_id: String?, search_item: String?) {
         //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        Api.info.getres_catitemlist_search(category_id, search_item)
+        Api.info.getResCatItemListSearch(category_id, search_item)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -79,7 +79,7 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
 
     fun callApiFoodItem(category_id: String?) {
         //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        Api.info.getres_catitemlist(category_id)?.enqueue(object : Callback<JsonObject?> {
+        Api.info.getResCatItemList(category_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     //Log.d("Result", jsonObject.toString());

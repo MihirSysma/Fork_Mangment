@@ -46,10 +46,10 @@ object Constant {
     var ENTER_NAME = "Please enter your name"
 
     @JvmField
-    var ENTER_MOBILE = "Please enter mobile no"
-    var PASSWORD_MATCH = "password and conform password not same"
-    var CNFPASSWORD_MATCH = "Please enter conform password"
-    var PASSWORD = "Please enter password and must be grater than 3 char"
+    var ENTER_MOBILE = "Please enter mobile No."
+    var PASSWORD_MATCH = "Passwords are not the same"
+    var CNFPASSWORD_MATCH = "Please enter confirm password"
+    var PASSWORD = "Password and must be grater than 3 characters"
 
     @JvmField
     var VALID_NO = "Please enter valid 9 digit mobile no"
@@ -59,7 +59,7 @@ object Constant {
     var EmptyEmail = "Please add email address"
 
     @JvmField
-    var VALIDEmail = "Please add valid email address"
+    var VALIDEmail = "Please enter valid email address"
 
     @JvmField
     var ERRORMSG = "An Error occurred, Please try again"
@@ -69,7 +69,7 @@ object Constant {
     var NODATA_MATCH = "No match found"
 
     @JvmField
-    var NETWORKEROORMSG = "Check Internet Connection"
+    var NETWORKEROORMSG = "Please Check Your Internet Connection"
     const val KEY_LATITUDE = "latitude"
     const val KEY_LONGITUDE = "longitude"
 

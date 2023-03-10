@@ -169,7 +169,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
     private fun callApiLoginUser(contact: String, password: String) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.login_user(contact, password)?.enqueue(object : Callback<JsonObject?> {
+        Api.info.loginUser(contact, password)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
@@ -246,7 +246,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
 
     private fun callApiSocialLogin(token: String, userid: String, type: String) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.register_sociallogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
+        Api.info.registerSocialLogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>

@@ -167,7 +167,7 @@ class SelectFoodActivity : AppCompatActivity() {
     private fun callApiTabListing(branch_id: String) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_foodlist(branch_id)?.enqueue(object : Callback<JsonObject?> {
+        info.getResFoodList(branch_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>

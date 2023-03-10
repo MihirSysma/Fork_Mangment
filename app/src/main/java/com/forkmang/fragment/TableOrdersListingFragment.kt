@@ -53,7 +53,7 @@ class TableOrdersListingFragment : Fragment() {
     //Api code for Book Table start
     private fun callapi_gettableorderslist() {
         binding.progressBar.visibility = View.VISIBLE
-        info.getbooktable_listing("Bearer " + storePrefrence.getString(TOKEN_LOGIN))
+        info.getBookTableListing("Bearer " + storePrefrence.getString(TOKEN_LOGIN))
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {

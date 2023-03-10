@@ -214,7 +214,7 @@ class WalkinDetailFragment : FragmentActivity() {
     //Api code for Book Table start
     private fun callApiGetBookTable(service_id: String, latitude: String, logitutde: String) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getlist_res_walkin(service_id, latitude, logitutde)
+        info.getListResWalkIn(service_id, latitude, logitutde)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -293,7 +293,7 @@ class WalkinDetailFragment : FragmentActivity() {
     //Api code for get queue list no
     fun callApiGetQueeList(resturant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getqueelist("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
+        info.getQueeList("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -345,7 +345,7 @@ class WalkinDetailFragment : FragmentActivity() {
     //Api code for get person queue  no
     fun callApiPersonQueueNo(resturant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getpersonqueeno("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
+        info.getPersonQueeNo("Bearer " + storePrefrence.getString(TOKEN_LOGIN), resturant_id)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -435,7 +435,7 @@ class WalkinDetailFragment : FragmentActivity() {
 
     private fun callApiFillDropdown(restaurant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_detail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
+        info.getResDetail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_n) {
@@ -505,7 +505,7 @@ class WalkinDetailFragment : FragmentActivity() {
         identifier: String
     ) {
         binding.progressBar.visibility = View.VISIBLE
-        info.queue_confirmation(
+        info.queueConfirmation(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             action, restaurant_id, person, occasion, area, identifier
         )?.enqueue(object : Callback<JsonObject?> {
@@ -551,7 +551,7 @@ class WalkinDetailFragment : FragmentActivity() {
         area: String
     ) {
         binding.progressBar.visibility = View.VISIBLE
-        info.queue_get(
+        info.queueGet(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             restaurant_id, person, occasion, area
         )?.enqueue(object : Callback<JsonObject?> {

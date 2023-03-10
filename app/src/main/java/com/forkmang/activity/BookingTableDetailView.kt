@@ -332,7 +332,7 @@ class BookingTableDetailView : Activity() {
 
     private fun callapi_booktablelist(restaurant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_detail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
+        info.getResDetail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_n) {
@@ -463,7 +463,7 @@ class BookingTableDetailView : Activity() {
 
     private fun callApiFillDropdown(restaurant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getres_detail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
+        info.getResDetail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     if (response.code() == Constant.SUCCESS_CODE_n) {
@@ -592,7 +592,7 @@ class BookingTableDetailView : Activity() {
         //"2022-12-13 09:12:12"
         //table_id="8";
         binding.progressBar.visibility = View.VISIBLE
-        info.book_table(
+        info.bookTable(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
             restaurant_id, table_id, rules, dresscode, occasion, date, storePrefrence.getString(
                 Constant.IDENTFIER

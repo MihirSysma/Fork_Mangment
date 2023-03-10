@@ -64,7 +64,7 @@ class ForgotPassword : AppCompatActivity() {
 
     private fun callApiForgetPasswordValid(contact: String) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.forgot_pass(contact, idToken)?.enqueue(object : Callback<JsonObject?> {
+        Api.info.forgotPass(contact, idToken)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
                 call: Call<JsonObject?>,
                 response: Response<JsonObject?>
@@ -136,7 +136,7 @@ class ForgotPassword : AppCompatActivity() {
         token: String
     ) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.reset_pass(contact, password, cnf_password, token)
+        Api.info.resetPass(contact, password, cnf_password, token)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(
                     call: Call<JsonObject?>,

@@ -82,7 +82,7 @@ class RegisterActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        val Btn_Back: Button = findViewById(R.id.Btn_Back)
+        val btnBack: Button = findViewById(R.id.Btn_Back)
         binding.etvMobile.setText("539114359")
         binding.etvUsername.setText("967 name")
         binding.etvEmail.setText("test967@gmail.com")
@@ -182,7 +182,7 @@ class RegisterActivity : AppCompatActivity(),
                 showToastMessage(ENTER_NAME)
             }
         }
-        Btn_Back.setOnClickListener { finish() }
+        btnBack.setOnClickListener { finish() }
 
         //facebook login
         binding.buttonFacebook.setOnClickListener {
@@ -244,11 +244,11 @@ class RegisterActivity : AppCompatActivity(),
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog: AlertDialog = alertDialog.create()
-        val Btn_Submit: Button = dialogView.findViewById(R.id.btn_submit)
+        val btnSubmit: Button = dialogView.findViewById(R.id.btn_submit)
         val firstPinView: PinView = dialogView.findViewById(R.id.firstPinView)
         val resendOtp: TextView = dialogView.findViewById(R.id.resend_otp)
 
-        Btn_Submit.setOnClickListener {
+        btnSubmit.setOnClickListener {
             Api.info.verifyOtp(verificationId, firstPinView.text.toString(), CustId)
                 ?.enqueue(object : Callback<JsonObject?> {
                     override fun onResponse(
@@ -268,7 +268,7 @@ class RegisterActivity : AppCompatActivity(),
                                     NAME,
                                     jsonObject.getJSONObject("data").getString("name")
                                 )
-                                showAlertView_2()
+                                showAlertViewNextScreen()
                             } else if (response.code() == ERROR_CODE) {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage("Error occur please try again")
@@ -295,15 +295,15 @@ class RegisterActivity : AppCompatActivity(),
         dialog.show()
     }
 
-    private fun showAlertView_2() {
+    private fun showAlertViewNextScreen() {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this@RegisterActivity)
         val inflater: LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView: View = inflater.inflate(R.layout.otp_conform, null)
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog: AlertDialog = alertDialog.create()
-        val Btn_Done: Button = dialogView.findViewById(R.id.btn_done)
-        Btn_Done.setOnClickListener {
+        val btnDone: Button = dialogView.findViewById(R.id.btn_done)
+        btnDone.setOnClickListener {
             val mainIntent = Intent(ctx, DashBoardActivity::class.java)
             startActivity(mainIntent)
             finish()
@@ -320,7 +320,7 @@ class RegisterActivity : AppCompatActivity(),
         cnf_password: String?
     ) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.register_user(name, email, mobile_no, password, cnf_password)
+        Api.info.registerUser(name, email, mobile_no, password, cnf_password)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(
                     call: Call<JsonObject?>,
@@ -391,7 +391,7 @@ class RegisterActivity : AppCompatActivity(),
 
     private fun callApiSocialLogin(token: String?, userid: String?, type: String) {
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.register_sociallogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
+        Api.info.registerSocialLogin(type, userid)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
                     val jsonObject = JSONObject(Gson().toJson(response.body()))

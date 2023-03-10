@@ -93,7 +93,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
     fun callApiCartListView() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.getcart_detail(
+        Api.info.getCartDetail(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             storePrefrence.getString(
                 Constant.IDENTFIER
@@ -296,7 +296,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
     fun callApiAddQty(cart_itemid: String?, qty: String?) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.cart_updateqty(
+        Api.info.cartUpdateQty(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             cart_itemid,
             qty,
@@ -341,7 +341,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
     fun callApiRemoveItemcart(cart_itemid: String?) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.cart_removeqty(
+        Api.info.cartRemoveQty(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             cart_itemid,
             storePrefrence.getString(
@@ -383,7 +383,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
     }
 
     private fun callApiCreateOrder() {
-        Api.info.create_order(
+        Api.info.createOrder(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             restoData?.id,
             "book_table",
@@ -459,7 +459,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
     }
 
     private fun callApiCreateOrderPickup() {
-        Api.info.create_order(
+        Api.info.createOrder(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             restoData?.id, "pickup", "", "", storePrefrence.getString(Constant.IDENTFIER)
         )

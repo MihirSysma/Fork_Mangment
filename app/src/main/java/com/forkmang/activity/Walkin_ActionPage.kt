@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.forkmang.R
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivityWalkinActionBinding
 import com.forkmang.helper.Constant
@@ -82,7 +79,7 @@ class Walkin_ActionPage : AppCompatActivity() {
 
     private fun callApiAction(action: String, identifier: String) {
         binding.progressBar.visibility = View.VISIBLE
-        info.queue_action(
+        info.queueAction(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             action, restromodel!!.id, noofperson, occasion, area, identifier
         )?.enqueue(object : Callback<JsonObject?> {

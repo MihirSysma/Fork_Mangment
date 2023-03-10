@@ -110,7 +110,7 @@ class PaymentScreenActivity : AppCompatActivity() {
         payment_type: String?,
         order_type: String?
     ) {
-        Api.info.make_payment(
+        Api.info.makePayment(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             order_id,
             booking_id,

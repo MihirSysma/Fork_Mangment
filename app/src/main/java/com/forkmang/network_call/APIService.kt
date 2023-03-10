@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface APIService {
     @POST(WebApi.REGISTER_USER)
     @FormUrlEncoded
-    fun register_user( //@Header("Authorization") String token,
+    fun registerUser( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("name") name: String?,
         @Field("email") email: String?,
@@ -21,7 +21,7 @@ interface APIService {
 
     @POST(WebApi.REGISTER_SOCIALLOGIN)
     @FormUrlEncoded
-    fun register_sociallogin( //@Header("Authorization") String token,
+    fun registerSocialLogin( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("type") type: String?,
         @Field("id") id: String?
@@ -29,7 +29,7 @@ interface APIService {
 
     @POST(WebApi.LOGIN_USER)
     @FormUrlEncoded
-    fun login_user( //@Header("Authorization") String token,
+    fun loginUser( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("contact") contact: String?,
         @Field("password") password: String?
@@ -37,14 +37,14 @@ interface APIService {
 
     @POST(WebApi.LOGIN_GUEST)
     @FormUrlEncoded
-    fun login_guest( //@Header("Authorization") String token,
+    fun loginGuest( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("identifier") identifier: String?
     ): Call<JsonObject?>?
 
     @POST(WebApi.FORGOT_PASSWORD)
     @FormUrlEncoded
-    fun forgot_pass( //@Header("Authorization") String token,
+    fun forgotPass( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("contact") contact: String?,
         @Field("token") token: String?
@@ -52,7 +52,7 @@ interface APIService {
 
     @POST(WebApi.RESET_PASSWORD)
     @FormUrlEncoded
-    fun reset_pass( //@Header("Authorization") String token,
+    fun resetPass( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("contact") contact: String?,
         @Field("password") password: String?,
@@ -62,7 +62,7 @@ interface APIService {
 
     @POST(WebApi.LIST_RES_FILTER)
     @FormUrlEncoded
-    fun getlist_res_filter( //@Header("Authorization") String token,
+    fun getListResFilter( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("date") date: String?,
         @Field("person") person: String?,
@@ -73,7 +73,7 @@ interface APIService {
 
     @POST(WebApi.LIST_RES)
     @FormUrlEncoded
-    fun getlist_res( //@Header("Authorization") String token,
+    fun getlistRes( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         //@Field("service_id") String service_id,
         @Field("latitude") latitude: String?,
@@ -82,7 +82,7 @@ interface APIService {
 
     @POST(WebApi.LIST_RES)
     @FormUrlEncoded
-    fun getlist_res_walkin( //@Header("Authorization") String token,
+    fun getListResWalkIn( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("service_id") service_id: String?,
         @Field("latitude") latitude: String?,
@@ -91,7 +91,7 @@ interface APIService {
 
     @POST(WebApi.RES_QUEECONFORMATION)
     @FormUrlEncoded
-    fun queue_confirmation(
+    fun queueConfirmation(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("action") action: String?,
         @Field("restaurant_id") restaurant_id: String?,
@@ -103,7 +103,7 @@ interface APIService {
 
     @POST(WebApi.RES_GETQUEE)
     @FormUrlEncoded
-    fun queue_get(
+    fun queueGet(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("restaurant_id") restaurant_id: String?,
         @Field("person") person: String?,
@@ -113,7 +113,7 @@ interface APIService {
 
     @POST(WebApi.RES_QUEELIST)
     @FormUrlEncoded
-    fun getqueelist(
+    fun getQueeList(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         //@Field("service_id") String service_id,
         @Field("restaurant_id") restaurant_id: String?
@@ -121,14 +121,14 @@ interface APIService {
 
     @POST(WebApi.RES_GETPERSONQUEE)
     @FormUrlEncoded
-    fun getpersonqueeno(
+    fun getPersonQueeNo(
         @Header("Authorization") token: String?,
         @Field("restaurant_id") restaurant_id: String?
     ): Call<JsonObject?>?
 
     @POST(WebApi.LIST_RES)
     @FormUrlEncoded
-    fun getlist_searchres( //@Header("Authorization") String token,
+    fun getListSearchRes( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("search") search: String?,
         @Field("latitude") latitude: String?,
@@ -137,14 +137,14 @@ interface APIService {
 
     @POST(WebApi.RES_DETAILPAGE)
     @FormUrlEncoded
-    fun getres_detail( //@Header("Authorization") String token,
+    fun getResDetail( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("restaurant_id") restaurant_id: String?
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_BOOKTABLE)
     @FormUrlEncoded
-    fun book_table(
+    fun bookTable(
         @Header("Authorization") token: String?,  //@Header("content-type") String key,
         //@Header("Accept") String key_1,
         @Field("restaurant_id") restaurant_id: String?,
@@ -158,21 +158,21 @@ interface APIService {
 
     @POST(WebApi.RES_FOODLIST)
     @FormUrlEncoded
-    fun getres_foodlist( //@Header("Authorization") String token,
+    fun getResFoodList( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("branch_id") branch_id: String?
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_CATLIST)
     @FormUrlEncoded
-    fun getres_catitemlist( //@Header("Authorization") String token,
+    fun getResCatItemList( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("category_id") category_id: String?
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_CATLIST_SEARCH)
     @FormUrlEncoded
-    fun getres_catitemlist_search( //@Header("Authorization") String token,
+    fun getResCatItemListSearch( //@Header("Authorization") String token,
         //@Header("Accept") String key,
         @Field("category_id") category_id: String?,
         @Field("search_item") search_item: String?
@@ -180,7 +180,7 @@ interface APIService {
 
     @POST(WebApi.RES_ADDITEMCART)
     @FormUrlEncoded
-    fun additem_cart(
+    fun addItemCart(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("item_id") item_id: String?,
         @Field("qty") qty: String?,
@@ -193,7 +193,7 @@ interface APIService {
 
     @POST(WebApi.RES_UPDATEQTY)
     @FormUrlEncoded
-    fun cart_updateqty(
+    fun cartUpdateQty(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("cart_item_id") cart_item_id: String?,
         @Field("qty") qty: String?,
@@ -202,7 +202,7 @@ interface APIService {
 
     @POST(WebApi.RES_REMOVEITEMCART)
     @FormUrlEncoded
-    fun cart_removeqty(
+    fun cartRemoveQty(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("cart_item_id") cart_item_id: String?,
         @Field("identifier") identifier: String?
@@ -210,7 +210,7 @@ interface APIService {
 
     @POST(WebApi.RES_CREATEORDER)
     @FormUrlEncoded
-    fun create_order(
+    fun createOrder(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("restaurant_id") restaurant_id: String?,
         @Field("type") type: String?,
@@ -229,7 +229,7 @@ interface APIService {
     );*/
     @POST(WebApi.RES_MAKEPAYMENT)
     @FormUrlEncoded
-    fun make_payment(
+    fun makePayment(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("order_id") order_id: String?,
         @Field("book_table_id") book_table_id: String?,
@@ -239,14 +239,14 @@ interface APIService {
 
     @POST(WebApi.RES_ORDERDETAIL)
     @FormUrlEncoded
-    fun get_orderdetail(
+    fun getOrderDetail(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("order_id") order_id: String?
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_GETCARTDETAIL)
     @FormUrlEncoded
-    fun getcart_detail(
+    fun getCartDetail(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("identifier") identifier: String?
     ): Call<JsonObject?>?
@@ -268,14 +268,14 @@ interface APIService {
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_GETTABLEORDERSLIST)
-    fun getbooktable_listing(
+    fun getBookTableListing(
         @Header("Authorization") token: String? //@Header("Accept") String key,
         //@Field("test") String test
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_GETQUEE)
     @FormUrlEncoded
-    fun queue_action(
+    fun queueAction(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         @Field("action") action: String?,
         @Field("restaurant_id") restaurant_id: String?,

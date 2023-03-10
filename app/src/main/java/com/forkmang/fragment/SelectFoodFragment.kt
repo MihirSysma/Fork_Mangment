@@ -106,7 +106,7 @@ class SelectFoodFragment : Fragment() {
     ) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        info.additem_cart(
+        info.addItemCart(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             item_id,
             qty,
@@ -368,7 +368,7 @@ class SelectFoodFragment : Fragment() {
     fun callApiCartListView() {
         //showProgress();
         progressBar_alertview?.visibility = View.VISIBLE
-        info.getcart_detail(
+        info.getCartDetail(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN), storePrefrence.getString(
                 Constant.IDENTFIER
             )
@@ -585,7 +585,7 @@ class SelectFoodFragment : Fragment() {
     fun callApiAddQty(cart_itemid: String?, qty: String?) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        info.cart_updateqty(
+        info.cartUpdateQty(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             cart_itemid,
             qty,
@@ -630,7 +630,7 @@ class SelectFoodFragment : Fragment() {
     fun callApiRemoveItemCart(cart_itemid: String?) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        info.cart_removeqty(
+        info.cartRemoveQty(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             cart_itemid,
             storePrefrence.getString(

@@ -98,7 +98,7 @@ class WalkinListingFragment : Fragment() {
     //Api code for Book Table start
     private fun callApiGetBookTable(serviceId: String, latitude: String, logitutde: String) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getlist_res_walkin(serviceId, latitude, logitutde)
+        info.getListResWalkIn(serviceId, latitude, logitutde)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -181,7 +181,7 @@ class WalkinListingFragment : Fragment() {
 
     private fun callApiSearchBookTable(search_strq: String, latitude: String, logitutde: String) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getlist_searchres(search_strq, latitude, logitutde)
+        info.getListSearchRes(search_strq, latitude, logitutde)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {

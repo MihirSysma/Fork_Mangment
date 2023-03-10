@@ -69,7 +69,7 @@ class OrderConformationActivity : AppCompatActivity() {
 
     private fun callApiGetOrderDetail(order_id: String?) {
         binding.progressbar.visibility = View.VISIBLE
-        info.get_orderdetail(
+        info.getOrderDetail(
             "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
             order_id
         )?.enqueue(object : Callback<JsonObject?> {
