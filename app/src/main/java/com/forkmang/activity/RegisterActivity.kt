@@ -132,7 +132,13 @@ class RegisterActivity : AppCompatActivity(),
                                             try {
                                                 binding.progressBar.visibility = View.VISIBLE
                                                 // TODO: Do API Call here with all the fields, get success code and then show otp code field, after that use new api verifyotp to complete register
-                                                callApiRegisterUser(name, email, phoneNumber, password, confpassword)
+                                                callApiRegisterUser(
+                                                    name,
+                                                    email,
+                                                    phoneNumber,
+                                                    password,
+                                                    confpassword
+                                                )
                                             } catch (e: Exception) {
                                                 e.printStackTrace()
                                                 showToastMessage(e.message ?: "null")
@@ -215,7 +221,7 @@ class RegisterActivity : AppCompatActivity(),
         }
     }
 
-    private fun showAlertView(verificationId: String) {
+    private fun showAlertView(verificationId: String, CustId: String) {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this@RegisterActivity)
         val inflater: LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView: View = inflater.inflate(R.layout.view_otp, null)
@@ -224,9 +230,37 @@ class RegisterActivity : AppCompatActivity(),
         val dialog: AlertDialog = alertDialog.create()
         val Btn_Submit: Button = dialogView.findViewById(R.id.btn_submit)
         val firstPinView: PinView = dialogView.findViewById(R.id.firstPinView)
-        //firstPinView.setText("123456")
         Btn_Submit.setOnClickListener {
             // TODO: call verify otp API
+            Api.info.verifyOtp(verificationId, firstPinView.text.toString(), CustId)
+                ?.enqueue(object : Callback<JsonObject?> {
+                    override fun onResponse(
+                        call: Call<JsonObject?>,
+                        response: Response<JsonObject?>
+                    ) {
+                        try {
+                            if (response.code() == Constant.SUCCESS_CODE_n) {
+                                binding.progressBar.visibility = View.GONE
+                                val jsonObject = JSONObject(Gson().toJson(response.body()))
+                                // TODO: on success call this dialog
+                                showAlertView_2()
+                            } else if (response.code() == Constant.ERROR_CODE) {
+                                binding.progressBar.visibility = View.GONE
+                                showToastMessage("Error occur please try again")
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            binding.progressBar.visibility = View.GONE
+                            showToastMessage("Error occur please try again")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        binding.progressBar.visibility = View.GONE
+                        showToastMessage("Error occur please try again")
+                    }
+
+                })
         }
         dialog.show()
     }
@@ -286,7 +320,8 @@ class RegisterActivity : AppCompatActivity(),
                                     jsonObject.getJSONObject("data").getString("token")
                                 )
                                 storePrefrence.setString(Constant.IDENTFIER, "")
-                                showAlertView_2()
+                                showAlertView("","") // TODO get verification ID, custID from api
+                                //showAlertView_2()
                             } else {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("status"))
@@ -430,7 +465,9 @@ class RegisterActivity : AppCompatActivity(),
     companion object {
         private const val RC_SIGN_IN: Int = 1
         fun isValidEmail(target: CharSequence?): Boolean {
-            return (!TextUtils.isEmpty(target) && target?.let { Patterns.EMAIL_ADDRESS.matcher(it).matches() } == true)
+            return (!TextUtils.isEmpty(target) && target?.let {
+                Patterns.EMAIL_ADDRESS.matcher(it).matches()
+            } == true)
         }
     }
 }
