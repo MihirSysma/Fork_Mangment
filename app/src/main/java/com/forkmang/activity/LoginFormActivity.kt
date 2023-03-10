@@ -123,6 +123,10 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
             }
         }
         txtForgotPassword.setOnClickListener {
+            storePrefrence.setString(
+                Constant.MOBILE,
+                binding.etvMobile.text.toString()
+            )
             val mainIntent = Intent(this@LoginFormActivity, ForgotPassword::class.java)
             startActivity(mainIntent)
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)

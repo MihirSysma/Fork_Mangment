@@ -30,4 +30,5 @@ object WebApi {
     const val RES_QUEECONFORMATION = API_BASE + "queue-confirmation-action"
     const val RES_GETQUEE = API_BASE + "get-in-queue"
     const val RES_GETPERSONQUEE = API_BASE + "customer-queue-list"
+    const val VERIFY_OTP = API_BASE + "verify-otp"
 }

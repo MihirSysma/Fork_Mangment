@@ -16,8 +16,7 @@ interface APIService {
         @Field("email") email: String?,
         @Field("contact") contact: String?,
         @Field("password") password: String?,
-        @Field("c_password") c_password: String?,
-        @Field("token") token: String?
+        @Field("c_password") c_password: String?
     ): Call<JsonObject?>?
 
     @POST(WebApi.REGISTER_SOCIALLOGIN)
@@ -284,6 +283,14 @@ interface APIService {
         @Field("occasion") occasion: String?,
         @Field("area") area: String?,
         @Field("identifier") identifier: String?
+    ): Call<JsonObject?>?
+
+    @POST(WebApi.VERIFY_OTP)
+    @FormUrlEncoded
+    fun verifyOtp(
+        @Field("verification_id") verifyID: String?,
+        @Field("verification_code") verifyCode: String?,
+        @Field("customer_id") custId: String?
     ): Call<JsonObject?>?
 
     companion object {

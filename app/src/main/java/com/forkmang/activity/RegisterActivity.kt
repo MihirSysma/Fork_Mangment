@@ -36,10 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
-import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
-import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.json.JSONException
@@ -51,20 +48,17 @@ import java.io.IOException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity(),
     GoogleApiClient.OnConnectionFailedListener {
 
     private val callbackManager by lazy { create() }
-    private val mAuth by lazy { FirebaseAuth.getInstance() }
-    private lateinit var callbacks: OnVerificationStateChangedCallbacks
     var ctx: Context = this@RegisterActivity
     private val storePrefrence by lazy { StorePrefrence(this) }
     var name: String? = null
     var mobile: String? = null
     var password: String? = null
-    var cnfpassword: String? = null
+    var confpassword: String? = null
     var email: String? = null
     private var googleApiClient: GoogleApiClient? = null
 
@@ -80,13 +74,6 @@ class RegisterActivity : AppCompatActivity(),
         binding.etvPassword.setText("123456")
         binding.etvCnfpassword.setText("123456")
 
-
-        //firebase login code
-        startFirebaseLogin()
-        //firebase login code end
-
-
-        //facebook login code start
         printHashKey()
         sdkInitialize(applicationContext)
         binding.buttonFacebookRoot.registerCallback(
@@ -119,11 +106,11 @@ class RegisterActivity : AppCompatActivity(),
         // google login code end
         binding.btnRegister.setOnClickListener {
             //validation
-            name = Objects.requireNonNull(binding.etvUsername.text).toString()
-            mobile = Objects.requireNonNull(binding.etvMobile.text).toString()
-            password = Objects.requireNonNull(binding.etvPassword.text).toString()
-            cnfpassword = Objects.requireNonNull(binding.etvCnfpassword.text).toString()
-            email = Objects.requireNonNull(binding.etvEmail.text).toString()
+            name = binding.etvUsername.text.toString()
+            mobile = binding.etvMobile.text.toString()
+            password = binding.etvPassword.text.toString()
+            confpassword = binding.etvCnfpassword.text.toString()
+            email = binding.etvEmail.text.toString()
             if (binding.etvUsername.text?.isNotEmpty() == true) {
                 if (mobile?.isNotEmpty() == true) {
                     if (mobile?.length == 10) {
@@ -136,15 +123,16 @@ class RegisterActivity : AppCompatActivity(),
                             ) {
                                 //password is valid or not
                                 if ((password?.length ?: 0) > 3) {
-                                    if ((cnfpassword?.length ?: 0) > 3) {
-                                        if ((password == cnfpassword)) {
+                                    if ((confpassword?.length ?: 0) > 3) {
+                                        if ((password == confpassword)) {
                                             //call api
                                             val phoneNumber: String =
-                                                ("+" + "91" + binding.etvMobile.text.toString())
+                                                ("+" + "96" + binding.etvMobile.text.toString())
                                             //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
                                             try {
                                                 binding.progressBar.visibility = View.VISIBLE
-                                                sentRequest(phoneNumber)
+                                                // TODO: Do API Call here with all the fields, get success code and then show otp code field, after that use new api verifyotp to complete register
+                                                callApiRegisterUser(name, email, phoneNumber, password, confpassword)
                                             } catch (e: Exception) {
                                                 e.printStackTrace()
                                                 showToastMessage(e.message ?: "null")
@@ -238,22 +226,7 @@ class RegisterActivity : AppCompatActivity(),
         val firstPinView: PinView = dialogView.findViewById(R.id.firstPinView)
         //firstPinView.setText("123456")
         Btn_Submit.setOnClickListener {
-            //call register api
-            //String phoneNumber = ("+" + "91" + etv_mobile.getText().toString());
-            Objects.requireNonNull(binding.etvMobile.text).toString()
-            val credential = PhoneAuthProvider.getCredential(verificationId, firstPinView.text.toString())
-            signInWithPhoneAuthCredential(credential) {
-                when (it) {
-                    "success" -> {
-                        dialog.dismiss()
-                    }
-                    "failed" -> {
-                        dialog.dismiss()
-                    }
-                }
-            }
-            //otpVerification(verificationId, "123456")
-
+            // TODO: call verify otp API
         }
         dialog.show()
     }
@@ -275,94 +248,15 @@ class RegisterActivity : AppCompatActivity(),
         dialog.show()
     }
 
-    private fun sentRequest(phoneNumber: String) {
-        val options = PhoneAuthOptions.newBuilder(mAuth)
-            .setPhoneNumber(phoneNumber)       // Phone number to verify
-            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(this)                 // Activity (for callback binding)
-            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
-            .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
-    }
-
-    private fun startFirebaseLogin() {
-        callbacks = object : OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
-                println("====verification complete call  " + phoneAuthCredential.smsCode)
-                binding.progressBar.visibility = View.GONE
-            }
-
-            override fun onVerificationFailed(e: FirebaseException) {
-                //setSnackBar(e.getLocalizedMessage(), getString(R.string.btn_ok), "failed");
-                println("====failed" + e.message)
-                binding.progressBar.visibility = View.GONE
-                showToastMessage(e.message.toString())
-            }
-
-            override fun onCodeSent(verificationId: String, token: ForceResendingToken) {
-                super.onCodeSent((verificationId), (token))
-                binding.progressBar.visibility = View.GONE
-                //System.out.println("====token" + forceResendingToken);
-                showAlertView(verificationId)
-            }
-        }
-    }
-
-
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, status: ((status: String) -> Unit)) {
-        binding.progressBar.visibility = View.VISIBLE
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(
-                this@RegisterActivity
-            ) { task ->
-                if (task.isSuccessful) {
-                    //verification successful we will start the profile activity
-                    val message = "Success"
-                    println("====Success$message")
-                    if (Utils.isNetworkAvailable(ctx)) {
-                        mAuth.currentUser?.getIdToken(true)?.addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                binding.progressBar.visibility = View.GONE
-                                val token = it.result.token
-                                callApiRegisterUser(name, email, binding.etvMobile.text.toString(), password, cnfpassword, token)
-                            } else {
-                                binding.progressBar.visibility = View.GONE
-                                showToastMessage("Something went wrong")
-                            }
-                        }
-                    } else {
-                        showToastMessage(Constant.NETWORKEROORMSG)
-                        binding.progressBar.visibility = View.GONE
-                    }
-                    status("success")
-
-                } else {
-                    showToastMessage("login failed")
-                    //verification unsuccessful.. display an error message
-                    var message = "Something is wrong, we will fix it soon..."
-                    println("====failed$message")
-                    binding.progressBar.visibility = View.GONE
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        message = "Invalid code entered..."
-                        println("====Invalid$message")
-                    }
-                    status("failed")
-                    //edtotp.setError(message);
-                }
-            }
-    }// Handle error -> task.getException();
-
     private fun callApiRegisterUser(
         name: String?,
         email: String?,
         mobile_no: String,
         password: String?,
-        cnf_password: String?,
-        token: String?
+        cnf_password: String?
     ) {
-        //showProgress();
         binding.progressBar.visibility = View.VISIBLE
-        Api.info.register_user(name, email, mobile_no, password, cnf_password, token)
+        Api.info.register_user(name, email, mobile_no, password, cnf_password)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(
                     call: Call<JsonObject?>,
@@ -377,6 +271,7 @@ class RegisterActivity : AppCompatActivity(),
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("message"))
+                                //TODO: get new details from API
                                 //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
                                 storePrefrence.setString(
                                     Constant.NAME,
@@ -418,7 +313,6 @@ class RegisterActivity : AppCompatActivity(),
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
-                        //stopProgress();
                         binding.progressBar.visibility = View.GONE
                         showToastMessage("Error occur please try again")
                     } catch (ex: IOException) {
@@ -430,7 +324,6 @@ class RegisterActivity : AppCompatActivity(),
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     showToastMessage("Error occur please try again")
-                    //stopProgress();
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -530,12 +423,6 @@ class RegisterActivity : AppCompatActivity(),
         } else {
             showToastMessage("Sign in cancel")
         }
-    }
-
-    private fun gotoProfile() {
-        //Intent intent=new Intent(RegisterActivity.this,ProfileActivity.class);
-        //startActivity(intent);
-        //Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {}
