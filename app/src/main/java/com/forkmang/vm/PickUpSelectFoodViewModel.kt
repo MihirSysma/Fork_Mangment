@@ -18,12 +18,17 @@ import retrofit2.Response
 class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
 
     val command = MutableLiveData<String>()
+
     // TODO: can make them both in one?
     val searchFoodItemData = MutableLiveData<ArrayList<Category_ItemList>>()
     val categoryItemData = MutableLiveData<ArrayList<Category_ItemList>>()
 
-    // TODO: handle the toasts and the progressbar
-    fun callApiSearchFoodItem(categoryId: String?, searchItem: String?) {
+    fun callApiSearchFoodItem(
+        categoryId: String?,
+        searchItem: String?,
+        progress: ((isLoading: Boolean) -> Unit)
+    ) {
+        progress(true)
         Api.info.getResCatItemListSearch(categoryId, searchItem)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
@@ -59,24 +64,29 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                                         extraToppingArrayList
                                     categoryItemLists.add(categoryItemList)
                                 }
+                                progress(false)
                                 searchFoodItemData.postValue(categoryItemLists)
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
+                            progress(false)
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        app.applicationContext.showToastMessage("Error occur please try again")
+                        progress(false)
+                        app.applicationContext.showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    app.applicationContext.showToastMessage("Error occur please try again")
+                    app.applicationContext.showToastMessage(Constant.ERRORMSG)
+                    progress(false)
                 }
             })
     }
 
-    fun callApiFoodItem(category_id: String?) {
+    fun callApiFoodItem(category_id: String?, progress: ((isLoading: Boolean) -> Unit)) {
+        progress(true)
         Api.info.getResCatItemList(category_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
@@ -109,6 +119,7 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                                 categoryItemList.extra_toppingArrayList = extraToppingArrayList
                                 categoryItemLists.add(categoryItemList)
                             }
+                            progress(false)
                             categoryItemData.postValue(categoryItemLists)
 
                             /*if(all_orderFood_adapter == null)
@@ -121,16 +132,19 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                                     }*/
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
+                        progress(false)
                         val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
                     }
                 } catch (ex: Exception) {
                     ex.printStackTrace()
+                    progress(false)
                     app.applicationContext.showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 app.applicationContext.showToastMessage(Constant.ERRORMSG)
+                progress(false)
             }
         })
     }

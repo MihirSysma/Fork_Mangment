@@ -189,7 +189,16 @@ class PickupSelectFoodFragment : Fragment() {
 
     private fun callApiFood1() {
         if (isNetworkAvailable(requireContext())) {
-            viewModel.callApiFoodItem(categoryId)
+            viewModel.callApiFoodItem(categoryId) {
+                when (it) {
+                    true -> {
+                        binding.progressbar.visibility = View.VISIBLE
+                    }
+                    false -> {
+                        binding.progressbar.visibility = View.GONE
+                    }
+                }
+            }
         } else {
             context?.showToastMessage(NETWORKEROORMSG)
         }

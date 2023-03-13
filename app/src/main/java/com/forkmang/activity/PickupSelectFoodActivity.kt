@@ -78,7 +78,16 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         binding.imgSearchicon.setOnClickListener {
             val strSearch: String = binding.etvSearchview.text.toString()
             if (Utils.isNetworkAvailable(ctx)) {
-                viewModel.callApiSearchFoodItem(categoryId, strSearch)
+                viewModel.callApiSearchFoodItem(categoryId, strSearch) {
+                    when (it) {
+                        true -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        false -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
+                    }
+                }
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
@@ -93,7 +102,16 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 if (s.toString().isEmpty()) {
                     Hidekeyboard()
                     if (Utils.isNetworkAvailable(ctx)) {
-                        viewModel.callApiFoodItem(categoryId)
+                        viewModel.callApiFoodItem(categoryId) {
+                            when (it) {
+                                true -> {
+                                    binding.progressBar.visibility = View.VISIBLE
+                                }
+                                false -> {
+                                    binding.progressBar.visibility = View.GONE
+                                }
+                            }
+                        }
                     } else {
                         showToastMessage(Constant.NETWORKEROORMSG)
                     }
