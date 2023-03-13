@@ -27,6 +27,7 @@ import com.forkmang.data.Extra_Topping
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentOrderfoodLayoutBinding
 import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ERRORMSG
 import com.forkmang.helper.Constant.MOBILE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
@@ -45,9 +46,9 @@ import java.io.IOException
 class SelectFoodFragment : Fragment() {
 
     var cartBookingArrayList: ArrayList<CartBooking>? = null
-    var selectedId_radiobtn_topping = 0
-    var progressBar_alertview: ProgressBar? = null
-    var all_orderFood_adapter: FoodListAdapter? = null
+    var selectedidRadiobtnTopping = 0
+    var progressbarAlertview: ProgressBar? = null
+    var allOrderFoodAdapter: FoodListAdapter? = null
     private val storePrefrence by lazy { StorePrefrence(requireContext()) }
 
     private var _binding: FragmentOrderfoodLayoutBinding? = null
@@ -60,7 +61,7 @@ class SelectFoodFragment : Fragment() {
     ): View {
         _binding = FragmentOrderfoodLayoutBinding.inflate(inflater, container, false)
         binding.orderFoodRecycleview.layoutManager = LinearLayoutManager(context)
-        binding.orderFoodRecycleview.adapter = all_orderFood_adapter
+        binding.orderFoodRecycleview.adapter = allOrderFoodAdapter
         observe()
         return binding.root
     }
@@ -76,7 +77,7 @@ class SelectFoodFragment : Fragment() {
         }
 
         viewModel.searchFoodItemData.observe(viewLifecycleOwner) { data ->
-            all_orderFood_adapter = FoodListAdapter(
+            allOrderFoodAdapter = FoodListAdapter(
                 requireContext(),
                 requireActivity(),
                 data
@@ -86,7 +87,7 @@ class SelectFoodFragment : Fragment() {
         }
 
         viewModel.categoryItemData.observe(viewLifecycleOwner) { data ->
-            all_orderFood_adapter = FoodListAdapter(
+            allOrderFoodAdapter = FoodListAdapter(
                 requireContext(),
                 requireActivity(),
                 data
@@ -104,7 +105,6 @@ class SelectFoodFragment : Fragment() {
         item_extra: String?,
         type: String?
     ) {
-        //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         info.addItemCart(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
@@ -154,14 +154,13 @@ class SelectFoodFragment : Fragment() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        context?.showToastMessage("Error occur please try again")
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    context?.showToastMessage("Error occur please try again")
+                    context?.showToastMessage(ERRORMSG)
                     binding.progressBar.visibility = View.GONE
-                    //stopProgress();
                 }
             })
     }
@@ -176,7 +175,7 @@ class SelectFoodFragment : Fragment() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val radio_btn_id_arr = ArrayList<String>()
+        val radioBtnIdArr = ArrayList<String>()
         /*var radioButton4_extra: RadioButton
         var radioButton5_extra: RadioButton
         var radioButton6_extra: RadioButton*/
@@ -192,9 +191,9 @@ class SelectFoodFragment : Fragment() {
             radioButton4_extra
 
         }*/
-        val extra_toppingArrayList_get: ArrayList<Extra_Topping>? =
+        val extraToppingArrayListGet: ArrayList<Extra_Topping>? =
             category_itemList.extra_toppingArrayList
-        val rb = extra_toppingArrayList_get?.size?.let { arrayOfNulls<RadioButton>(it) }
+        val rb = extraToppingArrayListGet?.size?.let { arrayOfNulls<RadioButton>(it) }
         val rg = RadioGroup(context) //create the RadioGroup
         rg.orientation = RadioGroup.VERTICAL //or RadioGroup.VERTICAL
         val layout2 = LinearLayout(context)
@@ -213,70 +212,70 @@ class SelectFoodFragment : Fragment() {
                 Color.parseColor("#C91107") // enabled
             )
         )
-        for (i in extra_toppingArrayList_get?.indices!!) {
-            val extra_topping = extra_toppingArrayList_get[i]
+        for (i in extraToppingArrayListGet?.indices!!) {
+            val extraTopping = extraToppingArrayListGet[i]
             rb?.set(i, RadioButton(context))
-            rb?.get(i)?.text = extra_topping.name
+            rb?.get(i)?.text = extraTopping.name
             rb?.get(i)?.setTextColor(resources.getColor(R.color.black))
             rb?.get(i)?.buttonTintList = colorStateList
-            rb?.get(i)?.id = extra_topping.id?.toInt()!!
+            rb?.get(i)?.id = extraTopping.id?.toInt()!!
 
             //rg.addView(rb[i]);
             layout2.addView(rb?.get(i)!!)
             rb[i]
                 ?.setOnCheckedChangeListener { buttonView: CompoundButton, isChecked: Boolean ->
                     if (buttonView.isChecked) {
-                        radio_btn_id_arr.add(buttonView.id.toString())
+                        radioBtnIdArr.add(buttonView.id.toString())
                     }
                 }
         }
         val lyt: LinearLayout = dialogView.findViewById(R.id.lyt)
         lyt.addView(layout2) //you add the whole RadioGroup to the layout
         //rg.setOnCheckedChangeListener((group, checkedId) -> selectedId_radiobtn_topping = rg.getCheckedRadioButtonId());
-        val btn_add: Button = dialogView.findViewById(R.id.btn_add)
-        val btn_reserve: Button = dialogView.findViewById(R.id.btn_reserve)
-        val plus_btn: TextView = dialogView.findViewById(R.id.plus_btn)
+        val btnAdd: Button = dialogView.findViewById(R.id.btn_add)
+        val btnReserve: Button = dialogView.findViewById(R.id.btn_reserve)
+        val plusBtn: TextView = dialogView.findViewById(R.id.plus_btn)
         val minus1: TextView = dialogView.findViewById(R.id.minus_btn)
-        val txt_qty: TextView = dialogView.findViewById(R.id.txt_qty)
-        plus_btn.setOnClickListener {
-            var value = txt_qty.text.toString().toInt()
+        val txtQty: TextView = dialogView.findViewById(R.id.txt_qty)
+        plusBtn.setOnClickListener {
+            var value = txtQty.text.toString().toInt()
             ++value
-            txt_qty.text = value.toString()
+            txtQty.text = value.toString()
         }
         minus1.setOnClickListener {
-            var value = txt_qty.text.toString().toInt()
+            var value = txtQty.text.toString().toInt()
             --value
-            txt_qty.text = value.toString()
+            txtQty.text = value.toString()
         }
-        btn_add.setOnClickListener {
+        btnAdd.setOnClickListener {
             // dialog.dismiss();
-            val item_id = category_itemList.id
-            val qty = txt_qty.text.toString()
+            val itemId = category_itemList.id
+            val qty = txtQty.text.toString()
             //String extra ="1,2";
             var extra = ""
-            for (i in radio_btn_id_arr.indices) {
+            for (i in radioBtnIdArr.indices) {
                 extra = if (i == 0) {
-                    radio_btn_id_arr[i]
+                    radioBtnIdArr[i]
                 } else {
-                    extra + "," + radio_btn_id_arr[i]
+                    extra + "," + radioBtnIdArr[i]
                 }
             }
 
             //Log.d("booking_id", booking_id);
-            radio_btn_id_arr.clear()
+            radioBtnIdArr.clear()
             if (extra.isEmpty()) {
                 extra = "1,2" //hardcoded please coreect it
             }
             Log.d("extra", extra)
             Log.d("qty", qty)
-            Log.d("item_id", item_id!!)
-            Log.d("selectedId", "" + selectedId_radiobtn_topping)
+            Log.d("item_id", itemId!!)
+            Log.d("selectedId", "" + selectedidRadiobtnTopping)
 
             //api call
             if (isNetworkAvailable(requireContext())) {
                 dialog.dismiss()
                 callApiAddToCart(
-                    item_id,
+                    itemId,
                     qty,
                     storePrefrence.getString(Constant.BOOKINGID),
                     extra,
@@ -286,7 +285,7 @@ class SelectFoodFragment : Fragment() {
                 context?.showToastMessage(Constant.NETWORKEROORMSG)
             }
         }
-        btn_reserve.setOnClickListener { dialog.dismiss() }
+        btnReserve.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -299,38 +298,38 @@ class SelectFoodFragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
-        val txt_restroname: TextView = dialog.findViewById(R.id.txt_restroname)
-        val txt_custname: TextView = dialog.findViewById(R.id.txt_custname)
-        val txt_datetime: TextView = dialog.findViewById(R.id.txt_datetime)
-        val txt_phoneno: TextView = dialog.findViewById(R.id.txt_phoneno)
-        val etv_noperson: EditText = dialog.findViewById(R.id.etv_noperson)
-        val btn_pay_table_food: Button = dialog.findViewById(R.id.btn_pay_table_food)
-        val btn_pay_table: Button = dialog.findViewById(R.id.btn_pay_table)
-        val img_close: ImageView = dialog.findViewById(R.id.img_close)
-        progressBar_alertview = dialog.findViewById(R.id.progressBar_alertview)
-        txt_restroname.text = tableList_get?.str_hotel_name
-        txt_custname.text = tableList_get?.str_customer_name
-        etv_noperson.setText(tableList_get?.number_of_person)
-        txt_phoneno.text = storePrefrence.getString(MOBILE)
-        txt_datetime.text = tableList_get?.str_time
-        img_close.setOnClickListener { dialog.dismiss() }
+        val txtRestroname: TextView = dialog.findViewById(R.id.txt_restroname)
+        val txtCustname: TextView = dialog.findViewById(R.id.txt_custname)
+        val txtDatetime: TextView = dialog.findViewById(R.id.txt_datetime)
+        val txtPhoneno: TextView = dialog.findViewById(R.id.txt_phoneno)
+        val etvNoperson: EditText = dialog.findViewById(R.id.etv_noperson)
+        val btnPayTableFood: Button = dialog.findViewById(R.id.btn_pay_table_food)
+        val btnPayTable: Button = dialog.findViewById(R.id.btn_pay_table)
+        val imgClose: ImageView = dialog.findViewById(R.id.img_close)
+        progressbarAlertview = dialog.findViewById(R.id.progressBar_alertview)
+        txtRestroname.text = tablelistGet?.str_hotel_name
+        txtCustname.text = tablelistGet?.str_customer_name
+        etvNoperson.setText(tablelistGet?.number_of_person)
+        txtPhoneno.text = storePrefrence.getString(MOBILE)
+        txtDatetime.text = tablelistGet?.str_time
+        imgClose.setOnClickListener { dialog.dismiss() }
         binding.orderFoodRecycleview.layoutManager = LinearLayoutManager(activity)
         if (isNetworkAvailable(requireContext())) {
             callApiCartListView()
         } else {
             context?.showToastMessage(Constant.NETWORKEROORMSG)
         }
-        btn_pay_table_food.setOnClickListener {
+        btnPayTableFood.setOnClickListener {
             dialog.dismiss()
             val mainIntent = Intent(context, ActivityPaymentSummary::class.java)
             //Bundle bundle = new Bundle();
             //bundle.putParcelableArrayList("cartbookingarraylist", cartBookingArrayList);
-            mainIntent.putExtra("model", tableList_get)
+            mainIntent.putExtra("model", tablelistGet)
             mainIntent.putExtra("restromodel", restoData)
             mainIntent.putExtra("comingfrom", "SelectFood")
             startActivity(mainIntent)
         }
-        btn_pay_table.setOnClickListener { dialog.dismiss() }
+        btnPayTable.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -366,8 +365,7 @@ class SelectFoodFragment : Fragment() {
     }
 
     fun callApiCartListView() {
-        //showProgress();
-        progressBar_alertview?.visibility = View.VISIBLE
+        progressbarAlertview?.visibility = View.VISIBLE
         info.getCartDetail(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN), storePrefrence.getString(
                 Constant.IDENTFIER
@@ -376,103 +374,101 @@ class SelectFoodFragment : Fragment() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
-                                val data_obj = obj.getJSONObject("data")
-                                val cart_array_item = data_obj.getJSONArray("cart_item")
+                                val dataObj = obj.getJSONObject("data")
+                                val cartArrayItem = dataObj.getJSONArray("cart_item")
                                 cartBookingArrayList = ArrayList()
-                                for (i in 0 until cart_array_item.length()) {
+                                for (i in 0 until cartArrayItem.length()) {
                                     val cartBooking = CartBooking()
-                                    val cart_detail_obj = cart_array_item.getJSONObject(i)
-
+                                    val cartDetailObj = cartArrayItem.getJSONObject(i)
 
                                     //data obj
-                                    cartBooking.data_userid = data_obj.getString("user_id")
-                                    if (data_obj.has("booking_table_id")) {
+                                    cartBooking.data_userid = dataObj.getString("user_id")
+                                    if (dataObj.has("booking_table_id")) {
                                         cartBooking.data_booking_table_id =
-                                            data_obj.getString("booking_table_id")
+                                            dataObj.getString("booking_table_id")
                                     } else {
                                         cartBooking.data_booking_table_id = ""
                                     }
-                                    cartBooking.data_total = data_obj.getString("total")
+                                    cartBooking.data_total = dataObj.getString("total")
 
                                     //cart_item obj
-                                    cartBooking.cart_item_qty = cart_detail_obj.getString("qty")
+                                    cartBooking.cart_item_qty = cartDetailObj.getString("qty")
                                     cartBooking.cart_item_cartid =
-                                        cart_detail_obj.getString("cart_id")
-                                    cartBooking.cart_item_id = cart_detail_obj.getString("id")
-                                    if (cart_detail_obj.has("item_extra_id")) {
+                                        cartDetailObj.getString("cart_id")
+                                    cartBooking.cart_item_id = cartDetailObj.getString("id")
+                                    if (cartDetailObj.has("item_extra_id")) {
                                         cartBooking.cart_item_extra_id =
-                                            cart_detail_obj.getString("item_extra_id")
+                                            cartDetailObj.getString("item_extra_id")
                                     } else {
                                         cartBooking.cart_item_extra_id = "0"
                                     }
                                     //cart_item_details obj
                                     cartBooking.cart_item_details_category_id =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
+                                        cartDetailObj.getJSONObject("cart_item_details")
                                             .getString("category_id")
                                     cartBooking.cart_item_details_name =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
+                                        cartDetailObj.getJSONObject("cart_item_details")
                                             .getString("name")
                                     cartBooking.cart_item_details_price =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
+                                        cartDetailObj.getJSONObject("cart_item_details")
                                             .getString("price")
 
 
                                     //extra_item_details obj
-                                    val extra_namelist = ArrayList<String>()
-                                    val extra_pricelist = ArrayList<String>()
-                                    if (cart_detail_obj.getJSONArray("extra_item_details")
+                                    val extraNameList = ArrayList<String>()
+                                    val extraPriceList = ArrayList<String>()
+                                    if (cartDetailObj.getJSONArray("extra_item_details")
                                             .length() > 0
                                     ) {
-                                        for (j in 0 until cart_detail_obj.getJSONArray("extra_item_details")
+                                        for (j in 0 until cartDetailObj.getJSONArray("extra_item_details")
                                             .length()) {
-                                            val extra_item_obj =
-                                                cart_detail_obj.getJSONArray("extra_item_details")
+                                            val extraItemObj =
+                                                cartDetailObj.getJSONArray("extra_item_details")
                                                     .getJSONObject(j)
-                                            if (extra_item_obj.has("name")) {
-                                                extra_namelist.add(extra_item_obj.getString("name"))
+                                            if (extraItemObj.has("name")) {
+                                                extraNameList.add(extraItemObj.getString("name"))
                                             } else {
-                                                extra_namelist.add("")
+                                                extraNameList.add("")
                                             }
-                                            if (extra_item_obj.has("price")) {
-                                                extra_pricelist.add(extra_item_obj.getString("price"))
+                                            if (extraItemObj.has("price")) {
+                                                extraPriceList.add(extraItemObj.getString("price"))
                                             } else {
-                                                extra_pricelist.add("")
+                                                extraPriceList.add("")
                                             }
                                             //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
                                         }
                                     } else {
-                                        extra_namelist.add("")
-                                        extra_pricelist.add("")
+                                        extraNameList.add("")
+                                        extraPriceList.add("")
                                     }
 
                                     //extra name
-                                    var str_extraname = ""
-                                    for (k in extra_namelist.indices) {
-                                        str_extraname = if (k == 0) {
-                                            extra_namelist[k]
+                                    var strExtraname = ""
+                                    for (k in extraNameList.indices) {
+                                        strExtraname = if (k == 0) {
+                                            extraNameList[k]
                                         } else {
-                                            str_extraname + "," + extra_namelist[k]
+                                            strExtraname + "," + extraNameList[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_name = str_extraname
+                                    cartBooking.extra_item_details_name = strExtraname
 
                                     //extra price
-                                    var str_extraprice = ""
-                                    for (k in extra_pricelist.indices) {
-                                        str_extraprice = if (k == 0) {
-                                            extra_pricelist[k]
+                                    var strExtraprice = ""
+                                    for (k in extraPriceList.indices) {
+                                        strExtraprice = if (k == 0) {
+                                            extraPriceList[k]
                                         } else {
-                                            str_extraprice + "," + extra_pricelist[k]
+                                            strExtraprice + "," + extraPriceList[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_price = str_extraprice
+                                    cartBooking.extra_item_details_price = strExtraprice
                                     cartBookingArrayList?.add(cartBooking)
                                 }
-                                progressBar_alertview?.visibility = View.GONE
+                                progressbarAlertview?.visibility = View.GONE
                                 //call adapter
                                 val cartBookingAdapter =
                                     CartListingAdapter(
@@ -493,7 +489,7 @@ class SelectFoodFragment : Fragment() {
                         } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
                             context?.showToastMessage(jsonObject?.getString("message").toString())
-                            progressBar_alertview?.visibility = View.GONE
+                            progressbarAlertview?.visibility = View.GONE
                             /*JSONObject obj = new JSONObject(loadJSONFromAsset_t());
 
                                 if(obj.getString("status").equalsIgnoreCase("200"))
@@ -569,21 +565,19 @@ class SelectFoodFragment : Fragment() {
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        progressBar_alertview?.visibility = View.GONE
-                        context?.showToastMessage("Error occur please try again")
+                        progressbarAlertview?.visibility = View.GONE
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    progressBar_alertview?.visibility = View.GONE
-                    context?.showToastMessage("Error occur please try again")
-                    //stopProgress();
+                    progressbarAlertview?.visibility = View.GONE
+                    context?.showToastMessage(ERRORMSG)
                 }
             })
     }
 
     fun callApiAddQty(cart_itemid: String?, qty: String?) {
-        //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         info.cartUpdateQty(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
@@ -616,23 +610,22 @@ class SelectFoodFragment : Fragment() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        context?.showToastMessage("Error occur please try again")
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    context?.showToastMessage("Error occur please try again")
+                    context?.showToastMessage(ERRORMSG)
                 }
             })
     }
 
-    fun callApiRemoveItemCart(cart_itemid: String?) {
-        //showProgress();
+    fun callApiRemoveItemCart(cartItemid: String?) {
         binding.progressBar.visibility = View.VISIBLE
         info.cartRemoveQty(
             "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
-            cart_itemid,
+            cartItemid,
             storePrefrence.getString(
                 Constant.IDENTFIER
             )
@@ -640,7 +633,6 @@ class SelectFoodFragment : Fragment() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
@@ -660,26 +652,26 @@ class SelectFoodFragment : Fragment() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        context?.showToastMessage("Error occur please try again")
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    context?.showToastMessage("Error occur please try again")
+                    context?.showToastMessage(ERRORMSG)
                 }
             })
     }
 
     companion object {
         //var category_id: String? = null
-        var tableList_get: TableList? = null
+        var tablelistGet: TableList? = null
         var restoData: RestoData? = null
         lateinit var viewModel: SelectFoodViewModel
         fun newInstance(tableList: TableList?, bookTable: RestoData?, vm: SelectFoodViewModel): SelectFoodFragment {
             //category_id = category_id_val;
             //Log.d("idval",category_id);
-            tableList_get = tableList
+            tablelistGet = tableList
             restoData = bookTable
             viewModel = vm
             return SelectFoodFragment()

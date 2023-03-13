@@ -16,7 +16,18 @@ import com.forkmang.adapter.REMOVE_CART_ITEM
 import com.forkmang.data.*
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivityPaymentViewBinding
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.BOOKINGID
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.ERROR_CODE
+import com.forkmang.helper.Constant.ERROR_CODE_n
+import com.forkmang.helper.Constant.GUESTUSERlOGIN
+import com.forkmang.helper.Constant.IDENTFIER
+import com.forkmang.helper.Constant.MOBILE
+import com.forkmang.helper.Constant.NAME
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
+import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
@@ -31,12 +42,12 @@ import retrofit2.Response
 
 class ActivityPaymentSummary : AppCompatActivity() {
 
-    var tableList_get: TableList? = null
+    var tableListGet: TableList? = null
     var restoData: RestoData? = null
     private val storePrefrence by lazy { StorePrefrence(this) }
     var ctx: Context = this@ActivityPaymentSummary
     var cartBookingArrayList: ArrayList<CartBooking>? = null
-    var coming_from: String? = null
+    var comingFrom: String? = null
 
     private val binding by lazy { ActivityPaymentViewBinding.inflate(layoutInflater) }
 
@@ -44,22 +55,22 @@ class ActivityPaymentSummary : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         //ArrayList<CartBooking> cartBookingArrayList  = extras.getParcelableArrayList("cartbookingarraylist");
-        coming_from = intent.getStringExtra("comingfrom")
-        if (coming_from.equals("SelectFood", ignoreCase = true)) {
-            tableList_get = intent.getSerializableExtra("model") as TableList?
-            binding.txtHotelname.text = tableList_get?.str_hotel_name
-            binding.txtCustomername.text = tableList_get?.str_customer_name
-            binding.txtNoofseat.text = tableList_get?.number_of_person + " Seats"
-            binding.txtDateTime.text = tableList_get?.str_time
-        } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
+        comingFrom = intent.getStringExtra("comingfrom")
+        if (comingFrom.equals("SelectFood", ignoreCase = true)) {
+            tableListGet = intent.getSerializableExtra("model") as TableList?
+            binding.txtHotelname.text = tableListGet?.str_hotel_name
+            binding.txtCustomername.text = tableListGet?.str_customer_name
+            binding.txtNoofseat.text = tableListGet?.number_of_person + " Seats"
+            binding.txtDateTime.text = tableListGet?.str_time
+        } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
             restoData = intent.getSerializableExtra("restromodel") as RestoData?
             binding.txtHotelname.text = restoData?.rest_name
-            binding.txtCustomername.text = storePrefrence.getString(Constant.NAME)
+            binding.txtCustomername.text = storePrefrence.getString(NAME)
             binding.linear1.visibility = View.GONE
             binding.linearViewLayout2.visibility = View.GONE
         }
         restoData = intent.getSerializableExtra("restromodel") as RestoData?
-        binding.txtPhoneno.text = storePrefrence.getString(Constant.MOBILE)
+        binding.txtPhoneno.text = storePrefrence.getString(MOBILE)
         binding.progressBar.visibility = View.VISIBLE
         binding.recycleview.layoutManager = LinearLayoutManager(this@ActivityPaymentSummary)
 
@@ -73,20 +84,20 @@ class ActivityPaymentSummary : AppCompatActivity() {
         }
         binding.btnPaymentProceed.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
-                if (coming_from.equals("SelectFood", ignoreCase = true)) {
+                if (comingFrom.equals("SelectFood", ignoreCase = true)) {
                     callApiCreateOrder()
-                } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
+                } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
                     callApiCreateOrderPickup()
                 }
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
         binding.progressBar.visibility = View.GONE
         if (Utils.isNetworkAvailable(ctx)) {
             callApiCartListView()
         } else {
-            showToastMessage(Constant.NETWORKEROORMSG)
+            showToastMessage(NETWORKEROORMSG)
         }
     }
 
@@ -94,96 +105,97 @@ class ActivityPaymentSummary : AppCompatActivity() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.getCartDetail(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             storePrefrence.getString(
-                Constant.IDENTFIER
+                IDENTFIER
             )
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
-                                val data_obj = obj.getJSONObject("data")
-                                val cart_array_item = data_obj.getJSONArray("cart_item")
+                                val dataObj = obj.getJSONObject("data")
+                                val cartArrayItem = dataObj.getJSONArray("cart_item")
                                 cartBookingArrayList = ArrayList()
-                                for (i in 0 until cart_array_item.length()) {
+                                for (i in 0 until cartArrayItem.length()) {
                                     val cartBooking = CartBooking()
-                                    val cart_detail_obj = cart_array_item.getJSONObject(i)
+                                    val cartDetailObj = cartArrayItem.getJSONObject(i)
 
                                     //data obj
-                                    cartBooking.data_userid = data_obj.getString("user_id")
-                                    if (data_obj.has("booking_table_id")) {
+                                    cartBooking.data_userid = dataObj.getString("user_id")
+                                    if (dataObj.has("booking_table_id")) {
                                         cartBooking.data_booking_table_id =
-                                            data_obj.getString("booking_table_id")
+                                            dataObj.getString("booking_table_id")
                                     } else {
                                         cartBooking.data_booking_table_id = ""
                                     }
-                                    cartBooking.data_total = data_obj.getString("total")
+                                    cartBooking.data_total = dataObj.getString("total")
 
                                     //cart_item obj
-                                    cartBooking.cart_item_qty = cart_detail_obj.getString("qty")
+                                    cartBooking.cart_item_qty = cartDetailObj.getString("qty")
                                     cartBooking.cart_item_cartid =
-                                        cart_detail_obj.getString("cart_id")
-                                    cartBooking.cart_item_id = cart_detail_obj.getString("id")
+                                        cartDetailObj.getString("cart_id")
+                                    cartBooking.cart_item_id = cartDetailObj.getString("id")
                                     cartBooking.cart_item_extra_id =
-                                        cart_detail_obj.getString("item_extra_id")
+                                        cartDetailObj.getString("item_extra_id")
 
                                     //cart_item_details obj
                                     cartBooking.cart_item_details_category_id =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
+                                        cartDetailObj.getJSONObject("cart_item_details")
                                             .getString("category_id")
                                     cartBooking.cart_item_details_name =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
+                                        cartDetailObj.getJSONObject("cart_item_details")
                                             .getString("name")
                                     cartBooking.cart_item_details_price =
-                                        cart_detail_obj.getJSONObject("cart_item_details")
+                                        cartDetailObj.getJSONObject("cart_item_details")
                                             .getString("price")
 
 
                                     //extra_item_details obj
-                                    val extra_namelist = ArrayList<String>()
-                                    val extra_pricelist = ArrayList<String>()
-                                    for (j in 0 until cart_detail_obj.getJSONArray("extra_item_details")
+                                    val extraNamelist = ArrayList<String>()
+                                    val extraPricelist = ArrayList<String>()
+                                    for (j in 0 until cartDetailObj.getJSONArray("extra_item_details")
                                         .length()) {
-                                        val extra_item_obj =
-                                            cart_detail_obj.getJSONArray("extra_item_details")
+                                        val extraItemObj =
+                                            cartDetailObj.getJSONArray("extra_item_details")
                                                 .getJSONObject(j)
-                                        extra_namelist.add(extra_item_obj.getString("name"))
-                                        extra_pricelist.add(extra_item_obj.getString("price"))
+                                        extraNamelist.add(extraItemObj.getString("name"))
+                                        extraPricelist.add(extraItemObj.getString("price"))
 
 
                                         //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
                                     }
 
                                     //extra name
-                                    var str_extraname = ""
-                                    for (k in extra_namelist.indices) {
-                                        str_extraname = if (k == 0) {
-                                            extra_namelist[k]
+                                    var strExtraname = ""
+                                    for (k in extraNamelist.indices) {
+                                        strExtraname = if (k == 0) {
+                                            extraNamelist[k]
                                         } else {
-                                            str_extraname + "," + extra_namelist[k]
+                                            strExtraname + "," + extraNamelist[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_name = str_extraname
+                                    cartBooking.extra_item_details_name = strExtraname
 
                                     //extra price
-                                    var str_extraprice = ""
-                                    for (k in extra_pricelist.indices) {
-                                        str_extraprice = if (k == 0) {
-                                            extra_pricelist[k]
+                                    var strExtraprice = ""
+                                    for (k in extraPricelist.indices) {
+                                        strExtraprice = if (k == 0) {
+                                            extraPricelist[k]
                                         } else {
-                                            str_extraprice + "," + extra_pricelist[k]
+                                            strExtraprice + "," + extraPricelist[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_price = str_extraprice
+                                    cartBooking.extra_item_details_price = strExtraprice
                                     cartBookingArrayList?.add(cartBooking)
                                 }
                                 binding.progressBar.visibility = View.GONE
-                                val data_total = cartBookingArrayList?.get(0)?.data_total
-                                binding.txtTotalPay.text = ctx.resources.getString(R.string.rupee) + data_total
+                                val dataTotal = cartBookingArrayList?.get(0)?.data_total
+                                binding.txtTotalPay.text =
+                                    ctx.resources.getString(R.string.rupee) + dataTotal
                                 //call adapter
                                 val cartListingAdapterSummary =
                                     CartListingAdapterSummary(
@@ -201,7 +213,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                     }
                                 binding.recycleview.adapter = cartListingAdapterSummary
                             }
-                        } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
+                        } else if (response.code() == ERROR_CODE_n || response.code() == ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
                             showToastMessage(jsonObject?.getString("message").toString())
                             binding.progressBar.visibility = View.GONE
@@ -281,34 +293,32 @@ class ActivityPaymentSummary : AppCompatActivity() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
-                    //stopProgress();
+                    showToastMessage(ERRORMSG)
                 }
             })
     }
 
     fun callApiAddQty(cart_itemid: String?, qty: String?) {
-        //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cartUpdateQty(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             cart_itemid,
             qty,
             storePrefrence.getString(
-                Constant.IDENTFIER
+                IDENTFIER
             )
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
                                 showToastMessage(obj.getString("message"))
@@ -316,10 +326,10 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                 if (Utils.isNetworkAvailable(ctx)) {
                                     callApiCartListView()
                                 } else {
-                                    showToastMessage(Constant.NETWORKEROORMSG)
+                                    showToastMessage(NETWORKEROORMSG)
                                 }
                             }
-                        } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
+                        } else if (response.code() == ERROR_CODE_n || response.code() == ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             showToastMessage(jsonObject.getString("message"))
                             binding.progressBar.visibility = View.GONE
@@ -327,13 +337,13 @@ class ActivityPaymentSummary : AppCompatActivity() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             })
     }
@@ -342,17 +352,17 @@ class ActivityPaymentSummary : AppCompatActivity() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cartRemoveQty(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             cart_itemid,
             storePrefrence.getString(
-                Constant.IDENTFIER
+                IDENTFIER
             )
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
                                 showToastMessage(obj.getString("message"))
@@ -360,10 +370,10 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                 if (Utils.isNetworkAvailable(ctx)) {
                                     callApiCartListView()
                                 } else {
-                                    showToastMessage(Constant.NETWORKEROORMSG)
+                                    showToastMessage(NETWORKEROORMSG)
                                 }
                             }
-                        } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
+                        } else if (response.code() == ERROR_CODE_n || response.code() == ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             showToastMessage(jsonObject.getString("message"))
                             binding.progressBar.visibility = View.GONE
@@ -371,38 +381,37 @@ class ActivityPaymentSummary : AppCompatActivity() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             })
     }
 
     private fun callApiCreateOrder() {
         Api.info.createOrder(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             restoData?.id,
             "book_table",
             "",
-            storePrefrence.getString(Constant.BOOKINGID),
+            storePrefrence.getString(BOOKINGID),
             storePrefrence.getString(
-                Constant.IDENTFIER
+                IDENTFIER
             )
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status")
-                                    .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                    .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
-                                val order_id = jsonObject.getString("data")
+                                val orderId = jsonObject.getString("data")
 
                                 //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                 val dialog = showAlertViewConfirmTable()
@@ -412,32 +421,32 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                         this@ActivityPaymentSummary,
                                         PaymentScreenActivity::class.java
                                     )
-                                    if (coming_from.equals("SelectFood", ignoreCase = true)) {
-                                        mainIntent.putExtra("model", tableList_get)
-                                    } else if (coming_from.equals(
+                                    if (comingFrom.equals("SelectFood", ignoreCase = true)) {
+                                        mainIntent.putExtra("model", tableListGet)
+                                    } else if (comingFrom.equals(
                                             "PickupFood",
                                             ignoreCase = true
                                         )
                                     ) {
                                         //nothing to send table object
                                     }
-                                    mainIntent.putExtra("comingfrom", coming_from)
+                                    mainIntent.putExtra("comingfrom", comingFrom)
                                     mainIntent.putExtra("restromodel", restoData)
                                     mainIntent.putExtra(
                                         "totalpay",
                                         binding.txtTotalPay.text.toString()
                                     )
-                                    mainIntent.putExtra("orderid", order_id)
+                                    mainIntent.putExtra("orderid", orderId)
                                     mainIntent.putExtra("isbooktable", "no")
                                     startActivity(mainIntent)
                                 }, 1000)
                             } else {
                                 showToastMessage(jsonObject.getString("message"))
                             }
-                        } else if (response.code() == Constant.ERROR_CODE) {
+                        } else if (response.code() == ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             showToastMessage(jsonObject.getString("message"))
-                        } else if (response.code() == Constant.GUESTUSERlOGIN) {
+                        } else if (response.code() == GUESTUSERlOGIN) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             showToastMessage(jsonObject.getString("message"))
                             val intent = Intent(ctx, LoginActivity::class.java)
@@ -448,36 +457,36 @@ class ActivityPaymentSummary : AppCompatActivity() {
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             })
     }
 
     private fun callApiCreateOrderPickup() {
         Api.info.createOrder(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
-            restoData?.id, "pickup", "", "", storePrefrence.getString(Constant.IDENTFIER)
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            restoData?.id, "pickup", "", "", storePrefrence.getString(IDENTFIER)
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status")
-                                    .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                    .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
-                                val order_id = jsonObject.getString("data")
+                                val orderId = jsonObject.getString("data")
                                 //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                 val dialog = showAlertViewConfirmTable()
                                 Handler().postDelayed({
                                     dialog.dismiss()
-                                    if (coming_from.equals("PickupFood", ignoreCase = true)) {
+                                    if (comingFrom.equals("PickupFood", ignoreCase = true)) {
                                         val mainIntent = Intent(
                                             this@ActivityPaymentSummary,
                                             PaymentScreenActivity::class.java
@@ -488,7 +497,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                             "totalpay",
                                             binding.txtTotalPay.text.toString()
                                         )
-                                        mainIntent.putExtra("orderid", order_id)
+                                        mainIntent.putExtra("orderid", orderId)
                                         mainIntent.putExtra("isbooktable", "no")
                                         startActivity(mainIntent)
                                     } else {
@@ -496,14 +505,14 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                             this@ActivityPaymentSummary,
                                             PaymentScreenActivity::class.java
                                         )
-                                        mainIntent.putExtra("model", tableList_get)
+                                        mainIntent.putExtra("model", tableListGet)
                                         mainIntent.putExtra("restromodel", restoData)
                                         mainIntent.putExtra("comingfrom", "SelectFood")
                                         mainIntent.putExtra(
                                             "totalpay",
                                             binding.txtTotalPay.text.toString()
                                         )
-                                        mainIntent.putExtra("orderid", order_id)
+                                        mainIntent.putExtra("orderid", orderId)
                                         mainIntent.putExtra("isbooktable", "no")
                                         startActivity(mainIntent)
                                     }
@@ -511,10 +520,10 @@ class ActivityPaymentSummary : AppCompatActivity() {
                             } else {
                                 showToastMessage(jsonObject.getString("message"))
                             }
-                        } else if (response.code() == Constant.ERROR_CODE) {
+                        } else if (response.code() == ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             showToastMessage(jsonObject.getString("message"))
-                        } else if (response.code() == Constant.GUESTUSERlOGIN) {
+                        } else if (response.code() == GUESTUSERlOGIN) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             showToastMessage(jsonObject.getString("message"))
                             val intent = Intent(ctx, LoginActivity::class.java)

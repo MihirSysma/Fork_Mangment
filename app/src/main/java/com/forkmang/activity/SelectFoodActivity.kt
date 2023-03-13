@@ -20,8 +20,12 @@ import com.forkmang.adapter.ViewPagerAdapterSelectFood
 import com.forkmang.data.FoodList_Tab
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivitySelectfoodBinding
-import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.ERROR_CODE
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
@@ -44,9 +48,9 @@ class SelectFoodActivity : AppCompatActivity() {
     var foodListArrayList: ArrayList<FoodList_Tab>? = null
     var restoData: RestoData? = null
     var tableList: TableList? = null
-    var booking_id: String? = null
-    var category_id: String? = null
-    var current_tabactive: Int = 0
+    var bookingId: String? = null
+    var categoryId: String? = null
+    var currentTabActive: Int = 0
 
     private val binding by lazy { ActivitySelectfoodBinding.inflate(layoutInflater) }
     private val viewModel by lazy { ViewModelProvider(this)[SelectFoodViewModel::class.java] }
@@ -57,24 +61,24 @@ class SelectFoodActivity : AppCompatActivity() {
         binding.imgEdit.setOnClickListener { finish() }
         restoData = intent.getSerializableExtra("restromodel") as RestoData?
         tableList = intent.getSerializableExtra("table_model") as TableList?
-        val timedate: String? = intent.getStringExtra("timedate")
+        val timeDate: String? = intent.getStringExtra("timedate")
         val day: String? = intent.getStringExtra("day")
-        val noseat: String? = intent.getStringExtra("noseat")
-        binding.txtDatetime.text = timedate
+        val noSeat: String? = intent.getStringExtra("noseat")
+        binding.txtDatetime.text = timeDate
         binding.txtDay.text = day
-        binding.txtNoofseat.text = "$noseat Seats"
+        binding.txtNoofseat.text = "$noSeat Seats"
         binding.txtViewDay.text = day
         binding.txtViewDay2.text = day
         binding.txtrestroname.text = restoData?.rest_name
         binding.txtTime.text = restoData?.endtime
         binding.txtTotalkm.text = restoData?.distance + " km"
-        booking_id = restoData?.id
+        bookingId = restoData?.id
         binding.imgSearchicon.setOnClickListener {
-            val str_search: String = binding.etvSearchview.text.toString()
+            val strSearch: String = binding.etvSearchview.text.toString()
             if (Utils.isNetworkAvailable(ctx)) {
-                viewModel.callApiSearchFoodItem(category_id, str_search)
+                viewModel.callApiSearchFoodItem(categoryId, strSearch)
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
         binding.etvSearchview.addTextChangedListener(object : TextWatcher {
@@ -88,9 +92,9 @@ class SelectFoodActivity : AppCompatActivity() {
                 if (s.toString().isEmpty()) {
                     hidekeyboard()
                     if (Utils.isNetworkAvailable(ctx)) {
-                        viewModel.callApiFoodItem(category_id)
+                        viewModel.callApiFoodItem(categoryId)
                     } else {
-                        showToastMessage(Constant.NETWORKEROORMSG)
+                        showToastMessage(NETWORKEROORMSG)
                     }
                 }
             }
@@ -115,20 +119,20 @@ class SelectFoodActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 Log.d("pageno", "" + position)
-                current_tabactive = position
-                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
-                category_id = foodList_tab?.id
+                currentTabActive = position
+                val foodListTab: FoodList_Tab? = foodListArrayList?.get(position)
+                categoryId = foodListTab?.id
                 if (Utils.isNetworkAvailable(this@SelectFoodActivity)) {
-                    viewModel.callApiFoodItem(category_id)
+                    viewModel.callApiFoodItem(categoryId)
                 } else {
-                    showToastMessage(Constant.NETWORKEROORMSG)
+                    showToastMessage(NETWORKEROORMSG)
                 }
             }
         })
         if (Utils.isNetworkAvailable(ctx)) {
             callApiTabListing("1")
         } else {
-            showToastMessage(Constant.NETWORKEROORMSG)
+            showToastMessage(NETWORKEROORMSG)
         }
     }
 
@@ -138,9 +142,9 @@ class SelectFoodActivity : AppCompatActivity() {
             (binding.viewPager)
         ) { tab: TabLayout.Tab, position: Int ->
             for (i in foodListArrayList!!.indices) {
-                val foodList_tab: FoodList_Tab? = foodListArrayList?.get(position)
+                val foodListTab: FoodList_Tab? = foodListArrayList?.get(position)
                 //tab.setText(foodList_tab.getName());
-                tab.customView = getTabView(foodList_tab?.name?.lowercase(Locale.getDefault()))
+                tab.customView = getTabView(foodListTab?.name?.lowercase(Locale.getDefault()))
             }
         }.attach()
     }
@@ -152,8 +156,8 @@ class SelectFoodActivity : AppCompatActivity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog: AlertDialog = alertDialog.create()
-        val btn_share_order: Button = dialogView.findViewById(R.id.btn_share_order)
-        btn_share_order.setOnClickListener {
+        val btnShareOrder: Button = dialogView.findViewById(R.id.btn_share_order)
+        btnShareOrder.setOnClickListener {
             val intent = Intent(
                 this@SelectFoodActivity,
                 BookingOrderReserverConformationActivity::class.java
@@ -165,7 +169,6 @@ class SelectFoodActivity : AppCompatActivity() {
     }
 
     private fun callApiTabListing(branch_id: String) {
-        //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         info.getResFoodList(branch_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
@@ -173,11 +176,10 @@ class SelectFoodActivity : AppCompatActivity() {
                 response: Response<JsonObject?>
             ) {
                 try {
-                    //Log.d("Result", jsonObject.toString());
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             if (jsonObject.getJSONObject("data").getJSONArray("data")
                                     .length() > 0
@@ -185,16 +187,16 @@ class SelectFoodActivity : AppCompatActivity() {
                                 foodListArrayList = ArrayList()
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
-                                    val foodList_tab = FoodList_Tab()
-                                    val mjson_obj: JSONObject =
+                                    val foodListTab = FoodList_Tab()
+                                    val mjsonObj: JSONObject =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i)
-                                    foodList_tab.name = mjson_obj.getString("name")
-                                    foodList_tab.id = mjson_obj.getString("id")
-                                    foodListArrayList?.add(foodList_tab)
+                                    foodListTab.name = mjsonObj.getString("name")
+                                    foodListTab.id = mjsonObj.getString("id")
+                                    foodListArrayList?.add(foodListTab)
                                 }
                                 binding.progressBar.visibility = View.GONE
-                                val viewPagerAdapter_reserveSeat =
+                                val viewPagerAdapterReserveSeat =
                                     ViewPagerAdapterSelectFood(
                                         supportFragmentManager,
                                         lifecycle,
@@ -203,28 +205,28 @@ class SelectFoodActivity : AppCompatActivity() {
                                         restoData!!,
                                         viewModel
                                     )
-                                binding.viewPager.adapter = viewPagerAdapter_reserveSeat
+                                binding.viewPager.adapter = viewPagerAdapterReserveSeat
                                 fillTabList()
                             }
                         }
-                    } else if (response.code() == Constant.ERROR_CODE) {
+                    } else if (response.code() == ERROR_CODE) {
                         //val jsonObject = JSONObject(response.errorBody()!!.string())
                         binding.progressBar.visibility = View.GONE
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage("Error occur please try again")
-                //stopProgress();
+                showToastMessage(ERRORMSG)
+                binding.progressBar.visibility = View.GONE
             }
         })
     }

@@ -24,14 +24,14 @@ import retrofit2.Response
 class PaymentScreenActivity : AppCompatActivity() {
 
     var ctx: Context = this@PaymentScreenActivity
-    var tableList_get: TableList? = null
-    var RestroData: RestoData? = null
+    var tablelistGet: TableList? = null
+    var restroData: RestoData? = null
     var totalpay: String? = null
-    var order_id: String? = null
-    var booking_id: String? = null
-    var payment_type: String? = null
+    var orderId: String? = null
+    var bookingId: String? = null
+    var paymentType: String? = null
     var isbooktable: String? = null
-    var coming_from: String? = null
+    var comingFrom: String? = null
 
     private val storePrefrence by lazy { StorePrefrence(this) }
     private val binding by lazy { ActivityPaymentScreenBinding.inflate(layoutInflater) }
@@ -40,19 +40,19 @@ class PaymentScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        coming_from = intent.getStringExtra("comingfrom")
-        if (coming_from.equals("SelectFood", ignoreCase = true)) {
-            tableList_get = intent.getSerializableExtra("model") as TableList?
-        } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
+        comingFrom = intent.getStringExtra("comingfrom")
+        if (comingFrom.equals("SelectFood", ignoreCase = true)) {
+            tablelistGet = intent.getSerializableExtra("model") as TableList?
+        } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
             // not to get table object
         }
-        RestroData = intent.getSerializableExtra("restromodel") as RestoData?
+        restroData = intent.getSerializableExtra("restromodel") as RestoData?
         totalpay = intent.getStringExtra("totalpay")
         isbooktable = intent.getStringExtra("isbooktable")
         if (isbooktable.equals("yes", ignoreCase = true)) {
-            booking_id = intent.getStringExtra("bookingid")
+            bookingId = intent.getStringExtra("bookingid")
         } else if (isbooktable.equals("no", ignoreCase = true)) {
-            order_id = intent.getStringExtra("orderid")
+            orderId = intent.getStringExtra("orderid")
         }
         binding.relativeView1.setOnClickListener {
             binding.relativeView1.setBackgroundColor(ContextCompat.getColor(this, R.color.orange_2))
@@ -73,25 +73,25 @@ class PaymentScreenActivity : AppCompatActivity() {
         binding.btnPayment.text = "Pay - $totalpay"
         binding.btnPayment.setOnClickListener {
             if (binding.radioButton1.isChecked) {
-                payment_type = "cash"
+                paymentType = "cash"
             } else if (binding.radioButton2.isChecked) {
-                payment_type = "online"
+                paymentType = "online"
             }
             if (Utils.isNetworkAvailable(ctx)) {
                 if (isbooktable.equals("yes", ignoreCase = true)) {
                     //callApi_makepayment_1(order_id, payment_type);
-                    callApiMakePayment("", booking_id, payment_type, "table")
+                    callApiMakePayment("", bookingId, paymentType, "table")
                 } else {
-                    if (coming_from.equals("SelectFood", ignoreCase = true)) {
+                    if (comingFrom.equals("SelectFood", ignoreCase = true)) {
                         callApiMakePayment(
-                            order_id,
+                            orderId,
                             storePrefrence.getString(Constant.BOOKINGID),
-                            payment_type,
+                            paymentType,
                             "order"
                         )
-                    } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
+                    } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
                         // not to get table object
-                        callApiMakePayment(order_id, "", payment_type, "order")
+                        callApiMakePayment(orderId, "", paymentType, "order")
                     }
                 }
             } else {
@@ -121,17 +121,17 @@ class PaymentScreenActivity : AppCompatActivity() {
                             if (jsonObject.getString("status")
                                     .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                             ) {
-                                val mainIntent: Intent = Intent(
+                                val mainIntent = Intent(
                                     this@PaymentScreenActivity,
                                     OrderConformationActivity::class.java
                                 )
-                                if (coming_from.equals("SelectFood", ignoreCase = true)) {
-                                    mainIntent.putExtra("model", tableList_get)
+                                if (comingFrom.equals("SelectFood", ignoreCase = true)) {
+                                    mainIntent.putExtra("model", tablelistGet)
                                     mainIntent.putExtra("comingfrom", "SelectFood")
-                                } else if (coming_from.equals("PickupFood", ignoreCase = true)) {
+                                } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
                                     mainIntent.putExtra("comingfrom", "PickupFood")
                                 }
-                                mainIntent.putExtra("restromodel", RestroData)
+                                mainIntent.putExtra("restromodel", restroData)
                                 mainIntent.putExtra("totalpay", totalpay)
                                 if (isbooktable.equals("yes", ignoreCase = true)) {
                                     mainIntent.putExtra("orderid", booking_id)
@@ -144,7 +144,7 @@ class PaymentScreenActivity : AppCompatActivity() {
                                 showToastMessage(jsonObject.getString("message"))
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
-                            val jsonObject: JSONObject = JSONObject(response.errorBody()?.string())
+                            val jsonObject = JSONObject(response.errorBody()?.string())
                             showToastMessage(jsonObject.getString("message"))
                         }
                     } catch (ex: Exception) {

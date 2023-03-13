@@ -61,7 +61,7 @@
             android:exported="false" />
         -->
         <activity
-            android:name=".activity.Walkin_ActionPage"
+            android:name=".activity.WalkinActionPage"
             android:exported="false" />
         <activity
             android:name=".activity.OrderConformationActivity"
@@ -110,7 +110,7 @@
             android:name=".activity.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.RedirectToFacelogin"
+            android:name=".activity.RedirectToFaceLogin"
             android:exported="true" />
         <activity
             android:name=".activity.LoginFormActivity"

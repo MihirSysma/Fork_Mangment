@@ -16,9 +16,9 @@ class OrdersListingFragment : FragmentActivity() {
 
         val viewPager: ViewPager2 = findViewById(R.id.viewPager_orders)
         val tabLayout: TabLayout = findViewById(R.id.tabLayout_orders)
-        val viewPagerAdapter_orders =
+        val viewPagerAdapterOrders =
             ViewPagerAdapterOrdersListing(supportFragmentManager, lifecycle)
-        viewPager.adapter = viewPagerAdapter_orders
+        viewPager.adapter = viewPagerAdapterOrders
         TabLayoutMediator(
             tabLayout,
             viewPager

@@ -37,13 +37,13 @@ class BookingTabViewActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.imgLoc.setOnClickListener {
-            val intent_walkin = Intent(this@BookingTabViewActivity, MapsActivity::class.java)
-            startActivity(intent_walkin)
+            val intentWalkin = Intent(this@BookingTabViewActivity, MapsActivity::class.java)
+            startActivity(intentWalkin)
         }
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle, viewModel)
         binding.viewPager.adapter = viewPagerAdapter
 
-        val str_tab_no = intent.getStringExtra("tab_no")
+        val strTabNo = intent.getStringExtra("tab_no")
         TabLayoutMediator(
             binding.tabLayout,
             binding.viewPager
@@ -55,7 +55,7 @@ class BookingTabViewActivity : AppCompatActivity() {
                 else -> "TAB"
             }
         }.attach()
-        selectPage(str_tab_no?.toInt() ?: 1)
+        selectPage(strTabNo?.toInt() ?: 1)
 
         /*if(Constant.IS_BookTableFragmentLoad)
         {

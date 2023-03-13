@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.forkmang.R
-import com.forkmang.activity.Walkin_ActionPage
+import com.forkmang.activity.WalkinActionPage
 import com.forkmang.adapter.SpinnerAdapter
 import com.forkmang.adapter.SpinnerAdapterType
 import com.forkmang.adapter.SpinnerAdapterOccasion
@@ -18,8 +18,13 @@ import com.forkmang.adapter.WalkinListingAdapter
 import com.forkmang.data.AreaDropdown
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentWalkindetailLayoutBinding
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.ERROR_CODE
+import com.forkmang.helper.Constant.ERROR_CODE_n
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.NODATA
 import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils.isNetworkAvailable
@@ -37,30 +42,29 @@ import kotlin.math.floor
 
 class WalkinDetailFragment : FragmentActivity() {
     //Walkin_detail_Fragment instance;
-    var relative_bottom: RelativeLayout? = null
+    var relativeBottom: RelativeLayout? = null
     var ctx: Context = this@WalkinDetailFragment
-    var resturant_id: String? = null
-    var str_area = "Indoor"
+    var resturantId: String? = null
     var restoData: RestoData? = null
     var saveLatitude: Double? = null
     var saveLongitude: Double? = null
     var restoDataArrayList: ArrayList<RestoData>? = null
-    var walkin_listing_adapter: WalkinListingAdapter? = null
+    var walkinListingAdapter: WalkinListingAdapter? = null
     private val storePrefrence by lazy { StorePrefrence(this) }
-    var quee_no: String? = null
-    var noof_person: String? = null
+    var queeNo1: String? = null
+    var noofPerson: String? = null
     var occasion: String? = null
     var area: String? = null
     var identifier = ""
-    var str_area_id: String? = null
-    var txtqno_bottom: TextView? = null
+    var strAreaId: String? = null
+    var txtqnoBottom: TextView? = null
     var txtnextview: TextView? = null
     var areaDropdownArrayList: ArrayList<AreaDropdown>? = null
-    var is_areatype = false
-    var is_pesonselect = false
-    var is_occasionselect = false
-    var person_arr = arrayOf("Select Person", "1", "2 ", "3", "4", "5", "6", "7", "8", "9", "10")
-    var occasion_arr = arrayOf("Select Occasion", "Birthday", "Anniversary", "Marriage")
+    var isAreatype = false
+    var isPesonselect = false
+    var isOccasionselect = false
+    var personArr = arrayOf("Select Person", "1", "2 ", "3", "4", "5", "6", "7", "8", "9", "10")
+    var occasionArr = arrayOf("Select Occasion", "Birthday", "Anniversary", "Marriage")
 
     private val binding by lazy { FragmentWalkindetailLayoutBinding.inflate(layoutInflater) }
 
@@ -70,19 +74,19 @@ class WalkinDetailFragment : FragmentActivity() {
         setContentView(binding.root)
         //instance= this;
 
-        txtqno_bottom = findViewById(R.id.txtqno_bottom)
-        relative_bottom = findViewById(R.id.relative_bottom)
+        txtqnoBottom = findViewById(R.id.txtqno_bottom)
+        relativeBottom = findViewById(R.id.relative_bottom)
         txtnextview = findViewById(R.id.txtnextview)
         val verticalLayoutManager = LinearLayoutManager(ctx, LinearLayoutManager.VERTICAL, false)
         binding.walkinRecycleview.layoutManager = verticalLayoutManager
         binding.walkinRecycleview.setHasFixedSize(true)
         val intent = intent
-        resturant_id = intent.getStringExtra("resturant_id")
+        resturantId = intent.getStringExtra("resturant_id")
         restoData = getIntent().getSerializableExtra("restromodel") as RestoData?
 
 
         //spinner_person array adapter start
-        val personAdapter = SpinnerAdapter(applicationContext, person_arr)
+        val personAdapter = SpinnerAdapter(applicationContext, personArr)
         binding.spinner.adapter = personAdapter
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -91,15 +95,15 @@ class WalkinDetailFragment : FragmentActivity() {
                 position: Int,
                 id: Long
             ) {
-                is_pesonselect = false
+                isPesonselect = false
                 if (position > 0) {
-                    showToastMessage(person_arr[position])
-                    noof_person = person_arr[position]
-                    val arrOfStr = noof_person?.split(" ".toRegex(), limit = 2)?.toTypedArray()
-                    noof_person = arrOfStr?.get(0)
-                    is_pesonselect = true
+                    showToastMessage(personArr[position])
+                    noofPerson = personArr[position]
+                    val arrOfStr = noofPerson?.split(" ".toRegex(), limit = 2)?.toTypedArray()
+                    noofPerson = arrOfStr?.get(0)
+                    isPesonselect = true
                 } else {
-                    is_pesonselect = false
+                    isPesonselect = false
                 }
             }
 
@@ -111,7 +115,7 @@ class WalkinDetailFragment : FragmentActivity() {
 
 
         //spinner_occasion array adapter start
-        val ocassionAdapter = SpinnerAdapterOccasion(applicationContext, occasion_arr)
+        val ocassionAdapter = SpinnerAdapterOccasion(applicationContext, occasionArr)
         binding.spinnerOcassion.adapter = ocassionAdapter
         binding.spinnerOcassion.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -121,13 +125,13 @@ class WalkinDetailFragment : FragmentActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    is_occasionselect = false
+                    isOccasionselect = false
                     if (position > 0) {
-                        showToastMessage(occasion_arr[position])
-                        occasion = occasion_arr[position]
-                        is_occasionselect = true
+                        showToastMessage(occasionArr[position])
+                        occasion = occasionArr[position]
+                        isOccasionselect = true
                     } else {
-                        is_occasionselect = false
+                        isOccasionselect = false
                     }
                 }
 
@@ -150,8 +154,8 @@ class WalkinDetailFragment : FragmentActivity() {
                     val areaDropdown = areaDropdownArrayList?.get(position)
                     showToastMessage(areaDropdown?.area_name.toString())
                     area = areaDropdown?.area_name
-                    str_area_id = areaDropdown?.id
-                    is_areatype = true
+                    strAreaId = areaDropdown?.id
+                    isAreatype = true
                     /*if(is_pesonselect)
                         {
                             / *rel_lablview.setVisibility(View.VISIBLE);
@@ -166,16 +170,16 @@ class WalkinDetailFragment : FragmentActivity() {
 
         //spinner area array adapter end
         if (isNetworkAvailable(ctx)) {
-            callApiGetQueeList(resturant_id)
-            callApiFillDropdown(resturant_id)
+            callApiGetQueeList(resturantId)
+            callApiFillDropdown(resturantId)
         } else {
-            showToastMessage(Constant.NETWORKEROORMSG)
+            showToastMessage(NETWORKEROORMSG)
         }
         binding.txtnextview.setOnClickListener {
             //testing purpose
-            val mainIntent = Intent(ctx, Walkin_ActionPage::class.java)
-            mainIntent.putExtra("quee_no", quee_no)
-            mainIntent.putExtra("person", noof_person)
+            val mainIntent = Intent(ctx, WalkinActionPage::class.java)
+            mainIntent.putExtra("quee_no", queeNo1)
+            mainIntent.putExtra("person", noofPerson)
             mainIntent.putExtra("occasion", occasion)
             mainIntent.putExtra("area", area)
             mainIntent.putExtra("restromodel", restoData)
@@ -184,15 +188,15 @@ class WalkinDetailFragment : FragmentActivity() {
         binding.getInquee.setOnClickListener {
             //testing purpose hard coded
             identifier = ""
-            noof_person = "8"
+            noofPerson = "8"
             occasion = "Birthday"
             area = "Terace View"
-            val id = str_area_id
+            val id = strAreaId
             //callapi_getqueeconform(action,resturant_id, noof_person, occasion, str_area,identifier);
             if (isNetworkAvailable(ctx)) {
-                callapi_getquee(resturant_id, noof_person!!, occasion!!, area!!)
+                callApiGetQuee(resturantId, noofPerson!!, occasion!!, area!!)
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
     }
@@ -200,14 +204,14 @@ class WalkinDetailFragment : FragmentActivity() {
     public override fun onResume() {
         super.onResume()
         // ((Booking_TabView_Activity)getActivity()).hide_search();
-        val service_id = "2"
+        val serviceId = "2"
         /*saveLatitude = 21.209589;
         saveLongitude = 72.860824;*/saveLatitude = 23.933689
         saveLongitude = 72.367458
         if (isNetworkAvailable(ctx)) {
-            callApiGetBookTable(service_id, saveLatitude.toString(), saveLongitude.toString())
+            callApiGetBookTable(serviceId, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            showToastMessage(Constant.NETWORKEROORMSG)
+            showToastMessage(NETWORKEROORMSG)
         }
     }
 
@@ -218,9 +222,8 @@ class WalkinDetailFragment : FragmentActivity() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
-                            //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
                                     .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
@@ -231,60 +234,60 @@ class WalkinDetailFragment : FragmentActivity() {
                                     for (i in 0 until jsonObject.getJSONObject("data")
                                         .getJSONArray("data").length()) {
                                         val bookTable = RestoData()
-                                        val mjson_obj =
+                                        val mjsonObj =
                                             jsonObject.getJSONObject("data").getJSONArray("data")
                                                 .getJSONObject(i)
 
                                         //JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(0);
-                                        bookTable.rest_name = mjson_obj.getString("rest_name")
+                                        bookTable.rest_name = mjsonObj.getString("rest_name")
                                         /*if(i > 0)
                                         {
                                             bookTable.setRest_name("REST"+" "+i);
                                         }
                                         else{
                                             bookTable.setRest_name(mjson_obj.getString("rest_name"));
-                                        }*/if (mjson_obj.has("endtime")) {
-                                            bookTable.endtime = mjson_obj.getString("endtime")
+                                        }*/if (mjsonObj.has("endtime")) {
+                                            bookTable.endtime = mjsonObj.getString("endtime")
                                         } else {
                                             bookTable.endtime = "00"
                                         }
-                                        bookTable.id = mjson_obj.getString("id")
-                                        val double_val =
-                                            floor(mjson_obj.getDouble("distance") * 100) / 100
-                                        bookTable.distance = double_val.toString()
+                                        bookTable.id = mjsonObj.getString("id")
+                                        val doubleVal =
+                                            floor(mjsonObj.getDouble("distance") * 100) / 100
+                                        bookTable.distance = doubleVal.toString()
                                         restoDataArrayList?.add(bookTable)
                                     }
                                     binding.progressBar.visibility = View.GONE
-                                    walkin_listing_adapter = WalkinListingAdapter(
+                                    walkinListingAdapter = WalkinListingAdapter(
                                         "detail"
                                     ) { restId, _ ->
                                         callApiGetQueeList(restId)
                                     }
-                                    binding.walkinRecycleview.adapter = walkin_listing_adapter
-                                    walkin_listing_adapter?.resto_dataArrayList =
+                                    binding.walkinRecycleview.adapter = walkinListingAdapter
+                                    walkinListingAdapter?.resto_dataArrayList =
                                         restoDataArrayList as ArrayList<RestoData>
                                 } else {
                                     //no data in array list
                                     binding.progressBar.visibility = View.GONE
-                                    showToastMessage(Constant.NODATA)
+                                    showToastMessage(NODATA)
                                 }
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                showToastMessage(ERRORMSG)
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            showToastMessage(ERRORMSG)
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -297,7 +300,7 @@ class WalkinDetailFragment : FragmentActivity() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
@@ -305,38 +308,38 @@ class WalkinDetailFragment : FragmentActivity() {
                             ) {
                                 //ctx?.showToastMessage(jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                 val data = jsonObject.getJSONObject("data")
-                                val quee_no = data.getString("queue_number")
+                                val queeNo = data.getString("queue_number")
                                 if (binding.txtQueeno.text.toString() == "0") {
                                     //set quee_no
-                                    binding.txtQueeno.text = quee_no
+                                    binding.txtQueeno.text = queeNo
                                 } else if (binding.txtQueeno.text.toString()
-                                        .toInt() < quee_no.toInt()
+                                        .toInt() < queeNo.toInt()
                                 ) {
                                     binding.progressBar.visibility = View.GONE
-                                    showAlertView(quee_no)
+                                    showAlertView(queeNo)
                                 } else if (binding.txtQueeno.text.toString()
-                                        .toInt() > quee_no.toInt()
+                                        .toInt() > queeNo.toInt()
                                 ) {
-                                    binding.txtQueeno.text = quee_no
+                                    binding.txtQueeno.text = queeNo
                                 } else {
-                                    binding.txtQueeno.text = quee_no
+                                    binding.txtQueeno.text = queeNo
                                 }
                             } else {
-                                // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                showToastMessage(ERRORMSG)
                             }
                         } else {
-                            // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            showToastMessage(ERRORMSG)
                         }
                         binding.progressBar.visibility = View.GONE
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    // ctx?.showToastMessage(Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                    showToastMessage(ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -349,7 +352,7 @@ class WalkinDetailFragment : FragmentActivity() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
@@ -362,44 +365,44 @@ class WalkinDetailFragment : FragmentActivity() {
                                         .getString("queue_id")
                             } else {
                                 binding.relativeBottom.visibility = View.GONE
-                                // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                showToastMessage(ERRORMSG)
                             }
                         } else {
                             binding.relativeBottom.visibility = View.GONE
-                            // getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            showToastMessage(ERRORMSG)
                         }
                         binding.progressBar.visibility = View.GONE
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //getContext?.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
     }
 
-    fun showAlertView(quee_no: String?) {
+    fun showAlertView(queeNo: String?) {
         val alertDialog = AlertDialog.Builder(ctx)
         val inflater = ctx.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView = inflater.inflate(R.layout.quee_alertview, null)
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
-        val tvyes: TextView = dialogView.findViewById(R.id.tvyes)
-        val tvno: TextView = dialogView.findViewById(R.id.tvno)
-        txt_msg.text =
+        val txtMsg: TextView = dialogView.findViewById(R.id.txt_msg)
+        val tvYes: TextView = dialogView.findViewById(R.id.tvyes)
+        val tvNo: TextView = dialogView.findViewById(R.id.tvno)
+        txtMsg.text =
             "new queue no is grater than previous quee no still you want to set new queue no ?"
-        tvyes.setOnClickListener {
+        tvYes.setOnClickListener {
             dialog.dismiss()
-            binding.txtQueeno.text = quee_no
+            binding.txtQueeno.text = queeNo
         }
-        tvno.setOnClickListener { dialog.dismiss() }
+        tvNo.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -410,26 +413,26 @@ class WalkinDetailFragment : FragmentActivity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
-        val tvyes: TextView = dialogView.findViewById(R.id.tvyes)
-        val tvno: TextView = dialogView.findViewById(R.id.tvno)
-        txt_msg.text = msg
-        tvyes.setOnClickListener {
+        val txtMsg: TextView = dialogView.findViewById(R.id.txt_msg)
+        val tvYes: TextView = dialogView.findViewById(R.id.tvyes)
+        val tvNo: TextView = dialogView.findViewById(R.id.tvno)
+        txtMsg.text = msg
+        tvYes.setOnClickListener {
             dialog.dismiss()
             if (isNetworkAvailable(ctx)) {
-                callapi_getqueeconform(
+                callApiGetQueeConform(
                     "yes",
                     restoData?.id,
-                    noof_person,
+                    noofPerson,
                     occasion,
                     area,
                     identifier
                 )
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
-        tvno.setOnClickListener { dialog.dismiss() }
+        tvNo.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
@@ -438,7 +441,7 @@ class WalkinDetailFragment : FragmentActivity() {
         info.getResDetail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
                         if (jsonObject.getString("status")
@@ -451,52 +454,52 @@ class WalkinDetailFragment : FragmentActivity() {
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
                                     //Area Type Spinner code
-                                    val mjson_array_area =
+                                    val mjsonArrayArea =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i).getJSONArray("area")
-                                    val areaDropdown_first = AreaDropdown()
-                                    areaDropdown_first.id = "0"
-                                    areaDropdown_first.area_name = "Select Area"
-                                    areaDropdownArrayList?.add(areaDropdown_first)
-                                    for (j in 0 until mjson_array_area.length()) {
+                                    val areadropdownFirst = AreaDropdown()
+                                    areadropdownFirst.id = "0"
+                                    areadropdownFirst.area_name = "Select Area"
+                                    areaDropdownArrayList?.add(areadropdownFirst)
+                                    for (j in 0 until mjsonArrayArea.length()) {
                                         val areaDropdown = AreaDropdown()
-                                        val mjson_object_area = mjson_array_area.getJSONObject(j)
-                                        areaDropdown.id = mjson_object_area.getString("id")
-                                        areaDropdown.area_name = mjson_object_area.getString("name")
+                                        val mjsonObjectArea = mjsonArrayArea.getJSONObject(j)
+                                        areaDropdown.id = mjsonObjectArea.getString("id")
+                                        areaDropdown.area_name = mjsonObjectArea.getString("name")
                                         areaDropdownArrayList?.add(areaDropdown)
                                     }
-                                    val spinnnerAdapter_type = SpinnerAdapterType(
+                                    val spinnnerAdapterType = SpinnerAdapterType(
                                         applicationContext, areaDropdownArrayList!!
                                     )
-                                    binding.spinnerType.adapter = spinnnerAdapter_type
+                                    binding.spinnerType.adapter = spinnnerAdapterType
                                     //code end
                                 }
                                 binding.progressBar.visibility = View.GONE
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                showToastMessage(Constant.NODATA)
+                                showToastMessage(NODATA)
                             }
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage(Constant.ERRORMSG)
+                        showToastMessage(ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                showToastMessage(Constant.ERRORMSG)
+                showToastMessage(ERRORMSG)
             }
         })
     }
 
-    private fun callapi_getqueeconform(
+    private fun callApiGetQueeConform(
         action: String,
         restaurant_id: String?,
         person: String?,
@@ -511,7 +514,7 @@ class WalkinDetailFragment : FragmentActivity() {
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
@@ -519,7 +522,7 @@ class WalkinDetailFragment : FragmentActivity() {
                         if (isNetworkAvailable(ctx)) {
                             callApiPersonQueueNo(restaurant_id)
                         } else {
-                            showToastMessage(Constant.NETWORKEROORMSG)
+                            showToastMessage(NETWORKEROORMSG)
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
@@ -529,22 +532,22 @@ class WalkinDetailFragment : FragmentActivity() {
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                showToastMessage(Constant.ERRORMSG)
+                showToastMessage(ERRORMSG)
             }
         })
     }
 
-    private fun callapi_getquee(
+    private fun callApiGetQuee(
         restaurant_id: String?,
         person: String,
         occasion: String,
@@ -557,34 +560,34 @@ class WalkinDetailFragment : FragmentActivity() {
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.has("data") && !jsonObject.isNull("data")) {
                             // Do something with object.
-                            val is_showalert =
+                            val isShowAlert =
                                 jsonObject.getJSONObject("data").getBoolean("showalert")
-                            if (is_showalert) {
+                            if (isShowAlert) {
                                 showAlertViewYesWantBook(jsonObject.getString("message"))
                             } else {
                                 showToastMessage(jsonObject.getString("message"))
                             }
                         } else {
-                            ctx.showToastMessage(jsonObject.getString("message"))
+                            showToastMessage(jsonObject.getString("message"))
                             if (isNetworkAvailable(ctx)) {
                                 callApiPersonQueueNo(restaurant_id)
                             } else {
-                                ctx.showToastMessage(Constant.NETWORKEROORMSG)
+                                showToastMessage(NETWORKEROORMSG)
                             }
                         }
-                    } else if (response.code() == Constant.ERROR_CODE_n) {
+                    } else if (response.code() == ERROR_CODE_n) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(response.errorBody()!!.string())
-                        ctx.showToastMessage(jsonObject.getString("message"))
+                        showToastMessage(jsonObject.getString("message"))
                         if (isNetworkAvailable(ctx)) {
                             callApiPersonQueueNo(restaurant_id)
                         } else {
-                            ctx.showToastMessage(Constant.NETWORKEROORMSG)
+                            showToastMessage(NETWORKEROORMSG)
                         }
                         /* if (jsonObject.has("data") && !jsonObject.isNull("data"))
                                 {
@@ -598,25 +601,25 @@ class WalkinDetailFragment : FragmentActivity() {
                                         ctx?.showToastMessage(jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                     }
                                 }*/
-                    } else if (response.code() == Constant.ERROR_CODE) {
+                    } else if (response.code() == ERROR_CODE) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(response.errorBody()!!.string())
-                        ctx.showToastMessage(jsonObject.getString("message"))
+                        showToastMessage(jsonObject.getString("message"))
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    ctx.showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    ctx.showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                ctx.showToastMessage(Constant.ERRORMSG)
+                showToastMessage(ERRORMSG)
             }
         })
     }

@@ -354,14 +354,14 @@ class RegisterActivity : AppCompatActivity(),
                         } else if (response.code() == ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             if (jsonObject.getString("status").equals("422", ignoreCase = true)) {
-                                val error_msg: String =
+                                val errorMsg: String =
                                     jsonObject.getJSONObject("message").getJSONArray("email")
                                         .getString(0)
-                                val error_msg_2: String =
+                                val errorMsg2: String =
                                     jsonObject.getJSONObject("message").getJSONArray("contact")
                                         .getString(0)
-                                showToastMessage(error_msg)
-                                showToastMessage(error_msg_2)
+                                showToastMessage(errorMsg)
+                                showToastMessage(errorMsg2)
                                 binding.progressBar.visibility = View.GONE
                             } else {
                                 binding.progressBar.visibility = View.GONE

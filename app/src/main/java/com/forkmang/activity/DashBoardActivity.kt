@@ -103,20 +103,20 @@ class DashBoardActivity : AppCompatActivity(),
             R.id.menu_walkin -> {
                 /*getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new WalkinFragment())
                         .commit();*/
-                val intent_walkin =
+                val intentWalkin =
                     Intent(this@DashBoardActivity, BookingTabViewActivity::class.java)
-                intent_walkin.putExtra("tab_no", "1")
-                startActivity(intent_walkin)
+                intentWalkin.putExtra("tab_no", "1")
+                startActivity(intentWalkin)
                 closeDrawer()
             }
             R.id.menu_logout ->                 //Toast.makeText(this, "Register Pressed", Toast.LENGTH_SHORT).show();
-                showAlertView_logout()
+                showAlertViewLogout()
             R.id.menu_home -> {
                 //Toast.makeText(this, "Home Pressed", Toast.LENGTH_SHORT).show();
-                val intent_home =
+                val intentHome =
                     Intent(this@DashBoardActivity, BookingTabViewActivity::class.java)
-                intent_home.putExtra("tab_no", "0")
-                startActivity(intent_home)
+                intentHome.putExtra("tab_no", "0")
+                startActivity(intentHome)
                 closeDrawer()
             }
             R.id.menu_order -> {
@@ -145,10 +145,9 @@ class DashBoardActivity : AppCompatActivity(),
             }
             R.id.menu_share -> showToastMessage("Menu Share Pressed")
             R.id.menu_contact -> {
-                //Toast.makeText(this, "Menu Contact Pressed", Toast.LENGTH_SHORT).show();
-                val intent_conatct_term =
+                val intentConatctTerm =
                     Intent(this@DashBoardActivity, ContactTermsFragment::class.java)
-                startActivity(intent_conatct_term)
+                startActivity(intentConatctTerm)
                 closeDrawer()
             }
             R.id.menu_support -> {
@@ -164,7 +163,7 @@ class DashBoardActivity : AppCompatActivity(),
     /**
      * Checks if the navigation drawer is open - if so, close it
      */
-    fun closeDrawer() {
+    private fun closeDrawer() {
         if (binding.drawerLayoutId.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayoutId.closeDrawer(GravityCompat.START)
         }
@@ -188,7 +187,7 @@ class DashBoardActivity : AppCompatActivity(),
         }
     }
 
-    private fun showAlertView_logout() {
+    private fun showAlertViewLogout() {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this@DashBoardActivity)
         val inflater: LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView: View = inflater.inflate(R.layout.conform_logout_view, null)
@@ -196,9 +195,9 @@ class DashBoardActivity : AppCompatActivity(),
         alertDialog.setCancelable(true)
         val dialog: AlertDialog = alertDialog.create()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val btn_cancel: Button = dialogView.findViewById(R.id.btn_cancel)
-        val btn_yes_logout: Button = dialogView.findViewById(R.id.btn_yes)
-        btn_yes_logout.setOnClickListener {
+        val btnCancel: Button = dialogView.findViewById(R.id.btn_cancel)
+        val btnYesLogout: Button = dialogView.findViewById(R.id.btn_yes)
+        btnYesLogout.setOnClickListener {
             closeDrawer()
             dialog.dismiss()
             storePrefrence.clear()
@@ -207,7 +206,7 @@ class DashBoardActivity : AppCompatActivity(),
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             finish()
         }
-        btn_cancel.setOnClickListener {
+        btnCancel.setOnClickListener {
             dialog.dismiss()
             closeDrawer()
             //onBackPressed();

@@ -20,8 +20,8 @@ class ScanOrderFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_scanorder_layout, container, false)
         val txt: TextView = view.findViewById(R.id.txt)
-        val txt_need_support = view.findViewById<TextView>(R.id.need_support)
-        txt_need_support.setOnClickListener { }
+        val txtNeedSupport = view.findViewById<TextView>(R.id.need_support)
+        txtNeedSupport.setOnClickListener { }
         txt.setOnClickListener {
             Log.d("HI", "Hello")
             val intent = Intent(activity, BookingTabViewActivity::class.java)

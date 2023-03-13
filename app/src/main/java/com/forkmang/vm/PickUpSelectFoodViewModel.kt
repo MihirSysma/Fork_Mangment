@@ -34,33 +34,33 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                             if (jsonObject.getString("status")
                                     .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                             ) {
-                                val category_itemLists = ArrayList<Category_ItemList>()
-                                val mjson_arr = jsonObject.getJSONArray("data")
-                                for (i in 0 until mjson_arr.length()) {
-                                    val category_itemList = Category_ItemList()
-                                    val mjson_obj = mjson_arr.getJSONObject(i)
-                                    category_itemList.id = mjson_obj.getString("id")
-                                    category_itemList.category_id =
-                                        mjson_obj.getString("category_id")
-                                    category_itemList.name = mjson_obj.getString("name")
-                                    category_itemList.price = mjson_obj.getString("price")
-                                    category_itemList.image = mjson_obj.getString("image")
-                                    val mjson_arr_extra = mjson_obj.getJSONArray("extra")
-                                    val extra_toppingArrayList = ArrayList<Extra_Topping>()
-                                    for (j in 0 until mjson_arr_extra.length()) {
-                                        val mjson_obj_extra = mjson_arr_extra.getJSONObject(j)
-                                        val extra_topping = Extra_Topping()
-                                        extra_topping.id = mjson_obj_extra.getString("id")
-                                        extra_topping.item_id = mjson_obj_extra.getString("item_id")
-                                        extra_topping.name = mjson_obj_extra.getString("name")
-                                        extra_topping.price = mjson_obj_extra.getString("price")
-                                        extra_toppingArrayList.add(extra_topping)
+                                val categoryItemLists = ArrayList<Category_ItemList>()
+                                val mjsonArr = jsonObject.getJSONArray("data")
+                                for (i in 0 until mjsonArr.length()) {
+                                    val categoryItemList = Category_ItemList()
+                                    val mjsonObj = mjsonArr.getJSONObject(i)
+                                    categoryItemList.id = mjsonObj.getString("id")
+                                    categoryItemList.category_id =
+                                        mjsonObj.getString("category_id")
+                                    categoryItemList.name = mjsonObj.getString("name")
+                                    categoryItemList.price = mjsonObj.getString("price")
+                                    categoryItemList.image = mjsonObj.getString("image")
+                                    val mjsonArrExtra = mjsonObj.getJSONArray("extra")
+                                    val extraToppingArrayList = ArrayList<Extra_Topping>()
+                                    for (j in 0 until mjsonArrExtra.length()) {
+                                        val mjsonObjExtra = mjsonArrExtra.getJSONObject(j)
+                                        val extraTopping = Extra_Topping()
+                                        extraTopping.id = mjsonObjExtra.getString("id")
+                                        extraTopping.item_id = mjsonObjExtra.getString("item_id")
+                                        extraTopping.name = mjsonObjExtra.getString("name")
+                                        extraTopping.price = mjsonObjExtra.getString("price")
+                                        extraToppingArrayList.add(extraTopping)
                                     }
-                                    category_itemList.extra_toppingArrayList =
-                                        extra_toppingArrayList
-                                    category_itemLists.add(category_itemList)
+                                    categoryItemList.extra_toppingArrayList =
+                                        extraToppingArrayList
+                                    categoryItemLists.add(categoryItemList)
                                 }
-                                searchFoodItemData.postValue(category_itemLists)
+                                searchFoodItemData.postValue(categoryItemLists)
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
                             val jsonObject = response.errorBody()?.string()?.let { JSONObject(it) }
@@ -88,31 +88,31 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                         if (jsonObject.getString("status")
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
-                            val category_itemLists = ArrayList<Category_ItemList>()
-                            val mjson_arr = jsonObject.getJSONArray("data")
-                            for (i in 0 until mjson_arr.length()) {
-                                val category_itemList = Category_ItemList()
-                                val mjson_obj = mjson_arr.getJSONObject(i)
-                                category_itemList.id = mjson_obj.getString("id")
-                                category_itemList.category_id = mjson_obj.getString("category_id")
-                                category_itemList.name = mjson_obj.getString("name")
-                                category_itemList.price = mjson_obj.getString("price")
-                                category_itemList.image = mjson_obj.getString("image")
-                                val mjson_arr_extra = mjson_obj.getJSONArray("extra")
-                                val extra_toppingArrayList = ArrayList<Extra_Topping>()
-                                for (j in 0 until mjson_arr_extra.length()) {
-                                    val mjson_obj_extra = mjson_arr_extra.getJSONObject(j)
-                                    val extra_topping = Extra_Topping()
-                                    extra_topping.id = mjson_obj_extra.getString("id")
-                                    extra_topping.item_id = mjson_obj_extra.getString("item_id")
-                                    extra_topping.name = mjson_obj_extra.getString("name")
-                                    extra_topping.price = mjson_obj_extra.getString("price")
-                                    extra_toppingArrayList.add(extra_topping)
+                            val categoryItemLists = ArrayList<Category_ItemList>()
+                            val mjsonArr = jsonObject.getJSONArray("data")
+                            for (i in 0 until mjsonArr.length()) {
+                                val categoryItemList = Category_ItemList()
+                                val mjsonObj = mjsonArr.getJSONObject(i)
+                                categoryItemList.id = mjsonObj.getString("id")
+                                categoryItemList.category_id = mjsonObj.getString("category_id")
+                                categoryItemList.name = mjsonObj.getString("name")
+                                categoryItemList.price = mjsonObj.getString("price")
+                                categoryItemList.image = mjsonObj.getString("image")
+                                val mjsonArrExtra = mjsonObj.getJSONArray("extra")
+                                val extraToppingArrayList = ArrayList<Extra_Topping>()
+                                for (j in 0 until mjsonArrExtra.length()) {
+                                    val mjsonObjExtra = mjsonArrExtra.getJSONObject(j)
+                                    val extraTopping = Extra_Topping()
+                                    extraTopping.id = mjsonObjExtra.getString("id")
+                                    extraTopping.item_id = mjsonObjExtra.getString("item_id")
+                                    extraTopping.name = mjsonObjExtra.getString("name")
+                                    extraTopping.price = mjsonObjExtra.getString("price")
+                                    extraToppingArrayList.add(extraTopping)
                                 }
-                                category_itemList.extra_toppingArrayList = extra_toppingArrayList
-                                category_itemLists.add(category_itemList)
+                                categoryItemList.extra_toppingArrayList = extraToppingArrayList
+                                categoryItemLists.add(categoryItemList)
                             }
-                            categoryItemData.postValue(category_itemLists)
+                            categoryItemData.postValue(categoryItemLists)
 
                             /*if(all_orderFood_adapter == null)
                                     {

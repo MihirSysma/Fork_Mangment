@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class ContactTermsFragment : FragmentActivity() {
 
-    var relative_view_nav: RelativeLayout? = null
+    var relativeViewNav: RelativeLayout? = null
     var activity: Activity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,10 +21,10 @@ class ContactTermsFragment : FragmentActivity() {
         setContentView(R.layout.fragment_contact_term_layout)
         val viewPager: ViewPager2 = findViewById(R.id.viewPager_orders)
         val tabLayout: TabLayout = findViewById(R.id.tabLayout_orders)
-        relative_view_nav = findViewById(R.id.relative_view_nav)
-        val viewPagerAdapter_contact_term =
+        relativeViewNav = findViewById(R.id.relative_view_nav)
+        val viewPagerAdapterContactTerm =
             ViewPagerAdapterContactTerm(supportFragmentManager, lifecycle)
-        viewPager.adapter = viewPagerAdapter_contact_term
+        viewPager.adapter = viewPagerAdapterContactTerm
 
 
 //   relative_view_nav.setOnClickListener(v -> ((DashBoardActivity_2) getApplicationContext()).openDrawer());

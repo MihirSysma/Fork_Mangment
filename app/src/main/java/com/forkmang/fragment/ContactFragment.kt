@@ -9,8 +9,16 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.forkmang.R
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ENTER_MOBILE
+import com.forkmang.helper.Constant.ENTER_NAME
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.EmptyEmail
+import com.forkmang.helper.Constant.MOBILE
+import com.forkmang.helper.Constant.NAME
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
+import com.forkmang.helper.Constant.VALIDEmail
+import com.forkmang.helper.Constant.VALID_NO
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
@@ -21,7 +29,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class ContactFragment : Fragment() {
 
@@ -35,43 +42,43 @@ class ContactFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_contact_layout, container, false)
         progressBar = view.findViewById(R.id.progressBar)
-        val etv_username: EditText = view.findViewById(R.id.etv_username)
-        val etv_email: EditText = view.findViewById(R.id.etv_email)
-        val etv_mobile: EditText = view.findViewById(R.id.etv_mobile)
-        val etv_msg: EditText = view.findViewById(R.id.etv_msg)
-        val btn_submit: Button = view.findViewById(R.id.btn_submit)
-        etv_username.setText(storePrefrence.getString(Constant.NAME))
+        val etvUserName: EditText = view.findViewById(R.id.etv_username)
+        val etvEmail: EditText = view.findViewById(R.id.etv_email)
+        val etvMobile: EditText = view.findViewById(R.id.etv_mobile)
+        val etvMsg: EditText = view.findViewById(R.id.etv_msg)
+        val btnSubmit: Button = view.findViewById(R.id.btn_submit)
+        etvUserName.setText(storePrefrence.getString(NAME))
         //etv_email.setText("test@gmail.com");
-        etv_mobile.setText(storePrefrence.getString(Constant.MOBILE))
+        etvMobile.setText(storePrefrence.getString(MOBILE))
         //etv_msg.setText("Hi this is test msg");
-        btn_submit.setOnClickListener {
-            if (etv_username.text.isNotEmpty()) {
-                if (etv_mobile.text.toString().isNotEmpty()) {
-                    if (etv_mobile.text.toString().length == 10) {
+        btnSubmit.setOnClickListener {
+            if (etvUserName.text.isNotEmpty()) {
+                if (etvMobile.text.toString().isNotEmpty()) {
+                    if (etvMobile.text.toString().length == 10) {
                         //Email is empty or not
-                        if (etv_email.text.isNullOrEmpty().not()) {
+                        if (etvEmail.text.isNullOrEmpty().not()) {
                             //Email is valid or not
-                            if (isValidEmail(etv_email.text.toString())) {
+                            if (isValidEmail(etvEmail.text.toString())) {
                                 callApiContact(
-                                    etv_username.text.toString(),
-                                    etv_email.text.toString(),
-                                    etv_mobile.text.toString(),
-                                    etv_msg.text.toString()
+                                    etvUserName.text.toString(),
+                                    etvEmail.text.toString(),
+                                    etvMobile.text.toString(),
+                                    etvMsg.text.toString()
                                 )
                             } else {
-                                context?.showToastMessage(Constant.VALIDEmail)
+                                context?.showToastMessage(VALIDEmail)
                             }
                         } else {
-                            context?.showToastMessage(Constant.EmptyEmail)
+                            context?.showToastMessage(EmptyEmail)
                         }
                     } else {
-                        context?.showToastMessage(Constant.VALID_NO)
+                        context?.showToastMessage(VALID_NO)
                     }
                 } else {
-                    context?.showToastMessage(Constant.ENTER_MOBILE)
+                    context?.showToastMessage(ENTER_MOBILE)
                 }
             } else {
-                context?.showToastMessage(Constant.ENTER_NAME)
+                context?.showToastMessage(ENTER_NAME)
             }
         }
         return view
@@ -86,7 +93,7 @@ class ContactFragment : Fragment() {
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         context?.showToastMessage(jsonObject.getString("message"))
                         progressBar?.visibility = View.GONE
@@ -94,17 +101,17 @@ class ContactFragment : Fragment() {
                         //Log.d("Result", jsonObject.toString());
                     } else {
                         progressBar?.visibility = View.GONE
-                        context?.showToastMessage(Constant.ERRORMSG)
+                        context?.showToastMessage(ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     progressBar?.visibility = View.GONE
-                    context?.showToastMessage(Constant.ERRORMSG)
+                    context?.showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                context?.showToastMessage(Constant.ERRORMSG)
+                context?.showToastMessage(ERRORMSG)
                 progressBar?.visibility = View.GONE
             }
         })

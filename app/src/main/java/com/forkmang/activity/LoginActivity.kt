@@ -6,7 +6,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.databinding.ActivityLoginBinding
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ERROR_CODE
+import com.forkmang.helper.Constant.IDENTFIER
+import com.forkmang.helper.Constant.NAME
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
+import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
@@ -33,12 +39,12 @@ class LoginActivity : AppCompatActivity() {
             if (Utils.isNetworkAvailable(ctx)) {
                 callApiLoginAsGuest()
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
         binding.BtnReg.setOnClickListener {
             if (storePrefrence.getString(
-                    Constant.NAME
+                    NAME
                 )?.isEmpty() == true
             ) {
                 val mainIntent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -55,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun callApiLoginAsGuest() {
-        //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         val identifier = "identifier123"
         Api.info.loginGuest(identifier)?.enqueue(object : Callback<JsonObject?> {
@@ -64,19 +69,17 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<JsonObject?>
             ) {
                 try {
-
-                    //Log.d("Result", jsonObject.toString());
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
                             storePrefrence.setString(
-                                Constant.IDENTFIER,
+                                IDENTFIER,
                                 jsonObject.getJSONObject("data").getString("identifier")
                             )
-                            storePrefrence.setString(Constant.TOKEN_LOGIN, "")
+                            storePrefrence.setString(TOKEN_LOGIN, "")
                             storePrefrence.setString(
                                 "id",
                                 jsonObject.getJSONObject("data").getString("id")
@@ -88,10 +91,10 @@ class LoginActivity : AppCompatActivity() {
                             binding.progressBar.visibility = View.GONE
                             showToastMessage("Error occur please try again")
                         }
-                    } else if (response.code() == Constant.ERROR_CODE) {
+                    } else if (response.code() == ERROR_CODE) {
                         val jsonObject = JSONObject(response.errorBody()!!.string())
                         if (jsonObject.getString("status")
-                                .equals(Constant.ERROR_CODE.toString(), ignoreCase = true)
+                                .equals(ERROR_CODE.toString(), ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
                             val errorMsg: String = jsonObject.getString("message")

@@ -103,7 +103,6 @@ class PickupSelectFoodFragment : Fragment() {
         }
 
         viewModel.categoryItemData.observe(viewLifecycleOwner) { data ->
-            context?.showToastMessage("reached in observe with $data")
             allOrderFoodAdapter = restoData?.let { it1 ->
                 PickupFoodListAdapter(
                     requireContext(),
@@ -177,12 +176,12 @@ class PickupSelectFoodFragment : Fragment() {
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                         binding.progressbar.visibility = View.GONE
-                        context?.showToastMessage("Error occur please try again")
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    context?.showToastMessage("Error occur please try again")
+                    context?.showToastMessage(ERRORMSG)
                     binding.progressbar.visibility = View.GONE
                 }
             })
@@ -416,8 +415,6 @@ class PickupSelectFoodFragment : Fragment() {
                                 for (i in 0 until cartArrayItem.length()) {
                                     val cartBooking = CartBooking()
                                     val cartDetailObj = cartArrayItem.getJSONObject(i)
-
-
                                     //data obj
                                     cartBooking.data_userid = dataObj.getString("user_id")
                                     if (dataObj.has("booking_table_id")) {

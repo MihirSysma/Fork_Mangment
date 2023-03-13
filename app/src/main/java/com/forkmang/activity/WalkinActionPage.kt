@@ -7,7 +7,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivityWalkinActionBinding
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.ERROR_CODE_n
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
+import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
@@ -21,12 +25,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-class Walkin_ActionPage : AppCompatActivity() {
+class WalkinActionPage : AppCompatActivity() {
 
     private val storePrefrence by lazy { StorePrefrence(this) }
-    var ctx: Context = this@Walkin_ActionPage
+    var ctx: Context = this@WalkinActionPage
     var identifier: String? = null
-    var quee_no: String? = null
+    var queeNo: String? = null
     var noofperson: String? = null
     var occasion: String? = null
     var area: String? = null
@@ -38,13 +42,13 @@ class Walkin_ActionPage : AppCompatActivity() {
         setContentView(binding.root)
 
         val intent: Intent = intent
-        quee_no = intent.getStringExtra("quee_no")
+        queeNo = intent.getStringExtra("quee_no")
         noofperson = intent.getStringExtra("person")
         occasion = intent.getStringExtra("occasion")
         area = intent.getStringExtra("area")
         restromodel = getIntent().getSerializableExtra("restromodel") as RestoData?
 
-        binding.txtQueueno.text = "No in current queue: $quee_no"
+        binding.txtQueueno.text = "No in current queue: $queeNo"
         binding.txtRestroname.text = restromodel!!.rest_name
 
         //txt_restophone.setText(storePrefrence.getString(Constant.MOBILE));
@@ -53,26 +57,26 @@ class Walkin_ActionPage : AppCompatActivity() {
             if (Utils.isNetworkAvailable(ctx)) {
                 callApiAction("accept", identifier!!)
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
         binding.imgCancel.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
                 callApiAction("cancel", identifier!!)
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
         binding.imgExit.setOnClickListener {
             if (Utils.isNetworkAvailable(ctx)) {
                 callApiAction("exit", identifier!!)
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
         binding.txtQueueno.setOnClickListener {
-            val mainIntent: Intent =
-                Intent(this@Walkin_ActionPage, ActivityPaymentSummaryWalkin::class.java)
+            val mainIntent =
+                Intent(this@WalkinActionPage, ActivityPaymentSummaryWalkin::class.java)
             startActivity(mainIntent)
         }
     }
@@ -80,7 +84,7 @@ class Walkin_ActionPage : AppCompatActivity() {
     private fun callApiAction(action: String, identifier: String) {
         binding.progressBar.visibility = View.VISIBLE
         info.queueAction(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
             action, restromodel!!.id, noofperson, occasion, area, identifier
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(
@@ -88,11 +92,11 @@ class Walkin_ActionPage : AppCompatActivity() {
                 response: Response<JsonObject?>
             ) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         showToastMessage(jsonObject.getString("message"))
-                    } else if (response.code() == Constant.ERROR_CODE_n) {
+                    } else if (response.code() == ERROR_CODE_n) {
                         binding.progressBar.visibility = View.GONE
                         val jsonObject = JSONObject(response.errorBody()!!.string())
                         showToastMessage(jsonObject.getString("message"))
@@ -113,7 +117,7 @@ class Walkin_ActionPage : AppCompatActivity() {
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                showToastMessage(Constant.ERRORMSG)
+                showToastMessage(ERRORMSG)
             }
         })
     }

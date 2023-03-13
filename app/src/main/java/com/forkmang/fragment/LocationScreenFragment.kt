@@ -20,8 +20,8 @@ class LocationScreenFragment : Fragment() {
         val view = inflater.inflate(R.layout.activity_location_screen, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.wallet_recycleview)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val location_fragment_adapter = LocationFragmentAdapter(requireActivity())
-        recyclerView.adapter = location_fragment_adapter
+        val locationFragmentAdapter = LocationFragmentAdapter(requireActivity())
+        recyclerView.adapter = locationFragmentAdapter
         return view
     } /*@Override
     protected void onCreate(Bundle savedInstanceState) {

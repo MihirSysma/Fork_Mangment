@@ -13,7 +13,11 @@ import com.forkmang.adapter.PickupFragmentBookTableAdapter
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentPickupLayoutBinding
 import com.forkmang.helper.ApiConfig.getLocation
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.NODATA
+import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.GPSTracker
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.logThis
@@ -63,10 +67,10 @@ class PickupFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val service_id = "3"
+        val serviceId = "3"
         saveLatitude = 23.933689
         saveLongitude = 72.367458
-        callApiGetBookTable(service_id, saveLatitude.toString(), saveLongitude.toString())
+        callApiGetBookTable(serviceId, saveLatitude.toString(), saveLongitude.toString())
         //((Booking_TabView_Activity)getActivity()).hide_search();
     }
 
@@ -95,11 +99,11 @@ class PickupFragment : Fragment() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
-                                    .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                    .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
                                 if (jsonObject.getJSONObject("data").getJSONArray("data")
                                         .length() > 0
@@ -108,27 +112,27 @@ class PickupFragment : Fragment() {
                                     for (i in 0 until jsonObject.getJSONObject("data")
                                         .getJSONArray("data").length()) {
                                         val bookTable = RestoData()
-                                        val mjson_obj =
+                                        val mjsonObj =
                                             jsonObject.getJSONObject("data").getJSONArray("data")
                                                 .getJSONObject(i)
 
                                         //JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(0);
-                                        bookTable.rest_name = mjson_obj.getString("rest_name")
+                                        bookTable.rest_name = mjsonObj.getString("rest_name")
                                         /*if(i > 0)
                                         {
                                             bookTable.setRest_name("REST"+" "+i);
                                         }
                                         else{
                                             bookTable.setRest_name(mjson_obj.getString("rest_name"));
-                                        }*/if (mjson_obj.has("endtime")) {
-                                            bookTable.endtime = mjson_obj.getString("endtime")
+                                        }*/if (mjsonObj.has("endtime")) {
+                                            bookTable.endtime = mjsonObj.getString("endtime")
                                         } else {
                                             bookTable.endtime = "00"
                                         }
-                                        bookTable.id = mjson_obj.getString("id")
-                                        val double_val =
-                                            floor(mjson_obj.getDouble("distance") * 100) / 100
-                                        bookTable.distance = double_val.toString()
+                                        bookTable.id = mjsonObj.getString("id")
+                                        val doubleVal =
+                                            floor(mjsonObj.getDouble("distance") * 100) / 100
+                                        bookTable.distance = doubleVal.toString()
                                         restoDataArrayList?.add(bookTable)
                                     }
                                     binding.progressbar.visibility = View.GONE
@@ -147,25 +151,25 @@ class PickupFragment : Fragment() {
                                 } else {
                                     //no data in array list
                                     binding.progressbar.visibility = View.GONE
-                                    context?.showToastMessage(Constant.NODATA)
+                                    context?.showToastMessage(NODATA)
                                 }
                             } else {
                                 binding.progressbar.visibility = View.GONE
-                                // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                context?.showToastMessage(ERRORMSG)
                             }
                         } else {
                             binding.progressbar.visibility = View.GONE
-                            // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            context?.showToastMessage(ERRORMSG)
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressbar.visibility = View.GONE
-                        //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    context?.showToastMessage(Constant.ERRORMSG)
+                    context?.showToastMessage(ERRORMSG)
                     binding.progressbar.visibility = View.GONE
                 }
             })
@@ -180,7 +184,7 @@ class PickupFragment : Fragment() {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             if (jsonObject.getJSONObject("data").getJSONArray("data")
                                     .length() > 0
@@ -189,19 +193,19 @@ class PickupFragment : Fragment() {
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
                                     val bookTable = RestoData()
-                                    val mjson_obj =
+                                    val mjsonObj =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i)
-                                    bookTable.rest_name = mjson_obj.getString("rest_name")
-                                    if (mjson_obj.has("endtime")) {
-                                        bookTable.endtime = mjson_obj.getString("endtime")
+                                    bookTable.rest_name = mjsonObj.getString("rest_name")
+                                    if (mjsonObj.has("endtime")) {
+                                        bookTable.endtime = mjsonObj.getString("endtime")
                                     } else {
                                         bookTable.endtime = "00"
                                     }
-                                    bookTable.id = mjson_obj.getString("id")
-                                    val double_val =
-                                        floor(mjson_obj.getDouble("distance") * 100) / 100
-                                    bookTable.distance = double_val.toString()
+                                    bookTable.id = mjsonObj.getString("id")
+                                    val doubleVal =
+                                        floor(mjsonObj.getDouble("distance") * 100) / 100
+                                    bookTable.distance = doubleVal.toString()
                                     restoDataArrayList?.add(bookTable)
                                 }
                                 binding.progressbar.visibility = View.GONE
@@ -218,18 +222,18 @@ class PickupFragment : Fragment() {
                             } else {
                                 //no data in array list
                                 binding.progressbar.visibility = View.GONE
-                                context?.showToastMessage(Constant.NODATA)
+                                context?.showToastMessage(NODATA)
                             }
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressbar.visibility = View.GONE
-                        context?.showToastMessage(Constant.ERRORMSG)
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    context?.showToastMessage(Constant.ERRORMSG)
+                    context?.showToastMessage(ERRORMSG)
                     binding.progressbar.visibility = View.GONE
                 }
             })
@@ -239,7 +243,7 @@ class PickupFragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             callApiSearchBookTable(search_str, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            context?.showToastMessage(Constant.NETWORKEROORMSG)
+            context?.showToastMessage(NETWORKEROORMSG)
         }
     }
 
@@ -247,10 +251,10 @@ class PickupFragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             saveLatitude = 21.209589
             saveLongitude = 72.860824
-            val service_id = "3"
-            callApiGetBookTable(service_id, saveLatitude.toString(), saveLongitude.toString())
+            val serviceId = "3"
+            callApiGetBookTable(serviceId, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            context?.showToastMessage(Constant.NETWORKEROORMSG)
+            context?.showToastMessage(NETWORKEROORMSG)
         }
     }
 

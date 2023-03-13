@@ -21,7 +21,11 @@ import com.forkmang.adapter.SpinnerAdapter
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.FragmentBooktableLayoutBinding
 import com.forkmang.helper.ApiConfig.getLocation
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.NODATA
+import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.GPSTracker
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.logThis
@@ -49,8 +53,8 @@ class BookTableFragment : Fragment() {
     private var mDay = 0
     private var mHour = 0
     private var mMinute = 0
-    var booking_date: String? = null
-    var Date_get = ""
+    var bookingDate: String? = null
+    var dateGet = ""
     var person = arrayOf("Select Person", "1", "2 ", "3", "4", "5", "6", "7", "8", "9", "10")
 
     private var _binding: FragmentBooktableLayoutBinding? = null
@@ -134,9 +138,9 @@ class BookTableFragment : Fragment() {
             if (isVisible) {
                 logThis("BookTable Frag $it")
                 if (it.isNullOrEmpty()) {
-                    call_reloadbooktable()
+                    callReloadBookTable()
                 } else {
-                    filter_booktable(it)
+                    filterBookTable(it)
                 }
             }
         }
@@ -144,10 +148,10 @@ class BookTableFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val service_id = "1"
+        val serviceId = "1"
         saveLatitude = 23.933689
         saveLongitude = 72.367458
-        callApiGetBookTable(service_id, saveLatitude.toString(), saveLongitude.toString())
+        callApiGetBookTable(serviceId, saveLatitude.toString(), saveLongitude.toString())
     }
 
     //Date and time picker example code start
@@ -161,20 +165,18 @@ class BookTableFragment : Fragment() {
         val datePickerListener =
             OnDateSetListener { view: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
                 val month = selectedMonth + 1
-                var str_month = ""
-                var str_date = ""
-                str_month = if (month < 10) {
+                val strMonth = if (month < 10) {
                     "0$month"
                 } else {
                     month.toString()
                 }
-                str_date = if (selectedDay < 10) {
+                val strDate = if (selectedDay < 10) {
                     "0$selectedDay"
                 } else {
                     selectedDay.toString()
                 }
-                booking_date = "$selectedYear-$str_month-$str_date"
-                Log.d("sendate==>", booking_date ?: "")
+                bookingDate = "$selectedYear-$strMonth-$strDate"
+                Log.d("sendate==>", bookingDate ?: "")
                 binding.txtDatetime.text = ""
                 binding.txtDatetime.text =
                     selectedDay.toString() + "-" + getMonth(selectedMonth + 1)
@@ -211,21 +213,19 @@ class BookTableFragment : Fragment() {
                 )
                 var month = datePicker.month
                 val date = datePicker.dayOfMonth
-                var str_month = ""
-                var str_date = ""
                 month += 1
-                str_month = if (month < 10) {
+                val strMonth = if (month < 10) {
                     "0$month"
                 } else {
                     month.toString()
                 }
-                str_date = if (date < 10) {
+                val strDate = if (date < 10) {
                     "0$date"
                 } else {
                     date.toString()
                 }
-                Date_get = datePicker.year.toString() + "-" + str_month + "-" + str_date
-                Log.d("sendate==>", Date_get)
+                dateGet = datePicker.year.toString() + "-" + strMonth + "-" + strDate
+                Log.d("sendate==>", dateGet)
                 timePicker()
 
                 //callApi_senddate(deliveryDate_get);
@@ -261,8 +261,8 @@ class BookTableFragment : Fragment() {
                 } else {
                     "pm"
                 }
-                booking_date = "$booking_date $time $AM_PM"
-                Log.d("senddate", booking_date ?: "")
+                bookingDate = "$bookingDate $time $AM_PM"
+                Log.d("senddate", bookingDate ?: "")
                 binding.txtDatetime.text = "$date, $time $AM_PM"
             }, mHour, mMinute, false
         )
@@ -291,10 +291,6 @@ class BookTableFragment : Fragment() {
 
     private fun currentDateShow() {
         val c = Calendar.getInstance()
-        var str_month = ""
-        var str_date = ""
-        val str_day: String
-        var booking_date_n: String
         mYear = c[Calendar.YEAR]
         mMonth = c[Calendar.MONTH]
         mDay = c[Calendar.DAY_OF_MONTH]
@@ -306,23 +302,23 @@ class BookTableFragment : Fragment() {
             "pm"
         }
         val time = "$mHour:$mMinute $AM_PM"
-        val month_n = mMonth + 1
-        val date_n = mDay
-        str_day = date_n.toString()
-        str_month = if (month_n < 10) {
-            "0$month_n"
+        val monthN = mMonth + 1
+        val dateN = mDay
+        val strDay = dateN.toString()
+        val strMonth = if (monthN < 10) {
+            "0$monthN"
         } else {
-            month_n.toString()
+            monthN.toString()
         }
-        str_date = if (date_n < 10) {
-            "0$date_n"
+        val strDate = if (dateN < 10) {
+            "0$dateN"
         } else {
-            date_n.toString()
+            dateN.toString()
         }
         val selectedYear: String = mYear.toString()
-        booking_date = "$selectedYear-$str_month-$str_date"
+        bookingDate = "$selectedYear-$strMonth-$strDate"
         binding.txtDatetime.text = ""
-        binding.txtDatetime.text = str_day + "-" + getMonth(month_n) + " " + time
+        binding.txtDatetime.text = strDay + "-" + getMonth(monthN) + " " + time
     }
 
     //Date and time picker example code end
@@ -332,11 +328,11 @@ class BookTableFragment : Fragment() {
         info.getlistRes(latitude, logitutde)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             if (jsonObject.getJSONObject("data").getJSONArray("data")
                                     .length() > 0
@@ -345,27 +341,27 @@ class BookTableFragment : Fragment() {
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
                                     val bookTable = RestoData()
-                                    val mjson_obj =
+                                    val mjsonObj =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i)
 
                                     //JSONObject mjson_obj = jsonObject.getJSONObject("data").getJSONArray("data").getJSONObject(0);
-                                    bookTable.rest_name = mjson_obj.getString("rest_name")
+                                    bookTable.rest_name = mjsonObj.getString("rest_name")
                                     /*if(i > 0)
                                         {
                                             bookTable.setRest_name("REST"+" "+i);
                                         }
                                         else{
                                             bookTable.setRest_name(mjson_obj.getString("rest_name"));
-                                        }*/if (mjson_obj.has("endtime")) {
-                                        bookTable.endtime = mjson_obj.getString("endtime")
+                                        }*/if (mjsonObj.has("endtime")) {
+                                        bookTable.endtime = mjsonObj.getString("endtime")
                                     } else {
                                         bookTable.endtime = "00"
                                     }
-                                    bookTable.id = mjson_obj.getString("id")
-                                    val double_val =
-                                        floor(mjson_obj.getDouble("distance") * 100) / 100
-                                    bookTable.distance = double_val.toString()
+                                    bookTable.id = mjsonObj.getString("id")
+                                    val doubleVal =
+                                        floor(mjsonObj.getDouble("distance") * 100) / 100
+                                    bookTable.distance = doubleVal.toString()
                                     bookTableArrayList?.add(bookTable)
                                 }
                                 binding.progressBar.visibility = View.GONE
@@ -380,25 +376,25 @@ class BookTableFragment : Fragment() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                context?.showToastMessage(Constant.NODATA)
+                                context?.showToastMessage(NODATA)
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            // getContext.showToastMessage(, Constant.ERRORMSG);
+                            context?.showToastMessage(ERRORMSG)
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        // getContext.showToastMessage(, Constant.ERRORMSG);
+                        context?.showToastMessage(ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    //getContext.showToastMessage(, Constant.ERRORMSG);
+                    context?.showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                context?.showToastMessage(Constant.ERRORMSG)
+                context?.showToastMessage(ERRORMSG)
                 binding.progressBar.visibility = View.GONE
             }
         })
@@ -411,9 +407,9 @@ class BookTableFragment : Fragment() {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
-                        //Log.d("Result", jsonObject.toString());
+
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             if (jsonObject.getJSONObject("data").getJSONArray("data")
                                     .length() > 0
@@ -422,19 +418,19 @@ class BookTableFragment : Fragment() {
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
                                     val bookTable = RestoData()
-                                    val mjson_obj =
+                                    val mjsonObj =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i)
-                                    bookTable.rest_name = mjson_obj.getString("rest_name")
-                                    if (mjson_obj.has("endtime")) {
-                                        bookTable.endtime = mjson_obj.getString("endtime")
+                                    bookTable.rest_name = mjsonObj.getString("rest_name")
+                                    if (mjsonObj.has("endtime")) {
+                                        bookTable.endtime = mjsonObj.getString("endtime")
                                     } else {
                                         bookTable.endtime = "00"
                                     }
-                                    bookTable.id = mjson_obj.getString("id")
-                                    val double_val =
-                                        floor(mjson_obj.getDouble("distance") * 100) / 100
-                                    bookTable.distance = double_val.toString()
+                                    bookTable.id = mjsonObj.getString("id")
+                                    val doubleVal =
+                                        floor(mjsonObj.getDouble("distance") * 100) / 100
+                                    bookTable.distance = doubleVal.toString()
                                     bookTableArrayList?.add(bookTable)
                                 }
                                 binding.progressBar.visibility = View.GONE
@@ -448,38 +444,38 @@ class BookTableFragment : Fragment() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                context?.showToastMessage(Constant.NODATA)
+                                context?.showToastMessage(NODATA)
                             }
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        context?.showToastMessage(Constant.ERRORMSG)
+                        context?.showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    context?.showToastMessage(Constant.ERRORMSG)
+                    context?.showToastMessage(ERRORMSG)
                     binding.progressBar.visibility = View.GONE
                 }
             })
     }
 
-    fun filter_booktable(search_str: String) {
+    fun filterBookTable(search_str: String) {
         if (isNetworkAvailable(requireContext())) {
             callapi_searchbooktable(search_str, saveLatitude.toString(), saveLongitude.toString())
         } else {
-            context?.showToastMessage(Constant.NETWORKEROORMSG)
+            context?.showToastMessage(NETWORKEROORMSG)
         }
     }
 
-    fun call_reloadbooktable() {
+    fun callReloadBookTable() {
         if (isNetworkAvailable(requireContext())) {
             saveLatitude = 23.937416
             saveLongitude = 72.375741
             callApiGetBookTable("2", saveLatitude.toString(), saveLongitude.toString())
         } else {
-            context?.showToastMessage(Constant.NETWORKEROORMSG)
+            context?.showToastMessage(NETWORKEROORMSG)
         }
     }
 

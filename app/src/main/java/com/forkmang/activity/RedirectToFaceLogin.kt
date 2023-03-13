@@ -7,17 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.R
 
 
-class RedirectToFacelogin : AppCompatActivity() {
+class RedirectToFaceLogin : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_redirecttofacelogin)
-        GotoNextScreeen()
+        gotoNextScreen()
     }
 
-    private fun GotoNextScreeen() {
+    private fun gotoNextScreen() {
         Handler().postDelayed({
-            val mainIntent = Intent(this@RedirectToFacelogin, FaceLogin::class.java)
+            val mainIntent = Intent(this@RedirectToFaceLogin, FaceLogin::class.java)
             startActivity(mainIntent)
             finish()
         }, 2000)

@@ -43,9 +43,9 @@ class PickupSelectFoodActivity : AppCompatActivity() {
     var foodListArrayList: ArrayList<FoodList_Tab>? = null
     private lateinit var viewPagerAdapterReserveSeat: ViewPagerAdapterPickupSelectFood
     var restoData: RestoData? = null
-    var booking_id: String? = null
-    var category_id: String? = null
-    var current_tabactive: Int = 0
+    var bookingId: String? = null
+    var categoryId: String? = null
+    var currentTabActive: Int = 0
 
     private val binding by lazy { ActivitySelectfoodBinding.inflate(layoutInflater) }
     private val viewModel by lazy { ViewModelProvider(this)[PickUpSelectFoodViewModel::class.java] }
@@ -74,11 +74,11 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         binding.txtrestroname.text = restoData?.rest_name
         binding.txtTime.text = restoData?.endtime
         binding.txtTotalkm.text = restoData?.distance + " km"
-        booking_id = restoData?.id
+        bookingId = restoData?.id
         binding.imgSearchicon.setOnClickListener {
             val strSearch: String = binding.etvSearchview.text.toString()
             if (Utils.isNetworkAvailable(ctx)) {
-                viewModel.callApiSearchFoodItem(category_id, strSearch)
+                viewModel.callApiSearchFoodItem(categoryId, strSearch)
             } else {
                 showToastMessage(Constant.NETWORKEROORMSG)
             }
@@ -93,7 +93,7 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 if (s.toString().isEmpty()) {
                     Hidekeyboard()
                     if (Utils.isNetworkAvailable(ctx)) {
-                        viewModel.callApiFoodItem(category_id)
+                        viewModel.callApiFoodItem(categoryId)
                     } else {
                         showToastMessage(Constant.NETWORKEROORMSG)
                     }
@@ -112,7 +112,6 @@ class PickupSelectFoodActivity : AppCompatActivity() {
             }
         })
         binding.btnViewCart.setOnClickListener {
-            //showAlertView();
             viewModel.command.postValue(COMMAND_CART_LIST_VIEW)
         }
         binding.viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -120,9 +119,9 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 super.onPageSelected(position)
                 Log.d("pageno", "" + position)
                 binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
-                current_tabactive = position
+                currentTabActive = position
                 val foodListTab: FoodList_Tab? = foodListArrayList?.get(position)
-                category_id = foodListTab?.id
+                categoryId = foodListTab?.id
             }
         })
         if (Utils.isNetworkAvailable(ctx)) {
@@ -178,7 +177,6 @@ class PickupSelectFoodActivity : AppCompatActivity() {
                 response: Response<JsonObject?>
             ) {
                 try {
-                    //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")

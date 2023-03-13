@@ -24,7 +24,19 @@ import com.forkmang.data.BranchDropdown
 import com.forkmang.data.FlooDropdown
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivityBookingtableDetailviewBinding
-import com.forkmang.helper.Constant
+import com.forkmang.helper.Constant.BOOKINGID
+import com.forkmang.helper.Constant.CUSTOMERID
+import com.forkmang.helper.Constant.ERRORMSG
+import com.forkmang.helper.Constant.ERROR_CODE
+import com.forkmang.helper.Constant.ERROR_CODE_n
+import com.forkmang.helper.Constant.IDENTFIER
+import com.forkmang.helper.Constant.MOBILE
+import com.forkmang.helper.Constant.NAME
+import com.forkmang.helper.Constant.NETWORKEROORMSG
+import com.forkmang.helper.Constant.NODATA
+import com.forkmang.helper.Constant.SUCCESS_CODE
+import com.forkmang.helper.Constant.SUCCESS_CODE_n
+import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.StorePrefrence
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
@@ -50,12 +62,12 @@ class BookingTableDetailView : Activity() {
     var mHour = 0
     var mMinute = 0
     var mSecond = 0
-    var booking_date: String? = null
+    var bookingDate: String? = null
     var booking_time: String? = null
-    var Date_get = ""
-    var resturant_id: String? = null
-    var noof_person = "0"
-    var str_area: String? = "Indoor"
+    var dateGet = ""
+    var resturantId: String? = null
+    var noOfPerson = "0"
+    var strArea: String? = "Indoor"
     var datetime: String? = null
     var tableListArrayList: ArrayList<TableList>? = null
     var flooDropdownArrayList: ArrayList<FlooDropdown>? = null
@@ -63,18 +75,18 @@ class BookingTableDetailView : Activity() {
     var branchDropdownArrayList: ArrayList<BranchDropdown>? = null
     var restoData: RestoData? = null
     private val storePrefrence by lazy { StorePrefrence(this) }
-    var is_tableconform = false
-    var is_pesonselect = false
-    var is_areatype = false
+    var isTableConform = false
+    var isPersonSelect = false
+    var isAreaType = false
     var person = arrayOf("Select Person", "1", "2 ", "3", "4", "5", "6", "7", "8", "9", "10")
-    var type_value = arrayOf("Value", "0.7", "0.8", "0.9", "1.0")
+    var typeValue = arrayOf("Value", "0.7", "0.8", "0.9", "1.0")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         val intent = intent
-        resturant_id = intent.getStringExtra("resturant_id")
+        resturantId = intent.getStringExtra("resturant_id")
         datetime = intent.getStringExtra("datetime")
         restoData = getIntent().getSerializableExtra("restromodel") as RestoData?
         binding.tableRecycleview.layoutManager = LinearLayoutManager(
@@ -101,9 +113,9 @@ class BookingTableDetailView : Activity() {
                 false
             )
             if (Utils.isNetworkAvailable(ctx)) {
-                callapi_booktablelist(resturant_id)
+                callApiBookTableList(resturantId)
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
         binding.lytDatetime.setOnClickListener { datePicker() }
@@ -119,7 +131,7 @@ class BookingTableDetailView : Activity() {
 
 
         //call api for fill dropdown
-        callApiFillDropdown(resturant_id)
+        callApiFillDropdown(resturantId)
 
 
         //spinner_person array adapter start
@@ -132,13 +144,13 @@ class BookingTableDetailView : Activity() {
                 position: Int,
                 id: Long
             ) {
-                is_pesonselect = false
+                isPersonSelect = false
                 if (position > 0) {
                     showToastMessage(person[position])
-                    noof_person = person[position]
-                    is_pesonselect = true
+                    noOfPerson = person[position]
+                    isPersonSelect = true
                 } else {
-                    is_pesonselect = false
+                    isPersonSelect = false
                 }
             }
 
@@ -200,16 +212,16 @@ class BookingTableDetailView : Activity() {
                 if (position > 0) {
                     val areaDropdown: AreaDropdown? = areaDropdownArrayList?.get(position)
                     showToastMessage(areaDropdown?.area_name.toString())
-                    str_area = areaDropdown?.area_name
-                    is_areatype = true
-                    if (is_pesonselect) {
+                    strArea = areaDropdown?.area_name
+                    isAreaType = true
+                    if (isPersonSelect) {
                         binding.relLablview.visibility = View.VISIBLE
                         binding.relTxtview.visibility = View.VISIBLE
-                        binding.txtNoseat.text = "$str_area $noof_person Seats"
+                        binding.txtNoseat.text = "$strArea $noOfPerson Seats"
                         binding.txtTime.text = day
                     }
                 } else {
-                    is_areatype = false
+                    isAreaType = false
                 }
             }
 
@@ -220,8 +232,8 @@ class BookingTableDetailView : Activity() {
         //spinner_floor array adapter
 
         //spinner_type array adapter
-        val type_valueAdapter = SpinnerAdapterTypeValue(applicationContext, type_value)
-        binding.spinnerTypeValue.adapter = type_valueAdapter
+        val typeValueAdapter = SpinnerAdapterTypeValue(applicationContext, typeValue)
+        binding.spinnerTypeValue.adapter = typeValueAdapter
         binding.spinnerTypeValue.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -231,7 +243,7 @@ class BookingTableDetailView : Activity() {
                     id: Long
                 ) {
                     if (position > 0) {
-                        showToastMessage(type_value[position])
+                        showToastMessage(typeValue[position])
                     }
                 }
 
@@ -249,19 +261,19 @@ class BookingTableDetailView : Activity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val btn_select_nxt: Button = dialogView.findViewById(R.id.btn_select_nxt)
-        val tv_descr: TextView = dialogView.findViewById(R.id.tv_descr)
-        val txt_reserveseat: TextView = dialogView.findViewById(R.id.txt_reserveseat)
-        val tv_rule: TextView = dialogView.findViewById(R.id.tv_rule)
-        val tv_dresscode: TextView = dialogView.findViewById(R.id.tv_dresscode)
-        val tv_ocassion: TextView = dialogView.findViewById(R.id.tv_ocassion)
-        tv_descr.text = tableList.table_descr
-        tv_rule.text = tableList.table_rule
-        tv_dresscode.text = tableList.table_drescode
-        tv_ocassion.text = tableList.table_ocassion
-        txt_reserveseat.text =
+        val btnSelectNxt: Button = dialogView.findViewById(R.id.btn_select_nxt)
+        val tvDescr: TextView = dialogView.findViewById(R.id.tv_descr)
+        val txtReserveSeat: TextView = dialogView.findViewById(R.id.txt_reserveseat)
+        val tvRule: TextView = dialogView.findViewById(R.id.tv_rule)
+        val tvDresscode: TextView = dialogView.findViewById(R.id.tv_dresscode)
+        val tvOcassion: TextView = dialogView.findViewById(R.id.tv_ocassion)
+        tvDescr.text = tableList.table_descr
+        tvRule.text = tableList.table_rule
+        tvDresscode.text = tableList.table_drescode
+        tvOcassion.text = tableList.table_ocassion
+        txtReserveSeat.text =
             "To Reserve:" + " " + ctx.resources.getString(R.string.rupee) + tableList.price
-        btn_select_nxt.setOnClickListener {
+        btnSelectNxt.setOnClickListener {
             dialog.dismiss()
             showAlertViewPaymentConfirm(tableList)
         }
@@ -275,31 +287,31 @@ class BookingTableDetailView : Activity() {
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val txt_restroname: TextView = dialogView.findViewById(R.id.txt_restroname)
-        val txt_custname: TextView = dialogView.findViewById(R.id.txt_custname)
-        val txt_datetime: TextView = dialogView.findViewById(R.id.txt_datetime)
-        val txt_phoneno: TextView = dialogView.findViewById(R.id.txt_phoneno)
-        val etv_noperson: EditText = dialogView.findViewById(R.id.etv_noperson)
-        val imgicon_edit: ImageView = dialogView.findViewById(R.id.imgicon_edit)
-        val imgicon_save: ImageView = dialogView.findViewById(R.id.imgicon_save)
-        txt_restroname.text = tableList.str_hotel_name
-        txt_custname.text = tableList.str_customer_name
-        txt_datetime.text = binding.txtDatetime.text.toString()
-        etv_noperson.setText(noof_person)
-        txt_phoneno.text = tableList.str_phone
-        val btn_select_food: Button = dialogView.findViewById(R.id.btn_select_food)
-        val btn_cancel: Button = dialogView.findViewById(R.id.btn_cancel)
-        imgicon_edit.setOnClickListener {
+        val txtRestroName: TextView = dialogView.findViewById(R.id.txt_restroname)
+        val txtCustName: TextView = dialogView.findViewById(R.id.txt_custname)
+        val txtDateTime: TextView = dialogView.findViewById(R.id.txt_datetime)
+        val txtPhoneNo: TextView = dialogView.findViewById(R.id.txt_phoneno)
+        val etvNoPerson: EditText = dialogView.findViewById(R.id.etv_noperson)
+        val imgIconEdit: ImageView = dialogView.findViewById(R.id.imgicon_edit)
+        val imgIconSave: ImageView = dialogView.findViewById(R.id.imgicon_save)
+        txtRestroName.text = tableList.str_hotel_name
+        txtCustName.text = tableList.str_customer_name
+        txtDateTime.text = binding.txtDatetime.text.toString()
+        etvNoPerson.setText(noOfPerson)
+        txtPhoneNo.text = tableList.str_phone
+        val btnSelectFood: Button = dialogView.findViewById(R.id.btn_select_food)
+        val btnCancel: Button = dialogView.findViewById(R.id.btn_cancel)
+        imgIconEdit.setOnClickListener {
             /*imgicon_save.setVisibility(View.VISIBLE);
             imgicon_edit.setVisibility(View.GONE);
             etv_noperson.setEnabled(true);
             etv_noperson.setBackgroundColor(Color.DKGRAY);
             etv_noperson.setTextColor(Color.WHITE);*/dialog.dismiss()
         }
-        imgicon_save.setOnClickListener { }
-        val btn_cnf_tablebook: Button = dialogView.findViewById(R.id.btn_cnf_payment)
-        btn_cancel.setOnClickListener { dialog.dismiss() }
-        btn_cnf_tablebook.setOnClickListener {
+        imgIconSave.setOnClickListener { }
+        val btnCnfTablebook: Button = dialogView.findViewById(R.id.btn_cnf_payment)
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        btnCnfTablebook.setOnClickListener {
             //dialog.dismiss();
             if (Utils.isNetworkAvailable(ctx)) {
                 callApiConfirmTableBooking(
@@ -308,15 +320,15 @@ class BookingTableDetailView : Activity() {
                     tableList.table_rule,
                     tableList.table_drescode,
                     tableList.table_ocassion,
-                    booking_date,
+                    bookingDate,
                     tableList,
                     restoData
                 )
             } else {
-                showToastMessage(Constant.NETWORKEROORMSG)
+                showToastMessage(NETWORKEROORMSG)
             }
         }
-        btn_select_food.setOnClickListener {
+        btnSelectFood.setOnClickListener {
             dialog.dismiss()
             val mainIntent =
                 Intent(this@BookingTableDetailView, SelectFoodActivity::class.java)
@@ -324,22 +336,22 @@ class BookingTableDetailView : Activity() {
             mainIntent.putExtra("table_model", tableList)
             mainIntent.putExtra("timedate", binding.txtDatetime.text.toString())
             mainIntent.putExtra("day", day)
-            mainIntent.putExtra("noseat", "$str_area $noof_person")
+            mainIntent.putExtra("noseat", "$strArea $noOfPerson")
             startActivity(mainIntent)
         }
         dialog.show()
     }
 
-    private fun callapi_booktablelist(restaurant_id: String?) {
+    private fun callApiBookTableList(restaurant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
         info.getResDetail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             if (jsonObject.getJSONObject("data").getJSONArray("data")
                                     .length() > 0
@@ -347,50 +359,50 @@ class BookingTableDetailView : Activity() {
                                 tableListArrayList = ArrayList()
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
-                                    val mjson_array =
+                                    val mjsonArray =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i).getJSONArray("table")
-                                    for (j in 0 until mjson_array.length()) {
-                                        val mjson_object = mjson_array.getJSONObject(j)
+                                    for (j in 0 until mjsonArray.length()) {
+                                        val mjsonObject = mjsonArray.getJSONObject(j)
                                         val tableList = TableList()
-                                        tableList.id = mjson_object.getString("id")
+                                        tableList.id = mjsonObject.getString("id")
                                         tableList.restaurant_id =
-                                            mjson_object.getString("restaurant_id")
-                                        tableList.table_no = mjson_object.getString("table_no")
+                                            mjsonObject.getString("restaurant_id")
+                                        tableList.table_no = mjsonObject.getString("table_no")
                                         tableList.number_of_person =
-                                            mjson_object.getString("number_of_person")
-                                        tableList.type = mjson_object.getString("type")
-                                        tableList.status_id = mjson_object.getString("status_id")
+                                            mjsonObject.getString("number_of_person")
+                                        tableList.type = mjsonObject.getString("type")
+                                        tableList.status_id = mjsonObject.getString("status_id")
 
                                         //tableList.setFloor_id(mjson_object.getString("floor_id"));
                                         //tableList.setArea_id(mjson_object.getString("area_id"));
-                                        tableList.price = mjson_object.getString("price")
+                                        tableList.price = mjsonObject.getString("price")
 
-                                        /* parameter for table reservation not available now  */if (mjson_object.has(
+                                        /* parameter for table reservation not available now  */if (mjsonObject.has(
                                                 "table_descr"
                                             )
                                         ) {
                                             tableList.table_descr =
-                                                mjson_object.getString("table_descr")
+                                                mjsonObject.getString("table_descr")
                                         } else {
                                             tableList.table_descr = "Test description for table..."
                                         }
-                                        if (mjson_object.has("table_rule")) {
+                                        if (mjsonObject.has("table_rule")) {
                                             tableList.table_rule =
-                                                mjson_object.getString("table_rule")
+                                                mjsonObject.getString("table_rule")
                                         } else {
                                             tableList.table_rule = "Test rule for table"
                                         }
-                                        if (mjson_object.has("table_drescode")) {
+                                        if (mjsonObject.has("table_drescode")) {
                                             tableList.table_drescode =
-                                                mjson_object.getString("table_drescode")
+                                                mjsonObject.getString("table_drescode")
                                         } else {
                                             tableList.table_drescode =
                                                 "Test White Shirt and Blue Jeans"
                                         }
-                                        if (mjson_object.has("table_ocassion")) {
+                                        if (mjsonObject.has("table_ocassion")) {
                                             tableList.table_ocassion =
-                                                mjson_object.getString("table_ocassion")
+                                                mjsonObject.getString("table_ocassion")
                                         } else {
                                             tableList.table_ocassion = "Test Birthday Bash"
                                         }
@@ -399,26 +411,26 @@ class BookingTableDetailView : Activity() {
 
                                         /* code to get customer and other data into table object */
                                         tableList.str_hotel_name = restoData?.rest_name
-                                        if (storePrefrence.getString(Constant.NAME)
+                                        if (storePrefrence.getString(NAME)
                                                 .isNullOrEmpty()
                                         ) {
                                             tableList.str_customer_name = "Test Customer Name"
                                         } else {
                                             tableList.str_customer_name =
                                                 storePrefrence.getString(
-                                                    Constant.NAME
+                                                    NAME
                                                 )
                                         }
 
                                         //tableList.setStr_noseat(noof_person+" "+"Seats");
                                         tableList.str_time = binding.txtDatetime.text.toString()
-                                        if (storePrefrence.getString(Constant.MOBILE)
+                                        if (storePrefrence.getString(MOBILE)
                                                 .isNullOrEmpty()
                                         ) {
                                             tableList.str_phone = "9000012345"
                                         } else {
                                             tableList.str_phone = storePrefrence.getString(
-                                                Constant.MOBILE
+                                                MOBILE
                                             )
                                         }
 
@@ -440,23 +452,23 @@ class BookingTableDetailView : Activity() {
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                showToastMessage(Constant.NODATA)
+                                showToastMessage(NODATA)
                             }
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage(Constant.ERRORMSG)
+                        showToastMessage(ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                showToastMessage(Constant.ERRORMSG)
+                showToastMessage(ERRORMSG)
             }
         })
     }
@@ -466,11 +478,11 @@ class BookingTableDetailView : Activity() {
         info.getResDetail(restaurant_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                    if (response.code() == SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         //Log.d("Result", jsonObject.toString());
                         if (jsonObject.getString("status")
-                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             if (jsonObject.getJSONObject("data").getJSONArray("data")
                                     .length() > 0
@@ -481,69 +493,69 @@ class BookingTableDetailView : Activity() {
                                 for (i in 0 until jsonObject.getJSONObject("data")
                                     .getJSONArray("data").length()) {
                                     //Area Type Spinner code
-                                    val mjson_array_area =
+                                    val mjsonArrayArea =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i).getJSONArray("area")
-                                    val areaDropdown_first = AreaDropdown()
-                                    areaDropdown_first.id = "0"
-                                    areaDropdown_first.area_name = "Select Area"
-                                    areaDropdownArrayList?.add(areaDropdown_first)
-                                    for (j in 0 until mjson_array_area.length()) {
+                                    val areadropdownFirst = AreaDropdown()
+                                    areadropdownFirst.id = "0"
+                                    areadropdownFirst.area_name = "Select Area"
+                                    areaDropdownArrayList?.add(areadropdownFirst)
+                                    for (j in 0 until mjsonArrayArea.length()) {
                                         val areaDropdown = AreaDropdown()
-                                        val mjson_object_area = mjson_array_area.getJSONObject(j)
-                                        areaDropdown.id = mjson_object_area.getString("id")
-                                        areaDropdown.area_name = mjson_object_area.getString("name")
+                                        val mjsonObjectArea = mjsonArrayArea.getJSONObject(j)
+                                        areaDropdown.id = mjsonObjectArea.getString("id")
+                                        areaDropdown.area_name = mjsonObjectArea.getString("name")
                                         areaDropdownArrayList?.add(areaDropdown)
                                     }
-                                    val spinnnerAdapter_type = SpinnerAdapterType(
+                                    val spinnnerAdapterType = SpinnerAdapterType(
                                         applicationContext, areaDropdownArrayList!!
                                     )
-                                    binding.spinnerType.adapter = spinnnerAdapter_type
+                                    binding.spinnerType.adapter = spinnnerAdapterType
                                     //code end
 
                                     //floor type spinner code start
-                                    val mjson_array_floor =
+                                    val mjsonArrayFloor =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i).getJSONArray("floor")
-                                    val flooDropdown_first = FlooDropdown()
-                                    flooDropdown_first.id = "0"
-                                    flooDropdown_first.floor_name = "Select Floor"
-                                    flooDropdownArrayList?.add(flooDropdown_first)
-                                    for (j in 0 until mjson_array_floor.length()) {
+                                    val flooDropdownFirst = FlooDropdown()
+                                    flooDropdownFirst.id = "0"
+                                    flooDropdownFirst.floor_name = "Select Floor"
+                                    flooDropdownArrayList?.add(flooDropdownFirst)
+                                    for (j in 0 until mjsonArrayFloor.length()) {
                                         val flooDropdown = FlooDropdown()
-                                        val mjson_object_floor = mjson_array_floor.getJSONObject(j)
-                                        flooDropdown.id = mjson_object_floor.getString("id")
+                                        val mjsonObjectFloor = mjsonArrayFloor.getJSONObject(j)
+                                        flooDropdown.id = mjsonObjectFloor.getString("id")
                                         flooDropdown.floor_name =
-                                            mjson_object_floor.getString("name")
+                                            mjsonObjectFloor.getString("name")
                                         flooDropdownArrayList?.add(flooDropdown)
                                     }
-                                    val spinnnerAdapter_floor = SpinnnerAdapterFloor(
+                                    val spinnnerAdapterFloor = SpinnnerAdapterFloor(
                                         applicationContext, flooDropdownArrayList!!
                                     )
-                                    binding.spinnerFloor.adapter = spinnnerAdapter_floor
+                                    binding.spinnerFloor.adapter = spinnnerAdapterFloor
                                     //floor type spinner code end
 
                                     //branch type spinner code start
-                                    val mjson_array_branch =
+                                    val mjsonArrayBranch =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i).getJSONArray("child_restaurant")
-                                    val branchDropdown_first = BranchDropdown()
-                                    branchDropdown_first.id = "0"
-                                    branchDropdown_first.branch_name = "Branch"
-                                    branchDropdownArrayList?.add(branchDropdown_first)
-                                    for (j in 0 until mjson_array_branch.length()) {
-                                        val mjson_object_branch =
-                                            mjson_array_branch.getJSONObject(j)
+                                    val branchDropdownFirst = BranchDropdown()
+                                    branchDropdownFirst.id = "0"
+                                    branchDropdownFirst.branch_name = "Branch"
+                                    branchDropdownArrayList?.add(branchDropdownFirst)
+                                    for (j in 0 until mjsonArrayBranch.length()) {
+                                        val mjsonObjectBranch =
+                                            mjsonArrayBranch.getJSONObject(j)
                                         val branchDropdown = BranchDropdown()
-                                        branchDropdown.id = mjson_object_branch.getString("id")
+                                        branchDropdown.id = mjsonObjectBranch.getString("id")
                                         branchDropdown.branch_name =
-                                            mjson_object_branch.getString("rest_branch")
+                                            mjsonObjectBranch.getString("rest_branch")
                                         branchDropdownArrayList?.add(branchDropdown)
                                     }
-                                    val spinnnerAdapter_branch = SpinnnerAdapterBranch(
+                                    val spinnnerAdapterBranch = SpinnnerAdapterBranch(
                                         applicationContext, branchDropdownArrayList!!
                                     )
-                                    binding.spinnerBranch.adapter = spinnnerAdapter_branch
+                                    binding.spinnerBranch.adapter = spinnnerAdapterBranch
                                     //branch type spinner code end
                                 }
                                 binding.progressBar.visibility = View.GONE
@@ -553,28 +565,28 @@ class BookingTableDetailView : Activity() {
                                     binding.linearListview.visibility = View.VISIBLE
                                     binding.frameLayout.visibility = View.GONE
                                     binding.linearLayout.visibility = View.GONE
-                                    callapi_booktablelist(resturant_id)
+                                    callApiBookTableList(resturantId)
                                 }
                             } else {
                                 //no data in array list
                                 binding.progressBar.visibility = View.GONE
-                                showToastMessage(Constant.NODATA)
+                                showToastMessage(NODATA)
                             }
                         }
                     } else {
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage(Constant.ERRORMSG)
+                        showToastMessage(ERRORMSG)
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                showToastMessage(Constant.ERRORMSG)
+                showToastMessage(ERRORMSG)
             }
         })
     }
@@ -593,75 +605,74 @@ class BookingTableDetailView : Activity() {
         //table_id="8";
         binding.progressBar.visibility = View.VISIBLE
         info.bookTable(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
+            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
             restaurant_id, table_id, rules, dresscode, occasion, date, storePrefrence.getString(
-                Constant.IDENTFIER
+                IDENTFIER
             )
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
+                        if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
-                            //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
-                                    .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                                    .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
                                 binding.progressBar.visibility = View.GONE
-                                val mjson_obj = jsonObject.getJSONObject("data")
+                                val mjsonObj = jsonObject.getJSONObject("data")
                                 storePrefrence.setString(
-                                    Constant.CUSTOMERID,
-                                    mjson_obj.getString("customer_id")
+                                    CUSTOMERID,
+                                    mjsonObj.getString("customer_id")
                                 )
                                 storePrefrence.setString(
                                     "paymentstatus",
-                                    mjson_obj.getString("payment_status")
+                                    mjsonObj.getString("payment_status")
                                 )
                                 storePrefrence.setString(
-                                    Constant.BOOKINGID,
-                                    mjson_obj.getString("id")
+                                    BOOKINGID,
+                                    mjsonObj.getString("id")
                                 )
-                                Log.d("table_id", mjson_obj.getString("table_id"))
-                                Log.d("restaurant_id", mjson_obj.getString("restaurant_id"))
-                                Log.d("rules", mjson_obj.getString("rules"))
+                                Log.d("table_id", mjsonObj.getString("table_id"))
+                                Log.d("restaurant_id", mjsonObj.getString("restaurant_id"))
+                                Log.d("rules", mjsonObj.getString("rules"))
                                 showToastMessage(jsonObject.getString("message"))
-                                is_tableconform = true
+                                isTableConform = true
                                 showAlertViewConfirmation(
                                     tableList,
-                                    mjson_obj.getString("id"),
+                                    mjsonObj.getString("id"),
                                     bookTable
                                 )
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                showToastMessage(Constant.NODATA)
-                                is_tableconform = false
+                                showToastMessage(NODATA)
+                                isTableConform = false
                             }
-                        } else if (response.code() == Constant.ERROR_CODE_n || response.code() == Constant.ERROR_CODE) {
+                        } else if (response.code() == ERROR_CODE_n || response.code() == ERROR_CODE) {
                             binding.progressBar.visibility = View.GONE
                             val jsonObject = JSONObject(response.errorBody()!!.string())
                             showToastMessage(jsonObject.getString("message"))
-                            is_tableconform = false
+                            isTableConform = false
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            showToastMessage(Constant.ERRORMSG)
-                            is_tableconform = false
+                            showToastMessage(ERRORMSG)
+                            isTableConform = false
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage(Constant.ERRORMSG)
-                        is_tableconform = false
+                        showToastMessage(ERRORMSG)
+                        isTableConform = false
                     } catch (ex: IOException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage(Constant.ERRORMSG)
-                        is_tableconform = false
+                        showToastMessage(ERRORMSG)
+                        isTableConform = false
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage(Constant.ERRORMSG)
+                    showToastMessage(ERRORMSG)
                 }
             })
     }
@@ -678,20 +689,20 @@ class BookingTableDetailView : Activity() {
             OnDateSetListener { view: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
                 val month: Int = selectedMonth + 1
                 val date: Int = selectedDay
-                var str_month = ""
-                var str_date = ""
-                str_month = if (month < 10) {
+                var strMonth = ""
+                var strDate = ""
+                strMonth = if (month < 10) {
                     "0$month"
                 } else {
                     month.toString()
                 }
-                str_date = if (date < 10) {
+                strDate = if (date < 10) {
                     "0$date"
                 } else {
                     date.toString()
                 }
-                booking_date = "$selectedYear-$str_month-$str_date"
-                Log.d("sendate==>", booking_date ?: "null")
+                bookingDate = "$selectedYear-$strMonth-$strDate"
+                Log.d("sendate==>", bookingDate ?: "null")
                 binding.txtDatetime.text = ""
                 binding.txtDatetime.text =
                     selectedDay.toString() + "-" + getMonth(selectedMonth + 1)
@@ -726,21 +737,21 @@ class BookingTableDetailView : Activity() {
                 )
                 var month = datePicker.month
                 val date = datePicker.dayOfMonth
-                var str_month = ""
-                var str_date = ""
+                var strMonth = ""
+                var strDate = ""
                 month += 1
-                str_month = if (month < 10) {
+                strMonth = if (month < 10) {
                     "0$month"
                 } else {
                     month.toString()
                 }
-                str_date = if (date < 10) {
+                strDate = if (date < 10) {
                     "0$date"
                 } else {
                     date.toString()
                 }
-                Date_get = datePicker.year.toString() + "-" + str_month + "-" + str_date
-                Log.d("sendate==>", Date_get)
+                dateGet = datePicker.year.toString() + "-" + strMonth + "-" + strDate
+                Log.d("sendate==>", dateGet)
                 timePicker()
 
                 //callApi_senddate(deliveryDate_get);
@@ -777,8 +788,8 @@ class BookingTableDetailView : Activity() {
                 } else {
                     "pm"
                 }
-                booking_date = "$booking_date $time $AM_PM"
-                Log.d("senddate", booking_date ?: "null")
+                bookingDate = "$bookingDate $time $AM_PM"
+                Log.d("senddate", bookingDate ?: "null")
                 binding.txtDatetime.text = "$date, $time $AM_PM"
             }, mHour, mMinute, false
         )
@@ -789,42 +800,37 @@ class BookingTableDetailView : Activity() {
 
     private fun currentDateShow() {
         val c = Calendar.getInstance()
-        var str_month = ""
-        var str_date = ""
-        val str_day: String
-        var booking_date_n: String
         mYear = c[Calendar.YEAR]
         mMonth = c[Calendar.MONTH]
         mDay = c[Calendar.DAY_OF_MONTH]
         mHour = c[Calendar.HOUR_OF_DAY]
         mMinute = c[Calendar.MINUTE]
         mSecond = c[Calendar.SECOND]
-        val AM_PM: String
-        AM_PM = if (mHour < 12) {
+        val AM_PM: String = if (mHour < 12) {
             "am"
         } else {
             "pm"
         }
         val time = "$mHour:$mMinute $AM_PM"
-        val time_send = "$mHour:$mMinute:$mSecond"
-        val month_n = mMonth + 1
-        val date_n = mDay
-        str_day = date_n.toString()
-        str_month = if (month_n < 10) {
-            "0$month_n"
+        val timeSend = "$mHour:$mMinute:$mSecond"
+        val monthN = mMonth + 1
+        val dateN = mDay
+        val strDay = dateN.toString()
+        val strMonth = if (monthN < 10) {
+            "0$monthN"
         } else {
-            month_n.toString()
+            monthN.toString()
         }
-        str_date = if (date_n < 10) {
-            "0$date_n"
+        val strDate = if (dateN < 10) {
+            "0$dateN"
         } else {
-            date_n.toString()
+            dateN.toString()
         }
         val selectedYear: String = mYear.toString()
-        booking_date = "$selectedYear-$str_month-$str_date $time_send"
+        bookingDate = "$selectedYear-$strMonth-$strDate $timeSend"
         /*"2022-12-13 09:12:12"*/binding.txtDatetime.text = ""
-        binding.txtDatetime.text = str_day + "-" + getMonth(month_n) + " " + time
-        day = str_day + "-" + getMonth(month_n)
+        binding.txtDatetime.text = strDay + "-" + getMonth(monthN) + " " + time
+        day = strDay + "-" + getMonth(monthN)
     }
 
     private fun getMonth(month: Int): String {
@@ -847,7 +853,7 @@ class BookingTableDetailView : Activity() {
 
     //Date and time picker example code end
     fun loadJSONFromAsset(): String? {
-        var json: String?
+        val json: String?
         try {
             val `is` = ctx.assets.open("local3.json")
             val size = `is`.available()
@@ -874,9 +880,9 @@ class BookingTableDetailView : Activity() {
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val btn_cancel: Button = dialogView.findViewById(R.id.btn_cancel)
-        val btn_yes: Button = dialogView.findViewById(R.id.btn_yes)
-        btn_yes.setOnClickListener {
+        val btnCancel: Button = dialogView.findViewById(R.id.btn_cancel)
+        val btnYes: Button = dialogView.findViewById(R.id.btn_yes)
+        btnYes.setOnClickListener {
             dialog.dismiss()
             val mainIntent: Intent =
                 Intent(this@BookingTableDetailView, PaymentScreenActivity::class.java)
@@ -890,7 +896,7 @@ class BookingTableDetailView : Activity() {
             mainIntent.putExtra("isbooktable", "yes")
             startActivity(mainIntent)
         }
-        btn_cancel.setOnClickListener { dialog.dismiss() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
