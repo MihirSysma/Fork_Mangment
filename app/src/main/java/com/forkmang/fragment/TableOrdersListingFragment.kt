@@ -95,11 +95,11 @@ class TableOrdersListingFragment : Fragment() {
                                         }
                                         tableOrderListingArrayList?.add(tableOrderListing)
                                     }
-                                    val bookTableAdapter_orders = TableOrdersListingAdapter(
+                                    val bookTableAdapterOrders = TableOrdersListingAdapter(
                                         requireActivity(), tableOrderListingArrayList
                                     )
                                     binding.booktableRecycleviewOrders.adapter =
-                                        bookTableAdapter_orders
+                                        bookTableAdapterOrders
                                     binding.progressBar.visibility = View.GONE
                                 } else {
                                     //no data in array list

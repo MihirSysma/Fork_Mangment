@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.forkmang.data.Category_ItemList
 import com.forkmang.data.Extra_Topping
 import com.forkmang.helper.Constant
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -20,14 +21,16 @@ class SelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
     val searchFoodItemData = MutableLiveData<ArrayList<Category_ItemList>>()
     val categoryItemData = MutableLiveData<ArrayList<Category_ItemList>>()
 
-    fun callApiSearchFoodItem(category_id: String?, search_item: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        //binding.progressBar.visibility = View.VISIBLE
-        Api.info.getResCatItemListSearch(category_id, search_item)
+    fun callApiSearchFoodItem(
+        categoryId: String?,
+        searchItem: String?,
+        progress: ((isLoading: Boolean) -> Unit)
+    ) {
+        progress(true)
+        Api.info.getResCatItemListSearch(categoryId, searchItem)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status")
@@ -60,34 +63,31 @@ class SelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                                     categoryItemLists.add(categoryItemList)
                                 }
                                 searchFoodItemData.postValue(categoryItemLists)
-                                //binding.progressBar.visibility = View.GONE
-                                //
+                                progress(false)
                             }
                         } else if (response.code() == Constant.ERROR_CODE) {
                             //val jsonObject = JSONObject(response.errorBody()!!.string())
-                            //binding.progressBar.visibility = View.GONE
+                            progress(false)
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        //binding.progressBar.visibility = View.GONE
-                        //context?.showToastMessage("Error occur please try again")
+                        progress(false)
+                        app.applicationContext.showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    //context?.showToastMessage("Error occur please try again")
-                    //binding.progressBar.visibility = View.GONE
+                    app.applicationContext.showToastMessage(Constant.ERRORMSG)
+                    progress(false)
                 }
             })
     }
 
-    fun callApiFoodItem(category_id: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        //binding.progressBar.visibility = View.VISIBLE
-        Api.info.getResCatItemList(category_id)?.enqueue(object : Callback<JsonObject?> {
+    fun callApiFoodItem(categoryId: String?, progress: ((isLoading: Boolean) -> Unit)) {
+        progress(true)
+        Api.info.getResCatItemList(categoryId)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")
@@ -117,7 +117,7 @@ class SelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                                 categoryItemList.extra_toppingArrayList = extraToppingArrayList
                                 categoryItemLists.add(categoryItemList)
                             }
-                            //binding.progressBar.visibility = View.GONE
+                            progress(false)
 
                             /*if(all_orderFood_adapter == null)
                                     {
@@ -130,21 +130,20 @@ class SelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                         }
                     } else if (response.code() == Constant.ERROR_CODE) {
                         //val jsonObject = JSONObject(response.errorBody()!!.string())
-                        //binding.progressBar.visibility = View.GONE
+                        progress(false)
                     }
                 } catch (ex: Exception) {
                     ex.printStackTrace()
-                    //binding.progressBar.visibility = View.GONE
-                    //context?.showToastMessage("Error occur please try again")
+                    progress(false)
+                    app.applicationContext.showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                //context?.showToastMessage("Error occur please try again")
-                //binding.progressBar.visibility = View.GONE
+                app.applicationContext.showToastMessage(Constant.ERRORMSG)
+                progress(false)
             }
         })
     }
-
 
 }

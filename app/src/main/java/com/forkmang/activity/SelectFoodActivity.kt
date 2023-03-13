@@ -76,7 +76,16 @@ class SelectFoodActivity : AppCompatActivity() {
         binding.imgSearchicon.setOnClickListener {
             val strSearch: String = binding.etvSearchview.text.toString()
             if (Utils.isNetworkAvailable(ctx)) {
-                viewModel.callApiSearchFoodItem(categoryId, strSearch)
+                viewModel.callApiSearchFoodItem(categoryId, strSearch) {
+                    when (it) {
+                        true -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        false -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
+                    }
+                }
             } else {
                 showToastMessage(NETWORKEROORMSG)
             }
@@ -92,7 +101,16 @@ class SelectFoodActivity : AppCompatActivity() {
                 if (s.toString().isEmpty()) {
                     hidekeyboard()
                     if (Utils.isNetworkAvailable(ctx)) {
-                        viewModel.callApiFoodItem(categoryId)
+                        viewModel.callApiFoodItem(categoryId) {
+                            when (it) {
+                                true -> {
+                                    binding.progressBar.visibility = View.VISIBLE
+                                }
+                                false -> {
+                                    binding.progressBar.visibility = View.GONE
+                                }
+                            }
+                        }
                     } else {
                         showToastMessage(NETWORKEROORMSG)
                     }
@@ -123,7 +141,16 @@ class SelectFoodActivity : AppCompatActivity() {
                 val foodListTab: FoodList_Tab? = foodListArrayList?.get(position)
                 categoryId = foodListTab?.id
                 if (Utils.isNetworkAvailable(this@SelectFoodActivity)) {
-                    viewModel.callApiFoodItem(categoryId)
+                    viewModel.callApiFoodItem(categoryId) {
+                        when (it) {
+                            true -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
+                            false -> {
+                                binding.progressBar.visibility = View.GONE
+                            }
+                        }
+                    }
                 } else {
                     showToastMessage(NETWORKEROORMSG)
                 }

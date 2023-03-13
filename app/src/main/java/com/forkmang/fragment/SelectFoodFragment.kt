@@ -46,10 +46,10 @@ import java.io.IOException
 class SelectFoodFragment : Fragment() {
 
     var cartBookingArrayList: ArrayList<CartBooking>? = null
-    var selectedidRadiobtnTopping = 0
+    var selectedIdRadioBtnTopping = 0
     var progressbarAlertview: ProgressBar? = null
     var allOrderFoodAdapter: FoodListAdapter? = null
-    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePrefrence(requireContext()) }
 
     private var _binding: FragmentOrderfoodLayoutBinding? = null
     private val binding get() = _binding!!
@@ -107,12 +107,12 @@ class SelectFoodFragment : Fragment() {
     ) {
         binding.progressBar.visibility = View.VISIBLE
         info.addItemCart(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             item_id,
             qty,
             booking_table_id,
             item_extra,
-            storePrefrence.getString(
+            storePreference.getString(
                 Constant.IDENTFIER
             ),
             type,
@@ -121,16 +121,15 @@ class SelectFoodFragment : Fragment() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status").equals("200", ignoreCase = true)) {
                                 context?.showToastMessage(jsonObject.getString("message"))
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     Constant.CARTID,
                                     jsonObject.getJSONObject("data").getString("cart_id")
                                 )
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     Constant.CART_ITEMID,
                                     jsonObject.getJSONObject("data").getString("item_id")
                                 )
@@ -269,7 +268,7 @@ class SelectFoodFragment : Fragment() {
             Log.d("extra", extra)
             Log.d("qty", qty)
             Log.d("item_id", itemId!!)
-            Log.d("selectedId", "" + selectedidRadiobtnTopping)
+            Log.d("selectedId", "" + selectedIdRadioBtnTopping)
 
             //api call
             if (isNetworkAvailable(requireContext())) {
@@ -277,7 +276,7 @@ class SelectFoodFragment : Fragment() {
                 callApiAddToCart(
                     itemId,
                     qty,
-                    storePrefrence.getString(Constant.BOOKINGID),
+                    storePreference.getString(Constant.BOOKINGID),
                     extra,
                     "book_table"
                 )
@@ -310,7 +309,7 @@ class SelectFoodFragment : Fragment() {
         txtRestroname.text = tablelistGet?.str_hotel_name
         txtCustname.text = tablelistGet?.str_customer_name
         etvNoperson.setText(tablelistGet?.number_of_person)
-        txtPhoneno.text = storePrefrence.getString(MOBILE)
+        txtPhoneno.text = storePreference.getString(MOBILE)
         txtDatetime.text = tablelistGet?.str_time
         imgClose.setOnClickListener { dialog.dismiss() }
         binding.orderFoodRecycleview.layoutManager = LinearLayoutManager(activity)
@@ -367,7 +366,7 @@ class SelectFoodFragment : Fragment() {
     fun callApiCartListView() {
         progressbarAlertview?.visibility = View.VISIBLE
         info.getCartDetail(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN), storePrefrence.getString(
+            "Bearer " + storePreference.getString(TOKEN_LOGIN), storePreference.getString(
                 Constant.IDENTFIER
             )
         )
@@ -446,26 +445,26 @@ class SelectFoodFragment : Fragment() {
                                     }
 
                                     //extra name
-                                    var strExtraname = ""
+                                    var strExtraName = ""
                                     for (k in extraNameList.indices) {
-                                        strExtraname = if (k == 0) {
+                                        strExtraName = if (k == 0) {
                                             extraNameList[k]
                                         } else {
-                                            strExtraname + "," + extraNameList[k]
+                                            strExtraName + "," + extraNameList[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_name = strExtraname
+                                    cartBooking.extra_item_details_name = strExtraName
 
                                     //extra price
-                                    var strExtraprice = ""
+                                    var strExtraPrice = ""
                                     for (k in extraPriceList.indices) {
-                                        strExtraprice = if (k == 0) {
+                                        strExtraPrice = if (k == 0) {
                                             extraPriceList[k]
                                         } else {
-                                            strExtraprice + "," + extraPriceList[k]
+                                            strExtraPrice + "," + extraPriceList[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_price = strExtraprice
+                                    cartBooking.extra_item_details_price = strExtraPrice
                                     cartBookingArrayList?.add(cartBooking)
                                 }
                                 progressbarAlertview?.visibility = View.GONE
@@ -577,13 +576,13 @@ class SelectFoodFragment : Fragment() {
             })
     }
 
-    fun callApiAddQty(cart_itemid: String?, qty: String?) {
+    fun callApiAddQty(cartItemId: String?, qty: String?) {
         binding.progressBar.visibility = View.VISIBLE
         info.cartUpdateQty(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
-            cart_itemid,
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
+            cartItemId,
             qty,
-            storePrefrence.getString(
+            storePreference.getString(
                 Constant.IDENTFIER
             )
         )
@@ -624,9 +623,9 @@ class SelectFoodFragment : Fragment() {
     fun callApiRemoveItemCart(cartItemid: String?) {
         binding.progressBar.visibility = View.VISIBLE
         info.cartRemoveQty(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             cartItemid,
-            storePrefrence.getString(
+            storePreference.getString(
                 Constant.IDENTFIER
             )
         )

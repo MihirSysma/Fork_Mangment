@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.forkmang.data.Category_ItemList
 import com.forkmang.data.Extra_Topping
 import com.forkmang.helper.Constant
+import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -22,13 +23,11 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
     val categoryItemData = MutableLiveData<ArrayList<Category_ItemList>>()
 
     // TODO: handle the toasts and the progressbar
-    fun callApiSearchFoodItem(category_id: String?, search_item: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
-        Api.info.getResCatItemListSearch(category_id, search_item)
+    fun callApiSearchFoodItem(categoryId: String?, searchItem: String?) {
+        Api.info.getResCatItemListSearch(categoryId, searchItem)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status")
@@ -67,22 +66,20 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        //showToastMessage("Error occur please try again")
+                        app.applicationContext.showToastMessage("Error occur please try again")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    //showToastMessage("Error occur please try again")
+                    app.applicationContext.showToastMessage("Error occur please try again")
                 }
             })
     }
 
     fun callApiFoodItem(category_id: String?) {
-        //context?.showToastMessage(,"CategoryID->"+category_id,Toast.LENGTH_SHORT).show();
         Api.info.getResCatItemList(category_id)?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 try {
-                    //Log.d("Result", jsonObject.toString());
                     if (response.code() == Constant.SUCCESS_CODE_n) {
                         val jsonObject = JSONObject(Gson().toJson(response.body()))
                         if (jsonObject.getString("status")
@@ -128,12 +125,12 @@ class PickUpSelectFoodViewModel(var app: Application) : AndroidViewModel(app) {
                     }
                 } catch (ex: Exception) {
                     ex.printStackTrace()
-                    //showToastMessage("Error occur please try again")
+                    app.applicationContext.showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                //showToastMessage("Error occur please try again")
+                app.applicationContext.showToastMessage(Constant.ERRORMSG)
             }
         })
     }
