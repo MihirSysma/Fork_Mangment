@@ -268,6 +268,7 @@ class RegisterActivity : AppCompatActivity(),
                                     NAME,
                                     jsonObject.getJSONObject("data").getString("name")
                                 )
+                                dialog.dismiss()
                                 showAlertViewNextScreen()
                             } else if (response.code() == ERROR_CODE) {
                                 binding.progressBar.visibility = View.GONE

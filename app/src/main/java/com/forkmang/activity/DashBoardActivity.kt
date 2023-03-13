@@ -22,7 +22,7 @@ import com.google.android.material.navigation.NavigationView
 class DashBoardActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener {
 
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private val binding by lazy { ActivityDashboardDrawerBinding.inflate(layoutInflater) }
 
@@ -200,7 +200,7 @@ class DashBoardActivity : AppCompatActivity(),
         btnYesLogout.setOnClickListener {
             closeDrawer()
             dialog.dismiss()
-            storePrefrence.clear()
+            storePreference.clear()
             val intent = Intent(this@DashBoardActivity, LoginActivity::class.java)
             startActivity(intent)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

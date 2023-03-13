@@ -288,8 +288,8 @@ interface APIService {
     @POST(WebApi.VERIFY_OTP)
     @FormUrlEncoded
     fun verifyOtp(
-        @Field("verification_id") verifyID: String?,
-        @Field("verification_code") verifyCode: String?,
+        @Field("verfication_id") verifyID: String?,
+        @Field("verfication_code") verifyCode: String?,
         @Field("customer_id") custId: String?
     ): Call<JsonObject?>?
 

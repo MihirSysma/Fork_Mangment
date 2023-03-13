@@ -23,7 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class BookingTabViewActivity : AppCompatActivity() {
 
     var activity: Activity = this@BookingTabViewActivity
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var longitude = 0.0
     var latitude = 0.0
 
@@ -95,15 +95,15 @@ class BookingTabViewActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (storePrefrence.getCoordinates(Constant.KEY_LATITUDE) == "0.0" || storePrefrence.getCoordinates(
+        if (storePreference.getCoordinates(Constant.KEY_LATITUDE) == "0.0" || storePreference.getCoordinates(
                 Constant.KEY_LONGITUDE
             ) == "0.0"
         ) {
             longitude = 0.0
             latitude = 0.0
         } else {
-            longitude = storePrefrence.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble() ?: 0.0
-            latitude = storePrefrence.getCoordinates(Constant.KEY_LATITUDE)?.toDouble() ?: 0.0
+            longitude = storePreference.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble() ?: 0.0
+            latitude = storePreference.getCoordinates(Constant.KEY_LATITUDE)?.toDouble() ?: 0.0
         }
     }
 }

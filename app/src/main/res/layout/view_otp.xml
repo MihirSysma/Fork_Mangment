@@ -44,7 +44,7 @@
             app:cursorColor="@color/text_colorblack"
             app:cursorWidth="2dp"
             app:hideLineWhenFilled="true"
-            app:itemCount="6"
+            app:itemCount="4"
             app:itemHeight="48dp"
             app:itemRadius="4dp"
             app:itemSpacing="3dp"
