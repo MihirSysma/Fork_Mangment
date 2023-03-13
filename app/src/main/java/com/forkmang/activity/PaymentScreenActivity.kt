@@ -149,12 +149,12 @@ class PaymentScreenActivity : AppCompatActivity() {
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(Constant.ERRORMSG)
                 }
             })
     } /*public void callApi_makepayment(String order_id,String payment_type)

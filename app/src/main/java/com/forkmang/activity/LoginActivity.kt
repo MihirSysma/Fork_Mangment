@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.databinding.ActivityLoginBinding
+import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.ERROR_CODE
 import com.forkmang.helper.Constant.IDENTFIER
 import com.forkmang.helper.Constant.NAME
@@ -89,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
                             finish()
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            showToastMessage("Error occur please try again")
+                            showToastMessage(Constant.ERRORMSG)
                         }
                     } else if (response.code() == ERROR_CODE) {
                         val jsonObject = JSONObject(response.errorBody()!!.string())
@@ -101,22 +102,22 @@ class LoginActivity : AppCompatActivity() {
                             showToastMessage(errorMsg)
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            showToastMessage("Error occur please try again")
+                            showToastMessage(Constant.ERRORMSG)
                         }
                     }
                 } catch (ex: JSONException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(Constant.ERRORMSG)
                 } catch (ex: IOException) {
                     ex.printStackTrace()
                     binding.progressBar.visibility = View.GONE
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(Constant.ERRORMSG)
                 }
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage("Error occur please try again")
+                showToastMessage(Constant.ERRORMSG)
                 binding.progressBar.visibility = View.GONE
             }
         })

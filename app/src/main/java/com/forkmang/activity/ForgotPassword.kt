@@ -36,7 +36,7 @@ class ForgotPassword : AppCompatActivity() {
 
     private val binding by lazy { ActivityForgotPasswordBinding.inflate(layoutInflater) }
     var ctx: Context = this@ForgotPassword
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var idToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +51,7 @@ class ForgotPassword : AppCompatActivity() {
                 if (binding.etvcnfPass.text?.isNotEmpty() == true) {
                     if ((binding.etvNewpas.text.toString() == binding.etvcnfPass.text.toString())) {
                         //call api
-                        val contact: String? = storePrefrence.getString(MOBILE)
+                        val contact: String? = storePreference.getString(MOBILE)
                         if (contact != null) {
                             //TODO: change the token method
                             getToken(contact)
@@ -84,12 +84,12 @@ class ForgotPassword : AppCompatActivity() {
                         ) {
                             binding.progressBar.visibility = View.GONE
                             showToastMessage(jsonObject.getString("message"))
-                            storePrefrence.setString(
+                            storePreference.setString(
                                 MOBILE,
                                 jsonObject.getJSONObject("data").getString("contact")
                             )
                             //storePrefrence.setString(Constant.TOKEN_FORGOTPASS, jsonObject.getJSONObject("data").getString("token"));
-                            storePrefrence.setBoolean("keeplogin", false)
+                            storePreference.setBoolean("keeplogin", false)
                             if (Utils.isNetworkAvailable(ctx)) {
                                 callApiResetPassword(
                                     jsonObject.getJSONObject("data").getString("contact"),

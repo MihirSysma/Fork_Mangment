@@ -689,14 +689,12 @@ class BookingTableDetailView : Activity() {
             OnDateSetListener { view: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
                 val month: Int = selectedMonth + 1
                 val date: Int = selectedDay
-                var strMonth = ""
-                var strDate = ""
-                strMonth = if (month < 10) {
+                val strMonth = if (month < 10) {
                     "0$month"
                 } else {
                     month.toString()
                 }
-                strDate = if (date < 10) {
+                val strDate = if (date < 10) {
                     "0$date"
                 } else {
                     date.toString()
@@ -737,15 +735,13 @@ class BookingTableDetailView : Activity() {
                 )
                 var month = datePicker.month
                 val date = datePicker.dayOfMonth
-                var strMonth = ""
-                var strDate = ""
                 month += 1
-                strMonth = if (month < 10) {
+                val strMonth = if (month < 10) {
                     "0$month"
                 } else {
                     month.toString()
                 }
-                strDate = if (date < 10) {
+                val strDate = if (date < 10) {
                     "0$date"
                 } else {
                     date.toString()
@@ -884,7 +880,7 @@ class BookingTableDetailView : Activity() {
         val btnYes: Button = dialogView.findViewById(R.id.btn_yes)
         btnYes.setOnClickListener {
             dialog.dismiss()
-            val mainIntent: Intent =
+            val mainIntent =
                 Intent(this@BookingTableDetailView, PaymentScreenActivity::class.java)
             mainIntent.putExtra("model", tableList)
             mainIntent.putExtra("restromodel", restoData)

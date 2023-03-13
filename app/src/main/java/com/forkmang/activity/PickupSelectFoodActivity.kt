@@ -23,6 +23,7 @@ import com.forkmang.databinding.ActivitySelectfoodBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.COMMAND_CART_LIST_VIEW
 import com.forkmang.helper.Utils
+import com.forkmang.helper.serializable
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.android.material.tabs.TabLayout
@@ -59,7 +60,8 @@ class PickupSelectFoodActivity : AppCompatActivity() {
         binding.linearView3.visibility = View.GONE
         binding.txtBooktable.text = "Pickup Table"
         binding.imgEdit.setOnClickListener { finish() }
-        restoData = intent.getSerializableExtra("restromodel") as RestoData?
+        restoData =
+            intent.serializable<RestoData>("restromodel") //intent.getSerializableExtra("restromodel") as RestoData?
         //tableList = (TableList) getIntent().getSerializableExtra("table_model");
 
         /*String timedate = getIntent().getStringExtra("timedate");

@@ -25,8 +25,6 @@ class BookingTabViewActivity : AppCompatActivity() {
     var activity: Activity = this@BookingTabViewActivity
     private val storePrefrence by lazy { StorePrefrence(this) }
     var longitude = 0.0
-    var c_longitude = 0.0
-    var c_latitude = 0.0
     var latitude = 0.0
 
     private val viewModel by lazy { ViewModelProvider(this)[ViewModel::class.java] }

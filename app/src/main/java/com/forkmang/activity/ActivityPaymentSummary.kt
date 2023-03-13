@@ -534,12 +534,12 @@ class ActivityPaymentSummary : AppCompatActivity() {
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    showToastMessage("Error occur please try again")
+                    showToastMessage(ERRORMSG)
                 }
             })
     }

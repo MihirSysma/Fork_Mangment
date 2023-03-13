@@ -246,7 +246,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
             }
 
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                showToastMessage("Error occur please try again")
+                showToastMessage(ERRORMSG)
                 binding.progressBar.visibility = View.GONE
             }
         })

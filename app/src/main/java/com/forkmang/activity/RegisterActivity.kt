@@ -271,25 +271,41 @@ class RegisterActivity : AppCompatActivity(),
                                 showAlertViewNextScreen()
                             } else if (response.code() == ERROR_CODE) {
                                 binding.progressBar.visibility = View.GONE
-                                showToastMessage("Error occur please try again")
+                                val jsonObject = JSONObject(response.errorBody()!!.string())
+                                if (jsonObject.getInt("status") == ERROR_CODE) {
+                                    if (jsonObject.getJSONObject("message")
+                                            .has("verfication_code")
+                                    ) {
+                                        val errorMsg: String =
+                                            jsonObject.getJSONObject("message")
+                                                .getJSONArray("verfication_code")
+                                                .getString(0)
+                                        showToastMessage(errorMsg)
+                                    } else {
+                                        showToastMessage(ERRORMSG)
+                                    }
+
+                                } else {
+                                    showToastMessage(ERRORMSG)
+                                }
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
                             binding.progressBar.visibility = View.GONE
-                            showToastMessage("Error occur please try again")
+                            showToastMessage(ERRORMSG)
                         }
                     }
 
                     override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         binding.progressBar.visibility = View.GONE
-                        showToastMessage("Error occur please try again")
+                        showToastMessage(ERRORMSG)
                     }
 
                 })
         }
 
         resendOtp.setOnClickListener {
-            // TODO: handle it
+            // TODO: handle resend OTP
         }
 
         dialog.show()
@@ -353,19 +369,23 @@ class RegisterActivity : AppCompatActivity(),
                             }
                         } else if (response.code() == ERROR_CODE) {
                             val jsonObject = JSONObject(response.errorBody()!!.string())
-                            if (jsonObject.getString("status").equals("422", ignoreCase = true)) {
-                                val errorMsg: String =
-                                    jsonObject.getJSONObject("message").getJSONArray("email")
-                                        .getString(0)
-                                val errorMsg2: String =
-                                    jsonObject.getJSONObject("message").getJSONArray("contact")
-                                        .getString(0)
-                                showToastMessage(errorMsg)
-                                showToastMessage(errorMsg2)
+                            if (jsonObject.getInt("status") == ERROR_CODE) {
+                                if (jsonObject.getJSONObject("message").has("email")) {
+                                    val errorMsg: String =
+                                        jsonObject.getJSONObject("message").getJSONArray("email")
+                                            .getString(0)
+                                    showToastMessage(errorMsg)
+                                }
+                                if (jsonObject.getJSONObject("message").has("contact")) {
+                                    val errorMsg2: String =
+                                        jsonObject.getJSONObject("message").getJSONArray("contact")
+                                            .getString(0)
+                                    showToastMessage(errorMsg2)
+                                }
                                 binding.progressBar.visibility = View.GONE
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                showToastMessage("Error occur please try again")
+                                showToastMessage(ERRORMSG)
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
