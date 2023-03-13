@@ -293,6 +293,12 @@ interface APIService {
         @Field("customer_id") custId: String?
     ): Call<JsonObject?>?
 
+    @POST(WebApi.RESEND_OTP)
+    @FormUrlEncoded
+    fun resendOtp(
+        @Field("contact") contact: String?
+    ): Call<JsonObject?>?
+
     companion object {
         const val API_BASE_URL =
             "https://staging.greatly-done.com/fork-mgmt/fork-management/api/v1/"

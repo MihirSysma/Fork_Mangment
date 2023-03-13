@@ -75,6 +75,7 @@ class RegisterActivity : AppCompatActivity(),
     var password: String? = null
     var confpassword: String? = null
     var email: String? = null
+    lateinit var verificationId: String
     private var googleApiClient: GoogleApiClient? = null
 
     private val binding by lazy { ActivityRegisterBinding.inflate(layoutInflater) }
@@ -142,10 +143,8 @@ class RegisterActivity : AppCompatActivity(),
                                         if ((password == confpassword)) {
                                             //call api
                                             val phoneNumber: String = ("966$mobile")
-                                            //Toast.makeText(ctx, "success", Toast.LENGTH_SHORT).show();
                                             try {
                                                 binding.progressBar.visibility = View.VISIBLE
-                                                // TODO: Do API Call here with all the fields, get success code and then show otp code field, after that use new api verifyotp to complete register
                                                 callApiRegisterUser(
                                                     name,
                                                     email,
@@ -211,7 +210,7 @@ class RegisterActivity : AppCompatActivity(),
             .build()
     }
 
-    fun printHashKey() {
+    private fun printHashKey() {
         // Add code to print out the key hash
         try {
             @SuppressLint("PackageManagerGetSignatures") val info: PackageInfo =
@@ -237,7 +236,7 @@ class RegisterActivity : AppCompatActivity(),
         }
     }
 
-    private fun showAlertView(verificationId: String, CustId: String) {
+    private fun showAlertView(custId: String, mobile_no: String) {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this@RegisterActivity)
         val inflater: LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView: View = inflater.inflate(R.layout.view_otp, null)
@@ -247,9 +246,15 @@ class RegisterActivity : AppCompatActivity(),
         val btnSubmit: Button = dialogView.findViewById(R.id.btn_submit)
         val firstPinView: PinView = dialogView.findViewById(R.id.firstPinView)
         val resendOtp: TextView = dialogView.findViewById(R.id.resend_otp)
+        val progressBar: ProgressBar = dialogView.findViewById(R.id.progressBar2)
 
         btnSubmit.setOnClickListener {
-            Api.info.verifyOtp(verificationId, firstPinView.text.toString(), CustId)
+            if (firstPinView.text?.length != 4) {
+                showToastMessage("Please Enter the OTP sent to the mentioned Phone number")
+                return@setOnClickListener
+            }
+            progressBar.visibility = View.VISIBLE
+            Api.info.verifyOtp(verificationId, firstPinView.text.toString(), custId)
                 ?.enqueue(object : Callback<JsonObject?> {
                     override fun onResponse(
                         call: Call<JsonObject?>,
@@ -257,7 +262,7 @@ class RegisterActivity : AppCompatActivity(),
                     ) {
                         try {
                             if (response.code() == SUCCESS_CODE_n) {
-                                binding.progressBar.visibility = View.GONE
+                                progressBar.visibility = View.GONE
                                 val jsonObject = JSONObject(Gson().toJson(response.body()))
                                 storePreference.setString(
                                     TOKEN_LOGIN,
@@ -270,7 +275,7 @@ class RegisterActivity : AppCompatActivity(),
                                 dialog.dismiss()
                                 showAlertViewNextScreen()
                             } else if (response.code() == ERROR_CODE) {
-                                binding.progressBar.visibility = View.GONE
+                                progressBar.visibility = View.GONE
                                 val jsonObject = JSONObject(response.errorBody()!!.string())
                                 if (jsonObject.getInt("status") == ERROR_CODE) {
                                     if (jsonObject.getJSONObject("message")
@@ -291,13 +296,13 @@ class RegisterActivity : AppCompatActivity(),
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            binding.progressBar.visibility = View.GONE
+                            progressBar.visibility = View.GONE
                             showToastMessage(ERRORMSG)
                         }
                     }
 
                     override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                        binding.progressBar.visibility = View.GONE
+                        progressBar.visibility = View.GONE
                         showToastMessage(ERRORMSG)
                     }
 
@@ -305,7 +310,30 @@ class RegisterActivity : AppCompatActivity(),
         }
 
         resendOtp.setOnClickListener {
-            // TODO: handle resend OTP
+            progressBar.visibility = View.VISIBLE
+            Api.info.resendOtp(mobile_no)?.enqueue(object : Callback<JsonObject?> {
+                override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
+                    try {
+                        val jsonObject = JSONObject(Gson().toJson(response.body()))
+                        if (response.code() == SUCCESS_CODE_n) {
+                            verificationId =
+                                jsonObject.getJSONObject("data").getInt("verfication_id").toString()
+                            showToastMessage(jsonObject.getString("message"))
+                        }
+                        progressBar.visibility = View.GONE
+
+                    } catch (e: Exception) {
+                        progressBar.visibility = View.GONE
+                        e.printStackTrace()
+                        showToastMessage(ERRORMSG)
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    progressBar.visibility = View.GONE
+                    showToastMessage(ERRORMSG)
+                }
+            })
         }
 
         dialog.show()
@@ -358,7 +386,8 @@ class RegisterActivity : AppCompatActivity(),
                                 val vID = jsonObject.getJSONObject("data").getInt("verfication_id")
                                 val custID = jsonObject.getJSONObject("data").getString("id")
                                 storePreference.setString(IDENTFIER, "")
-                                showAlertView(vID.toString(), custID)
+                                verificationId = vID.toString()
+                                showAlertView(custID, mobile_no)
                             } else {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("status"))
