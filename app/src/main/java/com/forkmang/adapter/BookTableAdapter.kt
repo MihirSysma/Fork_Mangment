@@ -46,7 +46,7 @@ class BookTableAdapter(
     override fun onBindViewHolder(holder: BookTableItemHolder, position: Int) {
         val bookTable = bookTable_dataArrayList[position]
         holder.txtrestroname.text = bookTable.rest_name
-        holder.txt_endtime.text = bookTable.endtime
+        holder.txtEndtime.text = bookTable.endtime
         holder.txttotalkm.text = bookTable.distance + " Km"
     }
 
@@ -54,28 +54,28 @@ class BookTableAdapter(
     inner class BookTableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgproduct: ImageView
         var txtrestroname: TextView
-        var txt_endtime: TextView
-        var txt_distance: TextView
+        var txtEndtime: TextView
+        var txtDistance: TextView
         var txttotalkm: TextView
-        var txt_ratingno: TextView
-        var rating_bar: RatingBar
-        var relative_view: RelativeLayout
+        var txtRatingno: TextView
+        var ratingBar: RatingBar
+        var relativeView: RelativeLayout
 
         init {
-            relative_view = itemView.findViewById(R.id.relative_view)
+            relativeView = itemView.findViewById(R.id.relative_view)
             txtrestroname = itemView.findViewById(R.id.txtrestroname)
-            txt_endtime = itemView.findViewById(R.id.txt_endtime)
-            txt_distance = itemView.findViewById(R.id.txt_distance)
+            txtEndtime = itemView.findViewById(R.id.txt_endtime)
+            txtDistance = itemView.findViewById(R.id.txt_distance)
             txttotalkm = itemView.findViewById(R.id.txt_totalkm)
-            txt_ratingno = itemView.findViewById(R.id.txt_ratingno)
+            txtRatingno = itemView.findViewById(R.id.txt_ratingno)
             imgproduct = itemView.findViewById(R.id.imgrestro)
-            rating_bar = itemView.findViewById(R.id.rating_bar)
-            relative_view.setOnClickListener {
+            ratingBar = itemView.findViewById(R.id.rating_bar)
+            relativeView.setOnClickListener {
                 val position = bindingAdapterPosition
                 val restoData = bookTable_dataArrayList[position]
-                val resturant_id = restoData.id
+                val resturantId = restoData.id
                 val intent = Intent(activity, BookingTableDetailView::class.java)
-                intent.putExtra("resturant_id", resturant_id)
+                intent.putExtra("resturant_id", resturantId)
                 intent.putExtra("restromodel", restoData)
                 intent.putExtra("datetime", txt_datetime)
                 activity.startActivity(intent)

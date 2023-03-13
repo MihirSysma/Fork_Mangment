@@ -32,13 +32,13 @@ class WalletFragmentAdapter : RecyclerView.Adapter<WalletItemHolder> {
 
     override fun onBindViewHolder(holder: WalletItemHolder, position: Int) {
         if (position % 2 == 0) {
-            holder.relative_view.background =
+            holder.relativeView.background =
                 ContextCompat.getDrawable(activity, R.drawable.layout_rectangle_gray_2)
-            holder.money_transaction_icon.setImageResource(R.drawable.money_out)
+            holder.moneyTransactionIcon.setImageResource(R.drawable.money_out)
         } else {
-            holder.relative_view.background =
+            holder.relativeView.background =
                 ContextCompat.getDrawable(activity, R.drawable.layout_rectangle_gray_2_1)
-            holder.money_transaction_icon.setImageResource(R.drawable.charge)
+            holder.moneyTransactionIcon.setImageResource(R.drawable.charge)
         }
     }
 
@@ -48,12 +48,12 @@ class WalletFragmentAdapter : RecyclerView.Adapter<WalletItemHolder> {
     }
 
     inner class WalletItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var relative_view: RelativeLayout
-        var money_transaction_icon: ImageView
+        var relativeView: RelativeLayout
+        var moneyTransactionIcon: ImageView
 
         init {
-            relative_view = itemView.findViewById(R.id.relative_view)
-            money_transaction_icon = itemView.findViewById(R.id.money_transaction_icon)
+            relativeView = itemView.findViewById(R.id.relative_view)
+            moneyTransactionIcon = itemView.findViewById(R.id.money_transaction_icon)
         }
     }
 }

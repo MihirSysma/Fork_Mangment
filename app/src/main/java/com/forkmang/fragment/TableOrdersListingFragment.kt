@@ -25,7 +25,7 @@ import retrofit2.Response
 
 class TableOrdersListingFragment : Fragment() {
 
-    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePrefrence(requireContext()) }
     var tableOrderListingArrayList: ArrayList<TableOrderListing>? = null
 
     private var _binding: FragmentBooktableLayoutOrdersBinding? = null
@@ -53,7 +53,7 @@ class TableOrdersListingFragment : Fragment() {
     //Api code for Book Table start
     private fun callapi_gettableorderslist() {
         binding.progressBar.visibility = View.VISIBLE
-        info.getBookTableListing("Bearer " + storePrefrence.getString(TOKEN_LOGIN))
+        info.getBookTableListing("Bearer " + storePreference.getString(TOKEN_LOGIN))
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {

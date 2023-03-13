@@ -32,7 +32,7 @@ import retrofit2.Response
 
 class ContactFragment : Fragment() {
 
-    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePrefrence(requireContext()) }
     var progressBar: ProgressBar? = null
 
     override fun onCreateView(
@@ -47,9 +47,9 @@ class ContactFragment : Fragment() {
         val etvMobile: EditText = view.findViewById(R.id.etv_mobile)
         val etvMsg: EditText = view.findViewById(R.id.etv_msg)
         val btnSubmit: Button = view.findViewById(R.id.btn_submit)
-        etvUserName.setText(storePrefrence.getString(NAME))
+        etvUserName.setText(storePreference.getString(NAME))
         //etv_email.setText("test@gmail.com");
-        etvMobile.setText(storePrefrence.getString(MOBILE))
+        etvMobile.setText(storePreference.getString(MOBILE))
         //etv_msg.setText("Hi this is test msg");
         btnSubmit.setOnClickListener {
             if (etvUserName.text.isNotEmpty()) {
@@ -88,7 +88,7 @@ class ContactFragment : Fragment() {
     private fun callApiContact(name: String, email: String, phone: String, msg: String) {
         progressBar?.visibility = View.VISIBLE
         info.contact(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             name, email, phone, msg
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {

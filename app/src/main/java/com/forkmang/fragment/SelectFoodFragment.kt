@@ -263,7 +263,7 @@ class SelectFoodFragment : Fragment() {
             //Log.d("booking_id", booking_id);
             radioBtnIdArr.clear()
             if (extra.isEmpty()) {
-                extra = "1,2" //hardcoded please coreect it
+                extra = "1,2" //hardcoded please correct it
             }
             Log.d("extra", extra)
             Log.d("qty", qty)

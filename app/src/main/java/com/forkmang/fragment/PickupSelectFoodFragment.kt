@@ -142,7 +142,6 @@ class PickupSelectFoodFragment : Fragment() {
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
                         if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status").equals("200", ignoreCase = true)) {

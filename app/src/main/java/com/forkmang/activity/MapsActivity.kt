@@ -3,8 +3,6 @@ package com.forkmang.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.*
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -13,7 +11,6 @@ import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,12 +27,10 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -55,13 +50,13 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     var text: TextView? = null
     var mapFragment: SupportMapFragment? = null
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.maps_activity)
 
-        val btn_updateloc: Button = findViewById(R.id.btn_updateloc)
+        val btnUpdateloc: Button = findViewById(R.id.btn_updateloc)
         ApiConfig.getLocation(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -72,7 +67,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val fabSatellite: FloatingActionButton = findViewById(R.id.fabSatellite)
         val fabStreet: FloatingActionButton = findViewById(R.id.fabStreet)
         mapFragment?.getMapAsync(this@MapsActivity)
-        btn_updateloc.setOnClickListener { updateloc() }
+        btnUpdateloc.setOnClickListener { updateloc() }
         fabSatellite.setOnClickListener {
             mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
             mapFragment?.getMapAsync(this@MapsActivity)
@@ -92,7 +87,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 dialog.setPositiveButton(
                     "Open location settings"
                 ) { paramDialogInterface, paramInt ->
-                    val myIntent: Intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                     startActivity(myIntent)
                 }
                 dialog.setNegativeButton("Cancel"
@@ -125,7 +120,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             val latLng: LatLng = cameraPosition.target
             mMap?.clear()
             try {
-                val mLocation: Location = Location("")
+                val mLocation = Location("")
                 mLocation.latitude = latLng.latitude
                 mLocation.longitude = latLng.longitude
                 Log.d("latlong==>", "" + latLng.longitude)
@@ -183,7 +178,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         Log.d("longitude", "" + longitude)
         saveLocation(latitude, longitude)
         Log.d("clat==>", "" + c_latitude)
-        val handler: Handler = Handler()
+        val handler = Handler()
         handler.postDelayed({
             text?.text = getString(R.string.location_1) + ApiConfig.getAddress(
                 latitude,
@@ -191,21 +186,21 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 this@MapsActivity
             )
             val view: View = findViewById(R.id.main_layout_id)
-            val message: String = "Your location has been updated"
+            val message = "Your location has been updated"
             val duration: Int = Snackbar.LENGTH_SHORT
             showSnackbar(view, message, duration)
         }, 1000)
     }
 
-    fun saveLocation(latitude: Double, longitude: Double) {
-        storePrefrence.setData(Constant.KEY_LATITUDE, latitude.toString())
-        storePrefrence.setData(Constant.KEY_LONGITUDE, longitude.toString())
+    private fun saveLocation(latitude: Double, longitude: Double) {
+        storePreference.setData(Constant.KEY_LATITUDE, latitude.toString())
+        storePreference.setData(Constant.KEY_LONGITUDE, longitude.toString())
         finish()
         //storePrefrence.setString(Constant.KEY_LATITUDE, String.valueOf(latitude));
         //storePrefrence.setString(Constant.KEY_LONGITUDE, String.valueOf(longitude));
     }
 
-    fun showSnackbar(view: View?, message: String?, duration: Int) {
+    private fun showSnackbar(view: View?, message: String?, duration: Int) {
         Snackbar.make((view)!!, (message)!!, duration).show()
     }
 
@@ -262,7 +257,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
                     //longitude = location.getLongitude();
                     //latitude = location.getLatitude();
-                    if ((storePrefrence.getCoordinates(Constant.KEY_LATITUDE) == "0.0") || (storePrefrence.getCoordinates(
+                    if ((storePreference.getCoordinates(Constant.KEY_LATITUDE) == "0.0") || (storePreference.getCoordinates(
                             Constant.KEY_LONGITUDE
                         ) == "0.0")
                     ) {
@@ -270,9 +265,10 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                         latitude = location.latitude
                     } else {
                         longitude =
-                            storePrefrence.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble()?:0.0
+                            storePreference.getCoordinates(Constant.KEY_LONGITUDE)?.toDouble()
+                                ?: 0.0
                         latitude =
-                            storePrefrence.getCoordinates(Constant.KEY_LATITUDE)?.toDouble()?:0.0
+                            storePreference.getCoordinates(Constant.KEY_LATITUDE)?.toDouble() ?: 0.0
                     }
                     Log.d("c_latitude==>", "" + c_latitude)
                     Log.d("c_longitude==>", "" + c_longitude)

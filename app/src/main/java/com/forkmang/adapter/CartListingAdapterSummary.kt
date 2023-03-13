@@ -70,12 +70,12 @@ class CartListingAdapterSummary(
             minus_btn.setOnClickListener { v: View? ->
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 if (isNetworkAvailable(ctx)) {
-                    var qty_update = txt_qty.text.toString().toInt()
-                    --qty_update
-                    txt_qty.text = qty_update.toString()
-                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+                    var qtyUpdate = txt_qty.text.toString().toInt()
+                    --qtyUpdate
+                    txt_qty.text = qtyUpdate.toString()
+                    onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
                 } else {
                     ctx.showToastMessage(Constant.NETWORKEROORMSG)
                 }
@@ -83,12 +83,12 @@ class CartListingAdapterSummary(
             plus_btn.setOnClickListener { v: View? ->
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 if (isNetworkAvailable(ctx)) {
-                    var qty_update = txt_qty.text.toString().toInt()
-                    ++qty_update
-                    txt_qty.text = qty_update.toString()
-                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+                    var qtyUpdate = txt_qty.text.toString().toInt()
+                    ++qtyUpdate
+                    txt_qty.text = qtyUpdate.toString()
+                    onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
 
                 } else {
                     ctx.showToastMessage(Constant.NETWORKEROORMSG)
@@ -97,7 +97,7 @@ class CartListingAdapterSummary(
             img_del.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 val alertDialog = AlertDialog.Builder(ctx)
                 val inflater =
                     ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -108,14 +108,14 @@ class CartListingAdapterSummary(
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 val tvremove: TextView = dialogView.findViewById(R.id.tvcancel)
                 val tvclose: TextView = dialogView.findViewById(R.id.tvclose)
-                val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
+                val txtMsg: TextView = dialogView.findViewById(R.id.txt_msg)
                 tvclose.setText(R.string.cancel)
                 tvremove.setText(R.string.remove)
-                txt_msg.text = ctx.resources.getString(R.string.deleteproductmsg)
+                txtMsg.text = ctx.resources.getString(R.string.deleteproductmsg)
                 tvremove.setOnClickListener {
                     dialog.dismiss()
                     if (isNetworkAvailable(ctx)) {
-                        onItemClicked(REMOVE_CART_ITEM, cart_item_id, null)
+                        onItemClicked(REMOVE_CART_ITEM, cartItemId, null)
                     } else {
                         ctx.showToastMessage(Constant.NETWORKEROORMSG)
                     }

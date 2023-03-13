@@ -46,7 +46,7 @@ class PickupFragmentBookTableAdapter(
     override fun onBindViewHolder(holder: BookTableItemHolder, position: Int) {
         val bookTable: RestoData = resto_dataArrayList[position]
         holder.txtrestroname.text = bookTable.rest_name
-        holder.txt_endtime.text = bookTable.endtime
+        holder.txtEndtime.text = bookTable.endtime
         holder.txttotalkm.text = bookTable.distance + " Km"
     }
 
@@ -54,23 +54,23 @@ class PickupFragmentBookTableAdapter(
     inner class BookTableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgproduct: ImageView
         var txtrestroname: TextView
-        var txt_endtime: TextView
-        var txt_distance: TextView
+        var txtEndtime: TextView
+        var txtDistance: TextView
         var txttotalkm: TextView
-        var txt_ratingno: TextView
-        var rating_bar: RatingBar
-        var relative_view: RelativeLayout
+        var txtRatingno: TextView
+        var ratingBar: RatingBar
+        var relativeView: RelativeLayout
 
         init {
-            relative_view = itemView.findViewById<RelativeLayout>(R.id.relative_view)
+            relativeView = itemView.findViewById<RelativeLayout>(R.id.relative_view)
             txtrestroname = itemView.findViewById<TextView>(R.id.txtrestroname)
-            txt_endtime = itemView.findViewById<TextView>(R.id.txt_endtime)
-            txt_distance = itemView.findViewById<TextView>(R.id.txt_distance)
+            txtEndtime = itemView.findViewById<TextView>(R.id.txt_endtime)
+            txtDistance = itemView.findViewById<TextView>(R.id.txt_distance)
             txttotalkm = itemView.findViewById<TextView>(R.id.txt_totalkm)
-            txt_ratingno = itemView.findViewById<TextView>(R.id.txt_ratingno)
+            txtRatingno = itemView.findViewById<TextView>(R.id.txt_ratingno)
             imgproduct = itemView.findViewById<ImageView>(R.id.imgrestro)
-            rating_bar = itemView.findViewById<RatingBar>(R.id.rating_bar)
-            relative_view.setOnClickListener {
+            ratingBar = itemView.findViewById<RatingBar>(R.id.rating_bar)
+            relativeView.setOnClickListener {
                 val position: Int = bindingAdapterPosition
                 val restoData: RestoData = resto_dataArrayList[position]
                 onItemClicked(restoData)

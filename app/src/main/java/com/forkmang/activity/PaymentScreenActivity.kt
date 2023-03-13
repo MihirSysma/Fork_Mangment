@@ -33,7 +33,7 @@ class PaymentScreenActivity : AppCompatActivity() {
     var isbooktable: String? = null
     var comingFrom: String? = null
 
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     private val binding by lazy { ActivityPaymentScreenBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +85,7 @@ class PaymentScreenActivity : AppCompatActivity() {
                     if (comingFrom.equals("SelectFood", ignoreCase = true)) {
                         callApiMakePayment(
                             orderId,
-                            storePrefrence.getString(Constant.BOOKINGID),
+                            storePreference.getString(Constant.BOOKINGID),
                             paymentType,
                             "order"
                         )
@@ -107,7 +107,7 @@ class PaymentScreenActivity : AppCompatActivity() {
         order_type: String?
     ) {
         Api.info.makePayment(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(Constant.TOKEN_LOGIN),
             order_id,
             booking_id,
             payment_type,

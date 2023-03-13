@@ -50,9 +50,9 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
     override fun onBindViewHolder(holder: CartProductItemHolder, position: Int) {
         val cartBooking = cartBookingArrayList!![position]
         holder.txtproductname.text = cartBooking.cart_item_details_name
-        holder.txt_toopings.text = cartBooking.extra_item_details_name
-        holder.txt_qty.text = cartBooking.cart_item_qty
-        holder.txt_price.text =
+        holder.txtToopings.text = cartBooking.extra_item_details_name
+        holder.txtQty.text = cartBooking.cart_item_qty
+        holder.txtPrice.text =
             ctx.resources.getString(R.string.rupee) + cartBooking.cart_item_details_price
     }
 
@@ -60,56 +60,56 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
 
     inner class CartProductItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtproductname: TextView
-        var txt_toopings: TextView
-        var txt_type: TextView
-        var txt_qty: TextView
-        var plus_btn: TextView
-        var minus_btn: TextView
-        var txt_price: TextView
-        var img_del: ImageView
-        var img_edit: ImageView
+        var txtToopings: TextView
+        var txtType: TextView
+        var txtQty: TextView
+        var plusBtn: TextView
+        var minusBtn: TextView
+        var txtPrice: TextView
+        var imgDel: ImageView
+        var imgEdit: ImageView
 
         init {
             txtproductname = itemView.findViewById(R.id.txtproductname)
-            txt_toopings = itemView.findViewById(R.id.txt_toopings)
-            txt_type = itemView.findViewById(R.id.txt_type)
-            txt_type = itemView.findViewById(R.id.txt_type)
-            txt_qty = itemView.findViewById(R.id.txt_qty)
-            txt_price = itemView.findViewById(R.id.txt_price)
-            plus_btn = itemView.findViewById(R.id.plus_btn)
-            minus_btn = itemView.findViewById(R.id.minus_btn)
-            img_del = itemView.findViewById(R.id.img_del)
-            img_edit = itemView.findViewById(R.id.img_edit)
-            minus_btn.setOnClickListener {
+            txtToopings = itemView.findViewById(R.id.txt_toopings)
+            txtType = itemView.findViewById(R.id.txt_type)
+            txtType = itemView.findViewById(R.id.txt_type)
+            txtQty = itemView.findViewById(R.id.txt_qty)
+            txtPrice = itemView.findViewById(R.id.txt_price)
+            plusBtn = itemView.findViewById(R.id.plus_btn)
+            minusBtn = itemView.findViewById(R.id.minus_btn)
+            imgDel = itemView.findViewById(R.id.img_del)
+            imgEdit = itemView.findViewById(R.id.img_edit)
+            minusBtn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 if (Utils.isNetworkAvailable(ctx)) {
-                    var qty_update = txt_qty.text.toString().toInt()
-                    --qty_update
-                    txt_qty.text = qty_update.toString()
-                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+                    var qtyUpdate = txtQty.text.toString().toInt()
+                    --qtyUpdate
+                    txtQty.text = qtyUpdate.toString()
+                    onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
                 } else {
                     ctx.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
-            plus_btn.setOnClickListener {
+            plusBtn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 if (Utils.isNetworkAvailable(ctx)) {
-                    var qty_update = txt_qty.text.toString().toInt()
-                    ++qty_update
-                    txt_qty.text = qty_update.toString()
-                    onItemClicked(ADD_QTY, cart_item_id, qty_update.toString())
+                    var qtyUpdate = txtQty.text.toString().toInt()
+                    ++qtyUpdate
+                    txtQty.text = qtyUpdate.toString()
+                    onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
                 } else {
                     ctx.showToastMessage(Constant.NETWORKEROORMSG)
                 }
             }
-            img_del.setOnClickListener {
+            imgDel.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
-                val cart_item_id = cartBooking.cart_item_id
+                val cartItemId = cartBooking.cart_item_id
                 val alertDialog = AlertDialog.Builder(ctx)
                 val inflater =
                     ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -118,21 +118,21 @@ class CartListingAdapter : RecyclerView.Adapter<CartListingAdapter.CartProductIt
                 alertDialog.setCancelable(true)
                 val dialog = alertDialog.create()
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                val tvremove: TextView = dialogView.findViewById(R.id.tvcancel)
-                val tvclose: TextView = dialogView.findViewById(R.id.tvclose)
-                val txt_msg: TextView = dialogView.findViewById(R.id.txt_msg)
-                tvclose.setText(R.string.cancel)
-                tvremove.setText(R.string.remove)
-                txt_msg.text = ctx.resources.getString(R.string.deleteproductmsg)
-                tvremove.setOnClickListener {
+                val tvRemove: TextView = dialogView.findViewById(R.id.tvcancel)
+                val tvClose: TextView = dialogView.findViewById(R.id.tvclose)
+                val txtMsg: TextView = dialogView.findViewById(R.id.txt_msg)
+                tvClose.setText(R.string.cancel)
+                tvRemove.setText(R.string.remove)
+                txtMsg.text = ctx.resources.getString(R.string.deleteproductmsg)
+                tvRemove.setOnClickListener {
                     dialog.dismiss()
                     if (Utils.isNetworkAvailable(ctx)) {
-                        onItemClicked(REMOVE_CART_ITEM, cart_item_id, null)
+                        onItemClicked(REMOVE_CART_ITEM, cartItemId, null)
                     } else {
                         ctx.showToastMessage(Constant.NETWORKEROORMSG)
                     }
                 }
-                tvclose.setOnClickListener {
+                tvClose.setOnClickListener {
                     dialog.dismiss()
                     //onBackPressed();
                 }

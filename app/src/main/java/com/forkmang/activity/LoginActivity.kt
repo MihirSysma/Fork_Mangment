@@ -29,7 +29,7 @@ import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
 
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var ctx: Context = this@LoginActivity
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
 
@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         binding.BtnReg.setOnClickListener {
-            if (storePrefrence.getString(
+            if (storePreference.getString(
                     NAME
                 )?.isEmpty() == true
             ) {
@@ -76,12 +76,12 @@ class LoginActivity : AppCompatActivity() {
                                 .equals(SUCCESS_CODE, ignoreCase = true)
                         ) {
                             binding.progressBar.visibility = View.GONE
-                            storePrefrence.setString(
+                            storePreference.setString(
                                 IDENTFIER,
                                 jsonObject.getJSONObject("data").getString("identifier")
                             )
-                            storePrefrence.setString(TOKEN_LOGIN, "")
-                            storePrefrence.setString(
+                            storePreference.setString(TOKEN_LOGIN, "")
+                            storePreference.setString(
                                 "id",
                                 jsonObject.getJSONObject("data").getString("id")
                             )

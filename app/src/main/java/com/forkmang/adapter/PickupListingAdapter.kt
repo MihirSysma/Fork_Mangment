@@ -13,7 +13,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
 import com.forkmang.data.CartBooking
-import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.NETWORKEROORMSG
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.showToastMessage
@@ -43,9 +42,9 @@ class PickupListingAdapter(
     override fun onBindViewHolder(holder: CartProductItemHolder, position: Int) {
         val cartBooking = cartBookingArrayList!![position]
         holder.txtproductname.text = cartBooking.cart_item_details_name
-        holder.txt_toopings.text = cartBooking.extra_item_details_name
-        holder.txt_qty.text = cartBooking.cart_item_qty
-        holder.txt_price.text =
+        holder.txtToopings.text = cartBooking.extra_item_details_name
+        holder.txtQty.text = cartBooking.cart_item_qty
+        holder.txtPrice.text =
             ctx.resources.getString(R.string.rupee) + cartBooking.cart_item_details_price
     }
 
@@ -53,56 +52,56 @@ class PickupListingAdapter(
 
     inner class CartProductItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var txtproductname: TextView
-        var txt_toopings: TextView
-        var txt_type: TextView
-        var txt_qty: TextView
-        var plus_btn: TextView
-        var minus_btn: TextView
-        var txt_price: TextView
-        var img_del: ImageView
-        var img_edit: ImageView
+        var txtToopings: TextView
+        var txtType: TextView
+        var txtQty: TextView
+        var plusBtn: TextView
+        var minusBtn: TextView
+        var txtPrice: TextView
+        var imgDel: ImageView
+        var imgEdit: ImageView
 
         init {
             txtproductname = itemView.findViewById(R.id.txtproductname)
-            txt_toopings = itemView.findViewById(R.id.txt_toopings)
-            txt_type = itemView.findViewById(R.id.txt_type)
-            txt_type = itemView.findViewById(R.id.txt_type)
-            txt_qty = itemView.findViewById(R.id.txt_qty)
-            txt_price = itemView.findViewById(R.id.txt_price)
-            plus_btn = itemView.findViewById(R.id.plus_btn)
-            minus_btn = itemView.findViewById(R.id.minus_btn)
-            img_del = itemView.findViewById(R.id.img_del)
-            img_edit = itemView.findViewById(R.id.img_edit)
+            txtToopings = itemView.findViewById(R.id.txt_toopings)
+            txtType = itemView.findViewById(R.id.txt_type)
+            txtType = itemView.findViewById(R.id.txt_type)
+            txtQty = itemView.findViewById(R.id.txt_qty)
+            txtPrice = itemView.findViewById(R.id.txt_price)
+            plusBtn = itemView.findViewById(R.id.plus_btn)
+            minusBtn = itemView.findViewById(R.id.minus_btn)
+            imgDel = itemView.findViewById(R.id.img_del)
+            imgEdit = itemView.findViewById(R.id.img_edit)
 
-            minus_btn.setOnClickListener {
+            minusBtn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cartItemId = cartBooking.cart_item_id
                 if (isNetworkAvailable(ctx)) {
-                    var qtyUpdate = txt_qty.text.toString().toInt()
+                    var qtyUpdate = txtQty.text.toString().toInt()
                     --qtyUpdate
-                    txt_qty.text = qtyUpdate.toString()
+                    txtQty.text = qtyUpdate.toString()
                     onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
                 } else {
                     ctx.showToastMessage(NETWORKEROORMSG)
                 }
             }
 
-            plus_btn.setOnClickListener {
+            plusBtn.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cartItemId = cartBooking.cart_item_id
                 if (isNetworkAvailable(ctx)) {
-                    var qtyUpdate = txt_qty.text.toString().toInt()
+                    var qtyUpdate = txtQty.text.toString().toInt()
                     ++qtyUpdate
-                    txt_qty.text = qtyUpdate.toString()
+                    txtQty.text = qtyUpdate.toString()
                     onItemClicked(ADD_QTY, cartItemId, qtyUpdate.toString())
                 } else {
-                    ctx.showToastMessage(Constant.NETWORKEROORMSG)
+                    ctx.showToastMessage(NETWORKEROORMSG)
                 }
             }
 
-            img_del.setOnClickListener {
+            imgDel.setOnClickListener {
                 val position = bindingAdapterPosition
                 val cartBooking = cartBookingArrayList!![position]
                 val cartItemId = cartBooking.cart_item_id
@@ -125,7 +124,7 @@ class PickupListingAdapter(
                     if (isNetworkAvailable(ctx)) {
                         onItemClicked(REMOVE_CART_ITEM, cartItemId, null)
                     } else {
-                        ctx.showToastMessage(Constant.NETWORKEROORMSG)
+                        ctx.showToastMessage(NETWORKEROORMSG)
                     }
                 }
                 tvClose.setOnClickListener {

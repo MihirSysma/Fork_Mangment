@@ -23,12 +23,12 @@ import retrofit2.Response
 class OrderConformationActivity : AppCompatActivity() {
 
     var ctx: Context = this@OrderConformationActivity
-    var tableList_get: TableList? = null
+    var tablelistGet: TableList? = null
     var restoData: RestoData? = null
     var totalpay: String? = null
-    var order_id: String? = null
+    var orderId: String? = null
     var comingfrom: String? = null
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
 
     private val binding by lazy { ActivityConformSeatreserveBinding.inflate(layoutInflater) }
 
@@ -38,7 +38,7 @@ class OrderConformationActivity : AppCompatActivity() {
         comingfrom = intent.getStringExtra("comingfrom")
 
         if (comingfrom.equals("SelectFood", ignoreCase = true)) {
-            tableList_get = intent.getSerializableExtra("model") as TableList?
+            tablelistGet = intent.getSerializableExtra("model") as TableList?
         } else if (comingfrom.equals("PickupFood", ignoreCase = true)) {
             //not required table object
             binding.linearView.visibility = View.GONE
@@ -46,22 +46,22 @@ class OrderConformationActivity : AppCompatActivity() {
 
         restoData = intent.getSerializableExtra("restromodel") as RestoData?
         totalpay = intent.getStringExtra("totalpay")
-        order_id = intent.getStringExtra("orderid")
-        binding.txtQueueno.text = "Order Id: " + order_id
+        orderId = intent.getStringExtra("orderid")
+        binding.txtQueueno.text = "Order Id: " + orderId
         //String data_total = Select_Food_Fragment.cartBookingArrayList.get(0).getData_total();
 
         if (comingfrom.equals("SelectFood", ignoreCase = true)) {
-            binding.txtCustomername.text = tableList_get?.str_customer_name
-            binding.txtIndoor.text = tableList_get?.number_of_person + " " + "Seats"
+            binding.txtCustomername.text = tablelistGet?.str_customer_name
+            binding.txtIndoor.text = tablelistGet?.number_of_person + " " + "Seats"
         } else if (comingfrom.equals("PickupFood", ignoreCase = true)) {
             //not required table object
-            binding.txtCustomername.text = storePrefrence.getString(Constant.NAME)
+            binding.txtCustomername.text = storePreference.getString(Constant.NAME)
             binding.txtIndoor.visibility = View.GONE
         }
 
-        binding.txtMobileno.text = storePrefrence.getString(Constant.MOBILE)
+        binding.txtMobileno.text = storePreference.getString(Constant.MOBILE)
         if (Utils.isNetworkAvailable(ctx)) {
-            callApiGetOrderDetail(order_id)
+            callApiGetOrderDetail(orderId)
         } else {
             showToastMessage(Constant.NETWORKEROORMSG)
         }
@@ -70,7 +70,7 @@ class OrderConformationActivity : AppCompatActivity() {
     private fun callApiGetOrderDetail(order_id: String?) {
         binding.progressbar.visibility = View.VISIBLE
         info.getOrderDetail(
-            "Bearer " + storePrefrence.getString(Constant.TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(Constant.TOKEN_LOGIN),
             order_id
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {

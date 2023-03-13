@@ -15,7 +15,7 @@ import java.util.*
 
 class SplashActivity : AppCompatActivity() {
 
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var ctx: Context = this@SplashActivity
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
 
@@ -92,13 +92,11 @@ class SplashActivity : AppCompatActivity() {
     private fun gotoNextScreen() {
         Handler().postDelayed({
 
-            if(storePrefrence.getString(Constant.NAME)?.length == 0)
-            {
+            if (storePreference.getString(Constant.NAME)?.length == 0) {
                 val intentLogin = Intent(this, LoginActivity::class.java)
                 startActivity(intentLogin)
                 finish()
-            }
-            else {
+            } else {
                 val intentDashBoard = Intent(this@SplashActivity, DashBoardActivity::class.java)
                 startActivity(intentDashBoard)
                 finish()

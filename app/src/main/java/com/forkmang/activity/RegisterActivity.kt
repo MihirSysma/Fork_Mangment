@@ -345,7 +345,6 @@ class RegisterActivity : AppCompatActivity(),
                     try {
                         if (response.code() == SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
-                            //Log.d("Result", jsonObject.toString());
                             if (jsonObject.getString("status")
                                     .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {

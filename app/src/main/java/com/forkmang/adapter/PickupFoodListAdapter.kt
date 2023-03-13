@@ -20,7 +20,7 @@ class PickupFoodListAdapter(
     var restoData: RestoData,
     private val onItemClicked: ((categoryItemList: Category_ItemList) -> Unit)
 ) : RecyclerView.Adapter<PickupFoodListAdapter.AllOrderFoodItemHolder>() {
-    var row_index = 0
+    var rowIndex = 0
 
     /*book_table_cell*/
     override fun onCreateViewHolder(
@@ -33,9 +33,9 @@ class PickupFoodListAdapter(
     }
 
     override fun onBindViewHolder(holder: AllOrderFoodItemHolder, position: Int) {
-        val category_itemList = category_itemLists[position]
-        holder.txt_foodname.text = category_itemList.name
-        holder.txt_price.text = ctx.resources.getString(R.string.rupee) + category_itemList.price
+        val categoryItemlist = category_itemLists[position]
+        holder.txtFoodname.text = categoryItemlist.name
+        holder.txtPrice.text = ctx.resources.getString(R.string.rupee) + categoryItemlist.price
     }
 
     override fun getItemCount(): Int {
@@ -43,21 +43,21 @@ class PickupFoodListAdapter(
     }
 
     inner class AllOrderFoodItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var relative_view: RelativeLayout
-        var img_food: ImageView
-        var txt_foodname: TextView
-        var txt_price: TextView
+        var relativeView: RelativeLayout
+        var imgFood: ImageView
+        var txtFoodname: TextView
+        var txtPrice: TextView
 
         init {
-            relative_view = itemView.findViewById(R.id.relative_view)
-            img_food = itemView.findViewById(R.id.img_food)
-            txt_foodname = itemView.findViewById(R.id.txt_foodname)
-            txt_price = itemView.findViewById(R.id.txt_price)
-            relative_view.setOnClickListener {
+            relativeView = itemView.findViewById(R.id.relative_view)
+            imgFood = itemView.findViewById(R.id.img_food)
+            txtFoodname = itemView.findViewById(R.id.txt_foodname)
+            txtPrice = itemView.findViewById(R.id.txt_price)
+            relativeView.setOnClickListener {
                 val position = bindingAdapterPosition
-                val category_itemList = category_itemLists[position]
-                row_index = position
-                onItemClicked(category_itemList)
+                val categoryItemlist = category_itemLists[position]
+                rowIndex = position
+                onItemClicked(categoryItemlist)
             }
         }
     }

@@ -52,12 +52,12 @@ class LocationFragmentAdapter : RecyclerView.Adapter<LocationItemHolder> {
 
     inner class LocationItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgrightchek: ImageView
-        var linear_layout_default: LinearLayout
+        var linearLayoutDefault: LinearLayout
 
         init {
             imgrightchek = itemView.findViewById(R.id.imgrightchek)
-            linear_layout_default = itemView.findViewById(R.id.linear_layout_default)
-            linear_layout_default.setOnClickListener { showAlertView_2() }
+            linearLayoutDefault = itemView.findViewById(R.id.linear_layout_default)
+            linearLayoutDefault.setOnClickListener { showAlertView_2() }
         }
     }
 

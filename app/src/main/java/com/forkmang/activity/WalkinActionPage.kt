@@ -27,7 +27,7 @@ import java.io.IOException
 
 class WalkinActionPage : AppCompatActivity() {
 
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var ctx: Context = this@WalkinActionPage
     var identifier: String? = null
     var queeNo: String? = null
@@ -84,7 +84,7 @@ class WalkinActionPage : AppCompatActivity() {
     private fun callApiAction(action: String, identifier: String) {
         binding.progressBar.visibility = View.VISIBLE
         info.queueAction(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             action, restromodel!!.id, noofperson, occasion, area, identifier
         )?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(

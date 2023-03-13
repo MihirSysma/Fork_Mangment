@@ -12,29 +12,29 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.forkmang.R
-import com.forkmang.adapter.TableOrdersListingAdapter.BookTable_Orders_ItemHolder
+import com.forkmang.adapter.TableOrdersListingAdapter.BookTableOrdersItemHolder
 import com.forkmang.data.TableOrderListing
 
 class TableOrdersListingAdapter(
     var activity: Activity,
     var bookTable_dataArrayList: ArrayList<TableOrderListing>?
-) : RecyclerView.Adapter<BookTable_Orders_ItemHolder>() {
+) : RecyclerView.Adapter<BookTableOrdersItemHolder>() {
 
     /*book_table_cell for orders*/
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookTable_Orders_ItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookTableOrdersItemHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.order_cell, null)
-        return BookTable_Orders_ItemHolder(v)
+        return BookTableOrdersItemHolder(v)
     }
 
-    override fun onBindViewHolder(holder: BookTable_Orders_ItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: BookTableOrdersItemHolder, position: Int) {
         val tableOrderListing = bookTable_dataArrayList!![position]
-        holder.txt_order_id.text = "Order Id: " + tableOrderListing.order_id
-        holder.txt_restroname.text = tableOrderListing.str_restroname
-        holder.txt_restrotime.text = "Open Till: " + tableOrderListing.resturant_timing + " AM/PM"
-        holder.txt_restrocontact.text = "Contact No: " + tableOrderListing.resturant_contact
-        holder.txt_restrobranch.text = "Branch: " + tableOrderListing.resturant_branch
-        holder.txt_payment_status.text = "Payment Status: " + tableOrderListing.payment_status
-        holder.txt_order_status.text = "Order Status: " + tableOrderListing.order_status
+        holder.txtOrderId.text = "Order Id: " + tableOrderListing.order_id
+        holder.txtRestroName.text = tableOrderListing.str_restroname
+        holder.txtRestroTime.text = "Open Till: " + tableOrderListing.resturant_timing + " AM/PM"
+        holder.txtRestroContact.text = "Contact No: " + tableOrderListing.resturant_contact
+        holder.txtRestroBranch.text = "Branch: " + tableOrderListing.resturant_branch
+        holder.txtPaymentStatus.text = "Payment Status: " + tableOrderListing.payment_status
+        holder.txtOrderStatus.text = "Order Status: " + tableOrderListing.order_status
 
 
         /* if(position == 0)
@@ -77,34 +77,34 @@ class TableOrdersListingAdapter(
 
     override fun getItemCount() = bookTable_dataArrayList?.size ?: 0
 
-    inner class BookTable_Orders_ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var linear_view_layout_1: LinearLayout
-        var linear_view_layout_2: LinearLayout
-        var linear_view_layout_3: LinearLayout
-        var linear_starrating: LinearLayout
-        var edit_rating_img: ImageView
-        var txt_order_id: TextView
-        var txt_restroname: TextView
-        var txt_restrotime: TextView
-        var txt_restrocontact: TextView
-        var txt_restrobranch: TextView
-        var txt_payment_status: TextView
-        var txt_order_status: TextView
+    inner class BookTableOrdersItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var linearViewLayout1: LinearLayout
+        var linearViewLayout2: LinearLayout
+        var linearViewLayout3: LinearLayout
+        var linearStarRating: LinearLayout
+        var editRatingImg: ImageView
+        var txtOrderId: TextView
+        var txtRestroName: TextView
+        var txtRestroTime: TextView
+        var txtRestroContact: TextView
+        var txtRestroBranch: TextView
+        var txtPaymentStatus: TextView
+        var txtOrderStatus: TextView
 
         init {
-            linear_view_layout_1 = itemView.findViewById(R.id.linear_view_layout_1)
-            linear_view_layout_2 = itemView.findViewById(R.id.linear_view_layout_2)
-            linear_view_layout_3 = itemView.findViewById(R.id.linear_view_layout_3)
-            linear_starrating = itemView.findViewById(R.id.linear_starrating)
-            edit_rating_img = itemView.findViewById(R.id.edit_rating_img)
-            txt_order_id = itemView.findViewById(R.id.txt_queueno)
-            txt_restroname = itemView.findViewById(R.id.txt_restroname)
-            txt_restrotime = itemView.findViewById(R.id.txt_restrotime)
-            txt_restrocontact = itemView.findViewById(R.id.txt_restrocontact)
-            txt_restrobranch = itemView.findViewById(R.id.txt_restrobranch)
-            txt_payment_status = itemView.findViewById(R.id.txt_payment_status)
-            txt_order_status = itemView.findViewById(R.id.txt_order_status)
-            edit_rating_img.setOnClickListener { showAlertViewRatingView() }
+            linearViewLayout1 = itemView.findViewById(R.id.linear_view_layout_1)
+            linearViewLayout2 = itemView.findViewById(R.id.linear_view_layout_2)
+            linearViewLayout3 = itemView.findViewById(R.id.linear_view_layout_3)
+            linearStarRating = itemView.findViewById(R.id.linear_starrating)
+            editRatingImg = itemView.findViewById(R.id.edit_rating_img)
+            txtOrderId = itemView.findViewById(R.id.txt_queueno)
+            txtRestroName = itemView.findViewById(R.id.txt_restroname)
+            txtRestroTime = itemView.findViewById(R.id.txt_restrotime)
+            txtRestroContact = itemView.findViewById(R.id.txt_restrocontact)
+            txtRestroBranch = itemView.findViewById(R.id.txt_restrobranch)
+            txtPaymentStatus = itemView.findViewById(R.id.txt_payment_status)
+            txtOrderStatus = itemView.findViewById(R.id.txt_order_status)
+            editRatingImg.setOnClickListener { showAlertViewRatingView() }
         }
     }
 
@@ -115,8 +115,8 @@ class TableOrdersListingAdapter(
         alertDialog.setView(dialogView)
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
-        val Btn_Submit: Button = dialogView.findViewById(R.id.btn_submit)
-        Btn_Submit.setOnClickListener { dialog.dismiss() }
+        val btnSubmit: Button = dialogView.findViewById(R.id.btn_submit)
+        btnSubmit.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 }

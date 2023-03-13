@@ -11,7 +11,7 @@ import com.forkmang.data.OrderFood_All
 
 class CartViewAdapter(var activity: Activity, var orderFood_alls: ArrayList<OrderFood_All>?) :
     RecyclerView.Adapter<CartViewAdapter.AllOrderFoodItemHolder>() {
-    var row_index = 0
+    var rowIndex = 0
 
     /*book_table_cell*/
     override fun onCreateViewHolder(
@@ -30,10 +30,10 @@ class CartViewAdapter(var activity: Activity, var orderFood_alls: ArrayList<Orde
     }
 
     inner class AllOrderFoodItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var relative_view: RelativeLayout
+        var relativeView: RelativeLayout
 
         init {
-            relative_view = itemView.findViewById(R.id.relative_view)
+            relativeView = itemView.findViewById(R.id.relative_view)
         }
     }
 }

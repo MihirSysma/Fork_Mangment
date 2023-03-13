@@ -50,7 +50,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
     private val binding by lazy { ActivityLoginFormBinding.inflate(layoutInflater) }
     private val callbackManager by lazy { create() }
     var ctx: Context = this@LoginFormActivity
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var token: String = ""
     private var googleApiClient: GoogleApiClient? = null
 
@@ -133,7 +133,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
             }
         }
         txtForgotPassword.setOnClickListener {
-            storePrefrence.setString(
+            storePreference.setString(
                 MOBILE,
                 binding.etvMobile.text.toString()
             )
@@ -193,20 +193,20 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                                 .equals(Constant.SUCCESS_CODE, ignoreCase = true)
                         ) {
                             showToastMessage(jsonObject.getString("message"))
-                            storePrefrence.setBoolean("keeplogin", KEEP_LOGIN)
-                            storePrefrence.setString(
+                            storePreference.setBoolean("keeplogin", KEEP_LOGIN)
+                            storePreference.setString(
                                 MOBILE,
                                 jsonObject.getJSONObject("data").getString("contact")
                             )
-                            storePrefrence.setString(
+                            storePreference.setString(
                                 NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
-                            storePrefrence.setString(
+                            storePreference.setString(
                                 TOKEN_LOGIN,
                                 jsonObject.getJSONObject("data").getString("token")
                             )
-                            storePrefrence.setString(IDENTFIER, "")
+                            storePreference.setString(IDENTFIER, "")
 
                             /*if(binding.chekKeeplogin.isChecked())
                                     {
@@ -264,17 +264,17 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
                     Log.d("Result", jsonObject.toString())
                     if (jsonObject.getString("status").equals("Success", ignoreCase = true)) {
                         showToastMessage(jsonObject.getString("message"))
-                        storePrefrence.setString(
+                        storePreference.setString(
                             TOKEN_REG,
                             jsonObject.getJSONObject("data").getString("token")
                         )
                         if (jsonObject.getJSONObject("data").has("name")) {
-                            storePrefrence.setString(
+                            storePreference.setString(
                                 NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence.setString(NAME, type)
+                            storePreference.setString(NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent = Intent(ctx, DashBoardActivity::class.java)

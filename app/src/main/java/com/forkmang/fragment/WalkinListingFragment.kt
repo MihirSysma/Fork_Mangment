@@ -133,9 +133,9 @@ class WalkinListingFragment : Fragment() {
                                             bookTable.endtime = "00"
                                         }
                                         bookTable.id = myJsonObj.getString("id")
-                                        val double_val =
+                                        val doubleVal =
                                             floor(myJsonObj.getDouble("distance") * 100) / 100
-                                        bookTable.distance = double_val.toString()
+                                        bookTable.distance = doubleVal.toString()
                                         restoDataArrayList?.add(bookTable)
                                     }
                                     binding.progressBar.visibility = View.GONE
@@ -159,16 +159,16 @@ class WalkinListingFragment : Fragment() {
                                 }
                             } else {
                                 binding.progressBar.visibility = View.GONE
-                                // getContext.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                                context?.showToastMessage(Constant.ERRORMSG)
                             }
                         } else {
                             binding.progressBar.visibility = View.GONE
-                            // getContext.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                            context?.showToastMessage(Constant.ERRORMSG)
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         binding.progressBar.visibility = View.GONE
-                        //getContext.showToastMessage(, Constant.ERRORMSG, Toast.LENGTH_LONG).show();
+                        context?.showToastMessage(Constant.ERRORMSG)
                     }
                 }
 
@@ -207,9 +207,9 @@ class WalkinListingFragment : Fragment() {
                                         bookTable.endtime = "00"
                                     }
                                     bookTable.id = myJsonObj.getString("id")
-                                    val double_val =
+                                    val doubleVal =
                                         floor(myJsonObj.getDouble("distance") * 100) / 100
-                                    bookTable.distance = double_val.toString()
+                                    bookTable.distance = doubleVal.toString()
                                     restoDataArrayList?.add(bookTable)
                                 }
                                 binding.progressBar.visibility = View.GONE

@@ -18,7 +18,7 @@ class FoodListAdapter(
     var category_itemLists: ArrayList<Category_ItemList>,
     private val onItemClicked: ((categoryItemList: Category_ItemList) -> Unit)
 ) : RecyclerView.Adapter<FoodListAdapter.AllOrderFoodItemHolder>() {
-    var row_index = 0
+    var rowIndex = 0
 
     /*book_table_cell*/
     override fun onCreateViewHolder(
@@ -31,9 +31,9 @@ class FoodListAdapter(
     }
 
     override fun onBindViewHolder(holder: AllOrderFoodItemHolder, position: Int) {
-        val category_itemList = category_itemLists[position]
-        holder.txt_foodname.text = category_itemList.name
-        holder.txt_price.text = ctx.resources.getString(R.string.rupee) + category_itemList.price
+        val categoryItemList = category_itemLists[position]
+        holder.txtFoodName.text = categoryItemList.name
+        holder.txtPrice.text = ctx.resources.getString(R.string.rupee) + categoryItemList.price
     }
 
     override fun getItemCount(): Int {
@@ -41,21 +41,21 @@ class FoodListAdapter(
     }
 
     inner class AllOrderFoodItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var relative_view: RelativeLayout
-        var img_food: ImageView
-        var txt_foodname: TextView
-        var txt_price: TextView
+        var relativeView: RelativeLayout
+        var imgFood: ImageView
+        var txtFoodName: TextView
+        var txtPrice: TextView
 
         init {
-            relative_view = itemView.findViewById(R.id.relative_view)
-            img_food = itemView.findViewById(R.id.img_food)
-            txt_foodname = itemView.findViewById(R.id.txt_foodname)
-            txt_price = itemView.findViewById(R.id.txt_price)
-            relative_view.setOnClickListener { v: View? ->
+            relativeView = itemView.findViewById(R.id.relative_view)
+            imgFood = itemView.findViewById(R.id.img_food)
+            txtFoodName = itemView.findViewById(R.id.txt_foodname)
+            txtPrice = itemView.findViewById(R.id.txt_price)
+            relativeView.setOnClickListener { v: View? ->
                 val position = bindingAdapterPosition
-                val category_itemList = category_itemLists[position]
-                row_index = position
-                onItemClicked(category_itemList)
+                val categoryItemlist = category_itemLists[position]
+                rowIndex = position
+                onItemClicked(categoryItemlist)
             }
         }
     }

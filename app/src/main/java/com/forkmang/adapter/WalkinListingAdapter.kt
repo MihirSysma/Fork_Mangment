@@ -45,7 +45,7 @@ class WalkinListingAdapter(
     override fun onBindViewHolder(holder: RestoListItemHolder, position: Int) {
         val bookTable = resto_dataArrayList[position]
         holder.txtrestroname.text = bookTable.rest_name
-        holder.txt_endtime.text = bookTable.endtime
+        holder.txtEndTime.text = bookTable.endtime
         holder.txttotalkm.text = bookTable.distance + " Km"
     }
 
@@ -53,30 +53,30 @@ class WalkinListingAdapter(
     inner class RestoListItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgproduct: ImageView
         var txtrestroname: TextView
-        var txt_endtime: TextView
-        var txt_distance: TextView
+        var txtEndTime: TextView
+        var txtDistance: TextView
         var txttotalkm: TextView
-        var txt_ratingno: TextView
-        var rating_bar: RatingBar
-        var relative_view: RelativeLayout
+        var txtRatingNo: TextView
+        var ratingBar: RatingBar
+        var relativeView: RelativeLayout
 
         init {
-            relative_view = itemView.findViewById(R.id.relative_view)
+            relativeView = itemView.findViewById(R.id.relative_view)
             txtrestroname = itemView.findViewById(R.id.txtrestroname)
-            txt_endtime = itemView.findViewById(R.id.txt_endtime)
-            txt_distance = itemView.findViewById(R.id.txt_distance)
+            txtEndTime = itemView.findViewById(R.id.txt_endtime)
+            txtDistance = itemView.findViewById(R.id.txt_distance)
             txttotalkm = itemView.findViewById(R.id.txt_totalkm)
-            txt_ratingno = itemView.findViewById(R.id.txt_ratingno)
+            txtRatingNo = itemView.findViewById(R.id.txt_ratingno)
             imgproduct = itemView.findViewById(R.id.imgrestro)
-            rating_bar = itemView.findViewById(R.id.rating_bar)
-            relative_view.setOnClickListener {
+            ratingBar = itemView.findViewById(R.id.rating_bar)
+            relativeView.setOnClickListener {
                 val position = bindingAdapterPosition
                 val restoData = resto_dataArrayList[position]
-                val resturant_id = restoData.id
+                val resturantId = restoData.id
                 if (coming_from.equals("listing", ignoreCase = true)) {
-                    ItemOnClick(resturant_id?:"", restoData)
+                    ItemOnClick(resturantId ?: "", restoData)
                 } else {
-                    ItemOnClick(resturant_id?:"",null)
+                    ItemOnClick(resturantId ?: "", null)
                 }
             }
         }

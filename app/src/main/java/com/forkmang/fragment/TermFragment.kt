@@ -23,9 +23,9 @@ import retrofit2.Response
 
 class TermFragment : Fragment() {
 
-    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePrefrence(requireContext()) }
     var progressBar: ProgressBar? = null
-    var txt_term: TextView? = null
+    var txtTerm: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,7 @@ class TermFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_term_layout, container, false)
         progressBar = view.findViewById(R.id.progressBar)
-        txt_term = view.findViewById(R.id.txt_term)
+        txtTerm = view.findViewById(R.id.txt_term)
         callApiTerms()
         return view
     }
@@ -42,34 +42,34 @@ class TermFragment : Fragment() {
     //Api code for Book Table start
     private fun callApiTerms() {
         progressBar?.visibility = View.VISIBLE
-        info.getterms("Bearer " + storePrefrence.getString(TOKEN_LOGIN))
+        info.getterms("Bearer " + storePreference.getString(TOKEN_LOGIN))
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
                         if (response.code() == Constant.SUCCESS_CODE_n) {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
-                            val data_array = jsonObject.getJSONObject("data").getJSONArray("data")
-                            val term = data_array.getJSONObject(0).getString("content")
-                            txt_term?.text = term
+                            val dataArray = jsonObject.getJSONObject("data").getJSONArray("data")
+                            val term = dataArray.getJSONObject(0).getString("content")
+                            txtTerm?.text = term
                             progressBar?.visibility = View.GONE
 
                             //Log.d("Result", jsonObject.toString());
                         } else {
                             progressBar?.visibility = View.GONE
-                            txt_term?.text = "Error Occur During  Fetching Terms & Condition"
+                            txtTerm?.text = "Error Occur During  Fetching Terms & Condition"
                             // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         progressBar?.visibility = View.GONE
-                        txt_term?.text = "Error Occur During  Fetching Terms & Condition"
+                        txtTerm?.text = "Error Occur During  Fetching Terms & Condition"
                         //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     context?.showToastMessage(Constant.ERRORMSG)
-                    txt_term?.text = "Error Occur During  Fetching Terms & Condition"
+                    txtTerm?.text = "Error Occur During  Fetching Terms & Condition"
                     progressBar?.visibility = View.GONE
                 }
             })

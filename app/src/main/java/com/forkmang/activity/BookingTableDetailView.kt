@@ -63,7 +63,6 @@ class BookingTableDetailView : Activity() {
     var mMinute = 0
     var mSecond = 0
     var bookingDate: String? = null
-    var booking_time: String? = null
     var dateGet = ""
     var resturantId: String? = null
     var noOfPerson = "0"
@@ -74,7 +73,7 @@ class BookingTableDetailView : Activity() {
     var areaDropdownArrayList: ArrayList<AreaDropdown>? = null
     var branchDropdownArrayList: ArrayList<BranchDropdown>? = null
     var restoData: RestoData? = null
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var isTableConform = false
     var isPersonSelect = false
     var isAreaType = false
@@ -411,25 +410,25 @@ class BookingTableDetailView : Activity() {
 
                                         /* code to get customer and other data into table object */
                                         tableList.str_hotel_name = restoData?.rest_name
-                                        if (storePrefrence.getString(NAME)
+                                        if (storePreference.getString(NAME)
                                                 .isNullOrEmpty()
                                         ) {
                                             tableList.str_customer_name = "Test Customer Name"
                                         } else {
                                             tableList.str_customer_name =
-                                                storePrefrence.getString(
+                                                storePreference.getString(
                                                     NAME
                                                 )
                                         }
 
                                         //tableList.setStr_noseat(noof_person+" "+"Seats");
                                         tableList.str_time = binding.txtDatetime.text.toString()
-                                        if (storePrefrence.getString(MOBILE)
+                                        if (storePreference.getString(MOBILE)
                                                 .isNullOrEmpty()
                                         ) {
                                             tableList.str_phone = "9000012345"
                                         } else {
-                                            tableList.str_phone = storePrefrence.getString(
+                                            tableList.str_phone = storePreference.getString(
                                                 MOBILE
                                             )
                                         }
@@ -605,8 +604,8 @@ class BookingTableDetailView : Activity() {
         //table_id="8";
         binding.progressBar.visibility = View.VISIBLE
         info.bookTable(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
-            restaurant_id, table_id, rules, dresscode, occasion, date, storePrefrence.getString(
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),  /*,"application/json",*/ /*"application/json",*/
+            restaurant_id, table_id, rules, dresscode, occasion, date, storePreference.getString(
                 IDENTFIER
             )
         )
@@ -620,15 +619,15 @@ class BookingTableDetailView : Activity() {
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 val mjsonObj = jsonObject.getJSONObject("data")
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     CUSTOMERID,
                                     mjsonObj.getString("customer_id")
                                 )
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     "paymentstatus",
                                     mjsonObj.getString("payment_status")
                                 )
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     BOOKINGID,
                                     mjsonObj.getString("id")
                                 )
