@@ -69,7 +69,7 @@ class RegisterActivity : AppCompatActivity(),
 
     private val callbackManager by lazy { create() }
     var ctx: Context = this@RegisterActivity
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePrefrence(this) }
     var name: String? = null
     var mobile: String? = null
     var password: String? = null
@@ -95,7 +95,7 @@ class RegisterActivity : AppCompatActivity(),
             callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onCancel() {
-                    Log.d("res", "cancle")
+                    Log.d("res", "cancel")
                 }
 
                 override fun onError(error: FacebookException) {
@@ -259,12 +259,11 @@ class RegisterActivity : AppCompatActivity(),
                             if (response.code() == SUCCESS_CODE_n) {
                                 binding.progressBar.visibility = View.GONE
                                 val jsonObject = JSONObject(Gson().toJson(response.body()))
-                                // TODO: on success call this dialog
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     TOKEN_LOGIN,
                                     jsonObject.getJSONObject("data").getString("token")
                                 )
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     NAME,
                                     jsonObject.getJSONObject("data").getString("name")
                                 )
@@ -352,18 +351,15 @@ class RegisterActivity : AppCompatActivity(),
                             ) {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("message"))
-                                //TODO: get new details from API
-                                //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     MOBILE,
                                     jsonObject.getJSONObject("data").getString("contact")
                                 )
 
                                 val vID = jsonObject.getJSONObject("data").getInt("verfication_id")
                                 val custID = jsonObject.getJSONObject("data").getString("id")
-                                storePrefrence.setString(IDENTFIER, "")
-                                showAlertView(vID.toString(), custID) // TODO get verification ID, custID from api
-                                //showAlertView_2()
+                                storePreference.setString(IDENTFIER, "")
+                                showAlertView(vID.toString(), custID)
                             } else {
                                 binding.progressBar.visibility = View.GONE
                                 showToastMessage(jsonObject.getString("status"))
@@ -421,12 +417,12 @@ class RegisterActivity : AppCompatActivity(),
                         showToastMessage(jsonObject.getString("message"))
                         //storePrefrence.setString(TOKEN_REG, jsonObject.getJSONObject("data").getString("token"));
                         if (jsonObject.getJSONObject("data").has("name")) {
-                            storePrefrence.setString(
+                            storePreference.setString(
                                 NAME,
                                 jsonObject.getJSONObject("data").getString("name")
                             )
                         } else {
-                            storePrefrence.setString(NAME, type)
+                            storePreference.setString(NAME, type)
                         }
                         binding.progressBar.visibility = View.GONE
                         val intent = Intent(ctx, LoginFormActivity::class.java)
