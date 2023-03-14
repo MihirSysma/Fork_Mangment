@@ -125,7 +125,7 @@ class PaymentScreenActivity : AppCompatActivity() {
                 handleCompletedPayment(result.payment);
             }
             is PaymentResult.Failed -> {
-                showToastMessage("Payment Failed")
+                showToastMessage(result.error.message ?: "")
             }
             PaymentResult.Canceled -> {
                 // User has canceled the payment
@@ -148,8 +148,8 @@ class PaymentScreenActivity : AppCompatActivity() {
 
             }
             "failed" -> {
-                var errorMessage = payment.source["message"]
-                /* Handle failed payment */
+                val errorMessage = payment.source["message"]
+                showToastMessage(errorMessage.toString())
             }
             else -> { /* Handle other statuses */
             }
@@ -207,7 +207,6 @@ class PaymentScreenActivity : AppCompatActivity() {
                     showToastMessage(Constant.ERRORMSG)
                 }
             }
-
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                 showToastMessage(Constant.ERRORMSG)
             }
