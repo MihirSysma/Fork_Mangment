@@ -19,7 +19,7 @@ import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.Constant.VALIDEmail
 import com.forkmang.helper.Constant.VALID_NO
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
 import com.google.gson.Gson
@@ -32,7 +32,7 @@ import retrofit2.Response
 
 class ContactFragment : Fragment() {
 
-    private val storePreference by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePreference(requireContext()) }
     var progressBar: ProgressBar? = null
 
     override fun onCreateView(
@@ -98,7 +98,6 @@ class ContactFragment : Fragment() {
                         context?.showToastMessage(jsonObject.getString("message"))
                         progressBar?.visibility = View.GONE
                         activity?.finish()
-                        //Log.d("Result", jsonObject.toString());
                     } else {
                         progressBar?.visibility = View.GONE
                         context?.showToastMessage(ERRORMSG)

@@ -28,7 +28,7 @@ import com.forkmang.helper.Constant.PASSWORD
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.Constant.TOKEN_REG
 import com.forkmang.helper.Constant.VALID_NO
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
@@ -50,7 +50,7 @@ class LoginFormActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFaile
     private val binding by lazy { ActivityLoginFormBinding.inflate(layoutInflater) }
     private val callbackManager by lazy { create() }
     var ctx: Context = this@LoginFormActivity
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var token: String = ""
     private var googleApiClient: GoogleApiClient? = null
 

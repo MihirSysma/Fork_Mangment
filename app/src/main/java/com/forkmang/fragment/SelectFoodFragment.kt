@@ -30,7 +30,7 @@ import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.ERRORMSG
 import com.forkmang.helper.Constant.MOBILE
 import com.forkmang.helper.Constant.TOKEN_LOGIN
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
@@ -49,7 +49,7 @@ class SelectFoodFragment : Fragment() {
     var selectedIdRadioBtnTopping = 0
     var progressbarAlertview: ProgressBar? = null
     var allOrderFoodAdapter: FoodListAdapter? = null
-    private val storePreference by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePreference(requireContext()) }
 
     private var _binding: FragmentOrderfoodLayoutBinding? = null
     private val binding get() = _binding!!

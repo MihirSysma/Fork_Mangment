@@ -41,7 +41,7 @@ import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
 import com.forkmang.helper.Constant.VALIDEmail
 import com.forkmang.helper.Constant.VALID_NO
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
@@ -69,7 +69,7 @@ class RegisterActivity : AppCompatActivity(),
 
     private val callbackManager by lazy { create() }
     var ctx: Context = this@RegisterActivity
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var name: String? = null
     var mobile: String? = null
     var password: String? = null

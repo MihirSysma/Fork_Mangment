@@ -8,7 +8,7 @@ import com.forkmang.R
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivityConformSeatreserveBinding
 import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
@@ -28,7 +28,7 @@ class OrderConformationActivity : AppCompatActivity() {
     var totalpay: String? = null
     var orderId: String? = null
     var comingfrom: String? = null
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
 
     private val binding by lazy { ActivityConformSeatreserveBinding.inflate(layoutInflater) }
 

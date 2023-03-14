@@ -17,7 +17,7 @@ import com.forkmang.helper.Constant.PASSWORD
 import com.forkmang.helper.Constant.PASSWORD_MATCH
 import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.SUCCESS_CODE_n
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api
@@ -36,7 +36,7 @@ class ForgotPassword : AppCompatActivity() {
 
     private val binding by lazy { ActivityForgotPasswordBinding.inflate(layoutInflater) }
     var ctx: Context = this@ForgotPassword
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var idToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

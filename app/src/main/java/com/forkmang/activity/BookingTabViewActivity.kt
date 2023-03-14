@@ -16,14 +16,14 @@ import com.forkmang.vm.ViewModel
 import com.forkmang.adapter.ViewPagerAdapter
 import com.forkmang.databinding.ActivityBookingTabViewBinding
 import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class BookingTabViewActivity : AppCompatActivity() {
 
     var activity: Activity = this@BookingTabViewActivity
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var longitude = 0.0
     var latitude = 0.0
 

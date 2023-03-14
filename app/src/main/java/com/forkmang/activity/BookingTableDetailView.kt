@@ -37,7 +37,7 @@ import com.forkmang.helper.Constant.NODATA
 import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
@@ -73,7 +73,7 @@ class BookingTableDetailView : Activity() {
     var areaDropdownArrayList: ArrayList<AreaDropdown>? = null
     var branchDropdownArrayList: ArrayList<BranchDropdown>? = null
     var restoData: RestoData? = null
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var isTableConform = false
     var isPersonSelect = false
     var isAreaType = false
@@ -883,7 +883,7 @@ class BookingTableDetailView : Activity() {
             mainIntent.putExtra("restromodel", restoData)
             mainIntent.putExtra(
                 "totalpay",
-                ctx.resources.getString(R.string.rupee) + tableList.price
+                tableList.price?.toInt()
             )
             mainIntent.putExtra("bookingid", booking_id)
             mainIntent.putExtra("isbooktable", "yes")

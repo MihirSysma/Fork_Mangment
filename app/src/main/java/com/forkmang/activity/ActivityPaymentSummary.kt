@@ -28,7 +28,7 @@ import com.forkmang.helper.Constant.NETWORKEROORMSG
 import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.models.TableList
@@ -44,10 +44,11 @@ class ActivityPaymentSummary : AppCompatActivity() {
 
     var tableListGet: TableList? = null
     var restoData: RestoData? = null
-    private val storePrefrence by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var ctx: Context = this@ActivityPaymentSummary
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var comingFrom: String? = null
+    var totalPayInInt: Int = 0
 
     private val binding by lazy { ActivityPaymentViewBinding.inflate(layoutInflater) }
 
@@ -65,12 +66,12 @@ class ActivityPaymentSummary : AppCompatActivity() {
         } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
             restoData = intent.getSerializableExtra("restromodel") as RestoData?
             binding.txtHotelname.text = restoData?.rest_name
-            binding.txtCustomername.text = storePrefrence.getString(NAME)
+            binding.txtCustomername.text = storePreference.getString(NAME)
             binding.linear1.visibility = View.GONE
             binding.linearViewLayout2.visibility = View.GONE
         }
         restoData = intent.getSerializableExtra("restromodel") as RestoData?
-        binding.txtPhoneno.text = storePrefrence.getString(MOBILE)
+        binding.txtPhoneno.text = storePreference.getString(MOBILE)
         binding.progressBar.visibility = View.VISIBLE
         binding.recycleview.layoutManager = LinearLayoutManager(this@ActivityPaymentSummary)
 
@@ -105,8 +106,8 @@ class ActivityPaymentSummary : AppCompatActivity() {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.getCartDetail(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
-            storePrefrence.getString(
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
+            storePreference.getString(
                 IDENTFIER
             )
         )
@@ -139,8 +140,10 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                     cartBooking.cart_item_cartid =
                                         cartDetailObj.getString("cart_id")
                                     cartBooking.cart_item_id = cartDetailObj.getString("id")
-                                    cartBooking.cart_item_extra_id =
-                                        cartDetailObj.getString("item_extra_id")
+                                    if (cartDetailObj.has("item_extra_id")) {
+                                        cartBooking.cart_item_extra_id =
+                                            cartDetailObj.getString("item_extra_id")
+                                    }
 
                                     //cart_item_details obj
                                     cartBooking.cart_item_details_category_id =
@@ -157,16 +160,19 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                     //extra_item_details obj
                                     val extraNamelist = ArrayList<String>()
                                     val extraPricelist = ArrayList<String>()
-                                    for (j in 0 until cartDetailObj.getJSONArray("extra_item_details")
-                                        .length()) {
-                                        val extraItemObj =
-                                            cartDetailObj.getJSONArray("extra_item_details")
-                                                .getJSONObject(j)
-                                        extraNamelist.add(extraItemObj.getString("name"))
-                                        extraPricelist.add(extraItemObj.getString("price"))
 
-
-                                        //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
+                                    if (cartDetailObj.getJSONArray("extra_item_details")
+                                            .length() > 1
+                                    ) { // [null] is considered 1, causing errors
+                                        for (j in 0 until cartDetailObj.getJSONArray("extra_item_details")
+                                            .length()) {
+                                            val extraItemObj =
+                                                cartDetailObj.getJSONArray("extra_item_details")
+                                                    .getJSONObject(j)
+                                            extraNamelist.add(extraItemObj.getString("name"))
+                                            extraPricelist.add(extraItemObj.getString("price"))
+                                            //cartBooking.setExtra_item_details_item_id(extra_item_obj.getString("item_id"));
+                                        }
                                     }
 
                                     //extra name
@@ -181,19 +187,20 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                     cartBooking.extra_item_details_name = strExtraname
 
                                     //extra price
-                                    var strExtraprice = ""
+                                    var strExtraPrice = ""
                                     for (k in extraPricelist.indices) {
-                                        strExtraprice = if (k == 0) {
+                                        strExtraPrice = if (k == 0) {
                                             extraPricelist[k]
                                         } else {
-                                            strExtraprice + "," + extraPricelist[k]
+                                            strExtraPrice + "," + extraPricelist[k]
                                         }
                                     }
-                                    cartBooking.extra_item_details_price = strExtraprice
+                                    cartBooking.extra_item_details_price = strExtraPrice
                                     cartBookingArrayList?.add(cartBooking)
                                 }
                                 binding.progressBar.visibility = View.GONE
                                 val dataTotal = cartBookingArrayList?.get(0)?.data_total
+                                totalPayInInt = dataTotal?.toInt() ?: 0
                                 binding.txtTotalPay.text =
                                     ctx.resources.getString(R.string.rupee) + dataTotal
                                 //call adapter
@@ -207,7 +214,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                                 callApiAddQty(cart_item_id, qty_update)
                                             }
                                             REMOVE_CART_ITEM -> {
-                                                callApiRemoveItemcart(cart_item_id)
+                                                callApiRemoveItemCart(cart_item_id)
                                             }
                                         }
                                     }
@@ -307,17 +314,16 @@ class ActivityPaymentSummary : AppCompatActivity() {
     fun callApiAddQty(cart_itemid: String?, qty: String?) {
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cartUpdateQty(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             cart_itemid,
             qty,
-            storePrefrence.getString(
+            storePreference.getString(
                 IDENTFIER
             )
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
-                        //Log.d("Result", jsonObject.toString());
                         if (response.code() == SUCCESS_CODE_n) {
                             val obj = JSONObject(Gson().toJson(response.body()))
                             if (obj.getString("status").equals("200", ignoreCase = true)) {
@@ -348,13 +354,13 @@ class ActivityPaymentSummary : AppCompatActivity() {
             })
     }
 
-    fun callApiRemoveItemcart(cart_itemid: String?) {
+    fun callApiRemoveItemCart(cartItemId: String?) {
         //showProgress();
         binding.progressBar.visibility = View.VISIBLE
         Api.info.cartRemoveQty(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
-            cart_itemid,
-            storePrefrence.getString(
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
+            cartItemId,
+            storePreference.getString(
                 IDENTFIER
             )
         )
@@ -394,12 +400,12 @@ class ActivityPaymentSummary : AppCompatActivity() {
 
     private fun callApiCreateOrder() {
         Api.info.createOrder(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             restoData?.id,
             "book_table",
             "",
-            storePrefrence.getString(BOOKINGID),
-            storePrefrence.getString(
+            storePreference.getString(BOOKINGID),
+            storePreference.getString(
                 IDENTFIER
             )
         )
@@ -411,9 +417,10 @@ class ActivityPaymentSummary : AppCompatActivity() {
                             if (jsonObject.getString("status")
                                     .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
-                                val orderId = jsonObject.getString("data")
+                                val orderId = jsonObject.getJSONObject("data").getJSONObject("data")
+                                    .getJSONArray("order_item").getJSONObject(0)
+                                    .getString("order_id")
 
-                                //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                 val dialog = showAlertViewConfirmTable()
                                 Handler().postDelayed({
                                     dialog.dismiss()
@@ -434,7 +441,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                     mainIntent.putExtra("restromodel", restoData)
                                     mainIntent.putExtra(
                                         "totalpay",
-                                        binding.txtTotalPay.text.toString()
+                                        totalPayInInt
                                     )
                                     mainIntent.putExtra("orderid", orderId)
                                     mainIntent.putExtra("isbooktable", "no")
@@ -452,8 +459,6 @@ class ActivityPaymentSummary : AppCompatActivity() {
                             val intent = Intent(ctx, LoginActivity::class.java)
                             startActivity(intent)
                             finish()
-
-                            //Toast.makeText(ctx,"You are guest user please login",Toast.LENGTH_SHORT).show();
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
@@ -469,8 +474,8 @@ class ActivityPaymentSummary : AppCompatActivity() {
 
     private fun callApiCreateOrderPickup() {
         Api.info.createOrder(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
-            restoData?.id, "pickup", "", "", storePrefrence.getString(IDENTFIER)
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
+            restoData?.id, "pickup", "", "", storePreference.getString(IDENTFIER)
         )
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
@@ -481,7 +486,9 @@ class ActivityPaymentSummary : AppCompatActivity() {
                             if (jsonObject.getString("status")
                                     .equals(SUCCESS_CODE, ignoreCase = true)
                             ) {
-                                val orderId = jsonObject.getString("data")
+                                val orderId = jsonObject.getJSONObject("data").getJSONObject("data")
+                                    .getJSONArray("order_item").getJSONObject(0)
+                                    .getString("order_id")
                                 //Toast.makeText(ctx,jsonObject.getString("message"),Toast.LENGTH_SHORT).show();
                                 val dialog = showAlertViewConfirmTable()
                                 Handler().postDelayed({
@@ -495,7 +502,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                         mainIntent.putExtra("comingfrom", "PickupFood")
                                         mainIntent.putExtra(
                                             "totalpay",
-                                            binding.txtTotalPay.text.toString()
+                                            totalPayInInt
                                         )
                                         mainIntent.putExtra("orderid", orderId)
                                         mainIntent.putExtra("isbooktable", "no")
@@ -510,7 +517,7 @@ class ActivityPaymentSummary : AppCompatActivity() {
                                         mainIntent.putExtra("comingfrom", "SelectFood")
                                         mainIntent.putExtra(
                                             "totalpay",
-                                            binding.txtTotalPay.text.toString()
+                                            totalPayInInt
                                         )
                                         mainIntent.putExtra("orderid", orderId)
                                         mainIntent.putExtra("isbooktable", "no")

@@ -40,7 +40,7 @@ import com.forkmang.helper.Constant.NAME
 import com.forkmang.helper.Constant.NETWORKEROORMSG
 import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
@@ -56,7 +56,7 @@ class PickupSelectFoodFragment : Fragment() {
 
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var selectedIdRadioBtnTopping = 0
-    private val storePreference by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePreference(requireContext()) }
     var allOrderFoodAdapter: PickupFoodListAdapter? = null
 
     private var _binding: FragmentPickupLayoutBinding? = null

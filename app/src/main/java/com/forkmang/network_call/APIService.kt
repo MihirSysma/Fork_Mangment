@@ -247,9 +247,9 @@ interface APIService {
         @Field("amount") amt: String,
         @Field("currency") currency: String,
         @Field("invoice_id") invoiceId: String,
-        @Field("source") source: String,
+        @Field("source") source: MutableMap<String, String>,
         @Field("payment_id") paymentId: String
-    )
+    ): Call<JsonObject?>?
 
     @POST(WebApi.RES_ORDERDETAIL)
     @FormUrlEncoded

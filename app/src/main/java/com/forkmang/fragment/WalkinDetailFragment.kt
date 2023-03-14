@@ -26,7 +26,7 @@ import com.forkmang.helper.Constant.NODATA
 import com.forkmang.helper.Constant.SUCCESS_CODE
 import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
@@ -50,7 +50,7 @@ class WalkinDetailFragment : FragmentActivity() {
     var saveLongitude: Double? = null
     var restoDataArrayList: ArrayList<RestoData>? = null
     var walkinListingAdapter: WalkinListingAdapter? = null
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var queeNo1: String? = null
     var noOfPerson: String? = null
     var occasion: String? = null

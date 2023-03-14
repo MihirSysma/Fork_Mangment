@@ -11,7 +11,7 @@ import com.forkmang.data.TableOrderListing
 import com.forkmang.databinding.FragmentBooktableLayoutOrdersBinding
 import com.forkmang.helper.Constant
 import com.forkmang.helper.Constant.TOKEN_LOGIN
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils.isNetworkAvailable
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
@@ -25,7 +25,7 @@ import retrofit2.Response
 
 class TableOrdersListingFragment : Fragment() {
 
-    private val storePreference by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePreference(requireContext()) }
     var tableOrderListingArrayList: ArrayList<TableOrderListing>? = null
 
     private var _binding: FragmentBooktableLayoutOrdersBinding? = null

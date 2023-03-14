@@ -15,14 +15,14 @@ import androidx.core.view.GravityCompat
 import com.forkmang.R
 import com.forkmang.databinding.ActivityDashboardDrawerBinding
 import com.forkmang.fragment.*
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.showToastMessage
 import com.google.android.material.navigation.NavigationView
 
 class DashBoardActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener {
 
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private val binding by lazy { ActivityDashboardDrawerBinding.inflate(layoutInflater) }
 

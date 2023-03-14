@@ -12,7 +12,7 @@ import com.forkmang.helper.Constant.ERROR_CODE_n
 import com.forkmang.helper.Constant.NETWORKEROORMSG
 import com.forkmang.helper.Constant.SUCCESS_CODE_n
 import com.forkmang.helper.Constant.TOKEN_LOGIN
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.forkmang.helper.Utils
 import com.forkmang.helper.showToastMessage
 import com.forkmang.network_call.Api.info
@@ -27,7 +27,7 @@ import java.io.IOException
 
 class WalkinActionPage : AppCompatActivity() {
 
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var ctx: Context = this@WalkinActionPage
     var identifier: String? = null
     var queeNo: String? = null

@@ -9,13 +9,13 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.forkmang.R
 import com.forkmang.helper.Constant
-import com.forkmang.helper.StorePrefrence
+import com.forkmang.helper.StorePreference
 import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
 
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
     var ctx: Context = this@SplashActivity
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
 

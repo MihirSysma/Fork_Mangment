@@ -50,7 +50,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     var text: TextView? = null
     var mapFragment: SupportMapFragment? = null
-    private val storePreference by lazy { StorePrefrence(this) }
+    private val storePreference by lazy { StorePreference(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
