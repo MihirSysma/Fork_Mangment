@@ -44,7 +44,7 @@ class WalkinDetailFragment : FragmentActivity() {
     //Walkin_detail_Fragment instance;
     var relativeBottom: RelativeLayout? = null
     var ctx: Context = this@WalkinDetailFragment
-    var resturantId: String? = null
+    var restaurantId: String? = null
     var restoData: RestoData? = null
     var saveLatitude: Double? = null
     var saveLongitude: Double? = null
@@ -52,7 +52,7 @@ class WalkinDetailFragment : FragmentActivity() {
     var walkinListingAdapter: WalkinListingAdapter? = null
     private val storePreference by lazy { StorePrefrence(this) }
     var queeNo1: String? = null
-    var noofPerson: String? = null
+    var noOfPerson: String? = null
     var occasion: String? = null
     var area: String? = null
     var identifier = ""
@@ -60,9 +60,9 @@ class WalkinDetailFragment : FragmentActivity() {
     var txtqnoBottom: TextView? = null
     var txtnextview: TextView? = null
     var areaDropdownArrayList: ArrayList<AreaDropdown>? = null
-    var isAreatype = false
-    var isPesonselect = false
-    var isOccasionselect = false
+    var isAreaType = false
+    var isPersonSelect = false
+    var isOccasionSelect = false
     var personArr = arrayOf("Select Person", "1", "2 ", "3", "4", "5", "6", "7", "8", "9", "10")
     var occasionArr = arrayOf("Select Occasion", "Birthday", "Anniversary", "Marriage")
 
@@ -81,7 +81,7 @@ class WalkinDetailFragment : FragmentActivity() {
         binding.walkinRecycleview.layoutManager = verticalLayoutManager
         binding.walkinRecycleview.setHasFixedSize(true)
         val intent = intent
-        resturantId = intent.getStringExtra("resturant_id")
+        restaurantId = intent.getStringExtra("resturant_id")
         restoData = getIntent().getSerializableExtra("restromodel") as RestoData?
 
 
@@ -95,15 +95,15 @@ class WalkinDetailFragment : FragmentActivity() {
                 position: Int,
                 id: Long
             ) {
-                isPesonselect = false
+                isPersonSelect = false
                 if (position > 0) {
                     showToastMessage(personArr[position])
-                    noofPerson = personArr[position]
-                    val arrOfStr = noofPerson?.split(" ".toRegex(), limit = 2)?.toTypedArray()
-                    noofPerson = arrOfStr?.get(0)
-                    isPesonselect = true
+                    noOfPerson = personArr[position]
+                    val arrOfStr = noOfPerson?.split(" ".toRegex(), limit = 2)?.toTypedArray()
+                    noOfPerson = arrOfStr?.get(0)
+                    isPersonSelect = true
                 } else {
-                    isPesonselect = false
+                    isPersonSelect = false
                 }
             }
 
@@ -125,13 +125,13 @@ class WalkinDetailFragment : FragmentActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    isOccasionselect = false
+                    isOccasionSelect = false
                     if (position > 0) {
                         showToastMessage(occasionArr[position])
                         occasion = occasionArr[position]
-                        isOccasionselect = true
+                        isOccasionSelect = true
                     } else {
-                        isOccasionselect = false
+                        isOccasionSelect = false
                     }
                 }
 
@@ -155,7 +155,7 @@ class WalkinDetailFragment : FragmentActivity() {
                     showToastMessage(areaDropdown?.area_name.toString())
                     area = areaDropdown?.area_name
                     strAreaId = areaDropdown?.id
-                    isAreatype = true
+                    isAreaType = true
                     /*if(is_pesonselect)
                         {
                             / *rel_lablview.setVisibility(View.VISIBLE);
@@ -170,8 +170,8 @@ class WalkinDetailFragment : FragmentActivity() {
 
         //spinner area array adapter end
         if (isNetworkAvailable(ctx)) {
-            callApiGetQueeList(resturantId)
-            callApiFillDropdown(resturantId)
+            callApiGetQueeList(restaurantId)
+            callApiFillDropdown(restaurantId)
         } else {
             showToastMessage(NETWORKEROORMSG)
         }
@@ -179,7 +179,7 @@ class WalkinDetailFragment : FragmentActivity() {
             //testing purpose
             val mainIntent = Intent(ctx, WalkinActionPage::class.java)
             mainIntent.putExtra("quee_no", queeNo1)
-            mainIntent.putExtra("person", noofPerson)
+            mainIntent.putExtra("person", noOfPerson)
             mainIntent.putExtra("occasion", occasion)
             mainIntent.putExtra("area", area)
             mainIntent.putExtra("restromodel", restoData)
@@ -188,13 +188,13 @@ class WalkinDetailFragment : FragmentActivity() {
         binding.getInquee.setOnClickListener {
             //testing purpose hard coded
             identifier = ""
-            noofPerson = "8"
+            noOfPerson = "8"
             occasion = "Birthday"
             area = "Terace View"
             val id = strAreaId
             //callapi_getqueeconform(action,resturant_id, noof_person, occasion, str_area,identifier);
             if (isNetworkAvailable(ctx)) {
-                callApiGetQuee(resturantId, noofPerson!!, occasion!!, area!!)
+                callApiGetQuee(restaurantId, noOfPerson!!, occasion!!, area!!)
             } else {
                 showToastMessage(NETWORKEROORMSG)
             }
@@ -296,7 +296,7 @@ class WalkinDetailFragment : FragmentActivity() {
     //Api code for get queue list no
     fun callApiGetQueeList(resturant_id: String?) {
         binding.progressBar.visibility = View.VISIBLE
-        info.getQueeList("Bearer " + storePreference.getString(TOKEN_LOGIN), resturant_id)
+        info.getQueueList("Bearer " + storePreference.getString(TOKEN_LOGIN), resturant_id)
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -423,7 +423,7 @@ class WalkinDetailFragment : FragmentActivity() {
                 callApiGetQueeConform(
                     "yes",
                     restoData?.id,
-                    noofPerson,
+                    noOfPerson,
                     occasion,
                     area,
                     identifier

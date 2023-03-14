@@ -111,9 +111,9 @@ interface APIService {
         @Field("area") area: String?
     ): Call<JsonObject?>?
 
-    @POST(WebApi.RES_QUEELIST)
+    @POST(WebApi.RES_QUEUELIST)
     @FormUrlEncoded
-    fun getQueeList(
+    fun getQueueList(
         @Header("Authorization") token: String?,  //@Header("Accept") String key,
         //@Field("service_id") String service_id,
         @Field("restaurant_id") restaurant_id: String?
@@ -234,8 +234,22 @@ interface APIService {
         @Field("order_id") order_id: String?,
         @Field("book_table_id") book_table_id: String?,
         @Field("payment_type") payment_type: String?,
-        @Field("type") type: String?
+        @Field("type") type: String?,
+        @Field("amount") amt: String
     ): Call<JsonObject?>?
+
+    @POST(WebApi.GET_PAYMENT_DATA)
+    @FormUrlEncoded
+    fun getPaymentData(
+        @Header("Authorization") token: String?,
+        @Field("id") id: String,
+        @Field("status") status: String,
+        @Field("amount") amt: String,
+        @Field("currency") currency: String,
+        @Field("invoice_id") invoiceId: String,
+        @Field("source") source: String,
+        @Field("payment_id") paymentId: String
+    )
 
     @POST(WebApi.RES_ORDERDETAIL)
     @FormUrlEncoded
@@ -252,7 +266,7 @@ interface APIService {
     ): Call<JsonObject?>?
 
     @POST(WebApi.RES_GETTERMS)
-    fun getterms(
+    fun getTerms(
         @Header("Authorization") token: String? //@Header("Accept") String key,
         //@Field("test") String test
     ): Call<JsonObject?>?

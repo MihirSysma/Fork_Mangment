@@ -56,7 +56,7 @@ class PickupSelectFoodFragment : Fragment() {
 
     var cartBookingArrayList: ArrayList<CartBooking>? = null
     var selectedIdRadioBtnTopping = 0
-    private val storePrefrence by lazy { StorePrefrence(requireContext()) }
+    private val storePreference by lazy { StorePrefrence(requireContext()) }
     var allOrderFoodAdapter: PickupFoodListAdapter? = null
 
     private var _binding: FragmentPickupLayoutBinding? = null
@@ -128,12 +128,12 @@ class PickupSelectFoodFragment : Fragment() {
     ) {
         binding.progressbar.visibility = View.VISIBLE
         info.addItemCart(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             item_id,
             qty,
             booking_table_id,
             item_extra,
-            storePrefrence.getString(
+            storePreference.getString(
                 IDENTFIER
             ),
             type,
@@ -146,11 +146,11 @@ class PickupSelectFoodFragment : Fragment() {
                             val jsonObject = JSONObject(Gson().toJson(response.body()))
                             if (jsonObject.getString("status").equals("200", ignoreCase = true)) {
                                 context?.showToastMessage(jsonObject.getString("message"))
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     CARTID,
                                     jsonObject.getJSONObject("data").getString("cart_id")
                                 )
-                                storePrefrence.setString(
+                                storePreference.setString(
                                     CART_ITEMID,
                                     jsonObject.getJSONObject("data").getString("item_id")
                                 )
@@ -348,8 +348,8 @@ class PickupSelectFoodFragment : Fragment() {
         val imgClose: ImageView = dialog.findViewById(R.id.img_close)
         rvCartDialog = dialog.findViewById(R.id.recycleview)
         txtRestroName.text = restoData?.rest_name ?: ""
-        txtCustName.text = storePrefrence.getString(NAME)
-        txtPhoneNo.text = storePrefrence.getString(MOBILE)
+        txtCustName.text = storePreference.getString(NAME)
+        txtPhoneNo.text = storePreference.getString(MOBILE)
         //txt_datetime.setText(tableList_get.getStr_time());
         imgClose.setOnClickListener { dialog.dismiss() }
         rvCartDialog.layoutManager = LinearLayoutManager(activity)
@@ -406,7 +406,7 @@ class PickupSelectFoodFragment : Fragment() {
     fun callApiCartListView() {
         binding.progressbar.visibility = View.VISIBLE
         info.getCartDetail(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN), storePrefrence.getString(
+            "Bearer " + storePreference.getString(TOKEN_LOGIN), storePreference.getString(
                 IDENTFIER
             )
         )
@@ -619,10 +619,10 @@ class PickupSelectFoodFragment : Fragment() {
     fun callApiAddQty(cart_itemid: String?, qty: String?) {
         binding.progressbar.visibility = View.VISIBLE
         info.cartUpdateQty(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             cart_itemid,
             qty,
-            storePrefrence.getString(
+            storePreference.getString(
                 IDENTFIER
             )
         )
@@ -663,9 +663,9 @@ class PickupSelectFoodFragment : Fragment() {
     fun callApiRemoveItemCart(cart_itemid: String?) {
         binding.progressbar.visibility = View.VISIBLE
         info.cartRemoveQty(
-            "Bearer " + storePrefrence.getString(TOKEN_LOGIN),
+            "Bearer " + storePreference.getString(TOKEN_LOGIN),
             cart_itemid,
-            storePrefrence.getString(
+            storePreference.getString(
                 IDENTFIER
             )
         )

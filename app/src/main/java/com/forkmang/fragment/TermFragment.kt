@@ -42,7 +42,7 @@ class TermFragment : Fragment() {
     //Api code for Book Table start
     private fun callApiTerms() {
         progressBar?.visibility = View.VISIBLE
-        info.getterms("Bearer " + storePreference.getString(TOKEN_LOGIN))
+        info.getTerms("Bearer " + storePreference.getString(TOKEN_LOGIN))
             ?.enqueue(object : Callback<JsonObject?> {
                 override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                     try {
@@ -53,17 +53,14 @@ class TermFragment : Fragment() {
                             txtTerm?.text = term
                             progressBar?.visibility = View.GONE
 
-                            //Log.d("Result", jsonObject.toString());
                         } else {
                             progressBar?.visibility = View.GONE
                             txtTerm?.text = "Error Occur During  Fetching Terms & Condition"
-                            // Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                         }
                     } catch (ex: JSONException) {
                         ex.printStackTrace()
                         progressBar?.visibility = View.GONE
                         txtTerm?.text = "Error Occur During  Fetching Terms & Condition"
-                        //Toast.makeText(getContext(), Constant.ERRORMSG, Toast.LENGTH_LONG).show();
                     }
                 }
 

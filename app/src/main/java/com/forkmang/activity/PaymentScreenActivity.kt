@@ -24,7 +24,7 @@ import retrofit2.Response
 class PaymentScreenActivity : AppCompatActivity() {
 
     var ctx: Context = this@PaymentScreenActivity
-    var tablelistGet: TableList? = null
+    var tableListGet: TableList? = null
     var restroData: RestoData? = null
     var totalpay: String? = null
     var orderId: String? = null
@@ -42,7 +42,7 @@ class PaymentScreenActivity : AppCompatActivity() {
 
         comingFrom = intent.getStringExtra("comingfrom")
         if (comingFrom.equals("SelectFood", ignoreCase = true)) {
-            tablelistGet = intent.getSerializableExtra("model") as TableList?
+            tableListGet = intent.getSerializableExtra("model") as TableList?
         } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
             // not to get table object
         }
@@ -72,26 +72,30 @@ class PaymentScreenActivity : AppCompatActivity() {
         }
         binding.btnPayment.text = "Pay - $totalpay"
         binding.btnPayment.setOnClickListener {
-            if (binding.radioButton1.isChecked) {
-                paymentType = "cash"
+            paymentType = if (binding.radioButton1.isChecked) {
+                "cash"
             } else if (binding.radioButton2.isChecked) {
-                paymentType = "online"
+                "online"
+            } else {
+                showToastMessage("Please select a mode of payment")
+                return@setOnClickListener
             }
             if (Utils.isNetworkAvailable(ctx)) {
                 if (isbooktable.equals("yes", ignoreCase = true)) {
                     //callApi_makepayment_1(order_id, payment_type);
-                    callApiMakePayment("", bookingId, paymentType, "table")
+                    callApiMakePayment("", bookingId, paymentType, "table", totalpay ?: "")
                 } else {
                     if (comingFrom.equals("SelectFood", ignoreCase = true)) {
                         callApiMakePayment(
                             orderId,
                             storePreference.getString(Constant.BOOKINGID),
                             paymentType,
-                            "order"
+                            "order",
+                            totalpay ?: ""
                         )
                     } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
                         // not to get table object
-                        callApiMakePayment(orderId, "", paymentType, "order")
+                        callApiMakePayment(orderId, "", paymentType, "order", totalpay ?: "")
                     }
                 }
             } else {
@@ -104,59 +108,60 @@ class PaymentScreenActivity : AppCompatActivity() {
         order_id: String?,
         booking_id: String?,
         payment_type: String?,
-        order_type: String?
+        order_type: String?,
+        amt: String
     ) {
         Api.info.makePayment(
             "Bearer " + storePreference.getString(Constant.TOKEN_LOGIN),
             order_id,
             booking_id,
             payment_type,
-            order_type
+            order_type,
+            amt
         )?.enqueue(object : Callback<JsonObject?> {
-                override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                    try {
-                        //Log.d("Result", jsonObject.toString());
-                        if (response.code() == Constant.SUCCESS_CODE_n) {
-                            val jsonObject: JSONObject = JSONObject(Gson().toJson(response.body()))
-                            if (jsonObject.getString("status")
-                                    .equals(Constant.SUCCESS_CODE, ignoreCase = true)
-                            ) {
-                                val mainIntent = Intent(
-                                    this@PaymentScreenActivity,
-                                    OrderConformationActivity::class.java
-                                )
-                                if (comingFrom.equals("SelectFood", ignoreCase = true)) {
-                                    mainIntent.putExtra("model", tablelistGet)
-                                    mainIntent.putExtra("comingfrom", "SelectFood")
-                                } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
-                                    mainIntent.putExtra("comingfrom", "PickupFood")
-                                }
-                                mainIntent.putExtra("restromodel", restroData)
-                                mainIntent.putExtra("totalpay", totalpay)
-                                if (isbooktable.equals("yes", ignoreCase = true)) {
-                                    mainIntent.putExtra("orderid", booking_id)
-                                } else if (isbooktable.equals("no", ignoreCase = true)) {
-                                    mainIntent.putExtra("orderid", order_id)
-                                }
-                                startActivity(mainIntent)
-                                finish()
-                            } else {
-                                showToastMessage(jsonObject.getString("message"))
+            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
+                try {
+                    if (response.code() == Constant.SUCCESS_CODE_n) {
+                        val jsonObject = JSONObject(Gson().toJson(response.body()))
+                        if (jsonObject.getString("status")
+                                .equals(Constant.SUCCESS_CODE, ignoreCase = true)
+                        ) {
+                            val mainIntent = Intent(
+                                this@PaymentScreenActivity,
+                                OrderConformationActivity::class.java
+                            )
+                            if (comingFrom.equals("SelectFood", ignoreCase = true)) {
+                                mainIntent.putExtra("model", tableListGet)
+                                mainIntent.putExtra("comingfrom", "SelectFood")
+                            } else if (comingFrom.equals("PickupFood", ignoreCase = true)) {
+                                mainIntent.putExtra("comingfrom", "PickupFood")
                             }
-                        } else if (response.code() == Constant.ERROR_CODE) {
-                            val jsonObject = JSONObject(response.errorBody()?.string())
+                            mainIntent.putExtra("restromodel", restroData)
+                            mainIntent.putExtra("totalpay", totalpay)
+                            if (isbooktable.equals("yes", ignoreCase = true)) {
+                                mainIntent.putExtra("orderid", booking_id)
+                            } else if (isbooktable.equals("no", ignoreCase = true)) {
+                                mainIntent.putExtra("orderid", order_id)
+                            }
+                            startActivity(mainIntent)
+                            finish()
+                        } else {
                             showToastMessage(jsonObject.getString("message"))
                         }
-                    } catch (ex: Exception) {
-                        ex.printStackTrace()
-                        showToastMessage(Constant.ERRORMSG)
+                    } else if (response.code() == Constant.ERROR_CODE) {
+                        val jsonObject = JSONObject(response.errorBody()?.string())
+                        showToastMessage(jsonObject.getString("message"))
                     }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
                     showToastMessage(Constant.ERRORMSG)
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                showToastMessage(Constant.ERRORMSG)
+            }
+        })
     } /*public void callApi_makepayment(String order_id,String payment_type)
     {
         Api.getInfo().make_payment("Bearer "+storePrefrence.getString(TOKEN_LOGIN),order_id, payment_type).

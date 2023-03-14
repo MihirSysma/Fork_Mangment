@@ -19,11 +19,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:cardElevation="3dp"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="@dimen/_25sdp"
         app:cardBackgroundColor="@color/white"
         app:cardMaxElevation="3dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true">
+        app:cardPreventCornerOverlap="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,12 +34,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_5ssp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:text="@string/button_reg"
                 android:textAlignment="center"
                 android:fontFamily="@font/generalsansmedium"
                 android:textColor="@color/text_colorblack"
-                android:textSize="@dimen/_15ssp"
+                android:textSize="@dimen/_16ssp"
                 android:textStyle="bold"
                 />
 
@@ -341,16 +340,14 @@
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5ssp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5ssp">
-
-
 
                 <FrameLayout
                     android:layout_width="wrap_content"

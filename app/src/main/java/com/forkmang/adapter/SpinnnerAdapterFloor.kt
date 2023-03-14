@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.forkmang.R
-import com.forkmang.data.FlooDropdown
+import com.forkmang.data.FloorDropdown
 
 class SpinnnerAdapterFloor(
     var context: Context,
-    var flooDropdownArrayList: ArrayList<FlooDropdown>
+    var flooDropdownArrayList: ArrayList<FloorDropdown>
 ) : BaseAdapter() {
     var inflter: LayoutInflater = LayoutInflater.from(context)
 

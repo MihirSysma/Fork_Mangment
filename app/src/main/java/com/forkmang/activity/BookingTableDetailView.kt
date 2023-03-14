@@ -21,7 +21,7 @@ import com.forkmang.adapter.*
 import com.forkmang.adapter.SpinnerAdapter
 import com.forkmang.data.AreaDropdown
 import com.forkmang.data.BranchDropdown
-import com.forkmang.data.FlooDropdown
+import com.forkmang.data.FloorDropdown
 import com.forkmang.data.RestoData
 import com.forkmang.databinding.ActivityBookingtableDetailviewBinding
 import com.forkmang.helper.Constant.BOOKINGID
@@ -64,12 +64,12 @@ class BookingTableDetailView : Activity() {
     var mSecond = 0
     var bookingDate: String? = null
     var dateGet = ""
-    var resturantId: String? = null
+    var restaurantId: String? = null
     var noOfPerson = "0"
     var strArea: String? = "Indoor"
     var datetime: String? = null
     var tableListArrayList: ArrayList<TableList>? = null
-    var flooDropdownArrayList: ArrayList<FlooDropdown>? = null
+    var floorDropdownArrayList: ArrayList<FloorDropdown>? = null
     var areaDropdownArrayList: ArrayList<AreaDropdown>? = null
     var branchDropdownArrayList: ArrayList<BranchDropdown>? = null
     var restoData: RestoData? = null
@@ -85,7 +85,7 @@ class BookingTableDetailView : Activity() {
         setContentView(binding.root)
 
         val intent = intent
-        resturantId = intent.getStringExtra("resturant_id")
+        restaurantId = intent.getStringExtra("resturant_id")
         datetime = intent.getStringExtra("datetime")
         restoData = getIntent().getSerializableExtra("restromodel") as RestoData?
         binding.tableRecycleview.layoutManager = LinearLayoutManager(
@@ -112,7 +112,7 @@ class BookingTableDetailView : Activity() {
                 false
             )
             if (Utils.isNetworkAvailable(ctx)) {
-                callApiBookTableList(resturantId)
+                callApiBookTableList(restaurantId)
             } else {
                 showToastMessage(NETWORKEROORMSG)
             }
@@ -128,10 +128,8 @@ class BookingTableDetailView : Activity() {
         binding.buttonList.isChecked = true
         currentDateShow()
 
-
         //call api for fill dropdown
-        callApiFillDropdown(resturantId)
-
+        callApiFillDropdown(restaurantId)
 
         //spinner_person array adapter start
         val personAdapter = SpinnerAdapter(applicationContext, person)
@@ -189,8 +187,8 @@ class BookingTableDetailView : Activity() {
                 id: Long
             ) {
                 if (position > 0) {
-                    val flooDropdown: FlooDropdown? = flooDropdownArrayList?.get(position)
-                    showToastMessage(flooDropdown?.floor_name.toString())
+                    val floorDropdown: FloorDropdown? = floorDropdownArrayList?.get(position)
+                    showToastMessage(floorDropdown?.floor_name.toString())
                 }
             }
 
@@ -253,7 +251,7 @@ class BookingTableDetailView : Activity() {
         //spinner_floor array adapter
     }
 
-    fun showAlertViewTableSelctionRule(tableList: TableList) {
+    fun showAlertViewTableSelectionRule(tableList: TableList) {
         val alertDialog = AlertDialog.Builder(this@BookingTableDetailView)
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogView = inflater.inflate(R.layout.tableselection_alertview, null)
@@ -261,15 +259,15 @@ class BookingTableDetailView : Activity() {
         alertDialog.setCancelable(true)
         val dialog = alertDialog.create()
         val btnSelectNxt: Button = dialogView.findViewById(R.id.btn_select_nxt)
-        val tvDescr: TextView = dialogView.findViewById(R.id.tv_descr)
+        val tvDesc: TextView = dialogView.findViewById(R.id.tv_descr)
         val txtReserveSeat: TextView = dialogView.findViewById(R.id.txt_reserveseat)
         val tvRule: TextView = dialogView.findViewById(R.id.tv_rule)
-        val tvDresscode: TextView = dialogView.findViewById(R.id.tv_dresscode)
-        val tvOcassion: TextView = dialogView.findViewById(R.id.tv_ocassion)
-        tvDescr.text = tableList.table_descr
+        val tvDressCode: TextView = dialogView.findViewById(R.id.tv_dresscode)
+        val tvOccasion: TextView = dialogView.findViewById(R.id.tv_ocassion)
+        tvDesc.text = tableList.table_descr
         tvRule.text = tableList.table_rule
-        tvDresscode.text = tableList.table_drescode
-        tvOcassion.text = tableList.table_ocassion
+        tvDressCode.text = tableList.table_drescode
+        tvOccasion.text = tableList.table_ocassion
         txtReserveSeat.text =
             "To Reserve:" + " " + ctx.resources.getString(R.string.rupee) + tableList.price
         btnSelectNxt.setOnClickListener {
@@ -308,9 +306,9 @@ class BookingTableDetailView : Activity() {
             etv_noperson.setTextColor(Color.WHITE);*/dialog.dismiss()
         }
         imgIconSave.setOnClickListener { }
-        val btnCnfTablebook: Button = dialogView.findViewById(R.id.btn_cnf_payment)
+        val btnCnfTableBook: Button = dialogView.findViewById(R.id.btn_cnf_payment)
         btnCancel.setOnClickListener { dialog.dismiss() }
-        btnCnfTablebook.setOnClickListener {
+        btnCnfTableBook.setOnClickListener {
             //dialog.dismiss();
             if (Utils.isNetworkAvailable(ctx)) {
                 callApiConfirmTableBooking(
@@ -445,7 +443,7 @@ class BookingTableDetailView : Activity() {
                                     this@BookingTableDetailView,
                                     tableListArrayList
                                 ) {
-                                    showAlertViewTableSelctionRule(it)
+                                    showAlertViewTableSelectionRule(it)
                                 }
                                 binding.tableRecycleview.adapter = listTableBookingAdapter
                             } else {
@@ -486,7 +484,7 @@ class BookingTableDetailView : Activity() {
                             if (jsonObject.getJSONObject("data").getJSONArray("data")
                                     .length() > 0
                             ) {
-                                flooDropdownArrayList = ArrayList()
+                                floorDropdownArrayList = ArrayList()
                                 branchDropdownArrayList = ArrayList()
                                 areaDropdownArrayList = ArrayList()
                                 for (i in 0 until jsonObject.getJSONObject("data")
@@ -516,22 +514,22 @@ class BookingTableDetailView : Activity() {
                                     val mjsonArrayFloor =
                                         jsonObject.getJSONObject("data").getJSONArray("data")
                                             .getJSONObject(i).getJSONArray("floor")
-                                    val flooDropdownFirst = FlooDropdown()
-                                    flooDropdownFirst.id = "0"
-                                    flooDropdownFirst.floor_name = "Select Floor"
-                                    flooDropdownArrayList?.add(flooDropdownFirst)
+                                    val floorDropdownFirst = FloorDropdown()
+                                    floorDropdownFirst.id = "0"
+                                    floorDropdownFirst.floor_name = "Select Floor"
+                                    floorDropdownArrayList?.add(floorDropdownFirst)
                                     for (j in 0 until mjsonArrayFloor.length()) {
-                                        val flooDropdown = FlooDropdown()
+                                        val floorDropdown = FloorDropdown()
                                         val mjsonObjectFloor = mjsonArrayFloor.getJSONObject(j)
-                                        flooDropdown.id = mjsonObjectFloor.getString("id")
-                                        flooDropdown.floor_name =
+                                        floorDropdown.id = mjsonObjectFloor.getString("id")
+                                        floorDropdown.floor_name =
                                             mjsonObjectFloor.getString("name")
-                                        flooDropdownArrayList?.add(flooDropdown)
+                                        floorDropdownArrayList?.add(floorDropdown)
                                     }
-                                    val spinnnerAdapterFloor = SpinnnerAdapterFloor(
-                                        applicationContext, flooDropdownArrayList!!
+                                    val spinnerAdapterFloor = SpinnnerAdapterFloor(
+                                        applicationContext, floorDropdownArrayList!!
                                     )
-                                    binding.spinnerFloor.adapter = spinnnerAdapterFloor
+                                    binding.spinnerFloor.adapter = spinnerAdapterFloor
                                     //floor type spinner code end
 
                                     //branch type spinner code start
@@ -564,7 +562,7 @@ class BookingTableDetailView : Activity() {
                                     binding.linearListview.visibility = View.VISIBLE
                                     binding.frameLayout.visibility = View.GONE
                                     binding.linearLayout.visibility = View.GONE
-                                    callApiBookTableList(resturantId)
+                                    callApiBookTableList(restaurantId)
                                 }
                             } else {
                                 //no data in array list

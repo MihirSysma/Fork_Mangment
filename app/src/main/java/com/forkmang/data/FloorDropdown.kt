@@ -1,6 +1,6 @@
 package com.forkmang.data
 
-class FlooDropdown {
+class FloorDropdown {
     var id: String? = null
     var floor_name: String? = null
 }
